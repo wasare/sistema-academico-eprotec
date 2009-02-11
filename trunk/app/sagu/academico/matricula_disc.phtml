@@ -1,0 +1,885 @@
+<?php
+
+ require("../../../lib/common.php");
+ require("../../../lib/config.php"); 
+ require("../lib/ProcessaMaterial.php3"); 
+
+ // ini_set(display_errors, "1");
+
+?>
+
+<script language="JavaScript">
+
+var lu_ofer     = null;
+var lu_code     = null;
+var lu_desc     = null;
+var lu_prof     = null;
+var lu_day      = null;
+var lu_turno    = null;
+var lu_status   = null;
+var lu_creditos = null;
+
+function setResult(ofer,id,nome,prof,day,ref_curso,turno,status,creditos)
+{
+  if (status == '2')
+     lu_status.value = 't';
+  else
+     lu_status.value = 'f';
+  
+  lu_ofer.value     = ofer;
+  lu_code.value     = id;
+  lu_curso.value    = ref_curso;
+  lu_desc.value     = nome; 
+  lu_prof.value     = prof;
+  lu_day.value      = day;
+  lu_turno.value    = turno;
+  lu_creditos.value = creditos;
+}
+
+/* Preenche os campos das disciplinas */
+/* Com Mouse			      */
+function lookup(obj)
+{
+  var form = obj.form;
+
+  for ( i=0; i<form.length; i++ )
+  {
+    if ( form.elements[i] == obj )
+    {
+      lu_creditos = form.elements[i-9];
+      lu_status   = form.elements[i-8];
+      lu_ofer     = form.elements[i-7];
+      lu_code     = form.elements[i-6];
+      lu_curso    = form.elements[i-5];
+      lu_desc     = form.elements[i-4];
+      lu_prof     = form.elements[i-3];
+      lu_day      = form.elements[i-2];
+      lu_turno    = form.elements[i-1];
+
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/* Preenche os campos das disciplinas */
+/* Com ENTER			      */
+function lookup_enter(obj)
+{
+  var form = obj.form;
+
+  for ( i=0; i<form.length; i++ )
+  {
+    if ( form.elements[i] == obj )
+    {
+      lu_creditos = form.elements[i-3];
+      lu_status   = form.elements[i-2];
+      lu_ofer     = form.elements[i-1];
+      lu_code     = form.elements[i];
+      lu_curso    = form.elements[i+1]
+      lu_desc     = form.elements[i+2];
+      lu_prof     = form.elements[i+3];
+      lu_day      = form.elements[i+4];
+      lu_turno    = form.elements[i+5];
+
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/* Preenche os campos das disciplinas do curr�culo (bolinha vermelha) */
+/* Acesso com Mouse						      */
+function lookup1(obj)
+{
+  if ( !lookup(obj) )
+    return;
+    
+  if (document.form1.verifica.value == '1') 
+  {
+  var url = "../generico/post/lista_disciplinas.php3" +
+            "?periodo=" + escape('<?echo($periodo_id)?>') +
+            "&curso=" + escape('<?echo($curso_id)?>') +
+            "&ref_pessoa=" + escape('<?echo($aluno_id)?>');
+  }
+  else
+  {
+  var url = "../generico/post/lista_disciplinas_nome.php3" +
+            "?periodo=" + escape('<?echo($periodo_id)?>') +
+            "&curso=" + escape('<?echo($curso_id)?>') +
+            "&ref_pessoa=" + escape('<?echo($aluno_id)?>');
+  
+   if ( lu_code.value != '' )
+     url += '&id=' + escape(lu_code.value);
+
+   if ( lu_desc.value != '' )
+     url += '&desc=' + escape(lu_desc.value);
+  
+  }
+
+  var wnd = window.open(url,'busca','toolbar=no,width=780,height=550,scrollbars=yes');
+
+}
+
+/* Preenche os campos das disciplinas do curriculo (bolinha vermelha) */
+/* Acesso com ENTER						      */
+function lookup1_enter(obj)
+{
+  if ( !lookup_enter(obj) )
+    return;
+  
+  if (document.form1.verifica.value == '1')
+  {
+  var url = "../generico/post/lista_disciplinas_matricula.php3" +
+            "?periodo=" + escape('<?echo($periodo_id)?>') +
+            "&curso=" + escape('<?echo($curso_id)?>') +
+            "&ref_disciplina=" + escape(obj.value) +
+            "&ref_pessoa=" + escape('<?echo($aluno_id)?>') +
+    	    "&nao_oferecida=" + document.form1.nao_oferecida.checked;
+  }
+  else
+  {
+  var url = "../generico/post/lista_disciplinas_nome_matricula.php3" +
+            "?periodo=" + escape('<?echo($periodo_id)?>') +
+            "&curso=" + escape('<?echo($curso_id)?>') +
+            "&ref_pessoa=" + escape('<?echo($aluno_id)?>');
+    
+    if ( lu_code.value != '' )
+      url += '&id=' + escape(lu_code.value);
+
+    if ( lu_desc.value != '' )
+      url += '&desc=' + escape(lu_desc.value);
+  }
+
+  var wnd = window.open(url,'busca','toolbar=no,width=780,height=350,scrollbars=yes');
+
+}
+
+/* Preenche os campos das disciplinas eletivas (bolinha amarela) */
+/* Acesso com Mouse					         */
+function lookup2(obj)
+{
+  if ( !lookup(obj) )
+    return;
+
+  var url = "../generico/post/lista_disciplinas_nome.php3" + 
+            "?periodo=" + escape('<?echo($periodo_id)?>') +
+            "&curso=" + escape('<?echo($curso_id)?>') +
+            "&ref_pessoa=" + escape('<?echo($aluno_id)?>');
+
+  if ( lu_code.value != '' )
+    url += '&id=' + escape(lu_code.value);
+
+  if ( lu_desc.value != '' )
+    url += '&desc=' + escape(lu_desc.value);
+
+  var wnd = window.open(url,'busca','toolbar=no,width=780,height=350,scrollbars=yes');
+
+}
+
+/* Preenche os campos das disciplinas eletivas (bolinha amarela) */
+/* Acesso com ENTER					         */
+function lookup2_enter(obj)
+{
+  if ( !lookup_enter(obj) )
+    return;
+
+  var url = "../generico/post/lista_disciplinas_nome_matricula.php3" + 
+            "?periodo=" + escape('<?echo($periodo_id)?>') +
+            "&curso=" + escape('<?echo($curso_id)?>') +
+            "&ref_pessoa=" + escape('<?echo($aluno_id)?>');
+
+  if ( lu_code.value != '' )
+    url += '&id=' + escape(lu_code.value);
+
+  if ( lu_desc.value != '' )
+    url += '&desc=' + escape(lu_desc.value);
+
+  var wnd = window.open(url,'busca','toolbar=no,width=780,height=350,scrollbars=yes');
+
+}
+
+/* Remove uma disciplina da lista de disciplinas selecionadas */
+function _remove(button)
+{
+  var form = document.form2;
+
+  for ( var i=0; i<form.length; i++ )
+  {
+    if ( form.elements[i] == button )
+    {
+      for ( var j=1; j<19; j++ )
+        form.elements[i-j].value = '';
+      
+      form.action='matricula_disc.phtml';
+      form.submit();
+      return;
+    }
+  }
+}
+
+function valor(indice){
+   document.form1.verifica.value = document.form1.validacao[indice].value;
+}
+</script>
+
+
+<?php
+
+if ($first){
+	
+  $sql = "
+  SELECT 
+  A.ref_curso, 
+  A.ref_disciplina_ofer, 
+  B.ref_disciplina, 
+  descricao_disciplina(B.ref_disciplina),
+  A.ref_curso_subst, 
+  B.ref_curso, 
+  A.ref_disciplina_subst, 
+  descricao_disciplina(A.ref_disciplina_subst),
+  professor_disciplina_ofer_todos(B.id), 
+  get_dia_semana_abrv(dia_disciplina_ofer_todos(B.id)), 
+  turno_disciplina_ofer_todos(B.id), 
+  A.status_disciplina 
+  
+  FROM 
+  matricula A, disciplinas_ofer B
+  
+  WHERE 
+  A.ref_periodo = '$periodo_id' and
+  A.ref_pessoa  = $aluno_id and 
+  A.ref_curso   = '$curso_id' and
+  A.ref_contrato = '$id_contrato' and
+  B.id = A.ref_disciplina_ofer and
+  A.dt_cancelamento is null
+  
+  ORDER BY A.id";
+  
+/*	
+  $sql = "select A.ref_curso," .
+         "       A.ref_disciplina_ofer," .
+         "       A.ref_disciplina, " .
+         "       descricao_disciplina(A.ref_disciplina), " .
+         "       A.ref_curso_subst, " .
+    	 "	     B.ref_curso, " .
+         "       A.ref_disciplina_subst, " .
+         "       descricao_disciplina(A.ref_disciplina_subst), " .
+         "       professor_disciplina_ofer_todos(B.id), ".           
+         "       get_dia_semana_abrv(dia_disciplina_ofer_todos(B.id)), ".
+         "       turno_disciplina_ofer_todos(B.id), ".
+         "       A.status_disciplina ".
+         "  from matricula A, disciplinas_ofer B" .
+         "  where A.ref_periodo = '$periodo_id' and " .
+         "        A.ref_pessoa  = $aluno_id and " .
+         "        A.ref_curso   = '$curso_id' and" .
+         "        A.ref_contrato = '$id_contrato' and" .
+         "        B.id = A.ref_disciplina_ofer and" .
+         "        A.dt_cancelamento is null" .
+         "  order by A.id";
+
+select 
+id, ref_campus, get_campus(ref_campus), ref_curso, curso_desc(ref_curso), 
+descricao_disciplina(ref_disciplina), ref_disciplina, is_cancelada, 
+get_num_matriculados(id) || '/' || num_alunos, turma, ref_periodo_turma 
+from disciplinas_ofer 
+
+where 
+ref_periodo='0702' and 
+ref_curso='310' and 
+ref_campus='1' 
+
+order by curso_desc(ref_curso), descricao_disciplina(ref_disciplina);
+*/
+
+
+  $conn = new Connection;
+  $conn->Open();
+   
+  $query = $conn->CreateQuery($sql);
+
+  for ( $i=0; $query->MoveNext(); $i++ ){
+  	
+    list ( $ref_curso, $ref_disciplina_ofer, $ref_disciplina, $nome1,
+           $ref_curso_subst, 
+           $ref_curso_ofer, 
+           $ref_disciplina_subst,
+           $nome2,
+           $prof,
+           $dia_semana,
+	       $turno,
+       	   $status_disciplina) = $query->GetRowValues();
+    
+    $code1[] = $ref_disciplina;
+   // $desc1[] = $nome1;
+    $code2[] = $ref_disciplina_subst == 0 ? '' : $ref_disciplina_subst;
+    $desc2[] = $nome2;
+
+    //$diario[] = $ref_disciplina_ofer;
+ 
+    if ( !$ref_disciplina_subst ){
+    	
+      $desc1[] = $ref_disciplina_ofer.' - '.$nome1;
+      $ofer1[]   = $ref_disciplina_ofer;
+      $ofer2[]   = '';
+      $curso1[]  = $ref_curso_ofer;
+      $curso2[]  = '';
+      $prof1[]   = $prof;
+      $prof2[]   = '';
+      $day1[]    = $dia_semana;
+      $day2[]    = '';
+      $turno1[]  = $turno;
+      $turno2[]  = '';
+      $status1[] = $status_disciplina;
+      $status2[] = '';
+      
+    }
+    else {
+    	
+      $desc1[] = $ref_disciplina_ofer.' - '.$nome1;
+
+      $ofer1[]   = '';
+      $ofer2[]   = $ref_disciplina_ofer;
+      $curso1[]  = '';
+      $curso2[]  = $ref_curso_ofer;
+      $prof1[]   = '';
+      $prof2[]   = $prof;
+      $day1[]    = '';
+      $day2[]    = $dia_semana;
+      $turno1[]  = '';
+      $turno2[]  = $turno;
+      $status1[] = $status_disciplina;
+      $status2[] = $status_disciplina;
+    }
+  }
+  
+  $query->Close();
+  $conn->Close();
+}
+
+?>
+
+<html>
+<head>
+<title>Matricula</title>
+
+<?php 
+
+$count = count($code1); 
+
+?>
+
+<script language="JavaScript">
+
+function PedeParcelas(autorizado, creditos_diurno, creditos_noturno){
+
+  var p_m=prompt("Qual o número de parcelas?","6")
+  if (p_m == "" || p_m == 0 || p_m < 0) 
+      { p_m="6"; }
+ 
+  var p_2=prompt("Qual o código do status?","2")
+  if (p_2 == "" || p_2 == 0) 
+      { p_2="2"; }
+
+  document.form2.num_parcelas.value = p_m;
+  document.form2.status.value = p_2;
+
+  if (p_m != null && p_2 != null) {
+  
+     if (autorizado == 'true')
+     {
+          document.form2.submit();
+     }
+     else
+     {
+       if (confirm('O aluno é de um curso diurno e com estas disciplinas ficará matriculado em \n' + creditos_noturno + ' cr�ditos noturno e ' + creditos_diurno + ' cr�ditos diurnos, ou seja, n�o estar� matriculado \nem pelo menos 16 cr�ditos no diurno. Clique OK para continuar, sen�o \nclique Cancel.'))
+       {
+          document.form2.submit();
+       }
+       else
+       {
+          alert("Matricula Cancelada...");
+       }
+     }
+  }
+  else{
+     alert("Matricula Cancelada...");
+  }
+}
+
+function VerMatricula(form){
+
+  var vet_code1  = new Array(form.elements.length);
+  var vet_day1   = new Array(form.elements.length);
+  var vet_turno1 = new Array(form.elements.length);
+  
+  var j = 0;
+  var k = 0;
+  var l = 0;
+  
+  for ( var i=0; i<vet_code1.length; i++ )
+  {
+    if ( form.elements[i].name=='code1[]')
+      vet_code1[j++] = form.elements[i].value;
+    if ( form.elements[i].name=='code2[]')
+      vet_code1[j++] = form.elements[i].value;
+    
+    if ( form.elements[i].name=='day1[]')
+      vet_day1[k++] = form.elements[i].value;
+    if ( form.elements[i].name=='day2[]')
+      vet_day1[k++] = form.elements[i].value;
+      
+    if ( form.elements[i].name=='turno1[]')
+      vet_turno1[l++] = form.elements[i].value;
+    if ( form.elements[i].name=='turno2[]')
+      vet_turno1[l++] = form.elements[i].value;
+  }
+  
+  for ( var i=0; i<j-1; i++ ) {
+
+    for ( var n=i+1; n<j; n++ ) {
+
+      if ( (vet_code1[i] == vet_code1[n]) && (vet_code1[i] !='')) {
+        alert('A disciplina de código ' + vet_code1[i] + ' já foi selecionada!!!');
+		return false;
+      }
+      if ((vet_day1[i] == vet_day1[n]) && (vet_turno1[i] == vet_turno1[n]) && (vet_day1[i] != '') && (vet_turno1[i] != '')){
+      
+       if (confirm('Não é possível fazer a disciplina ' + vet_code1[i] + ' no dia ' + vet_day1[i] + ' no turno ' + vet_turno1[i] + '\n pois j� tem uma disciplina selecionada para este dia e turno.\n Se mesmo assim voc� deseja matricular o aluno nesta disciplina\n clique OK, sen�o clique Cancel.'))
+		return true;
+       else
+		return false;
+      }
+
+    }
+  }
+  return true;
+}
+
+</script>
+</head>
+
+<body bgcolor="#FFFFFF">
+<br>
+<table width="580" align="center">
+  <tr bgcolor="#000099"> 
+    <td colspan="5" height="28" align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Disciplinas da Matr&iacute;cula</b></font></td>
+  </tr>
+  <tr> 
+    <td colspan="5" bgcolor="#CCCCFF" height="32"><font face="Arial, Helvetica, sans-serif" size="2" color="#000066"><b>&nbsp;&nbsp;Matricula</b></font></td>
+  </tr>
+  <tr> 
+    <td width="56" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000066">&nbsp;&nbsp;Periodo:</font></td>
+    <td width="18"><font face="Arial, Helvetica, sans-serif" size="2"><?echo($periodo_id);?></font></td>
+    <td colspan="3"><font face="Arial, Helvetica, sans-serif" size="2"> </font></td>
+  </tr>
+  <tr> 
+    <td width="56" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000066">&nbsp;&nbsp;Aluno:</font></td>
+    <td width="18"><font face="Arial, Helvetica, sans-serif" size="2"><?echo($aluno_id);?></font></td>
+    <td colspan="3"><font face="Arial, Helvetica, sans-serif" size="2"> <?echo($aluno_nome);?></font></td>
+  </tr>
+  <tr> 
+    <td width="56" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000066">&nbsp;&nbsp;Curso:</font></td>
+    <td width="18"><font face="Arial, Helvetica, sans-serif" size="2"><?echo($curso_id);?> 
+      </font></td>
+    <td width="238"><font face="Arial, Helvetica, sans-serif" size="2"> <?echo($curso_nome);?></font></td>
+    <td width="68" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000066"> 
+      &nbsp;&nbsp;Contrato:</font></td>
+    <td width="96"><font face="Arial, Helvetica, sans-serif" size="2">
+    <?php
+    
+    echo($id_contrato);
+	echo("- Campus: ");
+	echo($ref_campus);
+    
+	?>
+     </font></td>
+  </tr>
+  <tr><td colspan="6">&nbsp;</td></tr>
+  <tr> 
+    <td><b><font face="Arial, Helvetica, sans-serif" size="2">CURR&Iacute;CULO</font></b></td>
+    <td align="rigth"><img src="../images/redball.gif"></td>
+    <td>&nbsp;</td>
+    <td><b><font face="Arial, Helvetica, sans-serif" size="2">ELETIVAS</font></b></td>
+    <td align="rigth"><img src="../images/yellowball.gif"></td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+<form name="form1" method="post" action="matricula_disc.phtml" onSubmit="return VerMatricula(this)">
+  <table width="580" align="center">
+  
+  <?php
+  
+  //Processa somente a primeira vez que acessa a pagina
+  if ($passou != "yes") {
+     ProcessaMaterial($periodo_id, $curso_id, $ref_campus, $aluno_id);
+  }
+  
+  ?>
+  
+    <input type="hidden" name="passou" value="yes">
+    <tr> 
+      <td colspan="3" bgcolor="#CCCCFF" height="32">
+      	<font face="Arial, Helvetica, sans-serif" size="2" color="#000066"><b>&nbsp;Nova Disciplina</b></font></td>
+      <td colspan="2" bgcolor="#CCCCFF" height="32" align="center">
+      	<font face="Arial, Helvetica, sans-serif" size="2" color="#000066"><b>Verifica&ccedil;&atilde;o<br>
+      	<input type="hidden" name="verifica" value="1">
+      	<input type="radio" name="validacao" value="1" checked onClick="valor(0)">Sim
+      	<input type="radio" name="validacao" value="0" onClick="valor(1)">N&atilde;o
+      	</b></font>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16" bgcolor="#CCCCCC"><font face="Arial, Helvetica, sans-serif" size="2">&nbsp;</font></td>
+      <td width="60" bgcolor="#CCCCCC"><font face="Arial, Helvetica, sans-serif" size="2">C&oacute;digo / Curso</font></td>
+      <td bgcolor="#CCCCCC" width="290"><font face="Arial, Helvetica, sans-serif" size="2">Disciplina / Professor</font></td>
+      <td bgcolor="#CCCCCC" width="50" align="center"><font face="Arial, Helvetica, sans-serif" size="2">Dia / Turno</font></td>
+      <td bgcolor="#CCCCCC" width="50"><font face="Arial, Helvetica, sans-serif" size="2">&nbsp;</font></td>
+    </tr>
+    <tr valign="top"> 
+      <td valign="center">
+         &nbsp;<img src="../images/redball.gif" width="16" height="16">
+	 <input type="checkbox" name="nao_oferecida" value="yes" onClick="alert('Clicando neste botao voce seleciona as disciplinas \n que fazem parte do curso do aluno mas que serao \nsubstituidas por autorizacao do coordenador.')">
+      </td>
+      <td> 
+        <input type="hidden" name="creditos1[]">
+        <input type="hidden" name="status1[]">
+        <input type="hidden" name="ofer1[]">
+        <input type="text" name="code1[]" size="8" onChange="lookup1_enter(this)">
+        <input type="text" name="curso1[]" size="8">
+      </td>
+      <td> 
+	<input type="text" name="desc1[]" size="38">
+        <input type="text" name="prof1[]" size="38">
+      </td>
+      <td> 
+        <input type="text" name="day1[]" size="5">
+        <input type="text" name="turno1[]" size="5">
+      </td>
+      <td> 
+        <input type="button" value="..." onClick="lookup1(this)">
+      </td>
+    </tr>
+    <tr valign="top"> 
+      <td valign="center">
+         &nbsp;<img src="../images/yellowball.gif" width="16" height="16">
+         <br>
+      </td>
+      <td> 
+        <input type="hidden" name="creditos2[]">
+        <input type="hidden" name="status2[]">
+        <input type="hidden" name="ofer2[]">
+        <input type="text" name="code2[]" size="8" onChange="lookup2_enter(this)">
+        <input type="text" name="curso2[]" size="8">
+      </td>
+      <td> 
+        <input type="text" name="desc2[]" size="38">
+        <input type="text" name="prof2[]" size="38">
+      </td>
+      <td> 
+        <input type="text" name="day2[]" size="5">
+        <input type="text" name="turno2[]" size="5">
+      </td>
+      <td> 
+        <input type="button" value="..." onClick="lookup2(this)">
+      </td>
+    </tr>
+    <?php
+    
+    //Inicio FOR
+    for ( $i=0; $i<$count; $i++ ) {
+    	
+    ?>
+  	<input type="hidden" name="creditos1[]" value="<?echo($creditos1[$i]);?>">
+  	<input type="hidden" name="status1[]" value="<?echo($status1[$i]);?>">
+  	<input type="hidden" name="ofer1[]" value="<?echo($ofer1[$i]);?>">
+ 	<input type="hidden" name="code1[]" value="<?echo($code1[$i]);?>">
+	<input type="hidden" name="curso1[]" value="<?echo($curso1[$i]);?>">
+	<input type="hidden" name="desc1[]" value="<?echo($desc1[$i]);?>">
+	<input type="hidden" name="prof1[]" value="<?echo($prof1[$i]);?>">
+	<input type="hidden" name="day1[]"  value="<?echo($day1[$i]);?>">
+	<input type="hidden" name="turno1[]"  value="<?echo($turno1[$i]);?>">
+  	<input type="hidden" name="creditos2[]" value="<?echo($creditos2[$i]);?>">
+  	<input type="hidden" name="status2[]" value="<?echo(trim($status2[$i]));?>">
+  	<input type="hidden" name="ofer2[]" value="<?echo(trim($ofer2[$i]));?>">
+	<input type="hidden" name="code2[]" value="<?echo($code2[$i]);?>">
+	<input type="hidden" name="curso2[]" value="<?echo($curso2[$i]);?>">
+	<input type="hidden" name="desc2[]" value="<?echo($desc2[$i]);?>">
+	<input type="hidden" name="prof2[]" value="<?echo($prof2[$i]);?>">
+	<input type="hidden" name="day2[]"  value="<?echo($day2[$i]);?>">
+	<input type="hidden" name="turno2[]"  value="<?echo($turno2[$i]);?>">
+
+    <?php 
+
+	}//Fim FOR  
+	
+	?>
+    
+    <tr align="center"> 
+      <td colspan="5"> 
+        <input type="submit" name="Submit" value="Adicionar">
+        <input type="reset" name="Submit2" value="Limpar">
+      </td>
+    </tr>
+  </table>
+  <input type="hidden" name="periodo_id" value="<?echo($periodo_id);?>">
+  <input type="hidden" name="curso_id" value="<?echo($curso_id);?>">
+  <input type="hidden" name="curso_nome" value="<?echo($curso_nome);?>">
+  <input type="hidden" name="aluno_id" value="<?echo($aluno_id);?>">
+  <input type="hidden" name="aluno_nome" value="<?echo($aluno_nome);?>">
+  <input type="hidden" name="id_contrato" value="<?echo($id_contrato);?>">
+  <input type="hidden" name="ref_campus" value="<?echo($ref_campus);?>">
+
+  </form>
+  <form name="form2" method="post" action="matricula_inserir.php3">
+  
+  
+  <table align="center" width="580">
+    <tr> 
+      <td colspan="3" bgcolor="#CCCCFF" height="32">
+		<font face="Arial, Helvetica, sans-serif" size="2" color="#000066"><b>&nbsp;&nbsp;Disciplinas Selecionadas</b></td>
+      <td colspan="3" bgcolor="#CCCCFF" height="32"><font face="Arial, Helvetica, sans-serif" size="2" color="#000066"><b>Wake Up
+	  <input type="radio" name="wakeup" value="1" onClick="valor(1)">Sim
+	  <input type="radio" name="wakeup" value="0" checked onClick="valor(0)">N&atilde;o</font></td>
+    </tr>
+    <tr> 
+      <td width="20" bgcolor="#CCCCCC">&nbsp;</td>
+      <td width="25" bgcolor="#CCCCCC"><font face="Arial, Helvetica, sans-serif" size="2">C&oacute;digo / Curso</font></td>
+      <td bgcolor="#CCCCCC" width="290"><font face="Arial, Helvetica, sans-serif" size="2">Di&aacute;rio / Disciplina / Professor</font></td>
+      <td bgcolor="#CCCCCC" width="50" align="center"><font face="Arial, Helvetica, sans-serif" size="2">Dia / Turno</font></td>
+      <td bgcolor="#CCCCCC" width="50" align="right">&nbsp;</td>
+    </tr>
+
+<?php 
+
+
+if ( $count != 0 ) {
+
+	
+  $creditos_diurno = 0;
+  $creditos_noturno = 0;
+
+  $conn = new Connection;
+  $conn->Open();
+  
+  //
+  for ( $i=0; $i<$count; $i++ ) {
+  	
+    if ( $code1[$i] == '' ){
+      continue;
+    }
+
+?>
+
+    <tr valign="top"> 
+      <td width="20"><font face="Arial, Helvetica, sans-serif" size="2"><img src="../images/redball.gif" width="16" height="16"></font></td>
+      <td width="50"> <font face="Arial, Helvetica, sans-serif" size="2">
+        
+		<?
+        
+        echo($code1[$i]);
+        echo "<br>";		
+		echo($curso1[$i]);
+		
+		?>
+		 
+        <input type="hidden" name="creditos1[]" value="<?echo($creditos1[$i]);?>">
+        <input type="hidden" name="status1[]" value="<?echo($status1[$i]);?>">
+        <input type="hidden" name="ofer1[]" value="<?echo($ofer1[$i]);?>">
+        <input type="hidden" name="creditos2[]" value="<?echo($creditos2[$i]);?>">
+        <input type="hidden" name="status2[]" value="<?echo(trim($status2[$i]));?>">
+        <input type="hidden" name="ofer2[]" value="<?echo(trim($ofer2[$i]));?>">
+        <input type="hidden" name="code1[]" value="<?echo($code1[$i]);?>">
+        <input type="hidden" name="code2[]" value="<?echo($code2[$i]);?>">
+        <input type="hidden" name="curso1[]" value="<?echo($curso1[$i]);?>">
+        <input type="hidden" name="curso2[]" value="<?echo($curso2[$i]);?>">
+		</font>
+      </td>
+      <td width="350"> <font face="Arial, Helvetica, sans-serif" size="2">
+        <b><?echo($desc1[$i]);?></b> 
+        <input type="hidden" name="desc1[]" value="<?echo($desc1[$i]);?>">
+        <input type="hidden" name="desc2[]" value="<?echo($desc2[$i]);?>">
+        <br>
+		<?echo($prof1[$i]);?> 
+        <input type="hidden" name="prof1[]" value="<?echo($prof1[$i]);?>">
+        <input type="hidden" name="prof2[]" value="<?echo($prof2[$i]);?>">
+        </font>
+      </td>
+      <td width="30" align="center">
+		<font face="Arial, Helvetica, sans-serif" size="2">
+        <?echo($day1[$i]);?> 
+        <input type="hidden" name="day1[]" value="<?echo($day1[$i]);?>">
+        <input type="hidden" name="day2[]" value="<?echo($day2[$i]);?>"><br>
+		<?echo($turno1[$i]);?>
+        <input type="hidden" name="turno1[]" value="<?echo($turno1[$i]);?>">
+        <input type="hidden" name="turno2[]" value="<?echo($turno2[$i]);?>">
+        </font></td>
+      <td width="50" align="right">
+        <input type="button" value="Excluir" onClick="_remove(this)">
+      </td>
+    </tr>
+    
+	<?php 
+	
+	if ( $code2[$i] != '' ){ 
+	
+	?>
+    
+    <tr valign="top"> 
+      <td width="20"><font size="2" face="Arial, Helvetica, sans-serif"><img src="../images/yellowball.gif" width="16" height="16"></font>
+      </td>
+      <td width="25"><font size="2" face="Arial, Helvetica, sans-serif">
+        <?php echo($code2[$i]);?> 
+        <br>
+        <?php echo($curso2[$i]);?> 
+        </font>
+      </td>
+      <td width="350"><font size="2" face="Arial, Helvetica, sans-serif">
+        <b>
+		<?php echo($desc2[$i]);?> 
+        </b><br>
+        <?php echo($prof2[$i]);?>
+		</font>
+      </td>
+      <td width="30" align="center"><font size="2" face="Arial, Helvetica, sans-serif"> <?echo($day2[$i]);?>
+        <br>
+        <?php echo($turno2[$i]);?>
+        </font>
+      </td>
+      <td width="50" align="right"><font size="2" face="Arial, Helvetica, sans-serif"></font></td>
+    </tr>
+    
+	<?php 
+
+	} // if 
+	
+	?>
+    
+    <tr> 
+      <td colspan=5> 
+        <hr width="500" size="1">
+      </td>
+    </tr>
+    
+<?php 
+    
+    // Regra do Negocio:
+    // Alunos de Cursos diurnos so poderao se matricular em disciplinas noturnas
+    // se tiverem pelo menos se matriculados em 16 creditos diurnos
+    // Alunos de Cursos noturnos não tem problemas quanto a turnos das disciplinas.
+    // Autor Paulo Roberto Mallmann, Ultima modificacao: 05/11/2002
+  
+    if ( $code2[$i] != '' ){
+        $sql = " select turno_curso('$curso_id'), get_creditos('$code2[$i]'), turno_disciplina_ofer('$ofer2[$i]');";
+    }
+    else{
+        $sql = " select turno_curso('$curso_id'), get_creditos('$code1[$i]'), turno_disciplina_ofer('$ofer1[$i]');";
+    }
+    
+    $query = $conn->CreateQuery($sql);
+
+    if ($query->MoveNext()){
+      list ($turno_curso, $num_creditos, $turno_ofer) = $query->GetRowValues();
+      if ($turno_ofer != 'N'){
+         $creditos_diurno += $num_creditos;
+      }
+      else{
+         $creditos_noturno += $num_creditos;
+      }
+    }
+  
+  } // for
+
+  @$query->Close();
+  @$conn->Close();
+
+  $autorizado = 'true';
+  
+  if ( ($turno_curso != 'N') && ($creditos_noturno > 0) ){
+  	
+  	if ($creditos_diurno < 16){	
+        $autorizado = 'false';
+    }
+  }
+
+} // if
+else {
+
+?>
+
+    <tr> 
+      <td colspan="5"> 
+        <div align="center">
+        	<font face="Arial, Helvetica, sans-serif" size="2">
+        	<b><font color="#CC0000">
+        	  <br>Nenhuma disciplina selecionada<br>&nbsp;
+        	  </font>
+        	</b>
+          </font>
+        </div>
+      </td>
+    </tr>
+    
+<?php 
+
+} // else 
+
+?>
+
+    <tr> 
+      <td colspan="5"> 
+        <input type="hidden" name="periodo_id" value="<?echo($periodo_id);?>">
+        <input type="hidden" name="curso_id" value="<?echo($curso_id);?>">
+        <input type="hidden" name="curso_nome" value="<?echo($curso_nome);?>">
+        <input type="hidden" name="aluno_id" value="<?echo($aluno_id);?>">
+        <input type="hidden" name="aluno_nome" value="<?echo($aluno_nome);?>">
+        <input type="hidden" name="id_contrato" value="<?echo($id_contrato);?>">
+        <input type="hidden" name="ref_campus" value="<?echo($ref_campus);?>">
+        <input type="hidden" name="num_parcelas">
+        <input type="hidden" name="status">
+		<font face="Arial, Helvetica, sans-serif" size="2">
+		  <input type="checkbox" name="ApagarTodas" id="ApagarTodas" /> Apagar Todas. 
+		  <font color="#CC0000"><b>Aten&ccedil;&atilde;o!</b> Esta a&ccedil;&atilde;o n&atilde;o pode ser retomada!</font>
+		</font>
+		<div align="center">
+			<p>
+			<input type="button" value="Salvar Matricula" name="Button" onClick=" form2.submit();" >
+		
+		<?php
+
+		/*<!--onClick="PedeParcelas('<?=$autorizado?>','<?=$creditos_diurno?>','<?=$creditos_noturno?>')"-->*/
+		
+		/*  So redireciona
+		
+		if ( $count > 0 ){
+
+		?>
+			<input type="button" value="Limpar Todas" onClick="_reset()">
+        
+			<script language="JavaScript">
+			function _reset()
+			{
+				if ( <?php echo($count);?> > 0 ){
+					if ( confirm('Voce tem certeza que quer limpar as disciplinas selecionadas?\n\nEsta acao nao pode ser retomada.') )
+						location = 'matricula_aluno.phtml';
+				}
+			}
+			</script>
+
+		<?php 
+
+		} // if 
+		
+		*/
+		?>
+			</p>
+		</div>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

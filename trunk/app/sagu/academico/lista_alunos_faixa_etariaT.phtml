@@ -1,0 +1,160 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../lib/InvData.php3"); ?>
+<? require("../../../lib/config.php"); ?>
+<html>
+<head>
+<title>Lista de alunos por curso e idade</title>
+<script language="PHP">
+function Inscritos_Idade($ref_periodo, $ref_curso, $ref_campus, $dt_livro_matricula, $anterior)
+{
+  $conn = new Connection;
+  $conn->Open(); 
+
+  $sql = " SELECT ref_curso, ".
+         "        ref_campus, ".
+         "        curso_desc(ref_curso) as curso, ".
+         "        get_campus(ref_campus) as campus, ".
+         "        pessoa_idade(ref_pessoa), ".
+         "        get_sexo(ref_pessoa), ".
+         "        count(*) ".
+         " FROM contratos ".
+         " WHERE ref_curso = '$ref_curso' and " .
+   	     "       ref_campus = '$ref_campus' and ";
+         
+         if($anterior)
+         {
+         $sql .= " id in (select distinct ref_contrato " .
+                 "        from matricula " .
+                 "        where ref_periodo = '$ref_periodo' and " .
+                 "              obs_aproveitamento = '' and " .
+                 "              (dt_cancelamento is null or dt_cancelamento > '$dt_livro_matricula')) and " . 
+                 " ref_pessoa in (select distinct ref_pessoa " .
+                 "                from matricula " .
+                 "                where ref_periodo = '$ref_periodo' and " .
+                 "                obs_aproveitamento = '' and " .
+                 "                (dt_cancelamento is null or dt_cancelamento > '$dt_livro_matricula')) and " . 
+   	          " (dt_desativacao is null or dt_desativacao > '$dt_livro_matricula') and ";
+         }
+         else
+         {
+         $sql .= " ref_last_periodo='$ref_periodo' and " .
+                 " id = is_matriculado_cntr('$ref_periodo', id) and " .
+          	     " dt_desativacao is null and ";
+	      }
+
+   $sql.= "       ref_curso<>6 and " .
+          "       fl_ouvinte<>'1' " .
+          " group by ref_curso, ".
+          "          ref_campus, ".
+          "          curso_desc(ref_curso), ".
+          "          get_campus(ref_campus), ".
+          "          pessoa_idade(ref_pessoa), ".
+          "          get_sexo(ref_pessoa) ";
+  
+  $query = $conn->CreateQuery($sql);
+
+  // cores fundo
+  $bg0 = "#000000";
+  $bg1 = "#EEEEFF";
+  $bg2 = "#FFFFEE";
+
+  // cores fonte
+  $fg0 = "#FFFFFF";
+  $fg1 = "#000099";
+  $fg2 = "#000099";
+  
+  echo("<table width=\"90%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+
+  $curso_grp      = '';
+  $curso_grp_desc = '';
+
+  $total_m = 0; 
+  $total_f = 0;
+
+  $nova_linha = true;
+
+  while ( $query->MoveNext() )
+  {
+
+    list ( $ref_curso, $ref_campus, $curso, $campus, $idade, $sexo, $num ) = $query->GetRowValues();
+  
+    if($ref_curso_ != $ref_curso)
+      $i = 1;
+
+    if($i == 1)
+    {
+        echo ("<td bgcolor=\"#000099\" colspan=\"3\" height=\"28\" align=\"center\"><font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><b>Número de Matriculados por Curso e Idade</b></font></td>");
+        echo ("<tr>");
+        echo ("<td bgcolor=\"#000099\" colspan=\"3\" height=\"28\"><font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><b>Período: " . $ref_periodo . "</b></font></td>");
+        echo ("</tr>"); 
+        if ($anterior)
+        { $periodo_antigo = " Sim - Data Geração Livro Matrícula: " . InvData($dt_livro_matricula); }
+        else
+        { $periodo_antigo = " Não"; }
+        echo("<tr>");
+        echo ("<td bgcolor=\"#000099\" colspan=\"3\" height=\"28\"><font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><b>Período Antigo:<b>$periodo_antigo</b></font></td>");
+        echo ("</tr>"); 
+
+    
+        echo("<tr bgcolor=\"$bg0\">\n");
+        echo ("<td><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b>Curso:$ref_curso - $curso</b></font></td>");
+        echo ("<td colspan=\"2\"><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b>Campus: $campus</b></font></td>");
+        echo("</tr>"); 
+        echo("<tr bgcolor=\"$bg0\">\n");
+        echo ("<td><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b>Sexo</b></font></td></td>");
+        echo ("<td align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b>Idade</b></font></td>");
+        echo ("<td align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b>Num</b></font></td>");
+        echo("</tr>");
+        $ref_curso_ = $ref_curso; 
+    }
+
+
+    if ( $sexo == 'M' )
+    {
+        $sexo_ = "Masculino";
+        $fg = $fg1;
+        $bg = $bg1;
+    }
+    else
+    {
+        $sexo_ = "Feminino";
+        $fg = $fg2;
+        $bg = $bg2;
+    }
+
+    $font = "face=\"Verdana\" size=\"2\" color=\"$fg\"";
+
+    echo("<tr bgcolor=\"$bg\">\n");
+    echo("<td><Font $font>$sexo_</td>");
+    echo("<td align=\"center\"><Font $font>$idade</td>");
+    echo("<td align=\"center\"><Font $font>$num</td>");
+    $total += $num;
+    $i++;
+
+ }
+ echo("<tr bgcolor=\"$bg0\">\n");
+ echo("<td><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"></font></td>");
+ echo("<td><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b>Total:</b></font></td>");
+ echo("<td align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b><center>$total</center></b></font></td>");
+ echo("</tr>"); 
+ 
+  echo("<tr><td colspan=\"3\"><hr></td></tr>");
+  echo("</table>");
+
+  $query->Close();
+
+  $conn->Close();
+}
+</script>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="">
+<?
+   Inscritos_Idade($ref_periodo, $ref_curso, $ref_campus, $dt_livro_matricula, $anterior);
+?>
+<div align="center">
+  <input type="button" name="Button" value="  Voltar  " onclick="javascript:history.go(-1)">
+</div>
+</form>
+</body>
+</html>

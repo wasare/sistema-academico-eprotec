@@ -1,0 +1,159 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../lib/GetPessoaNome.php3"); ?>
+<html>
+<head>
+<script language="PHP">
+
+CheckFormParameters(array("ref_pessoa",
+                          "ref_contrato",
+                          "ref_curso",
+                          "ref_campus",
+                          "ref_periodo"));
+
+$nome_aluno = GetPessoaNome($ref_pessoa,true);
+
+</script>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<table width="95%" border="0" cellspacing="0" cellpadding="0" height="40" align="center">
+  <tr bgcolor="#000099"> 
+    <td height="18"> 
+      <div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF"> 
+        <font size="3">Insere Proficiências</font></font></b></font></div>
+    </td>
+  </tr>
+</table>
+<table width="95%" border="0" cellspacing="0" cellpadding="0" height="44" align="center">
+  <tr bgcolor="#FFFFFF"> 
+    <td height="16">&nbsp;</td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td height="35"> 
+      <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" color="#000099"><b><font color="#FF0033">Aluno: 
+        <?php echo($ref_pessoa) ;
+              echo('  -  ');
+              echo($nome_aluno); ?>
+        </font></b></font></div>
+    </td>
+  </tr>
+</table>
+<form method="post" action="post/insere_proficiencia.php3" name="myform">
+<script language="PHP">
+
+  $conn = new Connection;
+
+  $conn->Open();
+
+  $sql = " select ref_disciplina, " .
+         "        descricao_disciplina(ref_disciplina) " . 
+         " from cursos_disciplinas " .
+         " where curriculo_mco = 'P' and " .
+         "       ref_curso = '$ref_curso' and " .
+         "       ref_campus = '$ref_campus' and " .
+         "       ref_disciplina not in ( select ref_disciplina " .
+         "                               from matricula " .
+         "                               where ref_pessoa = $ref_pessoa and " .
+         "                                     ref_curso = $ref_curso and " .
+         "                                     ref_campus = $ref_campus and " .
+         "                                     dt_cancelamento is null ) ";
+  
+  $query = $conn->CreateQuery($sql);
+
+  echo("<center><table width=\"95%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">\n");
+
+  $i=0;
+
+  // cores fundo
+  $bg0 = "#000000";
+  $bg1 = "#EEEEFF";
+  $bg2 = "#FFFFEE";
+
+  // cores fonte
+  $fg0 = "#FFFFFF";
+  $fg1 = "#000099";
+  $fg2 = "#000099";
+ 
+  $passou = 'false';
+ 
+  while( $query->MoveNext() )
+  {
+  list ( $ref_disciplina,
+         $desc_disciplina) = $query->GetRowValues();
+   
+    if ($i == 0)
+    {
+	
+      echo("<tr bgcolor=\"#000000\">\n");
+      echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Selecione</b></font></td>\n");
+      echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Código</b></font></td>\n");
+      echo ("<td width=\"80%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Proficiência</b></font></td>\n");
+      echo("  </tr>\n");
+    }
+
+    if ( $i % 2)
+    {
+
+       echo("<tr bgcolor=\"$bg1\">\n");
+       echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\"><input type=\"checkbox\" name=\"opcao_$i\"></td>\n");
+       echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$ref_disciplina</td>\n");
+       echo ("<td width=\"80%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$desc_disciplina</td>\n");
+       echo("  </tr>\n");
+       echo ("<input type=\"hidden\" name=\"ref_disciplina[]\" value=\"$ref_disciplina\"></td>\n");
+    }
+    else
+    {
+       echo("<tr bgcolor=\"$bg2\">\n");
+       echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\"><input type=\"checkbox\" name=\"opcao_$i\"></td>\n");
+       echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$ref_disciplina</td>\n");
+       echo ("<td width=\"80%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$desc_disciplina</td>\n");
+       echo("  </tr>\n");
+       echo ("<input type=\"hidden\" name=\"ref_disciplina[]\" value=\"$ref_disciplina\"></td>\n");
+
+    }
+    
+    $passou = 'true';
+    $i++;
+
+  }
+  
+  echo ("<input type=\"hidden\" name=\"ref_pessoa\" value=\"$ref_pessoa\">\n");
+  echo ("<input type=\"hidden\" name=\"ref_contrato\" value=\"$ref_contrato\">\n");
+  echo ("<input type=\"hidden\" name=\"ref_curso\" value=\"$ref_curso\">\n");
+  echo ("<input type=\"hidden\" name=\"ref_campus\" value=\"$ref_campus\">\n");
+  echo ("<input type=\"hidden\" name=\"ref_periodo\" value=\"$ref_periodo\">\n");
+
+  if ($passou == 'false')
+  {
+    echo ("<tr align=\"center\">\n");
+    echo ("<td colspan=\"3\">");
+    echo ("<hr>");
+    echo ("</tr>\n");
+
+    echo ("<tr align=\"center\">\n");
+    echo ("<td colspan=\"3\">");
+    echo ("<Font face=\"Verdana\" size=\"3\" color=\"red\"><b>Nenhuma disciplina de proficiência cadastrada na grade curricular deste curso<br>ou este aluno já fez todas as proficiências deste curso.</b></font>");
+    echo ("</tr>\n");
+  }
+
+  echo ("<tr align=\"center\">\n");
+  echo ("<td colspan=\"3\">");
+  echo ("<hr>");
+  echo ("</tr>\n");
+
+
+  echo ("<tr align=\"center\">\n");
+  echo ("<td colspan=\"3\">");
+  echo ("<input type=\"submit\" name=\"Submit\" value=\"Gravar\">\n");
+  echo ("<input type=\"button\" name=\"Submit2\" value=\"Sair\" onclick=\"javascript:history.go(-1)\">");
+  echo ("</tr>\n");
+
+  echo("</table></center>");
+
+  $query->Close();
+
+  $conn->Close();
+
+</script>
+</form>
+</body>
+</html>

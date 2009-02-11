@@ -1,0 +1,144 @@
+<? require("../../../lib/common.php"); ?>
+
+<html>
+<head>
+<script language="JavaScript">
+function buscaPessoa()
+{
+  var wnd = window.open("post/lista.php3",'buscaPessoa','toolbar=no,width=550,height=350,scrollbars=yes');
+
+  wnd.setPessoa = setPessoa;
+}
+
+function setPessoa(id,nome)
+{
+  document.myform.cobr_ref_folha_titular.value = id;
+  document.myform.folha_titular.value = nome;
+}
+</script>
+</head>
+<body bgcolor="#FFFFFF">
+<table border="0" width="500" align="center" cellspacing="2" cellpadding="0">
+  <tr bgcolor="#FFFFFF">
+    <td width="27%">
+      <div align="center"><img src="images/logo_ies.gif" width="104" height="94"></div>
+    </td>
+    <td width="73%">
+      <div align="center"><font size="4" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#000099">Cobran&ccedil;a 
+        Pessoa </font></b></font></div>
+    </td>
+  </tr>
+</table>
+<br>
+<form method="post" action="../generico/post/confirm_cobranca_inclui.phtml" name="myform">
+  <table cols=2 width="440" align="center">
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">D&eacute;bito 
+        em Folha</font></td>
+      <td width="247"> 
+        <input type="checkbox" name="cobr_folha_debito" value="yes" checked>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Titular 
+        da Folha (ref)</font></td>
+      <td width="247"> 
+        <input name="cobr_ref_folha_titular" type=text size="10">
+        <input type="text" name="folha_titular" size="40">
+        <font size="2" face="Verdana, Arial, Helvetica, sans-serif"><b><a href="javascript:buscaPessoa()"><img src="images/find.gif" width="16" height="16" border="0"></a></b></font> 
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Bairro 
+        de Cobran&ccedil;a</font></td>
+      <td width="247"> 
+        <input name="cobr_bairro" type=text size="50">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Cidade 
+        de Cobran&ccedil;a</font></td>
+      <td width="247"> 
+        <input name="cobr_cidade" type=text size="50">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Rua 
+        de Cobran&ccedil;a</font></td>
+      <td width="247"> 
+        <input name="cobr_rua" type=text size="50">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">CEP 
+        de Cobran&ccedil;a</font></td>
+      <td width="247"> 
+        <input name="cobr_cep" type=text size="10" maxlength="10">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Complemento 
+        da Cobran&ccedil;a</font></td>
+      <td width="247"> 
+        <input name="cobr_complemento" type=text size="50">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Banco 
+        de Cobran&ccedil;a</font></td>
+      <td width="247"> 
+        <input name="cobr_banco" type=text size="10">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Ag&ecirc;ncia 
+        da Cobran&ccedil;a</font></td>
+      <td width="247"> 
+        <input name="cobr_agencia" type=text size="10">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Conta 
+        da Cobran&ccedil;a</font></td>
+      <td width="247"> 
+        <input name="cobr_conta" type=text size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Identificador 
+        da cobran&ccedil;a</font></td>
+      <td width="247"> 
+        <input name="cobr_identificador" type=text size="25">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="181"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Dt 
+        autoriza&ccedil;&atilde;o cobran&ccedil;a</font></td>
+      <td width="247"> <font face="Verdana, Arial, Helvetica, sans-serif" size="2">dia</font> 
+        <input type="text" name="cobr_dia" size="2" maxlength="2">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="2">m&ecirc;s</font> 
+        <input type="text" name="cobr_mes" size="2" maxlength="2">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="2">ano </font> 
+        <input type="text" name="cobr_ano" size="4" maxlength="4">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td width="181">&nbsp; </td>
+      <td width="247"> 
+        <input type="submit" name="Submit" value="Incluir">
+        <input type="reset" name="Submit2" value="Corrigir">
+      </td>
+    </tr>
+  </table>
+</form>
+<form method="post" action="" name="formVar">
+  <input type="hidden" name="op_pessoa" value="5">
+</form>
+<p>&nbsp;</p>
+</body>
+</html>

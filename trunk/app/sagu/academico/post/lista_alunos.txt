@@ -1,0 +1,2 @@
+Consulta de alunos Formandos 0702 
+Cont;Código da Pessoa;Nome da Pessoa;Fone Particular;Fone Profissional;Fone Celular;Rua;Cidade;UF

@@ -1,0 +1,237 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../generico/busca_nome.php3"); ?>
+<?
+    $aluno_nome = Busca_Nome($ref_pessoa);
+?>
+<html>
+<head>
+
+<script language="PHP">
+
+CheckFormParameters(array("ref_pessoa",
+                          "ref_contrato",
+                          "ref_curso",
+                          "ref_campus",
+                          "ref_periodo",
+                          "tipo_curso",
+                          "mes",
+                          "DataImpressao"));
+</script> 
+
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="/relat/atestado_auxilio_transporte.php3" name="myform">
+  <table cols=2 width="90%" align="center">
+    <tr> 
+      <td bgcolor="#000099" colspan="2" height="28" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Atestado Auxílio Transporte</b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Aluno</font></td>
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td> 
+              <input type="hidden" name="ref_pessoa" size="10" value="<?echo($ref_pessoa);?>">
+              <?echo($ref_pessoa)?>
+            </td>
+            <td> 
+              <input type="hidden" name="aluno_nome" size="40" value="<?echo($aluno_nome);?>">
+              <?echo($aluno_nome)?>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Contrato</font></td>
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="20%"> 
+              <input name="ref_contrato" type="hidden" size="10" maxlength="10" value="<?echo($ref_contrato);?>">
+              <?echo($ref_contrato);?>
+            </td>
+            <td width="15%" bgcolor="#CCCCFF"> <font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">&nbsp;Curso</font> 
+            </td>
+            <td width="15%"><font face="Verdana, Arial, Helvetica, sans-serif"> 
+              <input type="hidden" name="ref_curso" size="10" maxlength="10" value="<?echo($ref_curso);?>">
+              <?echo($ref_curso);?>
+              </font> 
+            </td>
+            <td width="15%" bgcolor="#CCCCFF"> <font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">&nbsp;Campus</font> 
+            </td>
+            <td width="15%"><font face="Verdana, Arial, Helvetica, sans-serif"> 
+              <input type="hidden" name="ref_campus" size="5" maxlength="5" value="<?echo($ref_campus);?>"></font> 
+              <?echo($ref_campus);?>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Per&iacute;odo</font></td>
+      <td> <font color="#000000">
+        <input type="hidden" name="ref_periodo" size="10" value="<?echo($ref_periodo);?>">
+        <?echo($ref_periodo);?>
+        </font></td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Tipo de Atestado</font></td>
+      <td> <font color="#000000">
+        <input type="hidden" name="tipo_curso" value="<?echo($tipo_curso);?>">
+        <?
+            if ($tipo_curso == 1)
+                echo("Cursos de Graduação");
+            elseif ($tipo_curso == 2)
+                echo("Cursos Técnicos");
+        ?>
+        </td>
+    </tr>
+    
+    <tr> 
+      <td colspan="2"> 
+         <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#000099">Carimbos:</font></b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Carimbo</font></td>
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="20%"> 
+              <input name="carimb1" type="hidden" size="20" value="<?echo($carimb1);?>">
+              <?echo($carimb1);?>
+            </td>
+            <td width="15%" bgcolor="#CCCCFF"> <font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">&nbsp;Função</font> 
+            </td>
+            <td width="15%"><font face="Verdana, Arial, Helvetica, sans-serif"> 
+              <input type="hidden" name="func1" size="20" value="<?echo($func1);?>">
+              <?echo($func1);?>
+              </font> 
+            </td>
+            <td width="15%" bgcolor="#CCCCFF"> <font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">&nbsp;Setor</font> 
+            </td>
+            <td width="15%"><font face="Verdana, Arial, Helvetica, sans-serif"> 
+              <input type="hidden" name="setor1" size="20" value="<?echo($setor1);?>"></font> 
+              <?echo($setor1);?>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Mês de Referência</font></td>
+      <td colspan="2"> <font color="#000000">
+          <input type="hidden" name="mes" value="<?echo($mes);?>" size="10"></font>
+          <?echo($mes);?>
+        </font></td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Data Emissão do Atestado</font></td>
+      <td> <font color="#000000">
+          <input type="hidden" name="DataImpressao" value="<? echo date("d/m/Y") ?>" size="10"></font>
+          <? echo date("d/m/Y") ?>
+        </font></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+         <hr size="1">
+      </td>
+    </tr>
+   </table>
+   <table width="90%" align="center">
+    <script language="PHP">
+    
+    $conn = new Connection;
+    $conn->Open();
+    
+    $sql = " select ref_disciplina, " .
+           "        descricao_disciplina(ref_disciplina) " .
+           " from matricula " .
+           " where ref_contrato = '$ref_contrato' and " .
+           "       ref_pessoa = '$ref_pessoa' and " .
+           "       ref_periodo = '$ref_periodo' and " .
+           "       ref_curso = '$ref_curso' and " .
+           "       get_curriculo_mco('$ref_curso','$ref_campus', ref_disciplina) <> 'A' and " .
+           "       dt_cancelamento is null;";
+    
+    $query2 = $conn->CreateQuery($sql);
+    
+    $i = 1;
+     
+    // cores fundo
+    $bg0 = "#000000";
+    $bg1 = "#EEEEFF";
+    $bg2 = "#FFFFEE";
+
+    // cores fonte
+    $fg0 = "#FFFFFF";
+    $fg1 = "#000099";
+    $fg2 = "#000099";
+    
+    while ( $query2->MoveNext() )
+    {
+       list ($ref_disciplina,
+             $nome_disciplina) = $query2->GetRowValues();
+     
+       if ($i == 1)
+       {
+         echo ("<tr bgcolor=\"#000000\">\n");
+         echo ("<td bgcolor=\"#000099\" colspan=\"2\"><font size=\"2\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><center><b>Disciplinas Matriculados em $ref_periodo</b></center></font></td>");
+         echo ("</tr>\n");
+       
+         echo ("<tr bgcolor=\"#000000\">\n");
+         echo ("<td width=\"80%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Disciplina</b></font></td>");
+         echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Presenças em $mes</b></font></td>");
+         echo ("  </tr>"); 
+       }
+ 
+       if ( $i % 2 )
+       {
+         echo ("<tr bgcolor=\"$bg1\">\n");
+         echo ("<td width=\"80%\"><Font face=\"Verdana\" size=\"1\" color=\"$fg1\">$ref_disciplina - $nome_disciplina</td>\n");
+         echo ("<input type=\"hidden\" name=\"nome_disc_$i\" size=\"50\" value=\"$ref_disciplina - $nome_disciplina\">\n");
+         echo ("<td width=\"20%\" align=\"right\"><Font face=\"Verdana\" size=\"1\" color=\"$fg1\">\n");
+         echo ("<input type=\"text\" name=\"presenca_$i\" size=\"5\"></td>\n");
+         echo ("  </tr>");
+       }
+       else
+       {
+         echo ("<tr bgcolor=\"$bg2\">\n");
+         echo ("<td width=\"80%\"><Font face=\"Verdana\" size=\"1\" color=\"$fg2\">$ref_disciplina - $nome_disciplina</td>\n");
+         echo ("<input type=\"hidden\" name=\"nome_disc_$i\" size=\"50\" value=\"$ref_disciplina - $nome_disciplina\">\n");
+         echo ("<td width=\"20%\" align=\"right\"><Font face=\"Verdana\" size=\"1\" color=\"$fg2\">\n");
+         echo ("<input type=\"text\" name=\"presenca_$i\" size=\"5\"></td>\n");
+         echo ("  </tr>\n");
+       }
+       $i++;
+    }
+    
+    $query2->Close();
+    
+    </script>
+
+    <tr>
+      <td colspan="2">
+         <hr size="1">
+      </td>
+    </tr>
+
+    <tr> 
+      <td colspan="2"> 
+        <div align="center">
+          <input type="hidden" name="num_disc" size="20" value="<?echo($i);?>"></font> 
+          <input type="submit" name="Submit"  value=" Imprimir ">
+          <input type="button" name="Submit2" value="  Voltar  " onclick="javascript:history.go(-1)">
+        </div>
+      </td>
+    </tr>
+  </table>
+  </form>
+</body>
+</html>

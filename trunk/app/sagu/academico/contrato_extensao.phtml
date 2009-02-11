@@ -1,0 +1,305 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../../../lib/properties.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+<HTML>
+<head>
+<title>Contrato Prestação de Serviços Educacionais - SEDE</title>
+<script language="PHP">
+
+$op_result = SQLArray($sql_periodos_academico);
+
+$sql   = "select id||' / '||abreviatura as d,id from cursos order by d";
+
+$op_result1 = SQLArray($sql);
+
+$sql   = "select id||' / '||nome_campus as d,id from campus order by d";
+
+$op_result2 = SQLArray($sql);
+
+$sql   = "select id||' / '||descricao as d, id from periodos order by d";
+
+$op_result4 = SQLArray($sql);
+
+</script>
+
+<script language="JavaScript">
+
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp()
+{
+  ChangeOption(document.myform.op,document.myform.last_periodo);
+}
+
+function ChangeOp1()
+{
+  ChangeOption(document.myform.op1,document.myform.ref_curso);
+}
+
+function ChangeOp2()
+{
+  ChangeOption(document.myform.op2,document.myform.ref_campus);
+}
+
+function ChangeOp4()
+{
+  ChangeOption(document.myform.op4,document.myform.ref_periodo);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+
+  field.focus();
+
+  return true;
+}
+
+function buscaPessoa()
+
+{
+  var url = '../generico/post/lista_pessoas.php3' +
+            '?pnome=' + escape(document.myform.pnome.value);
+
+  var wnd = window.open(url,'busca','toolbar=no,width=550,height=350,scrollbars=yes');
+}
+
+function setResult(arg1,arg2)
+
+{
+  document.myform.ref_pessoa.value = arg1;
+  document.myform.pnome.value = arg2;
+}
+
+
+</script>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form name="myform" action="/relat/contrato_prest_servicos_ext.php3">
+<center>
+<table width="90%" border="0" cellspacing="2" cellpadding="0">
+    <tr>
+      <td bgcolor="#000099" colspan="2" height="28" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Contrato Prestação de Serviços Educacionais - Extensão</b></font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccccff"><FONT face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Período:</FONT></td>
+      <td><input size="8" type="text" name="last_periodo" onChange="ChangeCode('last_periodo','op')">              
+              <script language="PHP">
+                 ComboArray("op",$op_result,$last_periodo,"ChangeOp()");
+              </script>
+      </td>
+    </tr>
+    <tr>
+      <td width="81" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Curso:</font></td>
+      <td width="296">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td> 
+              <input type="text" name="ref_curso" size="8" onChange="ChangeCode('ref_curso','op1')" value="">
+            </td>
+            <td>&nbsp;</td>
+            <td width="100%"><font color="#000000"> 
+              <script language="PHP">
+	           	ComboArray("op1",$op_result1,$ref_curso,"ChangeOp1()");
+              </script>
+              </font>
+            </td>
+          </tr>
+      </table>
+      </td>
+    </tr>
+    <tr>
+      <td width="81" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Campus:</font></td>
+      <td width="296">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+              <input type="text" name="ref_campus" size="8" onChange="ChangeCode('ref_campus','op2')" value="">
+            </td>
+            <td>&nbsp;</td>
+            <td width="100%"><font color="#000000">
+              <script language="PHP">
+                ComboArray("op2",$op_result2,$ref_campus,"ChangeOp2()");
+              </script>
+              </font></td>
+          </tr>
+      </table>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccccff"><FONT face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Valor:</FONT></td>
+      <td><input size="12" type="text" name="valor"></td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccccff"><FONT face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Parcelas:</FONT></td>
+      <td><input size="12" type="text" name="num_parcelas"></td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccccff"><FONT face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Duração:</FONT></td>
+      <td> <SELECT name="mes_in">
+      <OPTION value="" selected>--- Selecione ---</OPTION>
+      <OPTION value="Janeiro">Janeiro</OPTION>
+      <OPTION value="Fevereiro">Fevereiro</OPTION>
+      <OPTION value="Março">Março</OPTION>
+      <OPTION value="Abril">Abril</OPTION>
+      <OPTION value="Maio">Maio</OPTION>
+      <OPTION value="Junho">Junho</OPTION>
+      <OPTION value="Julho">Julho</OPTION>
+      <OPTION value="Agosto">Agosto</OPTION>
+      <OPTION value="Setembro">Setembro</OPTION>
+      <OPTION value="Outubro">Outubro</OPTION>
+      <OPTION value="Novembro">Novembro</OPTION>
+      <OPTION value="Dezembro">Dezembro</OPTION>
+      </SELECT> a <SELECT name="mes_fin">
+      <OPTION value="" selected>--- Selecione ---</OPTION>
+      <OPTION value="Janeiro">Janeiro</OPTION>
+      <OPTION value="Fevereiro">Fevereiro</OPTION>
+      <OPTION value="Março">Março</OPTION>
+      <OPTION value="Abril">Abril</OPTION>
+      <OPTION value="Maio">Maio</OPTION>
+      <OPTION value="Junho">Junho</OPTION>
+      <OPTION value="Julho">Julho</OPTION>
+      <OPTION value="Agosto">Agosto</OPTION>
+      <OPTION value="Setembro">Setembro</OPTION>
+      <OPTION value="Outubro">Outubro</OPTION>
+      <OPTION value="Novembro">Novembro</OPTION>
+      <OPTION value="Dezembro">Dezembro</OPTION>
+      </SELECT> de 
+      <?
+        $array = null;
+        for ($x=0; $x<5; $x++)
+        {
+            $array[] = date("Y") + $x;
+        }
+        ksort($array);
+      ?>
+      <SELECT name="ano">
+      <?
+        for ($x=0; $x<5; $x++)
+        {
+            if ($x == 0)
+            {
+                echo("<OPTION value=\"$array[$x]\" selected>$array[$x]</OPTION>\n");
+            }
+            else
+            {
+                echo("<OPTION value=\"$array[$x]\">$array[$x]</OPTION>\n");
+            }
+        }
+      ?>
+      </SELECT>.
+      
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccccff"><FONT face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Vencimento da 1&ordf; parcela:</FONT></td>
+      <td> <SELECT name="mes_vcto">
+      <OPTION value="" selected>--- Selecione ---</OPTION>
+      <OPTION value="Janeiro">Janeiro</OPTION>
+      <OPTION value="Fevereiro">Fevereiro</OPTION>
+      <OPTION value="Março">Março</OPTION>
+      <OPTION value="Abril">Abril</OPTION>
+      <OPTION value="Maio">Maio</OPTION>
+      <OPTION value="Junho">Junho</OPTION>
+      <OPTION value="Julho">Julho</OPTION>
+      <OPTION value="Agosto">Agosto</OPTION>
+      <OPTION value="Setembro">Setembro</OPTION>
+      <OPTION value="Outubro">Outubro</OPTION>
+      <OPTION value="Novembro">Novembro</OPTION>
+      <OPTION value="Dezembro">Dezembro</OPTION>
+      </SELECT> de 
+      <SELECT name="ano_vcto">
+      <?
+        for ($x=0; $x<5; $x++)
+        {
+            if ($x == 0)
+            {
+                echo("<OPTION value=\"$array[$x]\" selected>$array[$x]</OPTION>\n");
+            }
+            else
+            {
+                echo("<OPTION value=\"$array[$x]\">$array[$x]</OPTION>\n");
+            }
+        }
+      ?>
+      </SELECT></td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccccff"><FONT face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Data Limite Cancelamento:</FONT></td>
+      <td> <input size="3" type="text" name="dia_lim"> / <input size="3" type="text" name="mes_lim"> / <input size="6" type="text" name="ano_lim"></td>
+    </tr>
+    <tr>
+      <td width="81" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Rematrícula:</font></td>
+      <td width="296"><font color="#000099" size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <input type="checkbox" name="rematricula" value="1">
+	&nbsp;&nbsp;Data Vencimento:</FONT>
+        <input size="2" type="text" name="dia_ven" maxlength="2"> / <input size="2" type="text" name="mes_ven" maxlength="2"> / <input size="4" type="text" name="ano_ven" maxlength="4">
+      </td>
+    </tr>
+    <tr>
+      <td width="81" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Curso de Língua:</font></td>
+      <td width="296"><font color="#000099" size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        Sim: <input type="radio" name="lingua" value="1">
+        Não: <input type="radio" name="lingua" value="0" checked>
+      </td>
+    </tr>
+    <tr>
+      <td width="81" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Aluno:</font></td>
+      <td width="296">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+               <input type="text" name="ref_pessoa" size="8">
+               <input type="text" name="pnome" size="40">
+               <input type="button" value="..." onClick="buscaPessoa()" name="button">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+       <td colspan="2"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#AA0000"> PS.: O campo Aluno não é obrigatório mas serve para imprimir o contrato de um único aluno.</font>
+       </td>
+    </tr>
+
+    <tr>
+          <td colspan="2"><hr></td>
+    </tr>
+    <TR>
+      <TD colspan="2" align="center">
+        <INPUT type="submit" name="Submit" value=" Imprimir ">
+        <INPUT type="button" name="voltar" value="  Voltar  " onclick="location='contratos_prest_serv.phtml'">
+      </TD>
+    </TR>
+</table>
+</center>
+</form>
+</body>
+
+</HTML>
+
+

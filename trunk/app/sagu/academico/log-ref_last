@@ -1,0 +1,113 @@
+alterar_contrato.phtml:  ChangeOption(document.myform.op,document.myform.ref_last_periodo);
+alterar_contrato.phtml:       "    ref_last_periodo," .
+alterar_contrato.phtml:       $ref_last_periodo,
+alterar_contrato.phtml:        echo("<a href=\"lista_proficiencias.phtml?ref_pessoa=$ref_pessoa&ref_contrato=$id&ref_curso=$ref_curso&ref_campus=$ref_campus&ref_periodo=$ref_last_periodo\">Insere Proficiência</a>");
+alterar_contrato.phtml:        <input type="text" name="ref_last_periodo" size="10" onChange="ChangeCode('ref_last_periodo','op')" value="<?echo($ref_last_periodo);?>">
+alterar_contrato.phtml:          SQL_Combo("op",$sql_periodos_academico, $ref_last_periodo,"ChangeOp()");
+atestado_auxilio_transporte.phtml:    	    "        A.ref_last_periodo as Periodo " +
+atestado_auxilio_transporte.phtml:function setContrato(id,ref_curso,descricao,ref_campus,dt_desativacao,ref_last_periodo)
+atestado_auxilio_transporte.phtml:  document.myform.ref_periodo.value = ref_last_periodo;
+atestado_coren.phtml:    	    "        A.ref_last_periodo as Periodo " +
+atestado_coren.phtml:function setContrato(id,ref_curso,descricao,ref_campus,dt_desativacao,ref_last_periodo)
+atestado_coren.phtml:  document.myform.ref_periodo.value = ref_last_periodo;
+atestado_curso_matricula.phtml:    	    "        A.ref_last_periodo as Periodo " +
+atestado_curso_matricula.phtml:function setContrato(id,ref_curso,descricao,ref_campus,dt_desativacao,ref_last_periodo)
+atestado_curso_matricula.phtml:  document.myform.ref_periodo.value = ref_last_periodo;
+atestado_curso.phtml:    	    "        A.ref_last_periodo as Periodo " +
+atestado_curso.phtml:function setContrato(id,ref_curso,descricao,ref_campus,dt_desativacao,ref_last_periodo)
+atestado_curso.phtml:  document.myform.ref_periodo.value = ref_last_periodo;
+atestado_matricula_geral.phtml:    	    "        A.ref_last_periodo as Periodo " +
+atestado_matricula_geral.phtml:function setContrato(id,ref_curso,descricao,ref_campus,dt_desativacao,ref_last_periodo)
+atestado_matricula_geral.phtml:  document.myform.ref_periodo.value = ref_last_periodo;
+atestado_matricula_periodo.phtml:  ChangeOption(document.myform.op4,document.myform.ref_last_periodo);
+atestado_matricula_periodo.phtml:    	    "        A.ref_last_periodo as Periodo " +
+atestado_matricula_periodo.phtml:function setContrato(id,ref_curso,descricao,ref_campus,dt_desativacao,ref_last_periodo)
+atestado_matricula_periodo.phtml:  document.myform.ref_periodo.value = ref_last_periodo;
+atestado_matricula_periodo.phtml:        <input type="text" name="ref_last_periodo" size="10" onChange="ChangeCode('ref_last_periodo','op4')" value="<?echo($ref_last_periodo);?>">
+atestado_matricula_periodo.phtml:          ComboArray("op4",$op_opcoes3,$ref_last_periodo,"ChangeOp4()")
+atestado_sub_judice.phtml:    	    "        A.ref_last_periodo as Periodo " +
+atestado_sub_judice.phtml:function setContrato(id,ref_curso,descricao,ref_campus,dt_desativacao,ref_last_periodo)
+atestado_sub_judice.phtml:  document.myform.ref_periodo.value = ref_last_periodo;
+autorizacao_matricula.phtml:    	    "        A.ref_last_periodo as Periodo " +
+autorizacao_matricula.phtml:function setContrato(id,ref_curso,descricao,ref_campus,dt_desativacao,ref_last_periodo)
+autorizacao_matricula.phtml://document.myform.ref_periodo.value = ref_last_periodo;
+calouros_matriculados_curso.php3:    	    "       B.ref_last_periodo = '$id_periodo' and " .
+calouros_matriculados_curso.php3:    	    "       B.ref_last_periodo = '$id_periodo' and " .
+calouros_matriculados_curso.php3:    	    "       B.ref_last_periodo = '$id_periodo' and " .
+cons_numalu_credito_curso.php3:          $sql .= " ref_last_periodo='$ref_periodo' and " .
+cons_numalu_credito_curso.php3:          "          ref_last_periodo" ;
+cons_numalu_curso.php3:          $sql .= " ref_last_periodo='$ref_periodo' and " .
+cons_numalu_curso_vest.php3:          " where ref_last_periodo='$ref_periodo' and " .
+cons_numalu_selec_cidade_curso.php3:           " where A.ref_periodo = B.ref_last_periodo and " .
+declaracao_coren.phtml:    	    "        A.ref_last_periodo as Periodo " +
+declaracao_coren.phtml:function setContrato(id,ref_curso,descricao,ref_campus,dt_desativacao,ref_last_periodo)
+declaracao_coren.phtml:  document.myform.ref_periodo.value = ref_last_periodo;
+desbloqueia_disciplina.phtml:    	    "        A.ref_last_periodo as Periodo " +
+desbloqueia_disciplina.phtml:function setContrato(id,ref_curso,descricao,ref_campus,dt_desativacao,ref_last_periodo)
+efetuar_matricula_tecnico.php3:       "     ref_last_periodo='$periodo_id' " .
+lista_alunos_creditos.php3:                  " A.ref_last_periodo='$ref_periodo' and " .
+lista_alunos_curso_campus.php3:            "       A.ref_periodo = B.ref_last_periodo and " .
+lista_alunos_curso_campus.php3:            "       B.ref_last_periodo='$ref_periodo' and " .
+lista_alunos_curso_dia.php3:          " where A.ref_last_periodo='$ref_periodo' and " .
+lista_alunos_curso.php3:                $sql .= " A.ref_last_periodo='$ref_periodo' and " .
+lista_alunos_faixa_etariaT.phtml:         $sql .= " ref_last_periodo='$ref_periodo' and " .
+lista_alunos_periodo_dia.php3:          " where A.ref_last_periodo='$ref_periodo' and " .
+lista_calouros_matriculados.php3:           "       B.ref_last_periodo = '$ref_periodo' and " .
+lista_cancelamentos.phtml:          " where A.ref_pessoa = B.ref_pessoa and B.ref_last_periodo = '2001A' and" .
+listagem_alunos_curso_bolsa.php3:          "       B.ref_last_periodo='$periodo_id' " .
+Listagem_de_alunos.php3:          " where ref_last_periodo='$ref_periodo' and   " .
+listagem_de_trancamentos_periodo.php3:          "        ref_last_periodo " .
+listagem_de_trancamentos_periodo.php3:          "       ref_last_periodo = '$ref_periodo'";
+listagem_de_trancamentos_periodo.php3:            $ref_last_periodo) = $query->GetRowValues();
+listagem_de_trancamentos_periodo.php3:     echo("   <td height=\"20\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$ref_last_periodo</td>");
+listagem_faixa_etaria.php3:          " where ref_last_periodo='$id_periodo' and" .
+listagem_num_alunos_por_num_creditos_e_curso.php3:          " where ref_last_periodo = '$periodo_id' and " .
+lista_transferencias.php3:	  "        ref_last_periodo " .
+lista_transferencias.php3:            $ref_last_periodo) = $query->GetRowValues();
+lista_transferencias.php3:     echo ("<td width=\"20%\" align=\"right\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">&nbsp;$ref_last_periodo</td>");
+livro_matricula.php3:          "       ref_last_periodo = '$periodo_id' and " .
+matricula_atrasada.php3:$sql = " select ref_last_periodo, " .
+matricula_atrasada.php3:       " where ref_last_periodo = '2004X' and " .
+matricula_inserir_bixo.php3:       "     ref_last_periodo='$periodo_id' " .
+matricula_inserir.php3:       "     ref_last_periodo='$periodo_id' " .
+matricula_salvar_internet.php3:       "     ref_last_periodo='$ref_periodo', " .
+novo_contrato.phtml:  ChangeOption(document.myform.op6,document.myform.ref_last_periodo);
+novo_contrato.phtml:        <input name="ref_last_periodo" type="text" size="5" onChange="ChangeCode('ref_last_periodo','op6')">
+num_alunos_curso_dia.php3:          " where A.ref_last_periodo='$id_periodo' and " .
+num_alunos_curso_dia.php3:             " where A.ref_last_periodo = '$id_periodo' and " .
+num_alunos_curso_dia.php3:             " where A.ref_last_periodo = '$id_periodo' and " .
+num_alunos_periodo_dia.php3:          " where A.ref_last_periodo='$id_periodo' and " .
+num_alunos_periodo_dia.php3:             " where A.ref_last_periodo = '$id_periodo' and " .
+num_alunos_periodo_dia.php3:             " where A.ref_last_periodo = '$id_periodo' and " .
+possibilidades_matricula.php3:	       " where ref_last_periodo = '$periodo_id' and  ".
+possibilidades_matricula.php3-original:	       " where ref_last_periodo = '$periodo_id' and  ".
+post/canc_reat_contrato.php3:  $sql = "update contratos set dt_desativacao=null, ref_motivo_desativacao=null, ref_last_periodo = '$ref_periodo' where id='$ref_contrato'";
+post/lista_deficientes.php3:           "    is_matriculado(b.ref_last_periodo,a.id)" .
+post/lista_motivo_ingresso.php3:           "       A.ref_last_periodo = B.ref_periodo and " .
+post/lista_motivo_ingresso.php3:           "       A.ref_last_periodo = '$ref_periodo' and " .
+post/aptos_cursar_curriculo.php3:          "       A.ref_periodo = B.ref_last_periodo and " .
+post/aptos_cursar_curriculo.php3:	      "	      B.ref_last_periodo = '$periodo_id' and " .
+post/aptos_cursar_curriculo.php3:	      "	      C.ref_last_periodo = '$periodo_id' and " .
+post/lista_aptos_cursar_curriculo.php3:          "       B.ref_last_periodo = '$ref_periodo' and " .
+post/trancamento_automatico.php3:CheckFormParameters(array('ref_last_periodo','ref_motivo_desativacao','usuario','senha'));
+post/trancamento_automatico.php3:         " WHERE ref_last_periodo = '$ref_last_periodo' and " .
+post/alterar_contrato.php3:                          "ref_last_periodo",
+post/alterar_contrato.php3:       $sql = $sql . " ref_last_periodo = '$ref_last_periodo'," .
+post/novo_contrato.php3:                            "ref_last_periodo",
+post/novo_contrato.php3:         "       ref_last_periodo," .
+post/novo_contrato.php3:         if ($ref_last_periodo == '') 
+post/novo_contrato.php3:         { $sql=$sql . " null," ;} else { $sql=$sql . "'$ref_last_periodo'," ; }
+post/lista_alunos_disc_cursadas.phtml:             $sql .= " and B.ref_last_periodo = '$ref_periodo' " .
+post/consulta_cursadas_curriculo.php3:          $sql .= " and B.ref_last_periodo = '$periodo_id' " .
+post/lista_estatisticas.php3:	  " WHERE ref_last_periodo = '$periodo_id' and " .
+post/alunos_creditos.php3:       "       ref_last_periodo = '$ref_periodo' and " .
+post/consulta_reprovados2.php3:           "       B.ref_last_periodo in ($periodos) and " .
+post/consulta_reprovados2.php3:                "       B.ref_last_periodo in ($periodos) and " .
+sql-log:LOG:  statement:  select id,         ref_pessoa,          ref_curso,          ref_campus,         get_periodo_anterior('1')  from contratos   where (ref_last_periodo = '1' or         ref_last_periodo = get_periodo_anterior('1') ) and         ref_curso = '2' and         ref_campus = '1' and        dt_desativacao is null and        ref_pessoa = '795'
+trancamento_automatico.phtml:function Trancamento_Automatico(ref_last_periodo, usuario, senha)
+trancamento_automatico.phtml:            "?ref_last_periodo=" + escape(ref_last_periodo) + 
+trancamento_automatico.phtml:  $sql = " select ref_last_periodo, " .
+trancamento_automatico.phtml:         " group by ref_last_periodo;";
+trancamento_automatico.phtml:    list ($ref_last_periodo,
+trancamento_automatico.phtml:        <td width="30%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo($ref_last_periodo)?></font></td>
+trancamento_automatico.phtml:            <input type="button" name="Submit" value="Executar" onClick="javascript:Trancamento_Automatico('<? echo($ref_last_periodo); ?>','<? echo($usuario); ?>','<? echo($senha); ?>')">

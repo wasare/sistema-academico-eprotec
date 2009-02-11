@@ -1,0 +1,22 @@
+DADOS DE MIGRAÇÃO DE INTERFACE E ATUALIZAÇÃO DO CÓDIGO DO SISTEMA ACADÊMICO
+===========================================================================
+Analista: Santiago Silva Pereira
+Data início: 18/03/2008
+
+Plataforma Atual 
+----------------
+Banco: PostgreSQL v.
+Base: sagu
+Linguagem: PHP v.3
+Sistema host: GNU/Linux Slackware v.10.2
+
+
+Arquivos Migrados
+-----------------
+/post/login.php3 - /post/login.php
+/post/logout.php3 - /pot/logout.php
+
+/lib/common.php3 - /lib/common.php //Arquivo com a classe de conexão com o banco de dados
+/lib/config.php3 - /lib/config.php //Arquivo com as configurações do Sistema
+/lib/properties.php3 - /lib/properties.php
+

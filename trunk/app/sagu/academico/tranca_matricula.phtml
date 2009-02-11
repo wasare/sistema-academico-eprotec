@@ -1,0 +1,258 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+<? require("../generico/busca_nome.php3"); ?>
+<?
+  $op_opcoes1 = SQLArray("select cod_bolsa || '  ' || descricao,id from aux_bolsas");
+  $op_opcoes2 = SQLArray("$sql_periodos_academico");
+  $op_opcoes3 = SQLArray("select id || '  ' || substr(descricao,1,30), id from  motivos  order by id");
+  
+?>
+<html>
+<head>
+<script language="JavaScript">
+
+function seta_campo(ref_pessoa)
+{
+url = 'tranca_matricula.phtml' +
+      '?ref_pessoa=' + escape(document.myform.ref_pessoa.value);
+
+self.location=(url);
+}
+
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp1()
+{
+  ChangeOption(document.myform.op1,document.myform.ref_tipo_bolsa);
+}
+
+function ChangeOp2()
+{
+  ChangeOption(document.myform.op2,document.myform.ref_periodo);
+}
+
+function ChangeOp3()
+{
+  ChangeOption(document.myform.op3,document.myform.ref_motivo);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+
+  field.focus();
+
+  return true;
+}
+</script>
+<script language="JavaScript">
+function Confirma_Exclui(arg1)
+{
+  url = 'post/delete_previsao.php3?id=' + arg1;
+  if (confirm("Você tem certeza que deseja excluir a previsão: "+arg1))
+    location=(url)
+  else
+    alert("Exclusão Cancelada.");
+}
+
+</script>
+
+<script language="JavaScript">
+function BuscaPessoa()
+{
+  var url = "/generico/post/lista_pessoas.php3" +
+            "?pnome=" + escape(document.myform.aluno_nome.value);
+
+  var wnd = window.open(url,'busca','toolbar=no,width=530,height=350,scrollbars=yes');
+}
+
+function setResult(id,nome)
+{
+  document.myform.ref_pessoa.value = id;
+  document.myform.aluno_nome.value = nome;
+}
+</script>
+
+<script language="JavaScript">
+function buscaContrato()
+{
+  var pessoa = document.myform.ref_pessoa.value;
+
+  if ( pessoa == '' )
+  {
+    alert("Código da pessoa inválido ou não especificado!");
+    return;
+  }
+
+  var title = 'Seleção Contrato';
+
+  var sql = " select A.id as id, " + 
+            "        A.ref_curso as Curso, " +
+            "        A.ref_campus as campus, " +
+            "        B.descricao as Descricao" +
+            " from contratos A, cursos B" +
+            " where A.ref_pessoa = " + pessoa + " and " +
+            "       A.dt_desativacao is null and" +
+            "       A.ref_curso = B.id";
+
+  var url = "../generico/post/lista_sql.php3?title=" + escape(title) + "&sql=" + escape(sql);
+
+  window.setResultCallback = window.setContrato;
+
+  var wnd = window.open(url,'buscaContrato','toolbar=no,width=550,height=350,scrollbars=yes');
+
+}
+
+function setContrato(id,curso,campus)
+{
+  document.myform.ref_contrato.value = id;
+  document.myform.ref_curso.value = curso;
+  document.myform.ref_campus.value = campus;
+}
+</script>
+ 
+
+
+</head>
+
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="post/tranca_matricula.php3" name="myform">
+  <table width="90%" align="center">
+    <tr>
+      <td bgcolor="#000099" colspan="2" height="28" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Trancar Matr&iacute;cula </b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="119"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Pessoa</font></td>
+      <td width="377"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td> 
+              <input type="text" name="ref_pessoa" size="8" onChange="javascript:seta_campo(ref_pessoa)" value="<?echo($ref_pessoa);?>">
+            </td>
+            <td> 
+              <input type="text" name="aluno_nome" size="32" value="<?echo($nome);?>">
+            </td>
+            <td> 
+              <input type="button" value="..." onClick="BuscaPessoa()" name="button">
+           </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="119"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Contrato</font></td>
+      <td width="377"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td> 
+              <input name="ref_contrato" type=text size="10" maxlength="10" value="<?echo($ref_contrato);?>">
+            </td>
+            <td><font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">curso 
+              </font> 
+              <input type="text" name="ref_curso" size="4" maxlength="4" value="<?echo($curso);?>">
+            </td>
+            <td><font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">campus 
+              </font> 
+              <input type="text" name="ref_campus" size="2" maxlength="2" value="<?echo($campus);?>">
+            </td>
+
+            <td><a href="javascript:buscaContrato()"><img src="../images/find.gif" width="16" height="16" border="0"></a>
+
+           </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="119"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Per&iacute;odo&nbsp;</font></td>
+      <td width="377"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td colspan="2"> <font color="#000000"> 
+              <input name="ref_periodo" type=text onChange="ChangeCode('ref_periodo','op2')" value="<?echo($ref_periodo);?>" size="10" maxlength="10">
+              </font> <font color="#000000"> 
+              <script language="PHP">
+ComboArray("op2",$op_opcoes2,$ref_periodo,"ChangeOp2()");
+</script>
+              </font></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF" width="119"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Motivo</font></td>
+      <td width="377">
+        <table width="100%%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="11%"> <font color="#000000">
+              <input name="ref_motivo" type=text value="<?echo($ref_motivo);?>" size="3" maxlength="3">
+              <script language="PHP">
+                ComboArray("op3",$op_opcoes3,$ref_motivo,"ChangeOp3()");
+              </script></font>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#CCCCFF" width="119"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Próximo Mês (1,2,3...)</font></td>
+      <td width="377">
+        <table width="100%%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="11%"> <font color="#000000">
+              <input name="mes" type=text value="<?echo($mes);?>" size="3" maxlength="3">
+              </font> <font color="#000000"> </font></td>
+            <td width="89%"><font color="#000000">
+              </font></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <?if (!empty($ref_pessoa)) 
+      { $nome = Busca_Nome($ref_pessoa); 
+        ?>
+        <script language="javascript">
+          document.myform.aluno_nome.value="<? echo($nome); ?>";
+        </script>
+	<?
+      } 
+    ?>
+    <tr>
+      <td colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" align="center"> 
+        <input type="submit" name="Submit"  value="  Trancar  ">
+        <input type="reset" name="Submit2"  value="  Limpar  ">
+        <input type="button" name="Button2" value="   Sair   " onClick="javascript:history.go(-1)">
+      </td>
+    </tr>
+  </table>
+  </form>
+</body>
+</html>

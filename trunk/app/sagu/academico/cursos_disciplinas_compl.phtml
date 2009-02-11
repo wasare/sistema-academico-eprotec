@@ -1,0 +1,143 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+
+<script language="PHP">
+
+CheckFormParameters(array("ref_curso","ref_campus","ref_disciplina"));
+
+$conn = new Connection;
+
+$conn->Open();
+
+$sql = " select curso_desc('$ref_curso'), " .
+       "        get_campus('$ref_campus'), " .
+       "        descricao_disciplina('$ref_disciplina');";
+       
+$query = $conn->CreateQuery($sql);
+
+SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+
+list ( $curso,
+       $campus,
+       $disciplina) = $query->GetRowValues();
+       
+$query->Close();
+
+$conn->Close();
+</script>
+
+<html>
+<head>
+<script language="JavaScript">
+
+function buscaOpcao()
+{
+  var url = "../generico/post/lista_disciplinas_todas.php3" + 
+            "?desc=" + escape(document.myform.ref_disciplina_equivalente_nome.value);
+
+
+  var wnd = window.open(url,'busca','toolbar=no,width=550,height=350,scrollbars=yes');
+}
+
+function setResult(arg1,arg2)
+{
+    document.myform.ref_disciplina_equivalente.value = arg1;
+    document.myform.ref_disciplina_equivalente_nome.value = arg2;
+}
+</script>
+
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="post/cursos_disciplinas_compl.php3" name="myform">
+  <table width="90%" align="center">
+    <tr bgcolor="#000099"> 
+      <td height="35" colspan="2"> 
+        <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Inclusão de Disciplinas que podem ser cursadas em lugar de outra</font></b></font><font size="4" face="Verdana, Arial, Helvetica, sans-serif"><b> 
+        </b></font></div>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="174"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso</font></td>
+      <td width="381"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="10%">
+              <input name="ref_curso" type="hidden" value="<?=$ref_curso?>"><?echo($ref_curso)?>
+            </td>
+            <td width="100%">
+              <input name="curso" type="hidden" value="<?=$curso?>"><?echo($curso)?>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="174"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font></td>
+      <td width="381"> 
+         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="10%">
+              <input name="ref_campus" type="hidden" value="<?=$ref_campus?>"><?echo($ref_campus)?>
+            </td>
+            <td width="100%">
+              <input name="campus" type="hidden" value="<?=$campus?>"><?echo($campus)?>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="174"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina do Currículo</font></td>
+      <td width="381"> 
+         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="10%">
+              <input name="ref_disciplina" type="hidden" value="<?=$ref_disciplina?>"><?echo($ref_disciplina)?>
+            </td>
+            <td width="100%">
+              <input name="disciplina" type="hidden" value="<?=$disciplina?>"><?echo($disciplina)?>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    
+    <tr> 
+      <td bgcolor="#CCCCFF" width="174"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Opção para Cursar</font></td>
+      <td width="381"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="9%"> 
+              <input name="ref_disciplina_equivalente" type=text size="5" onChange="ChangeCode('ref_disciplina_equivalente','op')">
+            </td>
+            <td width="100%"><font color="#000000"><font color="#000000"> 
+              <input name="ref_disciplina_equivalente_nome" type=text size="30">
+              </font></font></td>
+            <td width="0%"> 
+              <div align="right"><font color="#000000"><font color="#000000"> 
+                <input type="button" value="..." onClick="buscaOpcao()" name="button">
+              </font></font></div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <div align="center"> 
+            <input type="submit" name="Submit"  value=" Salvar ">
+            <input type="reset"  name="Submit2" value=" Limpar ">
+            <input type="button" name="Button" value="  Voltar  " onclick="javascript:history.go(-1)">
+        </div>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

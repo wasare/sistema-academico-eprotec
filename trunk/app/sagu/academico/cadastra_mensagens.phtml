@@ -1,0 +1,135 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+<html>
+<head>
+<title>Cadastro de Mensagens</title>
+
+<script language="PHP">
+$op_result = SQLArray($sql_periodos_academico);
+</script>
+
+<script language="JavaScript">
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp()
+{
+  ChangeOption(document.myform.op,document.myform.periodo_id);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+
+  field.focus();
+  return true;
+}
+</script>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="post/cadastro_mensagens.php3" name="myform">
+  <table width="90%" border="0" cellspacing="2" cellpadding="0" align="center">
+    <tr> 
+      <td bgcolor="#000099" colspan="2" height="28" align=center><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Cadastro de Mensagens</b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Per&iacute;odo&nbsp;&nbsp;</font></td>
+      <td> 
+        <table border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td> 
+              <input type="text" name="periodo_id" size="8" onChange="ChangeCode('periodo_id','op')" value="<?echo($periodo_id);?>">
+            </td>
+            <td><font color="#000000"> 
+              <script language="PHP">
+                ComboArray("op",$op_result,$periodo_id,"ChangeOp()");
+              </script>
+              </font></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;&nbsp;Mensagem&nbsp;&nbsp;</font></td>
+      <td>
+        <textarea name="texto" cols="50" rows="4"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;&nbsp;Fonte&nbsp;&nbsp;</font></td>
+      <td>
+      <select name="fonte">
+           <option value="" selected>----- Selecione -----</option>
+           <option value="P">Padrão</option>
+	   <option value="N">Negrito</option>
+	   <option value="I">Itálico</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;&nbsp;Número de caracteres<br>&nbsp;&nbsp;por linha</font></td>
+      <td>
+        <input name="tamanho" type=text size="5" maxlength="5" value="130">
+      </td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;&nbsp;Seqüência<br>&nbsp;&nbsp;(1,2,3 ...)</font></td>
+      <td>
+        <input name="sequencia" type=text size="5" maxlength="5">
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF" width="161"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Status:</font></td>
+      <td colspan="3" width="410">
+        <select name="ref_status">
+           <option value="" selected>----- Selecione -----</option>
+           <option value="G">Graduação</option>
+           <option value="C">Calouro</option>
+           <option value="O">Outros</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF" width="161"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;É ouvinte:</font></td>
+      <td colspan="3" width="410">
+        <select name="fl_ouvinte">
+           <option value="" selected>----- Selecione -----</option>
+           <option value="t">Sim</option>
+           <option value="f">Não</option>
+        </select>
+      </td>
+    </tr>
+    <tr><td colspan="2"><hr></td></tr>
+    <tr>
+      <td colspan="2" align="center">
+        <input type="submit" name="Submit"  value=" Salvar ">
+        <input type="reset"  name="Submit2" value=" Limpar ">
+        <input type="button" name="Button2" value=" Voltar " onClick="location='consulta_inclui_mensagem.phtml'">
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

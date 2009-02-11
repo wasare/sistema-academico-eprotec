@@ -1,0 +1,250 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+<html>
+<head>
+<title>Mensagens</title>
+<?
+  $op_result = SQLArray($sql_periodos_academico);
+?>
+
+<script language="JavaScript">
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp()
+{
+  ChangeOption(document.myform.op,document.myform.ref_periodo);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+
+  field.focus();
+
+  return true;
+}
+
+function Confirma_Exclui(arg1, arg2)
+{
+  url = 'post/mensagem_exclui.php3?id=' + arg1 + '&ref_periodo=' + arg2;
+
+  if (confirm("Você tem certeza que deseja EXCLUIR a Mensagem: "+arg1))
+     location=(url)
+  else
+     alert("Exclusão Cancelada.");
+}
+
+</script>
+
+<script language="PHP">
+
+$hasmore = false;
+
+function MostraCadastros()
+{
+  global $ref_periodo, $hasmore;
+  
+  if ( $ref_periodo != "" )
+  {
+  
+  $conn = new Connection;
+
+  $conn->Open();
+
+  $sql= " select id, " .
+        "        ref_periodo, " .
+        "        texto, " .
+        "        fonte, " .
+        "        sequencia, " .
+        "        ref_status, " .
+        "        fl_ouvinte " .
+        " from mensagens " .
+        " where ref_periodo = '$ref_periodo' " .
+        " order by ref_periodo, ref_status, fl_ouvinte, sequencia";
+
+  $query = $conn->CreateQuery($sql);
+
+  $n = $query->GetColumnCount();
+
+  echo("<br><center><table width=\"550\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+
+  $i=1;
+
+  // cores fundo
+  $bg0 = "#000000";
+  $bg1 = "#EEEEFF";
+  $bg2 = "#FFFFEE";
+
+  // cores fonte
+  $fg0 = "#FFFFFF";
+  $fg1 = "#000099";
+  $fg2 = "#000099";
+
+  while( $query->MoveNext() )
+  {
+    list ( $id,
+           $ref_periodo,
+           $texto,
+	   $fonte,
+	   $sequencia,
+	   $ref_status,
+	   $fl_ouvinte) = $query->GetRowValues();
+
+     $href  = "<a href=\"mensagem_altera.phtml?id=$id&ref_periodo=$ref_periodo\"><img src=\"../images/update.gif\" title='Alterar Cadastro' align='absmiddle' border=0></a>";
+     $href1 = "<a href=\"javascript:Confirma_Exclui('$id', '$ref_periodo')\"><img src=\"../images/delete.gif\" title='Excluir Cadastro' align='absmiddle' border=0></a>";
+
+    if ($i == 1)
+    {
+
+      echo("<tr bgcolor=\"#000000\">\n");
+      echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cód</b></font></td>");
+      echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Período</b></font></td>");
+      echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Tipo</b></font></td>");
+      echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Seq.</b></font></td>");
+      echo ("<td width=\"55%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Mensagem</b></font></td>");
+      echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;</b></font></td>");
+      echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;</b></font></td>");
+      echo("  </tr>");
+    }
+
+
+    if ( $i % 2)
+    {
+      $par1 = $bg1;
+      $par2 = $fg2;
+    }
+    else
+    {
+      $par1 = $bg2;
+      $par2 = $fg1;
+    }
+    
+    if ($fl_ouvinte == 't')
+    {
+     	$tipo = 'Ouvi';
+    }
+    else
+    {
+      if ($ref_status == 'G')
+      {
+       	  $tipo = 'Grad';
+      }
+      if ($ref_status == 'C')
+      {
+    	  $tipo = 'Vest';
+      }
+      if ($ref_status == 'O')
+      {
+    	  $tipo = 'Outros';
+      }
+
+    }
+    echo("<tr bgcolor=\"$par1\">\n");
+    echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$par2\">$id</td>");
+    echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$par2\">$ref_periodo</td>");
+    echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$par2\">$tipo</td>");
+    echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$par2\">$sequencia</td>");
+    echo ("<td width=\"55%\"><Font face=\"Verdana\" size=\"2\" color=\"$par2\">$texto</td>");
+    echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$par2\">$href</td>");
+    echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$par2\">$href1</td>");
+    echo("  </tr>");
+
+    $i++;
+
+  }
+
+  echo("</table></center>");
+
+  $query->Close();
+
+  $conn->Close();
+  }
+
+  else
+    echo("<br><center><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=red><b>Informe um campo para fazer a pesquisa!</b></font></center><br>");
+
+}
+</script>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
+<form method="post" action="consulta_inclui_mensagem.phtml" name="myform">
+  <div align="center"> 
+    <p> 
+      <input type="button" value=" Incluir " onClick="location='cadastra_mensagens.phtml'" name="button">
+      <input type="button" value="  Sair  " onClick="javascript:history.go(-1)" name="Button2">
+      <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font color="#FF0000"> 
+      </font></b></font></font> <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font color="#FF0000"> 
+      </font></b></font></font> <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font color="#FF0000"> 
+      </font></b></font></font> </p>
+    </div>
+  <hr width="500" align="center">
+  <p align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0000FF"><b><font color="#FF0000">CUIDADO PARA N&Atilde;O DUPLICAR CADASTROS !</font></b></font> </p>
+  <div align="center"> 
+    <table width="500" border="0" cellspacing="0" cellpadding="2" height="100">
+      <tr bgcolor="#0066CC"> 
+        <td colspan="4" height="28"> 
+          <div align="center"><font size="2" color="#FFFFFF"><b><font face="Verdana, Arial, Helvetica, sans-serif">Consulta/Altera&ccedil;&atilde;o de Mensagens</font></b></font></div>
+        </td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="50"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">&nbsp;Período:&nbsp;&nbsp;</font></td>
+            <td>
+              <input type="text" name="ref_periodo" size="8" onChange="ChangeCode('ref_periodo','op')" value="<?echo($ref_periodo);?>">
+            </td>
+            <td width="100%"><font color="#000000">
+              <script language="PHP">
+        		ComboArray("op",$op_result,$ref_periodo,"ChangeOp()");
+              </script></font></td>	
+            <td width="40"> 
+          <input type="submit" name="botao" value="Localizar">
+          </td>
+      </tr>
+      <tr> 
+        <td colspan="4" align="center"> 
+          <hr size="1" width="490">
+        </td>
+      </tr>
+      <tr> 
+        <td colspan="4"> <?PHP MostraCadastros(); ?> <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font color="#FF0000"> 
+          </font><font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font color="#FF0000">
+	  <?PHP  if ( $hasmore )
+          echo("<BR>Se a informação não estiver listada, seja mais específico."); ?>
+	  </font></b></font></font><font color="#FF0000"> 
+          </font></b></font></font> </td>
+      </tr>
+      <tr align="center"> 
+        <td colspan="4"> 
+          <hr size="1" width="490">
+        </td>
+      </tr>
+    </table>
+  </div>
+<center>
+    <input type="button" name="Button3" value="Copiar Mensagens" onClick="location='copiar_mensagens.phtml'">
+</center>
+</form>
+</body>
+</html>

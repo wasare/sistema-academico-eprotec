@@ -1,0 +1,108 @@
+<? header("Cache-Control: no-cache"); ?>
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+<html>
+<head>
+<title>Listagem de Liberação Pré-Requisitos</title>
+<script language="PHP">
+function QueryExecute($sql)
+{
+  $conn = new Connection;
+
+  $conn->Open();
+
+  $query = $conn->CreateQuery($sql);
+
+  if ( $query->MoveNext() )
+    $obj = $query->GetRowValues();
+
+  $query->Close();
+
+  $conn->Close();
+
+  return $obj;
+}
+
+if ( $ref_periodo == '' )
+{
+  list ( $ref_periodo ) = QueryExecute($sql_periodos_academico);
+  $ref_periodo = trim(substr($ref_periodo, 0, strpos($ref_periodo, "/")));
+}
+$op_result1  = SQLArray($sql_periodos_academico);
+
+</script>
+<script language="JavaScript">
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp1()
+{
+  ChangeOption(document.myform.op1,document.myform.ref_periodo);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+
+  field.focus();
+
+  return true;
+}
+</script>
+</head>
+
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="post/lista_liberacao_requisito.php3" name="myform">
+  <table width="90%" border="0" cellspacing="2" cellpadding="0" align="center">
+    <tr> 
+      <td bgcolor="#000099" colspan="2" height="28" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Listagem de alunos que se matricularam com liberação de Pré-Requisito</b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Per&iacute;odo:</font></td>
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td> 
+              <input type="text" name="ref_periodo" size="8" onChange="ChangeCode('ref_periodo','op1')" value="<?echo($ref_periodo);?>">
+              <script language="PHP">
+        		ComboArray("op1",$op_result1,$ref_periodo,"ChangeOp1()");
+	          </script>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td colspan="2"><hr></td></tr>
+    <tr><td colspan="2">Obs.: Neste relatório será listado todos os alunos que se matricularam em disciplinas no semestre selecionado com quebra de pré-requisito.</td></tr>
+    <tr><td colspan="2"><hr></td></tr>
+  </table>
+  <div align="center"> 
+    <p>
+      <input type="submit" name="Submit"  value="  Gerar  ">
+      <input type="button" name="Button2" value="  Sair  " onClick="javascript:history.go(-1)">
+    </p>
+  </div>
+</form>
+</body>
+</html>

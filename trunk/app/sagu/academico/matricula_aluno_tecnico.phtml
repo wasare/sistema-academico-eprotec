@@ -1,0 +1,173 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../../../lib/properties.php"); ?>
+<? require("../lib/GetPessoaNome.php3"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+<html>
+<head>
+<title>Matrícula Técnicos</title>
+<script language="PHP">
+function QueryExecute($sql)
+{
+  $conn = new Connection;
+
+  $conn->Open();
+
+  $query = $conn->CreateQuery($sql);
+
+  if ( $query->MoveNext() )
+    $obj = $query->GetRowValues();
+
+  $query->Close();
+
+  $conn->Close();
+
+  return $obj;
+}
+
+if ( $periodo_id == '' )
+{
+  list ( $periodo_id ) = QueryExecute($sql_periodos_academico);
+  $periodo_id = trim(substr($periodo_id, 0, strpos($periodo_id, "/")));
+}
+$op_result = SQLArray($sql_periodos_academico);
+
+$sql = " select A.id||' / '||A.abreviatura||' / '||get_campus(B.ref_campus), " .
+       "        A.id " .
+       " from cursos A, precos_curso B " .
+       " where A.id = B.ref_curso and " .
+       "       B.ref_periodo = '$periodo_id' " .
+       " order by A.id, B.ref_campus;" ;
+
+$op_result1 = SQLArray($sql);
+
+</script>
+
+<script language="JavaScript">
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp()
+{
+  ChangeOption(document.myform.op,document.myform.periodo_id);
+
+  document.myform.action = 'matricula_aluno_tecnico.phtml';
+  document.myform.submit();
+}
+
+function ChangeOp1()
+{
+  ChangeOption(document.myform.op1,document.myform.curso_id);
+}
+
+function ChangeCode(fld_name,op_name)
+{
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      if (fld_name == 'periodo_id')
+      {
+        document.myform.action = 'matricula_aluno_tecnico.phtml';
+        document.myform.submit();
+      }
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+
+  field.focus();
+
+  return true;
+}
+
+
+function busca_nome()
+{
+  var url = "/generico/post/lista_pessoas.php3" +
+            "?pnome=" + escape(document.myform.aluno_nome.value);
+
+  var wnd = window.open(url,'busca','toolbar=no,width=530,height=350,scrollbars=yes');
+}
+
+function setResult(id,nome)
+{
+  document.myform.aluno_id.value = id;
+  document.myform.aluno_nome.value = nome;
+}
+
+</script>
+</head>
+
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="matricula_curso_tecnico.phtml" name="myform">
+<table width="90%" border="0" cellspacing="2" cellpadding="0" align="center">
+  <tr bgcolor="#000099"> 
+    <td height="35" colspan="2"> 
+      <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Matr&iacute;culas</font></b></font></div>
+    </td>
+  </tr>
+  <tr bgcolor="#CCCCFF"> 
+    <td colspan="2" height="32" align="center"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099"><b>Identificação do Aluno </b></font></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Per&iacute;odo:</font></td>
+    <td> 
+      <input type="text" name="periodo_id" size="10" onChange="ChangeCode('periodo_id','op')" value="<?echo($periodo_id);?>">
+      <font color="#000000">
+          <script language="PHP">
+            ComboArray("op",$op_result,$periodo_id,"ChangeOp()");
+          </script>
+      </font> </td>
+  </tr>
+  <tr>
+    <td width="92" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Curso:</font></td>
+    <td width="296"> <font color="#000000"> </font>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>
+            <input type="text" name="curso_id" size="10" onChange="ChangeCode('curso_id','op1')">
+          </td>
+          <td>&nbsp;</td>
+          <td width="100%"><font color="#000000">
+            <script language="PHP">
+              ComboArray("op1",$op_result1,$curso_id,"ChangeOp1()");
+            </script>
+            </font></td>
+        </tr>
+      </table>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Aluno:</font></td>
+    <td> 
+      <input type="text" name="aluno_id" size="10">
+      <input type="text" name="aluno_nome" size="40">
+      <input type="button" value="..." onclick="busca_nome()">
+    </td>
+  </tr>
+  <tr> 
+    <td align="center" colspan="2"><hr></td>
+  </tr>
+  <tr> 
+    <td align="center" colspan="2"> 
+      <input type="submit" name="Submit"  value=" Prosseguir ">
+      <input type="button" name="Button2" value="    Sair    " onClick="location='matriculas.phtml'">
+    </td>
+  </tr>
+</table>
+</form>
+</body>
+</html>

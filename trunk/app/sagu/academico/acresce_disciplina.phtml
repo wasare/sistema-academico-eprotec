@@ -1,0 +1,909 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+<? require("../generico/busca_nome.php3"); ?>
+<? require("../lib/VerificaTurnos.php3"); ?>
+<?
+  $op_opcoes2 = SQLArray("$sql_periodos_academico");
+?>
+<html>
+<head>
+<script language="JavaScript">
+function valor(indice)
+{
+   document.myform.verifica.value = document.myform.validacao[indice].value;
+}
+
+function seta_campo(ref_pessoa)
+{
+url = 'acresce_disciplina.phtml' +
+      '?ref_pessoa=' + escape(document.myform.ref_pessoa.value);
+
+self.location=(url);
+}
+
+function ReloadForm()
+{
+    url = 'acresce_disciplina.phtml' +
+          '?ref_pessoa='    + escape(document.myform.ref_pessoa.value) +
+          '&aluno_nome='    + escape(document.myform.aluno_nome.value) +
+          '&ref_contrato='  + escape(document.myform.ref_contrato.value) +
+          '&ref_curso='     + escape(document.myform.ref_curso.value) +
+          '&ref_campus='    + escape(document.myform.ref_campus.value) +
+          '&ref_periodo='   + escape(document.myform.ref_periodo.value) +
+          '&mes='           + escape(document.myform.mes.value) +
+          '&mes_resto='     + escape(document.myform.mes_resto.value) +
+          '&carga_horaria=' + escape(document.myform.carga_horaria.value) +
+          '&integral='      + escape(document.myform.integral.value);
+
+    self.location=(url);
+}
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+  var contrato = eval('document.myform.ref_contrato');
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+  
+  var url = "../generico/post/busca_mes_parcelas.php3" +
+            "?ref_periodo=" + escape(fld.value) + 
+            "&ref_contrato=" + escape(contrato.value);
+  
+  window.SetResultParcelas = setMesParcelas;
+  
+  var wnd = window.open(url,'busca','toolbar=no,width=780,height=550,scrollbars=yes');
+}
+
+function ChangeOp1()
+{
+  if (document.myform.ref_contrato.value != '')
+  {
+     ChangeOption(document.myform.op2,document.myform.ref_periodo);
+  }
+  else
+  {
+     alert('Você deve selecionar primeiro o contrato !!!');
+     return;
+  }
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  if (document.myform.ref_contrato.value == '')
+  {
+     alert('Você deve selecionar primeiro o contrato !!!');
+     document.myform.ref_periodo.value = '';
+     return;
+  }
+  else
+  {
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var contrato = eval('document.myform.ref_contrato');
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      var url = "../generico/post/busca_mes_parcelas.php3" +
+                "?ref_periodo=" + escape(field.value) +
+                "&ref_contrato=" + escape(contrato.value);
+
+      window.SetResultParcelas = setMesParcelas;
+      var wnd = window.open(url,'busca','toolbar=no,width=780,height=550,scrollbars=yes');
+      return;
+    }
+  }
+  alert(code + ' não é um código válido!');
+  field.focus();
+  return true;
+  
+  }
+}
+
+function setContrato(id,curso,descricao,campus)
+{
+  document.myform.ref_contrato.value = id;
+  document.myform.ref_curso.value = curso;
+  document.myform.ref_campus.value = campus;
+}
+
+function setMesParcelas(mes_sequencia,parcelas_a_dividir)
+{
+  document.myform.mes.value = mes_sequencia;
+  document.myform.mes_resto.value = parcelas_a_dividir;
+}
+
+function setPessoa(id,nome)
+{
+  document.myform.ref_pessoa.value = id;
+  document.myform.aluno_nome.value = nome;
+}
+
+function buscaContrato()
+{
+  var pessoa = document.myform.ref_pessoa.value;
+
+  if ( pessoa == '' )
+  {
+    alert("Código da pessoa inválido ou não especificado!");
+    return;
+  }
+
+  var title = 'Seleção Contrato';
+
+  var sql = " select A.id as id, " +
+            "        A.ref_curso as Curso, " +
+            "        B.descricao as Descricao, " +
+            "        A.ref_campus as Campus" +
+            " from contratos A, cursos B " +
+            " where A.ref_pessoa = " + pessoa + " and " +
+            "       A.dt_desativacao is null and" +
+            "       A.ref_curso = B.id";
+
+  var url = "../generico/post/lista_sql.php3?title=" + escape(title) + "&sql=" + escape(sql);
+
+  window.setResultCallback = window.setContrato;
+  
+  var wnd_contrato = window.open(url,'buscaContrato','toolbar=no,width=550,height=350,scrollbars=yes');
+}
+
+function BuscaPessoa()
+{
+  var url = "/generico/post/lista_setPessoa.php3" +
+            "?pnome=" + escape(document.myform.aluno_nome.value);
+
+  window.setResultCallback = window.setPessoa;
+  
+  var wnd_pessoa = window.open(url,'busca','toolbar=no,width=530,height=350,scrollbars=yes');
+  
+}
+
+</script>
+
+<script language="JavaScript">
+
+var lu_ofer     = null;
+var lu_code     = null;
+var lu_desc     = null;
+var lu_prof     = null;
+var lu_day      = null;
+var lu_turno    = null;
+var lu_status   = null;
+var lu_creditos = null;
+
+function setResult(ofer,id,nome,prof,day,ref_curso,turno,status,creditos)
+{
+ 
+  if (status == '2')
+     lu_status.value = 't';
+  else
+     lu_status.value = 'f';
+  
+  lu_ofer.value     = ofer;
+  lu_code.value     = id;
+  lu_desc.value     = nome;
+  lu_prof.value     = prof;
+  lu_day.value      = day;
+  lu_turno.value    = turno;
+  lu_creditos.value = creditos;
+  
+}
+/* Preenche os campos das disciplinas */
+/* Com Mouse                          */
+function lookup(obj)
+{
+  var form = obj.form;
+
+  for ( i=0; i<form.length; i++ )
+  {
+    if ( form.elements[i] == obj )
+    {
+      lu_creditos = form.elements[i-8];
+      lu_status   = form.elements[i-7];
+      lu_code     = form.elements[i-6];
+      lu_ofer     = form.elements[i-5];
+      lu_desc     = form.elements[i-4];
+      lu_prof     = form.elements[i-3];
+      lu_day      = form.elements[i-2];
+      lu_turno    = form.elements[i-1];
+
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/* Preenche os campos das disciplinas */
+/* Com ENTER                          */
+function lookup_enter(obj)
+{
+  var form = obj.form;
+
+  for ( i=0; i<form.length; i++ )
+  {
+    if ( form.elements[i] == obj )
+    {
+      lu_creditos = form.elements[i-2];
+      lu_status   = form.elements[i-1];
+      lu_code     = form.elements[i];
+      lu_ofer     = form.elements[i+1]
+      lu_desc     = form.elements[i+2];
+      lu_prof     = form.elements[i+3];
+      lu_day      = form.elements[i+4];
+      lu_turno    = form.elements[i+5];
+
+      return true;
+    }
+  }
+
+  return false;
+}
+ 
+/* Preenche os campos das disciplinas do currículo (bolinha vermelha) */
+/* Acesso com Mouse                                                   */
+function Busca_Ofer1(obj)
+{
+  if ( !lookup(obj) )
+    return;
+
+  if (document.myform.verifica.value == '1')
+  {
+  var url = "../generico/post/lista_disciplinas.php3" +
+            "?ref_periodo=" + escape(document.myform.ref_periodo.value) +
+            "&ref_curso=" + escape(document.myform.ref_curso.value) +
+    	    "&ref_pessoa=" + escape(document.myform.ref_pessoa.value);
+  }
+  else
+  {
+  var url = "../generico/post/lista_disciplinas_nome.php3" +
+            "?ref_periodo=" + escape(document.myform.ref_periodo.value) +
+    	    "&ref_curso=" + escape(document.myform.ref_curso.value) +
+            "&ref_pessoa=" + escape(document.myform.ref_pessoa.value);
+
+   if ( lu_code.value != '' )
+     url += '&id=' + escape(lu_code.value);
+
+   if ( lu_desc.value != '' )
+     url += '&desc=' + escape(lu_desc.value);
+
+  }
+
+  var wnd = window.open(url,'busca','toolbar=no,width=780,height=550,scrollbars=yes');
+
+}
+
+/* Preenche os campos das disciplinas do currículo (bolinha vermelha) */
+/* Acesso com ENTER                                                   */
+function Busca_Ofer1_enter(obj)
+{
+  if ( !lookup_enter(obj) )
+    return;
+
+  if (document.myform.verifica.value == '1')
+  {
+  var url = "../generico/post/lista_disciplinas_matricula.php3" +
+            "?ref_periodo=" + escape(document.myform.ref_periodo.value) +
+            "&ref_curso=" + escape(document.myform.ref_curso.value) +
+            "&ref_disciplina=" + escape(document.myform.ref_disciplina.value) +
+            "&ref_pessoa=" + escape(document.myform.ref_pessoa.value) +
+    	    "&nao_oferecida=" + document.myform.nao_oferecida.checked;
+  }
+  else
+  {
+  var url = "../generico/post/lista_disciplinas_nome_matricula.php3" +
+            "?ref_periodo=" + escape(document.myform.ref_periodo.value) +
+            "&ref_curso=" + escape(document.myform.ref_curso.value) +
+            "&ref_pessoa=" + escape(document.myform.ref_pessoa.value);
+
+    if ( lu_code.value != '' )
+      url += '&id=' + escape(lu_code.value);
+
+    if ( lu_desc.value != '' )
+      url += '&desc=' + escape(lu_desc.value);
+  }
+
+  var wnd = window.open(url,'busca','toolbar=no,width=780,height=350,scrollbars=yes');
+
+}
+
+/* Preenche os campos das disciplinas eletivas (bolinha amarela) */
+/* Acesso com Mouse                                              */
+function Busca_Ofer2(obj)
+{
+  if ( !lookup(obj) )
+    return;
+
+  var url = "../generico/post/lista_disciplinas_nome.php3" +
+            "?ref_periodo=" + escape(document.myform.ref_periodo.value) +
+            "&ref_curso=" + escape(document.myform.ref_curso.value) +
+            "&ref_pessoa=" + escape(document.myform.ref_pessoa.value);
+
+  if ( lu_code.value != '' )
+    url += '&id=' + escape(lu_code.value);
+
+  if ( lu_desc.value != '' )
+    url += '&desc=' + escape(lu_desc.value);
+
+  var wnd = window.open(url,'busca','toolbar=no,width=780,height=350,scrollbars=yes');
+
+}
+
+/* Preenche os campos das disciplinas eletivas (bolinha amarela) */
+/* Acesso com ENTER                                              */
+function Busca_Ofer2_enter(obj)
+{
+  if ( !lookup_enter(obj) )
+    return;
+
+  var url = "../generico/post/lista_disciplinas_nome_matricula.php3" +
+            "?ref_periodo=" + escape(document.myform.ref_periodo.value) +
+            "&ref_curso=" + escape(document.myform.ref_curso.value) +
+            "&ref_pessoa=" + escape(document.myform.ref_pessoa.value);
+
+  if ( lu_code.value != '' )
+    url += '&id=' + escape(lu_code.value);
+
+  if ( lu_desc.value != '' )
+    url += '&desc=' + escape(lu_desc.value);
+
+  var wnd = window.open(url,'busca','toolbar=no,width=780,height=350,scrollbars=yes');
+
+}
+
+function VerMatricula()
+{
+  var vet_code1  = new Array(document.myform.elements.length);
+  var vet_day1   = new Array(document.myform.elements.length);
+  var vet_turno1 = new Array(document.myform.elements.length);
+  
+  var j = 0;
+  var k = 0;
+  var l = 0;
+  
+  for ( var i=0; i<vet_code1.length; i++ )
+  {
+    if ( document.myform.elements[i].name=='code1[]')
+      vet_code1[j++] = document.myform.elements[i].value;
+    if ( document.myform.elements[i].name=='code2[]')
+      vet_code1[j++] = document.myform.elements[i].value;
+    
+    if ( document.myform.elements[i].name=='day1[]')
+      vet_day1[k++] = document.myform.elements[i].value;
+    if ( document.myform.elements[i].name=='day2[]')
+      vet_day1[k++] = document.myform.elements[i].value;
+      
+    if ( document.myform.elements[i].name=='turno1[]')
+      vet_turno1[l++] = document.myform.elements[i].value;
+    if ( document.myform.elements[i].name=='turno2[]')
+      vet_turno1[l++] = document.myform.elements[i].value;
+    
+    if ( document.myform.elements[i].name=='ref_disciplina')
+      vet_code1[j++] = document.myform.elements[i].value;
+    if ( document.myform.elements[i].name=='ref_disciplina_ele')
+      vet_code1[j++] = document.myform.elements[i].value;
+    
+    if ( document.myform.elements[i].name=='day')
+      vet_day1[k++] = document.myform.elements[i].value;
+    if ( document.myform.elements[i].name=='day_ele')
+      vet_day1[k++] = document.myform.elements[i].value;
+    
+    if ( document.myform.elements[i].name=='turno')
+      vet_turno1[l++] = document.myform.elements[i].value;
+    if ( document.myform.elements[i].name=='turno_ele')
+      vet_turno1[l++] = document.myform.elements[i].value;
+      
+  }
+  
+  for ( var i=0; i<j-1; i++ )
+  {
+    for ( var n=i+1; n<j; n++ )
+    {
+      if ( (vet_code1[i] == vet_code1[n]) && (vet_code1[i] !=''))
+      {
+        alert('Você já está matriculado(a) na disciplina de código ' + vet_code1[i] + '!!!');
+	        return false;
+      }
+      if ( (vet_day1[i] == vet_day1[n]) && (vet_turno1[i] == vet_turno1[n]) && (vet_day1[i] != '') && (vet_turno1[i] != '') )
+      {
+        if (confirm('Não é possível fazer esta disciplina no dia ' + vet_day1[i] + ' e no turno ' + vet_turno1[i] + '\n pois já tem uma disciplina selecionada para este dia e turno.\n Se mesmo assim você deseja matricular o aluno nesta disciplina\n clique OK, senão clique Cancel.'))
+	        return true;
+        else
+	        return false;
+      }
+
+    }
+  }
+  return true;
+}
+
+function AcresceDisciplina(creditos_diurno,creditos_noturno,turno_curso)
+{
+    var retorno = VerMatricula();
+
+    if (retorno == true)
+    {
+        var creditos_disciplina_acres = 0;
+        var turno_disciplina_acres = 0;
+    
+        var creditos     = document.myform.creditos.value;
+        var turno        = document.myform.turno.value;
+    
+        var creditos_ele = document.myform.creditos_ele.value;
+        var turno_ele    = document.myform.turno_ele.value;
+    
+        if ((creditos_ele != '') && (turno_ele != ''))
+        {
+            creditos_disciplina_acres = creditos_ele;
+            turno_disciplina_acres = turno_ele;
+        }
+        else
+        {
+            creditos_disciplina_acres = creditos;
+            turno_disciplina_acres = turno;
+        }
+    
+        if (turno_curso != 'N')
+        {
+            if (turno_disciplina_acres != 'N')
+            {
+                creditos_diurno = parseInt(creditos_diurno) + parseInt(creditos_disciplina_acres);
+            }
+            else
+            {
+                creditos_noturno = parseInt(creditos_noturno) + parseInt(creditos_disciplina_acres);
+            }
+        
+            if ((creditos_diurno < 16) && (creditos_noturno > 0))
+            {
+                if (confirm('O aluno é de um curso diurno e com este acréscimo ficará matriculado em \n' + creditos_noturno + ' créditos noturno e ' + creditos_diurno + ' créditos diurnos, ou seja, não estará matriculado \nem pelo menos 16 créditos no diurno. Clique OK para continuar, senão \nclique Cancel.'))
+                {
+                    document.myform.submit();
+                }
+                else
+                {
+                    alert("Disciplina não acrescentada.");
+                }
+            }
+            else
+            {
+                document.myform.submit();
+            }
+        }
+        else
+        {
+            document.myform.submit();
+        }
+    }
+}
+
+</script>
+
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="post/acresce_disciplina.php3" name="myform">
+<TABLE cols="2" width="90%" align="center">
+    <tr> 
+      <td bgcolor="#000099" colspan="4" height="28" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Acrescentar Disciplina </b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="193"><FONT face="Helvetica" size="2" color="#00009C">&nbsp;Pessoa</font></td>
+      <td colspan="3"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td> 
+              <input type="text" name="ref_pessoa" size="10" onChange="javascript:seta_campo(ref_pessoa)" value="<?echo($ref_pessoa);?>">
+            </td>
+            <td> 
+              <input type="text" name="aluno_nome" size="40" value="<?echo($aluno_nome);?>">
+            </td>
+            <td> 
+              <input type="button" value="..." onClick="BuscaPessoa()" name="button">
+      
+           </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="193"><FONT face="Helvetica" size="2" color="#00009C">&nbsp;Contrato</font></td>
+      <td colspan="3"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td> 
+              <input name="ref_contrato" type=text size="10" maxlength="10" value="<?echo($ref_contrato);?>">
+            </td>
+            <td><font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">curso 
+              </font> 
+              <input type="text" name="ref_curso" size="10" maxlength="10" value="<?echo($ref_curso);?>">
+            </td>
+            <td><font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">campus 
+              </font> 
+              <input type="text" name="ref_campus" size="10" maxlength="10" value="<?echo($ref_campus);?>">
+            </td>
+            <td><a href="javascript:buscaContrato()"><img src="../images/find.gif" width="16" height="16" border="0"></a> 
+
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="193" height="29"><FONT face="Helvetica" size="2" color="#00009C">&nbsp;Per&iacute;odo</font></td>
+      <td colspan="3" height="29"> 
+        <table width="100%%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td colspan="2"> <font color="#000000"> 
+              <input name="ref_periodo" type=text onChange="ChangeCode('ref_periodo','op2')" size="10" maxlength="10" value="<?echo($ref_periodo);?>">
+              </font>
+      	     </td>
+      	     <td>
+        	<script language="PHP">
+           	ComboArray("op2",$op_opcoes2,$ref_periodo,"ChangeOp1()");
+ 		</script>
+     	     </td>
+           </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <TD bgcolor="#CCCCFF" width="193"><FONT face="Helvetica" size="2" color="#00009C">&nbsp;M&ecirc;s Sequ&ecirc;ncia</font></td>
+      <td width="90"><font color="#000000"> 
+        <input name="mes" type=text value="<?echo($mes);?>" size="10" maxlength="10">
+        </font> </td>
+      <td width="101" bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Divido 
+        por </font></td>
+      <td width="136"><font color="#000000"> 
+        <input name="mes_resto" type=text value="<?echo($mes_resto);?>" size="10" maxlength="10">
+        <font color="#000099" size="2" face="Verdana, Arial, Helvetica, sans-serif">vezes</font></font></td>
+    </tr>
+<!--    <TR>
+      <TD width="193" bgcolor="#CCCCFF"><FONT color="#00009C" size="2" face="Helvetica">&nbsp;Carga Horaria Aproveitamento:</FONT></TD>
+      <TD><INPUT name="carga_horaria" type="text" value="<?echo($carga_horaria);?>" size="10" maxlength="10"></TD>
+      <td>&nbsp;</td>
+      <td align="rigth"><font color="#000099" size="2" face="Verdana, Arial, Helvetica, sans-serif"><INPUT type="checkbox" name="integral" value="1" unchecked>&nbsp;&nbsp;Processar Carga Horária Integral</font>
+      </td>
+    </TR>-->
+    <tr> 
+      <td colspan="4"> 
+        <hr size="1">
+<input type=hidden name=carga_horaria value=0>
+<input type=hidden name=integral value=0>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" align="center">
+        <input type="button" name="Button"  value=" Consultar " onClick="ReloadForm()">
+        <input type="button" name="Button2" value="   Sair    " onClick="javascript:history.go(-1)">
+      </td>
+    </tr>
+  </table>
+<table border=0 cellpadding=2 cellspacing=1 align=center width="90%">
+  <tr> 
+    <td height=32 bgcolor="#000099" colspan=5><font face="Verdana" size="3" color="#ffffff">&nbsp;<b>Matriculas</b></font></td> 
+  </tr>
+  <tr bgcolor="#000000"> 
+    <td width="5%" height="21"><font face="Verdana" size="2" color="#ffffff">&nbsp;<b>id</b></font></td>
+    <td width="50%" height="21"><font face="Verdana" size="2" color="#ffffff"><b>Disciplina</b></font></td>
+    <td width="15%" height="21"><font face="Verdana" size="2" color="#ffffff">&nbsp;<b>Oferecida</b></font></td>
+    <td width="30%" colspan="2" height="21"><font face="Verdana" size="2" color="#ffffff">&nbsp;<b>Substitui&ccedil;&atilde;o</b></font><font face="Verdana" size="2" color="#ffffff"></font></td>
+  </tr>
+  
+<script language="PHP">
+$turnos = VerificaTurnos($ref_contrato, $ref_curso, $ref_periodo);
+
+list ($creditos_diurno, $creditos_noturno) = split("-", "$turnos", 2);
+
+$conn = new Connection;
+
+$conn->Open();
+
+// Verifica se o aluno tem algum incentivo que necessite de autorização para efetuar esta operação
+$sql = " select date(now()) > A.dt_limite_autorizacao " .
+       " from bolsas A, aux_bolsas B " .
+       " where A.ref_tipo_bolsa=B.id and " .
+       "       A.ref_contrato='$ref_contrato' and " .
+       "       A.dt_validade>date(now()) and " .
+       "       B.fl_autorizacao = 't' and " .
+       "       A.percentual <> 0;";
+
+$query = $conn->CreateQuery($sql);
+
+$passou_prazo = 'f';
+if ( $query->MoveNext() )
+{
+  $passou_prazo = $query->GetValue(1);
+}
+
+if ($passou_prazo!='f')
+{
+    </script>
+    <script language="JavaScript">
+        alert("Atenção: Este aluno possui algum tipo de benefício, portanto se ele alterar sua matrícula terá que entrar em contato com o Setor de Atendimento ao Aluno (e-mail assistencia.aluno@univates.br).");
+    </script>
+    <script language="PHP">
+}
+
+$query->Close();
+
+$sql = " select A.ref_campus," .
+       "    	A.ref_disciplina, " .
+       "    	descricao_disciplina(A.ref_disciplina)," .
+       "    	A.ref_curso_subst, " .
+       "        curso_desc(A.ref_curso_subst)," .
+       "    	A.ref_disciplina_subst, " .
+       "    	descricao_disciplina(A.ref_disciplina_subst)," .
+       "    	A.ref_disciplina_ofer, " .
+       "    	get_dia_semana_abrv(dia_disciplina_ofer_todos(B.id)), " .
+       "    	turno_disciplina_ofer_todos(B.id), " .
+       "    	A.dt_cancelamento is not null," .
+       "    	A.creditos_aprov," .
+       "    	A.carga_horaria_aprov, " .
+       "        turno_curso(A.ref_curso) " .
+       " from matricula A, disciplinas_ofer B" .
+       " where A.ref_contrato='$ref_contrato' and  " .
+       "       A.ref_periodo='$ref_periodo' and" .
+       "       A.ref_disciplina_ofer = B.id";
+
+$query = $conn->CreateQuery($sql);
+
+SaguAssert($query,"Nao foi possivel executar a consulta!");
+
+$controle = false;
+
+for ( $row=0; $query->MoveNext(); $row++ )
+{
+  list ($ref_campus_ofer,
+        $ref_disciplina,
+    	$descricao_disciplina,
+        $ref_curso_subst,
+    	$curso_desc,
+        $ref_disciplina_subst,
+    	$descricao_disciplina_subst,
+        $ref_disciplina_ofer,
+    	$dia_semana,
+        $turno,
+    	$is_cancelada,
+    	$creditos_aprov,
+    	$carga_horaria_aprov,
+        $turno_curso) = $query->GetRowValues();
+
+
+    if ($is_cancelada != 't')
+    {
+        $code1 = $ref_disciplina;
+        $code2 = $ref_disciplina_subst == 0 ? '' : $ref_disciplina_subst;
+
+        if ( !$ref_disciplina_subst )
+        {
+            $day1    = $dia_semana;
+            $day2    = '';
+            $turno1  = $turno;
+            $turno2  = '';
+        }
+        else
+        {
+            $day1    = '';
+            $day2    = $dia_semana;
+            $turno1  = '';
+            $turno2  = $turno;
+        }
+
+        echo("\n<input type=\"hidden\" name=\"code1[]\" value=\"$code1\">");
+        echo("\n<input type=\"hidden\" name=\"day1[]\" value=\"$day1\">");
+        echo("\n<input type=\"hidden\" name=\"turno1[]\" value=\"$turno1\">");
+        echo("\n<input type=\"hidden\" name=\"code2[]\" value=\"$code2\">");
+        echo("\n<input type=\"hidden\" name=\"day2[]\" value=\"$day2\">");
+        echo("\n<input type=\"hidden\" name=\"turno2[]\" value=\"$turno2\">\n");
+    }
+  
+  $controle = true;
+  
+  if ( ( $row % 2 ) == 0 )
+  {
+      </script>
+        <tr bgcolor="#FFFFEE" valign="middle">
+          <td width="5%"><font face="Verdana" size="2" color="#000099"><?
+
+      if ($is_cancelada == 't')
+      {
+        echo("<font color=red> [C] </font>");
+      }
+      else
+      {
+        echo("&nbsp;");
+      }
+      ?></font></td>
+          <td width="50%"><font face="Verdana" size="2" color="#000099"><?php
+
+      $sql = "select ref_campus from contratos where ref_pessoa = $ref_pessoa and ref_curso = $ref_curso";
+      $query22 = $conn->CreateQuery($sql);
+      $query22->MoveNext();
+      $ref_campus_aux  = $query22->GetValue(1);
+      if ($ref_campus_ofer != $ref_campus_aux )
+      {
+        echo("<img src=\"../images/checkoff.gif\" title=\"fora sede\">");
+      }
+      else
+      {
+        echo("<img src=\"../images/checkon.gif\" title=\"na da sede\">");
+      }
+      ?><font size="1"><?echo($ref_disciplina . ' - ' . substr($descricao_disciplina,0,30));?>&nbsp;</font></font></td>
+          <td width="15%%">
+            <div align="right"><font face="Verdana" size="2" color="#000099"><?echo($ref_disciplina_ofer);?><font color="#FF3333">&nbsp;<?echo('Dia '. $dia_semana);?></font>&nbsp;</font></div>
+          </td>
+          <td width="15%">
+            <div align="left"><font face="Verdana" size="2" color="#000099"><?echo("<img src=\"../images/info.gif\" title=\"$curso_desc\">");?></font><font face="Verdana" size="2" color="#FF0033">curso&nbsp;</font><font face="Verdana" size="2" color="#000099"><?echo("$ref_curso_subst");?></font></div>
+          </td>
+          <td width="15%">
+            <div align="left"><font face="Verdana" size="2" color="#000099"><?echo("<img src=\"../images/info.gif\" title=\"$descricao_disciplina_subst\">");?>&nbsp;<font color="#FF0000">disc&nbsp;</font><?echo($ref_disciplina_subst);?></font></div>
+          </td>
+        </tr>
+        <script language="PHP">
+  }
+  else
+  {
+
+    </script>
+      <tr bgcolor="#EEEEFF" valign="middle">
+        <td width="5%"><font face="Verdana" size="2" color="#000099">
+    <?
+    if ($is_cancelada == 't')
+    {
+      echo("<font color=red> [C] </font>");
+    }
+    else
+    {
+      echo("&nbsp;");
+    }
+    ?></font></td>
+        <td width="50%"><font face="Verdana" size="2" color="#000099"><?php
+      $sql = "select ref_campus from contratos where ref_pessoa = $ref_pessoa and ref_curso = $ref_curso";
+      $query22 = $conn->CreateQuery($sql);
+      $query22->MoveNext();
+      $ref_campus_aux  = $query22->GetValue(1);
+      if ($ref_campus_ofer != $ref_campus_aux )
+      {
+      echo("<img src=\"../images/checkoff.gif\" title=\"fora sede\">");
+    }
+    else
+    {
+      echo("<img src=\"../images/checkon.gif\" title=\"na da sede\">");
+    }
+    ?><font size="1"><?echo($ref_disciplina . ' - ' . substr($descricao_disciplina,0,30));?>&nbsp;</font></font></td>
+        <td width="15%">
+          <div align="right"><font face="Verdana" size="2" color="#000099"><?echo($ref_disciplina_ofer);?><font color="#FF3333">&nbsp;<?echo('Dia ' . $dia_semana);?></font><font color="#FF0000">&nbsp;</font></font></div>
+        </td>
+        <td width="15%">
+          <div align="left"><font face="Verdana" size="2" color="#000099"><?echo("<img src=\"../images/info.gif\" title=\"$curso_desc\">");?></font><font face="Verdana" size="2" color="#FF0000">curso&nbsp;</font><font face="Verdana" size="2" color="#000099"><?echo("$ref_curso_subst");?></font></div>
+        </td>
+        <td width="15%">
+          <div align="left"><font face="Verdana" size="2" color="#000099"><?echo("<img src=\"../images/info.gif\" title=\"$descricao_disciplina_subst\">");?>&nbsp;<font color="#FF0000">disc&nbsp;</font></font><font face="Verdana" size="2" color="#000099"><?echo($ref_disciplina_subst);?></font></div>
+        </td>
+      </tr>
+      <script language="PHP">
+
+  }
+
+}
+
+$query->Close();
+$conn->Close();
+</script>
+
+<tr> 
+  <td colspan="5"> 
+    <hr size="1">
+  </td>
+</tr>
+
+</table>
+
+<?
+if ($controle)
+{
+?>
+<table width="250" align="center">
+    <tr>
+      <td><b><font face="Arial, Helvetica, sans-serif" size="2">CURRÍCULO</font></b></td>
+      <td align="rigth"><img src="../images/redball.gif"></td>
+      <td>&nbsp;</td>
+      <td><b><font face="Arial, Helvetica, sans-serif" size="2">ELETIVAS ou SUBSTITUTAS</font></b></td>
+      <td align="rigth"><img src="../images/yellowball.gif"></td>
+    </tr>
+</table>
+<table width="90%" align="center">
+    <tr> 
+      <td height=32 bgcolor="#000099" colspan=3><font face="Verdana" size="3" color="#ffffff">&nbsp;<b>Acresce Disciplina</b></font> </td>
+      <td colspan="2" bgcolor="#000099" height="32" align="center"><font face="Verdana" size="2" color="#ffffff"><b>Verificação<br>
+      <input type="hidden" name="verifica" value="1">
+      <input type="radio" name="validacao" value="1" checked onClick="valor(0)">Sim
+      <input type="radio" name="validacao" value="0" onClick="valor(1)">Não
+      </b></font>
+      </td>
+    </tr>
+    <tr>
+       <td width="20" bgcolor="#CCCCCC">&nbsp;</td>
+       <td width="50" bgcolor="#CCCCCC"><font face="Arial, Helvetica, sans-serif" size="2">C&oacute;digo / Oferecida</font></td>
+       <td bgcolor="#CCCCCC" width="290"><font face="Arial, Helvetica, sans-serif" size="2">Disciplina / Professor</font></td>
+       <td bgcolor="#CCCCCC" width="50" align="center"><font face="Arial, Helvetica, sans-serif" size="2">Dia / Turno</font></td>
+       <td bgcolor="#CCCCCC" width="50" align="right">&nbsp;</td>
+    </tr>
+    <tr valign="top"> 
+      <td valign="center">
+       &nbsp;<img src="../images/redball.gif" width="16" height="16">
+       <input type="checkbox" name="nao_oferecida" value="yes" onClick="alert('Clicando neste botao você selecionará disciplinas \n que fazem parte do curso do aluno mas que serao \nsubstituídas por autorizaçao do coordenador.')">
+      </td>
+      <td> 
+        <input type="hidden" name="creditos">
+        <input type="hidden" name="status1">
+        <input type="text" name="ref_disciplina" size="8" onChange="Busca_Ofer1_enter(this)">
+        <input type="text" name="ref_disciplina_ofer" size="8" maxlength="8">
+      </td>
+      <td> 
+        <input type="text" name="desc" size="40">
+        <input type="text" name="prof" size="40">
+      </td>
+      <td> 
+        <input type="text" name="day" size="3">
+        <input type="text" name="turno" size="3">
+      </td>
+      <td> 
+        <input type="button" value="..." onClick="Busca_Ofer1(this)" name="button2">
+
+      </td>
+    </tr>
+  
+    
+    <tr valign="top"> 
+      <td valign="center">
+        &nbsp;<img src="../images/yellowball.gif" width="16" height="16">
+      </td>
+      <td> 
+        <input type="hidden" name="creditos_ele">
+        <input type="hidden" name="status2">
+        <input type="text" name="ref_disciplina_ele" size="8" onChange="Busca_Ofer2_enter(this)">
+        <input type="text" name="ref_disciplina_ofer_ele" size="8" maxlength="8">
+      </td>
+      <td> 
+        <input type="text" name="desc_ele" size="40">
+        <input type="text" name="prof_ele" size="40">
+      </td>
+      <td> 
+        <input type="text" name="day_ele" size="3">
+        <input type="text" name="turno_ele" size="3">
+      </td>
+      <td> 
+        <input type="button" value="..." onClick="Busca_Ofer2(this)" name="button3">
+
+      </td>
+    </tr>
+    <tr valign="top">
+      <td colspan="5" align="center">
+        <input type="button" name="Submit"  value="  Salvar  " onClick="AcresceDisciplina('<?=$creditos_diurno?>','<?=$creditos_noturno?>','<?=$turno_curso?>')">
+        <input type="reset" name="Submit2"  value="  Limpar  ">
+        <input type="button" name="Button2" value="   Sair   " onClick="javascript:history.go(-1)">
+      </td>
+    </tr>
+  </table>
+<?
+}
+    if (!empty($ref_pessoa))
+    { $nome = Busca_Nome($ref_pessoa);
+    ?>
+    <script language="javascript">
+        document.myform.aluno_nome.value="<? echo($nome); ?>";
+    </script>
+    <?
+    }
+?>
+</form>
+  
+</body>
+</html>

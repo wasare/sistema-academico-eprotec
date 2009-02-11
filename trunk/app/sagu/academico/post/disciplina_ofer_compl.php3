@@ -1,0 +1,314 @@
+<? require("../../../../lib/config.php"); ?>
+<? require("../../lib/InvData.php3"); ?>
+<? require("../../../../lib/common.php"); ?>
+<? require("../../lib/GetDescDisciplina.php3"); ?>
+
+<html>
+<head>
+
+<script language="JavaScript">
+function Inclui_Complemento(id, ref_campus, ref_curso, ref_periodo, ref_disciplina, num_alunos, fixar_num_sala, conteudo, turma, ref_periodo_turma)
+{
+
+  location="../disciplina_ofer_compl.phtml?id_disciplina_ofer=" + id + 
+           "&ref_campus=" + ref_campus + 
+           "&ref_curso=" + ref_curso + 
+           "&ref_periodo=" + ref_periodo + 
+           "&ref_disciplina=" + ref_disciplina + 
+           "&num_alunos=" + num_alunos + 
+           "&turma=" + turma + 
+           "&ref_periodo_turma=" + ref_periodo_turma + 
+           "&conteudo=" + conteudo;
+}
+</script>
+
+<?
+    CheckFormParameters(array("ref_campus",
+                              "ref_curso",
+                              "ref_periodo",
+                              "ref_disciplina"));
+
+    $nome_disciplina = GetDescDisciplina($ref_disciplina, true);
+
+    $conn = new Connection;
+    $conn->Open();
+    $conn->Begin();
+
+    $sql = "select nextval('seq_disciplinas_ofer_compl_id')";  // ID disciplina_ofer_compl
+  
+    $query = $conn->CreateQuery($sql);
+  
+    $success = false;
+  
+    if ( $query->MoveNext() )
+    {
+        $id_disciplina_ofer_compl = $query->GetValue(1);
+
+        $success = true;
+    }
+  
+    $query->Close();
+  
+    $dt_exame = InvData($dt_exame);
+  
+    $sql = " insert into disciplinas_ofer_compl (" .
+           "         id, " .
+           "         ref_disciplina_ofer," .
+           "         dia_semana," .
+           "         turno," .
+           "         desconto," .
+           "         num_creditos_desconto, " .   
+           "         num_sala, " .
+      	   "         observacao, " .   
+    	   "         ref_horario, " .
+    	   "         ref_regime, " .
+           "         dt_exame) " .   
+           " values ('$id_disciplina_ofer_compl'," .
+           "         '$id_disciplina_ofer'," .
+           "         '$dia_semana'," .
+           "         get_turno_horario('$ref_horario')," .
+           "         '$desconto'," .
+           "         '$num_creditos_desconto', " .
+           "         '$num_sala', " .
+           "         '$observacao', " .
+           "         '$ref_horario'," .
+           "         '$ref_regime',";
+
+           if ( $dt_exame == '')
+           { $sql = $sql . "  null)"; }
+           else
+           { $sql = $sql . "  '$dt_exame')";  }
+
+    $ok1 = $conn->Execute($sql);
+
+    $sql = " insert into disciplinas_ofer_prof (" .          // Disciplina_ofer_prof
+           "         ref_disciplina_ofer," .
+           "         ref_disciplina_compl," .
+           "         ref_professor) " .   
+           " values ('$id_disciplina_ofer'," .
+           "         '$id_disciplina_ofer_compl'," .
+           "         '$ref_professor')" ;
+
+    $ok2 = $conn->Execute($sql);
+
+    $sql = " update disciplinas_ofer set " .             // Número de Alunos tabela disciplinas_ofer
+           " num_alunos = '$num_alunos' " .
+           " where id = '$id_disciplina_ofer';";
+
+    $ok3 = $conn->Execute($sql);
+
+    $conn->Finish();
+    $conn->Close();
+
+    SaguAssert($ok1,"Não foi possível inserir o registro na tabela de disciplinas_ofer_compl!");
+    SaguAssert($ok2,"Não foi possível inserir o registro na tabela de disciplinas_ofer_prof!");
+    SaguAssert($ok3,"Não foi possível atualizar a tabela de disciplinas_ofer!");
+
+?>
+
+<script language="PHP">
+function Lista_Complemento($id, $ref_campus)
+{
+   $conn = new Connection;
+   $conn->Open();
+   
+   $sql = " select A.id, " .
+       	  "        A.ref_disciplina_ofer, " .
+          "        get_dia_semana(A.dia_semana), " .
+          "        pessoa_nome(B.ref_professor), " .
+          "        get_turno(A.turno), " .
+          "        A.desconto, " .
+          "        A.num_creditos_desconto, " .
+          "        A.num_sala, " .
+          "        A.observacao " .
+          " from disciplinas_ofer_compl A, disciplinas_ofer_prof B " .
+          " where A.ref_disciplina_ofer = B.ref_disciplina_ofer and " .
+    	  "       A.id = B.ref_disciplina_compl and  " .
+          "       A.ref_disciplina_ofer = '$id' and " .
+    	  "       B.ref_disciplina_ofer = '$id' " .
+          " order by A.dia_semana; ";
+   
+   $query = $conn->CreateQuery($sql);
+
+   echo("<center><table width=\"90%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+
+   $i=1;
+   $j=0;
+
+   // cores fundo
+   $bg0 = "#000000";
+   $bg1 = "#EEEEFF";
+   $bg2 = "#FFFFEE";
+
+   // cores fonte
+   $fg0 = "#FFFFFF";
+   $fg1 = "#000099";
+   $fg2 = "#000099";
+
+   while( $query->MoveNext() )
+   {
+     list ($id,
+     	   $ref_disciplina_ofer,
+     	   $dia_semana,
+           $professor,
+           $turno,
+           $desconto,
+           $num_creditos_desconto,
+           $num_sala,
+           $observacao) = $query->GetRowValues();
+    
+     if ($i == 1)
+     {
+         echo("<tr>");
+         echo ("<td bgcolor=\"#000099\" colspan=\"10\"><font size=\"2\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><center><b>Informações Complementares</b></center></font></td>");
+         echo("</tr>");
+         echo ("<tr bgcolor=\"#000000\">\n");
+         echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Ofer</b></font></td>");
+         echo ("<td width=\"2%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
+         echo ("<td width=\"13%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Dia</b></font></td>");
+         echo ("<td width=\"30%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Professor</b></font></td>");
+         echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Turno</b></font></td>");
+         echo ("<td width=\"10%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Desconto</b></font></td>");
+         echo ("<td width=\"10%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Sala</b></font></td>");
+         echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cred. Desc.</b></font></td>");
+         echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Obs.</b></font></td>");
+         echo ("<td width=\"4%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;</b></font></td>");
+         echo ("  </tr>");
+     }
+     
+     $href1  = "<a href=\"../disciplina_ofer_compl_edita.phtml?id=$id&ref_campus=$ref_campus\">$ref_disciplina_ofer</a>";
+
+     if ($aux_id == $id)
+     {
+     	$href2  = "<center><img src=\"../../images/etc.gif\" title='Disciplina ministrada por mais de um Professor' align='absmiddle' border=0></center>";
+     }
+     else
+     {
+        $href2 = "&nbsp;";
+     }
+
+     $href3  = "<a href=\"../disciplina_ofer_prof.phtml?ref_disciplina_ofer=$ref_disciplina_ofer&id_disciplina_ofer_compl=$id\"><img src=\"../images/add.gif\" title='Adiciona mais um professor a disciplina' align='absmiddle' border=0></a>";
+
+     if ( $i % 2 )
+     {
+         echo("<tr bgcolor=\"$bg1\">\n");
+         echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$href1</td>");
+         echo ("<td width=\"2%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$href2</td>");
+         echo ("<td width=\"13%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$dia_semana&nbsp;</td>");
+         echo ("<td width=\"30%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$professor&nbsp;</td>");
+         echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$turno&nbsp;</td>");
+         echo ("<td width=\"10%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$desconto&nbsp;</td>");
+         echo ("<td width=\"10%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$num_sala&nbsp;</td>");
+         echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$num_creditos_desconto&nbsp;</td>");
+         echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$observacao&nbsp;</td>");
+         echo ("<td width=\"4%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$href3</td>");
+         echo("  </tr>");
+      }
+      else
+      {
+         echo("<tr bgcolor=\"$bg2\">\n");
+         echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$href1</td>");
+         echo ("<td width=\"2%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$href2</td>");
+         echo ("<td width=\"13%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$dia_semana&nbsp;</td>");
+         echo ("<td width=\"30%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$professor&nbsp;</td>");
+         echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$turno&nbsp;</td>");
+         echo ("<td width=\"10%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$desconto&nbsp;</td>");
+         echo ("<td width=\"10%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$num_sala&nbsp;</td>");
+         echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$num_creditos_desconto&nbsp;</td>");
+         echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$observacao&nbsp;</td>");
+         echo ("<td width=\"4%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$href3</td>");
+         echo("  </tr>\n");
+      }
+    $i++;
+    $aux_id = $id;
+  }
+
+   echo("</table></center>");
+
+   $query->Close();
+}
+</script>
+</head>
+
+<body bgcolor="#FFFFFF">
+<form method="post" action="" name="myform">
+  <table cols=2 width="90%" align="center">
+    <tr bgcolor="#000099" align="center"> 
+      <td height="40" colspan="2"> <font face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF" size="3"><b>&nbsp;Disciplinas Oferecidas</b></font></td>
+    </tr>
+    </tr>
+    <tr align="center"> 
+      <td colspan="2" height="40"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#FF0000"><b><font size="3">Disciplina Inclu&iacute;da com sucesso</font></b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo</font></td>
+      <td bgcolor="#FFFFFF" width="70%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#FF0000"><b><? echo($id_disciplina_ofer);?></b></font>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font></td>
+      <td bgcolor="#FFFFFF" width="70%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"><b><?echo($ref_campus);?> - <?echo($nome_campus);?></b></font>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso</font></td>
+      <td bgcolor="#FFFFFF" width="70%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"><b><?echo($ref_curso);?> - <?echo($nome_curso);?></b></font>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Per&iacute;odo</font></td>
+      <td bgcolor="#FFFFFF" width="70%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"><b><?echo($ref_periodo);?></b></font>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina</font></td>
+      <td bgcolor="#FFFFFF" width="70%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"><b><?echo($ref_disciplina);?> - <?echo($nome_disciplina);?></b></font>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nº Alunos</font></td>
+      <td bgcolor="#FFFFFF" width="70%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"><b><?echo($num_alunos);?></b></font>
+      </td>
+    </tr>
+<!--    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Fixar nº Sala</font></td>
+      <td bgcolor="#FFFFFF" width="70%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"><b>
+      <?
+      if ($fixar_num_sala == '1') 
+      { $fixar_num_sala = 'Sim'; }
+      else
+      { $fixar_num_sala = 'Não'; }
+      echo($fixar_num_sala);
+      ?></b></font>
+      </td>
+    </tr>-->
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Conteúdo</font></td>
+      <td bgcolor="#FFFFFF" width="70%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"><b><?echo($conteudo);?></b></font>
+      </td>
+    </tr>
+    <tr align="center"> 
+      <td colspan="2">&nbsp;</td>
+    </tr>
+ </table>
+     <script language="PHP">
+     Lista_Complemento($id_disciplina_ofer, $ref_campus);
+     </script>
+  <table cols=2 width="90%" align="center">
+    <tr align="center"> 
+      <td colspan="2"> 
+    	<font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">
+    	<input type="button" name="Submit" value=" Incluir outra Ocorrência" onClick="javascript:Inclui_Complemento('<? echo($id_disciplina_ofer)?>','<?echo($ref_campus);?>','<?echo($ref_curso);?>','<?echo($ref_periodo);?>','<?echo($ref_disciplina)?>','<? echo($num_alunos)?>','<? echo($fixar_num_sala)?>','<? echo($conteudo)?>','<? echo($turma)?>','<? echo($ref_periodo_turma)?>')"></font>
+    </tr>
+    <tr align="center"> 
+      <td colspan="2"> 
+        <hr size="1">
+        <font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
+          <input type="button" name="sair" value=" Continuar " onclick="location='../disciplina_ofer.phtml'">
+          </font>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

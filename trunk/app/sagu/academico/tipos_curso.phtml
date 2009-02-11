@@ -1,0 +1,150 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+
+<html>
+<head>
+<script language="JavaScript">
+function _init()
+{
+  document.myform.descricao.focus();
+}
+</script>
+<script language="PHP">
+function Mostra_Tipos_Cursos()
+{
+
+  $conn = new Connection;
+
+  $conn->Open();
+
+  $sql= " select id, " .
+        "        descricao " .
+        " from tipos_curso " .
+        " order by descricao";
+
+  $query = $conn->CreateQuery($sql);
+
+  $n = $query->GetColumnCount();
+
+  echo("<center><table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+
+  $i=1;
+
+  // cores fundo
+  $bg0 = "#000000";
+  $bg1 = "#EEEEFF";
+  $bg2 = "#FFFFEE";
+
+  // cores fonte
+  $fg0 = "#FFFFFF";
+  $fg1 = "#000099";
+  $fg2 = "#000099";
+  
+  while( $query->MoveNext() )
+  {
+    list ($id,
+          $tipo_curso) = $query->GetRowValues();
+
+    $href  = "<a href=\"tipos_curso_altera.phtml?id=$id\"><img src=\"../images/update.gif\" title='Alterar Tipo de Curso' align='absmiddle' border=0></a>";
+    $href1 = "<a href=\"javascript:Confirma_Exclui($id)\"><img src=\"../images/delete.gif\" title='Excluir Tipo de Curso' align='absmiddle' border=0></a>";
+
+    if ($i == 1)
+    {
+      echo("<tr bgcolor=\"#000000\">\n");
+      echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Código</b></font></td>");
+      echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descrição do Tipo de Curso</b></font></td>");
+      echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;</b></font></td>");
+      echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;</b></font></td>");
+      echo("  </tr>"); 
+    }
+
+    if ( $i % 2)
+    {
+       echo("<tr bgcolor=\"$bg1\">\n");
+       echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$id</td>");
+       echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$tipo_curso</td>");
+       //echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$href</td>");
+       //echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$href1</td>");
+       echo("  </tr>");
+
+    }
+    else
+    {
+       echo("<tr bgcolor=\"$bg2\">\n");
+       echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$id</td>");
+       echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$tipo_curso</td>");
+       //echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$href</td>");
+       //echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$href1</td>");
+       echo("  </tr>");
+    }
+
+    $i++;
+
+  }
+
+  echo("</table></center>");
+
+  $query->Close();
+
+  $conn->Close();
+}
+</script>
+
+<script language="JavaScript">
+function Confirma_Exclui(arg1)
+{
+  url = 'post/tipos_curso_exclui.php3?id=' + arg1;
+
+  if (confirm("Você tem certeza que deseja excluir tipo de curso: "+arg1))
+    location=(url)
+  else
+    alert("Exclusão Cancelada.");
+}
+</script>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
+<!-- <form method="post" action="post/tipos_curso.php3" name="myform"> -->
+<table width="90%" align="center">
+  <tr bgcolor="#000099"> 
+    <td height="35" colspan="2"> 
+      <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Tipos de Cursos</font></b></font></div>
+    </td>
+  </tr>
+  <!--
+  <tr> 
+    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Descri&ccedil;&atilde;o</font></td>
+    <td> 
+      <input name="descricao" type=text size="35">
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <hr size="1">
+    </td>
+  </tr>
+  <tr> 
+    <td height="33" colspan="2"> 
+      <div align="center"> 
+        <input type="submit" name="Submit"  value="  Incluir  ">
+        <input type="reset"  name="Submit2" value="  Limpar  ">
+        <input type="button" name="Button2" value="   Sair   " onClick="javascript:history.go(-1)">
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td height="13" colspan="2">
+      <hr size="1">
+    </td>
+  </tr>
+  -->
+  <tr> 
+    <td height="33" colspan="2"> 
+      <div align="center">
+        <?PHP Mostra_Tipos_Cursos(); ?>
+      </div>
+    </td>
+  </tr>
+</table>
+<!-- </form> -->
+</body>
+</html>

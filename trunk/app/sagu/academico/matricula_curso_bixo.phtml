@@ -1,0 +1,185 @@
+<? require("../lib/common_not_login.php3"); ?>
+<? require("../lib/GetPessoaNome.php3"); ?>
+<? require("../lib/CalcValorAtual.php3"); ?>
+
+<? CheckFormParameters(array('periodo_id','aluno_id')); ?>
+<? $aluno_nome = GetPessoaNome($aluno_id,true); ?>
+
+<HTML>
+<HEAD>
+
+<script language="JavaScript">
+
+function mostra_disciplinas(id,desc,id_contrato,campus)
+{
+  document.myform.curso_id.value = id;
+  document.myform.curso_nome.value = desc;
+  document.myform.id_contrato.value = id_contrato;
+  document.myform.ref_campus.value = campus;
+  document.myform.submit();
+}
+</script>
+
+<script language="PHP">
+
+/************************** Verifica Saldo do Aluno ************************/
+
+  $conn = new Connection;
+  $conn->Open();
+
+  $sql = " select fl_segurado from pessoas where id='$aluno_id'";
+  
+  $query = $conn->CreateQuery($sql);
+  if ($query->MoveNext())
+  { list( $segurado ) = $query->GetRowValues(); }
+  $query->Close();
+
+  $sql = " select saldo(A.id), ".
+         "        A.dt_vencimento, " .
+         "        B.desconto_mes, " .
+         "        B.multa_mes, " .
+         "        B.multa_pos, " .
+         "        B.dias_multa " .
+         " from titulos_cr A, origens B ".
+         " where A.ref_origem=B.id and " .
+         "       A.ref_pessoa='$aluno_id' and " .
+         "       saldo(A.id) > 0 and " .
+         "       A.dt_vencimento < date(now()) " .
+         " order by dt_vencimento desc";
+
+  $query = $conn->CreateQuery($sql);
+  
+  $ValorTotalAtual = 0;
+  
+  for ( $i=0; $query->MoveNext(); $i++ )
+  {
+    list ($saldo_titulo,
+          $dt_vencimento,
+          $desconto_mes,
+          $multa_mes,
+          $multa_pos,
+          $dias_multa) = $query->GetRowValues();
+          
+    $vlr_atual = CalcValorAtual($saldo_titulo, $dt_vencimento, $desconto_mes, $multa_pos, $multa_mes, $dias_multa, $dias);
+    
+    $ValorTotalAtual += $vlr_atual;
+  
+  }
+  
+  $conn->Close();
+
+  if (($segurado=='f') && ($ValorTotalAtual>0))
+  {
+    SaguAssert( (!$ValorTotalAtual), "Aluno $aluno_id (não segurado) com saldo negativo de R$ $ValorTotalAtual!");
+  }
+
+/***************************************************************************/
+
+</script><title>Matrícula Caluros</title>
+</HEAD>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="matricula_disc_bixo.phtml" name="myform">
+<table width="90%" border="0" cellspacing="2" cellpadding="0" align="center">
+<tr>
+    <td height="32" align="center" colspan="5"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">Início :: <b>Selecione Contrato</b> :: Selecione Disciplinas :: Confirmação :: Finalização</font></font>
+   </td>
+</tr>
+<tr bgcolor="#000099">
+  <td height="32" colspan="5">
+    <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF"> Cursos da Matr&iacute;cula</font></b></font></div>
+  </td>
+</tr>
+<tr>
+  <td align="center" colspan="5">
+    <table>
+      <tr>
+        <td align="center"><img src="images/attention.gif" width="50" height="50"></td>
+        <td align="center"><font face="Arial, Helvetica, sans-serif" size="2" color="blue"><p><b>Confira seu nome e o curso e clique no respectivo botão de Selecionar Disciplinas.</b></p></font>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td colspan="5" height="32" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099"><b>&nbsp;&nbsp;Identifica&ccedil;&atilde;o do Aluno
+    <?
+       if ($segurado=='f')
+       { echo("  (não segurado)"); }
+       else
+       { echo("  (segurado)"); }
+    ?>
+
+    </b></font></td>
+</tr>
+<tr>
+  <td width="30%" bgcolor="#CCCCFF" colspan="2"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Per&iacute;odo:</font></td>
+  <td colspan="3"><font face="Arial, Helvetica, sans-serif" size="2"><?echo($periodo_id)?>
+    <input type="hidden" name="periodo_id" size="8" value="<?echo($periodo_id)?>"> </font></td>
+</tr>
+<tr>
+  <td width="30%" bgcolor="#CCCCFF" colspan="2"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Aluno:</font></td>
+  <td colspan="3"> <font face="Arial, Helvetica, sans-serif" size="2"><?echo($aluno_id)?> 
+    <?echo($aluno_nome)?> 
+    <input type="hidden" name="aluno_id" size="8" value="<?echo($aluno_id)?>">
+    <input type="hidden" name="aluno_nome" size="32" value="<?echo($aluno_nome)?>">
+    <input type="hidden" name="curso_id" size="8">
+    <input type="hidden" name="curso_nome" size="32">
+    <input type="hidden" name="id_contrato" size="32">
+    <input type="hidden" name="ref_campus" size="32">
+    </font></td>
+</tr>
+<tr>
+  <td colspan="5" height="32" bgcolor="#CCCCFF"><font color="#000099"><b><font face="Arial, Helvetica, sans-serif" size="2">&nbsp;&nbsp;Contratos do Aluno</font></b></font>
+  
+  <script language="PHP">
+  $sql = " select A.ref_campus, " .
+         "        A.ref_curso, " .
+         "        B.descricao, " .
+         "        A.id " .
+         " from contratos A, cursos B" .
+         " where A.ref_pessoa = '$aluno_id' and " .
+         "       A.dt_desativacao is null and " .
+         "       A.ref_curso = B.id ";
+
+  $conn = new Connection;
+  $conn->Open();
+  $query = $conn->CreateQuery($sql);
+
+  while ( $query->MoveNext() )
+  {
+    list ( $campus, 
+           $id, 
+           $desc, 
+           $id_contrato ) = $query->GetRowValues();
+  </script>
+  </td>
+</tr>
+<tr>
+  <td width="10%"><font face="Arial, Helvetica, sans-serif" size="2"><?echo($id_contrato);?></font></td>
+  <td width="10%"><font face="Arial, Helvetica, sans-serif" size="2"><?echo($id);?></font></td>
+  <td width="60%"><font face="Arial, Helvetica, sans-serif" size="2"><?echo($desc);?></font></td>
+  <td width="20%" colspan="2"> 
+    <input type=button value="Selecionar Disciplinas..." onClick="mostra_disciplinas(<?echo($id);?>,'<?echo($desc);?>',<?echo($id_contrato);?>,<?echo($campus);?>)">
+  </td>
+  <script language="PHP">
+  } // while
+
+  $query->Close();
+  $conn->Close();
+  </script>
+  </td>
+</tr>
+<tr>
+  <td colspan="5">
+    <hr size="1">
+  </td>
+</tr>
+<tr>
+  <td colspan="5" align="center"> 
+    <input type="button" name="button" value=" << Voltar " onClick="location='matricula_aluno_bixo.phtml'">
+  </td>
+</tr>
+</table>
+</form>
+</body>
+</HTML>

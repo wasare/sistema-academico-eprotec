@@ -1,0 +1,38 @@
+<? require("../../../lib/common.php"); ?>
+<HTML>
+<HEAD>
+<script language="PHP">
+
+CheckFormParameters(array("nome"));
+
+$conn = new Connection;
+$conn->Open();
+$conn->Begin();
+
+$sql = " DROP USER $nome;";
+$mensagem = "Exclusão de Usuário...";
+
+$ok = $conn->Execute($sql);  
+
+// Insere usuário na tabela SAGU_USUARIOS no banco de dados sagu.
+$sql2 = " DELETE FROM sagu_usuarios " .
+        " WHERE nome = '$nome';";
+
+$ok2 = $conn->Execute($sql2);  
+
+$conn->Finish();
+$conn->Close();
+
+SaguAssert($ok,"Erro ao excluir usuário no banco de dados!");
+
+SaguAssert($ok2,"Erro ao excluir o usuário!");
+
+SuccessPage("$mensagem",
+            "location='../consulta_inclui_usuarios.phtml'",
+            "O usuário <b>$nome</b> foi excluído com sucesso!!!");
+
+</script>
+</HEAD>
+<BODY>
+</BODY>
+</HTML>
