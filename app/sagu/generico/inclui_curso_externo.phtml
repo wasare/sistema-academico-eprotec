@@ -1,0 +1,53 @@
+<html>
+<head>
+<script language="JavaScript">
+
+  function _init()
+  {
+    document.myform.nome.focus();
+  }
+
+</script>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
+<form method="post" action="post/confirm_curso_externo.phtml" name="myform">
+  <table width="90%" align="center">
+    <tr bgcolor="#000099"> 
+      <td height="35" colspan="2"> 
+        <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Inclus&atilde;o de Cursos Externos</font></b></font></div>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome do Curso Externo</font></td>      
+      <td> 
+        <input name="nome" type=text size="40" maxlength="80">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome Sucinto</font></td>
+      <td> 
+        <input name="sucinto" type=text size="40" maxlength="50">
+      </td>
+    </tr>
+    <tr>
+       <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Obs</font></td>
+       <td>
+        <input name="obs" type=text size="40" maxlength="80">
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" align="center"> 
+        <input type="submit" name="Submit"  value=" Prosseguir ">
+        <input type="reset"  name="Submit2" value="   Limpar   ">
+        <input type="button" name="Button2" value="   Voltar   " onClick="location='consulta_inclui_curso_externo.phtml'">
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>
+

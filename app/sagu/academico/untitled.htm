@@ -1,0 +1,44 @@
+<? require("../../../lib/common.php"); ?>
+<html>
+<head>
+<script language="PHP">
+
+
+CheckFormParameters(array("id"));
+
+$conn = new Connection;
+
+$conn->Open();
+
+$sql = " update disciplinas_ofer set " .
+       "    id = '$id'," .
+       "    ref_campus = '$ref_campus'," .
+       "    ref_curso = '$ref_curso'," .
+       "    ref_periodo = '$ref_periodo'," .
+       "    ref_disciplina = '$ref_disciplina'," .
+       "    ref_professor = '$ref_professor'," .
+       "    dia_semana = '$dia_semana'," .
+       "    num_sala = '$num_sala'," .
+       "    num_alunos = '$num_alunos'," .
+       "    fixar_num_sala = '$fixar_num_sala'," .
+       "    desconto = '$desconto'," .
+       "    is_cancelada = '$is_cancelada'," .
+       "    conteudo = '$conteudo'," .
+       "    observacao = '$observacao'" .
+       "  where id = '$id'";
+
+$ok = @$conn->Execute($sql);  // tire o @ para visualizar mensagens de error do sistema DB
+
+$query->Close();
+
+$conn->Close();
+
+SaguAssert(!$ok,"Nao foi possivel de atualizar o registro!");
+
+</script>
+</head>
+<body bgcolor="#FFFFFF">
+<br>
+<p>Atualização OK</p>
+</body>
+</html>

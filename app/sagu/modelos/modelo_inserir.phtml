@@ -1,0 +1,115 @@
+<html>
+<head>
+<script language="JavaScript">
+var tipo_busca;
+
+function buscaPais()
+{
+  tipo_busca = 1;
+
+  url = '/generico/post/lista_paises.php3' +
+         '?id=' + escape(document.myform.ref_pais.value) +
+         '&desc=' + escape(document.myform.nome_pais.value);
+
+  window.open(url,"busca","toolbar=no,width=530,height=320,top=80,left=55,directories=no,menubar=no,scrollbars=yes");
+}
+
+function buscaEstado()
+{
+  tipo_busca = 2;
+
+  url = '/generico/post/lista_estados.php3' +
+         '?id=' + escape(document.myform.ref_estado.value) +
+         '&desc=' + escape(document.myform.nome_estado.value) +
+         '&ref_pais=' + escape(document.myform.ref_pais.value);
+
+  window.open(url,"busca","toolbar=no,width=530,height=320,top=80,left=55,directories=no,menubar=no,scrollbars=yes");
+}
+
+function setResult(arg1,arg2)
+{
+  if ( tipo_busca == 1 )
+  {
+     document.myform.ref_pais.value = arg1;
+     document.myform.nome_pais.value = arg2;
+  }  
+
+  else if ( tipo_busca == 2 )
+  {
+     document.myform.ref_estado.value = arg1;
+     document.myform.nome_estado.value = arg2;
+  }  
+}
+</script>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="post/cidades_inclui.php3" name="myform">
+  <table cols=2 width="500" align="center">
+    <tr> 
+      <td bgcolor="#000099" colspan="2" height="28"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Inclus&atilde;o 
+        Cidade</b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="59"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome&nbsp;</font></td>
+      <td width="437"> 
+        <input name="nome" type=text size="40">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="59"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;CEP&nbsp;</font></td>
+      <td width="437"> 
+        <input name="cep" type=text size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="59"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Pais&nbsp;</font></td>
+      <td width="437"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td> 
+              <input type="text" name="ref_pais" size="6">
+            </td>
+            <td width="100%"> 
+              <input name="nome_pais" type=text size="35">
+            </td>
+            <td align="right"> 
+              <input type="button" name="Submit3" value="..." onclick="buscaPais()">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="59"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Estado&nbsp;</font></td>
+      <td width="437"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+              <input name="ref_estado" type=text size="6">
+            </td>
+            <td width="100%"> 
+              <input name="nome_estado" type=text size="35">
+            </td>
+            <td align="right"> 
+              <input type="button" name="Submit32" value="..." onClick="buscaEstado()">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td width="59">&nbsp;</td>
+      <td width="437"> 
+        <input type="submit" name="Submit" value="Incluir Registro">
+        <input type="reset" name="Submit2" value="Limpar">
+      </td>
+    </tr>
+  </table>
+  </form>
+  </body>
+</html>

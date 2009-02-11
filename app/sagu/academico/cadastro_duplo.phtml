@@ -1,0 +1,225 @@
+<? require("../../../lib/common.php"); ?>
+
+<html>
+<head>
+
+<script language="PHP">
+function MostraCadastros()
+{
+  $conn = new Connection;
+
+  $conn->Open();
+
+  $sql= " select id_old, " .
+        "        id_new, " .
+	"        pessoa_nome(id_old), " .
+	"        pessoa_nome(id_new) " .
+	" from cadastro_duplo " .
+	" where tipo = 'pessoas' " .
+	" order by pessoa_nome(id_old)";
+
+  $query = $conn->CreateQuery($sql);
+
+  $n = $query->GetColumnCount();
+
+  echo("<br><center><table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+
+  $i=1;
+
+  // cores fundo
+  $bg0 = "#000000";
+  $bg1 = "#EEEEFF";
+  $bg2 = "#FFFFEE";
+
+  // cores fonte
+  $fg0 = "#FFFFFF";
+  $fg1 = "#000099";
+  $fg2 = "#000099";
+
+  while( $query->MoveNext() )
+  {
+    list ($old,
+          $novo,
+          $nome_old,
+          $nome_new) = $query->GetRowValues();
+
+     $sql = " select A.ref_periodo " .
+            " from matricula A, periodos B " .
+	    " where A.ref_pessoa = $old and " .
+	    "       B.id = A.ref_periodo " .
+	    " order by B.dt_inicial desc limit 1";
+
+     $query2 = $conn->CreateQuery($sql);
+
+     $sql = " select A.ref_periodo " .
+            " from matricula A, periodos B " .
+	    " where A.ref_pessoa = $novo and " .
+	    "       B.id = A.ref_periodo " .
+	    " order by B.dt_inicial desc limit 1";
+
+     $query3 = $conn->CreateQuery($sql);
+
+     if ( $query2->MoveNext() )
+       $periodo_velho = $query2->GetValue(1);
+     else
+       $periodo_velho = '&nbsp;';
+
+     if ( $query3->MoveNext() )
+       $periodo_novo = $query3->GetValue(1);
+     else
+       $periodo_novo = '&nbsp;';
+
+     if ($nome_new == '')
+     {
+       $nome_new = 'NI';
+     }
+
+     if ($nome_old == '')
+     {
+       $nome_old = 'NI';
+     }
+
+     $href = "<a href=\"javascript:Confirma_Exclui('$old','$novo')\"><img src=\"../images/delete.gif\" title='Excluir Cadastro' align='absmiddle' border=0></a>";
+     
+     $href1  = "<a href=\"javascript:Unifica_Cadastro('$old','$novo','" . urlencode($nome_new) ."','$nome_new')\"><img src=\"../images/close.gif\" title='Unificar o Cadastro da Pessoa' align='absmiddle' border=0></a>&nbsp;$old&nbsp;";
+     $href2  = "<a href=\"javascript:mostra_cadastro('$old')\"><img src=\"../images/update.gif\" title=\"Verifica Cadastro\" align='absmiddle' border=0></a>";
+     
+     $href3 = "<a href=\"javascript:Unifica_Cadastro('$novo','$old','" . urlencode($nome_new) . "','$nome_new')\"><img src=\"../images/close.gif\" title='Unificar o Cadastro da Pessoa' align='absmiddle' border=0></a>&nbsp;$novo&nbsp;";
+     $href4 = "<a href=\"javascript:mostra_cadastro('$novo')\"><img src=\"../images/update.gif\" title=\"Verifica Cadastro\" align='absmiddle' border=0></a>";
+
+    if ($i == 1)
+    {
+      echo("<tr bgcolor=\"#000000\">\n");
+      echo ("<td width=\"39%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Nome do Aluno</b></font></td>");
+      echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;&nbsp;Codigo 1</b></font></td>");
+      echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
+      echo ("<td width=\"11%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Último Período</b></font></td>");
+      echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;&nbsp;Codigo 2</b></font></td>");
+      echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
+      echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Último Período</b></font></td>");
+      echo ("<td width=\"10%\" align=\"right\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;</b></font></td>");
+      echo("  </tr>");
+    }
+    
+    $nome = "$nome_new";
+
+    if ( $i % 2)
+    {
+       $bg = $bg1;
+       $fg = $fg2;
+    }
+    else
+    {
+       $bg = $bg2;
+       $fg = $fg1;
+    }
+    
+    echo("<tr bgcolor=\"$bg\">\n");
+    echo ("<td width=\"39%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\"><b>$nome</b></td>");
+    echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\"><b>$href1<b></td>");
+    echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\"><b>$href2<b></td>");
+    echo ("<td width=\"11%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\">$periodo_velho</td>");
+    echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\"><b>$href3</b></td>");
+    echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\"><b>$href4</b></td>");
+    echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\">$periodo_novo</td>");
+    echo ("<td width=\"10%\" align=\"right\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\">$href</td>");
+    echo ("</tr>");
+
+    $i++;
+
+  }
+  
+  $total = $i - 1;
+
+  echo("<tr bgcolor=\"#000000\">\n");
+  echo ("<td width=\"94%\" colspan=\"7\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Total de Alunos</b></td>");
+  echo ("<td width=\"6%\" align=\"right\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>$total</b></td>");
+  echo("  </tr>");
+
+  echo("</table></center>");
+
+  $query->Close();
+
+  $conn->Close();
+}
+</script>
+
+<script language="JavaScript">
+function Confirma_Exclui(arg1, arg2)
+{
+  url = 'post/cadastro_duplo_exclui.php3?id_old=' + arg1 + '&id_new=' + arg2;
+ 
+  if (confirm("Você tem certeza que deseja EXCLUIR o cadastro duplo: "+arg1+" - "+arg2+" ?"))
+       location=(url)
+  else
+       alert("Exclusão Cancelada.");
+}
+
+function Unifica_Cadastro(arg1, arg2, arg3, arg4)
+{
+  url = 'post/unifica_cadastro.php3?id_valido=' + arg1 + '&id_invalido=' + arg2 + '&nome_pessoa=' + arg3;
+ 
+  if (confirm("Você está prestes a unificar o cadastro do(a) aluno(a) "+ arg4 +".\nA partir de hoje o código "+arg1+" será o código válido enquanto que o código "+arg2+" será excluído do sistema.\nConseqüentemente todas as informações referentes ao código "+arg2+" serão convertidas para o código "+arg1+".\nVocê tem certeza que deseja fazer isto???"))
+       location=(url)
+  else
+       alert("Unificação Cancelada.");
+}
+
+function mostra_cadastro(id)
+{
+  var url = "pessoaf_edita.phtml?id=" + escape(id);
+
+  window.open(url,'pessoas','resizable=yes, toolbar=no,width=840,height=620,scrollbars=yes');
+}
+
+</script>
+	      
+
+<script language="JavaScript">
+function _init()
+{
+  document.myform.id_old.focus();
+}
+</script>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
+<form method="post" action="post/cadastro_duplo.php3" name="myform">
+  <table width="90%" align="center">
+    <tr bgcolor="#000099"> 
+      <td height="35" colspan="2"> 
+        <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Inclusão de Alunos Duplicados</font></b></font></div>
+      </td>
+    </tr>
+    <tr>
+      <td height="50%" bgcolor="#CCCCFF" width="246"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Código 1</font></td>
+      <td height="50%" bgcolor="#CCCCFF" width="247"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Código 2</font></td>
+    </tr>
+    <tr>
+      <td width="50%">
+        <input name="id_new" type=text size="15" maxlength="15">
+      <td width="50%">
+        <input name="id_old" type=text size="15" maxlength="15">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" align="center"> 
+        <input type="submit" name="Submit"  value=" Salvar ">
+        <input type="reset"  name="Submit2" value=" Limpar ">
+        <input type="button" name="Button2" value=" Voltar " onClick="location='cadastro_duplo_idx.phtml'">
+      </td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+    </tr>
+    </table>
+    <script language="PHP">
+       MostraCadastros();
+    </script>
+</form>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<? require("../../../../lib/common.php"); ?>
+<html>
+<head>
+<script language="PHP">
+
+
+/*******************************************************************
+
+CheckFormParameters(array("ref_campus",
+                          "ref_pessoa",
+                          "ref_curso",
+                          "dt_ativacao",
+                          "ref_motivo_ativacao",
+                          "ref_motivo_desativacao",
+                          "dt_desativacao",
+                          "bolsa_possui",
+                          "bolsa_desde",
+                          "bolsa_dt_inicio",
+                          "bolsa_percentual",
+                          "obs",
+                          "desconto",
+                          "dt_formatura",
+                          "dt_provao",
+                          "dt_diploma",
+                          "dt_apostila",
+                          "ultimo_periodo",
+                          "is_ouvinte",
+                          "is_formando",
+                          "percentual_pago"));
+
+*******************************************************************/
+
+
+</script>
+</head>
+<body bgcolor="#FFFFFF">
+<table border="0" width="500" align="center" cellspacing="2" cellpadding="0">
+  <tr bgcolor="#FFFFFF">
+    <td width="27%">
+      <div align="center"><img src="images/logo_ies.gif" width="104" height="94"></div>
+    </td>
+    <td width="73%">
+      <div align="center"><font size="4" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#000099">Constru&ccedil;&atilde;o
+        de Formul&aacute;rios</font></b></font></div>
+    </td>
+  </tr>
+</table>
+<br>
+<form method="post" action="alterar_contrato.php3" name="myform">
+  <table cols=2 width="500" align="center">
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;ref_campus&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($ref_campus);?> </font><input name="ref_campus" type=hidden value="<?echo($ref_campus);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;ref_pessoa&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($ref_pessoa);?> </font><input name="ref_pessoa" type=hidden value="<?echo($ref_pessoa);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;ref_curso&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($ref_curso);?> </font><input name="ref_curso" type=hidden value="<?echo($ref_curso);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;dt_ativacao&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($dt_ativacao);?> </font><input name="dt_ativacao" type=hidden value="<?echo($dt_ativacao);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;ref_motivo_ativacao&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($ref_motivo_ativacao);?> </font><input name="ref_motivo_ativacao" type=hidden value="<?echo($ref_motivo_ativacao);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;ref_motivo_desativacao&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($ref_motivo_desativacao);?> </font><input name="ref_motivo_desativacao" type=hidden value="<?echo($ref_motivo_desativacao);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;dt_desativacao&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($dt_desativacao);?> </font><input name="dt_desativacao" type=hidden value="<?echo($dt_desativacao);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;bolsa_possui&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($bolsa_possui);?> </font><input name="bolsa_possui" type=hidden value="<?echo($bolsa_possui);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;bolsa_desde&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($bolsa_desde);?> </font><input name="bolsa_desde" type=hidden value="<?echo($bolsa_desde);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;bolsa_dt_inicio&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($bolsa_dt_inicio);?> </font><input name="bolsa_dt_inicio" type=hidden value="<?echo($bolsa_dt_inicio);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;bolsa_percentual&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($bolsa_percentual);?> </font><input name="bolsa_percentual" type=hidden value="<?echo($bolsa_percentual);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;obs&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($obs);?> </font><input name="obs" type=hidden value="<?echo($obs);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;desconto&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($desconto);?> </font><input name="desconto" type=hidden value="<?echo($desconto);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;dt_formatura&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($dt_formatura);?> </font><input name="dt_formatura" type=hidden value="<?echo($dt_formatura);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;dt_provao&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($dt_provao);?> </font><input name="dt_provao" type=hidden value="<?echo($dt_provao);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;dt_diploma&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($dt_diploma);?> </font><input name="dt_diploma" type=hidden value="<?echo($dt_diploma);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;dt_apostila&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($dt_apostila);?> </font><input name="dt_apostila" type=hidden value="<?echo($dt_apostila);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;ultimo_periodo&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($ultimo_periodo);?> </font><input name="ultimo_periodo" type=hidden value="<?echo($ultimo_periodo);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;is_ouvinte&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($is_ouvinte);?> </font><input name="is_ouvinte" type=hidden value="<?echo($is_ouvinte);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;is_formando&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($is_formando);?> </font><input name="is_formando" type=hidden value="<?echo($is_formando);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;percentual_pago&nbsp;</font></td>
+      <td width="100%">
+<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">  <?echo($percentual_pago);?> </font><input name="percentual_pago" type=hidden value="<?echo($percentual_pago);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td> 
+        <input type="submit" value="Submit">
+        <input type="reset" value="Reset">
+      </td>
+    </tr>
+  </table>
+</form>
+<p>&nbsp;</p></body>
+</html>

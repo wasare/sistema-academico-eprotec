@@ -1,0 +1,1315 @@
+	 where A.ref_titulo= $1 and
+	       A.ref_historico = B.id
+CONTEXT:  SQL function "saldo" during inlining
+LOG:  statement: select sum(A.valor_lancto * B.indice_op)
+	 from lancamentos_cr A,
+	      historicos B
+	 where A.ref_titulo= $1 and
+	       A.ref_historico = B.id
+CONTEXT:  SQL function "saldo" during inlining
+LOG:  statement: select A.ref_campus, A.ref_curso, B.descricao, A.id, A.semestre, A.turma, A.ref_periodo_turma  from contratos A, cursos B  where A.ref_pessoa = 795 and        A.dt_desativacao is null and        A.ref_curso = B.id
+LOG:  statement:  delete from disciplinas_todos_alunos where ref_curso = '2' and                                             ref_campus = '1' and                                             ref_pessoa = '795'
+LOG:  statement:  select id,         ref_pessoa,          ref_curso,          ref_campus,         get_periodo_anterior('1')  from contratos   where (ref_last_periodo = '1' or         ref_last_periodo = get_periodo_anterior('1') ) and         ref_curso = '2' and         ref_campus = '1' and        dt_desativacao is null and        ref_pessoa = '795'
+LOG:  statement: select ref_anterior from periodos where id = $1
+CONTEXT:  SQL function "get_periodo_anterior" during inlining
+LOG:  statement: select ref_anterior from periodos where id = $1
+CONTEXT:  SQL function "get_periodo_anterior" during inlining
+LOG:  statement: select ref_anterior from periodos where id = $1
+CONTEXT:  SQL function "get_periodo_anterior" during inlining
+LOG:  statement: select ref_anterior from periodos where id = $1
+CONTEXT:  SQL function "get_periodo_anterior" during startup
+LOG:  statement: select ref_anterior from periodos where id = $1
+CONTEXT:  SQL function "get_periodo_anterior" during startup
+LOG:  statement:  select sum(B.carga_horaria)  from matricula A, disciplinas B  where A.ref_disciplina = B.id and        A.ref_pessoa = '795' and        A.ref_curso = '2' and        A.dt_cancelamento is null and        A.fl_liberado <> '1' and        A.fl_liberado <> '2' and        ((A.nota_final >= get_media_final(A.ref_periodo)) or         (A.nota_final = 0 and A.ref_periodo = '1') or         (A.conceito <> '') or         (A.fl_liberado = '3') or         (A.fl_liberado = '4')) and        get_curriculo_mco('2','1',A.ref_disciplina) != 'A'
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement: select curriculo_mco from cursos_disciplinas where ref_curso = $1 and ref_campus = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_curriculo_mco" during inlining
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during startup
+LOG:  statement: select curriculo_mco from cursos_disciplinas where ref_curso = $1 and ref_campus = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_curriculo_mco" during startup
+LOG:  statement:  select distinct ref_curso,                  ref_campus,                   ref_disciplina,                   semestre_curso,                   curriculo_mco,                  disciplina_substituida, 		            pre_requisito_hora,                  cursa_outra_disciplina  from cursos_disciplinas  where ref_curso = '2' and         ref_campus = '1' and         curriculo_mco <> 'O' and        curriculo_mco <> 'P' and        fl_soma_curriculo is true and        (dt_final_curriculo >= date(now()) or dt_final_curriculo is null) order by semestre_curso, ref_disciplina; 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '2' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during startup
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          2,          0); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '3' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during startup
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          3,          0); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '4' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during startup
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          4,          0); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '5' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during startup
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          5,          0); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '6' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during startup
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          6,          0); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '7' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during startup
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          7,          0); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '9' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during startup
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          9,          0); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '8' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during startup
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          8,          0); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '10' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '10' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          10,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '11' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '11' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          11,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '12' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '12' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          12,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '13' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '13' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          13,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '14' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '14' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          14,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '15' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '15' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          15,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '16' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '16' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          16,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '17' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '17' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          17,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '18' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '18' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          18,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '19' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '19' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          19,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '20' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '20' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          20,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '21' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '21' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          21,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '22' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '22' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          22,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '23' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '23' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          23,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '24' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '24' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          24,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '25' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '25' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          25,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '26' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '26' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          26,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '27' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '27' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          27,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '28' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '28' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          28,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '29' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '29' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          29,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '30' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '30' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          30,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '31' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '31' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          31,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '32' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '32' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          32,          1); 
+LOG:  statement:  select nota_final  from matricula  where ref_pessoa = '795' and  ref_disciplina = '33' and        dt_cancelamento is null and        fl_liberado <> '1' and        fl_liberado <> '2' and         ((nota_final >= get_media_final(ref_periodo)) or   (nota_final = 0 and ref_periodo = '1') or   (conceito <> '') or   (fl_liberado = '3') or   (fl_liberado = '4')  )  
+LOG:  statement: select media_final from periodos where id = $1
+CONTEXT:  SQL function "get_media_final" during inlining
+LOG:  statement:  select ref_disciplina_pre,         ref_area,         horas_area  from pre_requisitos  where ref_disciplina = '33' and        ref_curso = '2' and        tipo = 'P'
+LOG:  statement:  insert into disciplinas_todos_alunos  values(795,          2,          1,          33,          1); 
+LOG:  statement: SELECT DISTINCT C.ref_disciplina,        descricao_disciplina(C.ref_disciplina),        C.semestre_curso   FROM cursos_disciplinas C  LEFT JOIN contratos B     ON (C.semestre_curso <= B.semestre )  LEFT JOIN matricula A     ON (A.ref_contrato = B.id AND         A.ref_disciplina = C.ref_disciplina )  WHERE B.id           = '1'    AND (              A.fl_liberado = 1           OR A.fl_liberado = 2           OR ( A.nota_final < (SELECT media_final FROM periodos WHERE periodos.id = A.ref_periodo)           AND (fl_liberado = '2' OR fl_liberado = '1' OR A.fl_liberado = '') )            OR A.id is null        )    AND C.ref_curso = '2'    AND C.ref_campus = '1' ORDER BY C.semestre_curso asc; 
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during startup
+LOG:  statement: select fl_liberado from matricula where ref_disciplina = '2' and ref_contrato = '1' and (fl_liberado = 3 or fl_liberado = 4)
+LOG:  statement: select fl_liberado from matricula where ref_disciplina = '3' and ref_contrato = '1' and (fl_liberado = 3 or fl_liberado = 4)
+LOG:  statement: select fl_liberado from matricula where ref_disciplina = '4' and ref_contrato = '1' and (fl_liberado = 3 or fl_liberado = 4)
+LOG:  statement: select fl_liberado from matricula where ref_disciplina = '5' and ref_contrato = '1' and (fl_liberado = 3 or fl_liberado = 4)
+LOG:  statement: select fl_liberado from matricula where ref_disciplina = '6' and ref_contrato = '1' and (fl_liberado = 3 or fl_liberado = 4)
+LOG:  statement: select fl_liberado from matricula where ref_disciplina = '7' and ref_contrato = '1' and (fl_liberado = 3 or fl_liberado = 4)
+LOG:  statement: select fl_liberado from matricula where ref_disciplina = '9' and ref_contrato = '1' and (fl_liberado = 3 or fl_liberado = 4)
+LOG:  statement: begin transaction
+LOG:  statement:  select ref_disciplina,         descricao_disciplina(ref_disciplina),         ref_disciplina_subst,        descricao_disciplina(ref_disciplina_subst),         get_semestre_curso (ref_curso, ref_campus, ref_disciplina),         status  from disciplinas_todos_alunos  where ref_campus = '1'    and ref_curso = '2'    and ref_pessoa = '795'  order by get_semestre_curso (ref_curso, ref_campus, ref_disciplina)
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select semestre_curso from cursos_disciplinas where ref_curso = $1 and ref_campus = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_semestre_curso" during inlining
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during startup
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during startup
+LOG:  statement: select semestre_curso from cursos_disciplinas where ref_curso = $1 and ref_campus = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_semestre_curso" during startup
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','2'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '2' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during startup
+LOG:  statement: SELECT  ''
+CONTEXT:  SQL statement "SELECT  ''"
+	PL/pgSQL function "professor_disciplina_ofer_todos" line 4 at block variables initialization
+LOG:  statement:  SELECT * FROM pessoas A, disciplinas_ofer_prof B, disciplinas_ofer_compl C where A.id = B.ref_professor and B.ref_disciplina_compl = C.id and B.ref_disciplina_ofer =  $1  ORDER BY C.dia_semana
+CONTEXT:  SQL statement " SELECT * FROM pessoas A, disciplinas_ofer_prof B, disciplinas_ofer_compl C where A.id = B.ref_professor and B.ref_disciplina_compl = C.id and B.ref_disciplina_ofer =  $1  ORDER BY C.dia_semana"
+	PL/pgSQL function "professor_disciplina_ofer_todos" line 5 at for over select rows
+LOG:  statement: SELECT  trim(substr( $1 , 2, length( $2 )))
+CONTEXT:  SQL statement "SELECT  trim(substr( $1 , 2, length( $2 )))"
+	PL/pgSQL function "professor_disciplina_ofer_todos" line 8 at return
+LOG:  statement: SELECT  ''
+CONTEXT:  SQL statement "SELECT  ''"
+	PL/pgSQL function "dia_disciplina_ofer_todos" line 4 at block variables initialization
+LOG:  statement:  SELECT * FROM disciplinas_ofer_compl where ref_disciplina_ofer =  $1  ORDER BY dia_semana
+CONTEXT:  SQL statement " SELECT * FROM disciplinas_ofer_compl where ref_disciplina_ofer =  $1  ORDER BY dia_semana"
+	PL/pgSQL function "dia_disciplina_ofer_todos" line 5 at for over select rows
+LOG:  statement: SELECT   $1  ||'/' ||  $2 
+CONTEXT:  SQL statement "SELECT   $1  ||'/' ||  $2 "
+	PL/pgSQL function "dia_disciplina_ofer_todos" line 6 at assignment
+LOG:  statement: SELECT  trim(substr( $1 , 2, length( $2 )))
+CONTEXT:  SQL statement "SELECT  trim(substr( $1 , 2, length( $2 )))"
+	PL/pgSQL function "dia_disciplina_ofer_todos" line 8 at return
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during startup
+	SQL function "get_dia_semana_abrv" statement 1
+LOG:  statement: SELECT  ''
+CONTEXT:  SQL statement "SELECT  ''"
+	PL/pgSQL function "turno_disciplina_ofer_todos" line 5 at block variables initialization
+LOG:  statement: SELECT  ''
+CONTEXT:  SQL statement "SELECT  ''"
+	PL/pgSQL function "turno_disciplina_ofer_todos" line 5 at block variables initialization
+LOG:  statement:  SELECT * FROM disciplinas_ofer_compl where ref_disciplina_ofer =  $1  ORDER BY dia_semana
+CONTEXT:  SQL statement " SELECT * FROM disciplinas_ofer_compl where ref_disciplina_ofer =  $1  ORDER BY dia_semana"
+	PL/pgSQL function "turno_disciplina_ofer_todos" line 6 at for over select rows
+LOG:  statement: SELECT   $1  ||'/' || ( $2 ::varchar)
+CONTEXT:  SQL statement "SELECT   $1  ||'/' || ( $2 ::varchar)"
+	PL/pgSQL function "turno_disciplina_ofer_todos" line 7 at assignment
+LOG:  statement: SELECT  trim(substr( $1 , 2, length( $2 )))
+CONTEXT:  SQL statement "SELECT  trim(substr( $1 , 2, length( $2 )))"
+	PL/pgSQL function "turno_disciplina_ofer_todos" line 9 at return
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during startup
+	SQL function "get_turno" statement 1
+LOG:  statement: SELECT  ''
+CONTEXT:  SQL statement "SELECT  ''"
+	PL/pgSQL function "get_horarios_todos" line 4 at block variables initialization
+LOG:  statement:  SELECT * FROM horarios A, disciplinas_ofer_compl B where A.id = B.ref_horario and B.ref_disciplina_ofer =  $1  ORDER BY B.dia_semana
+CONTEXT:  SQL statement " SELECT * FROM horarios A, disciplinas_ofer_compl B where A.id = B.ref_horario and B.ref_disciplina_ofer =  $1  ORDER BY B.dia_semana"
+	PL/pgSQL function "get_horarios_todos" line 5 at for over select rows
+LOG:  statement: SELECT  trim(substr( $1 , 2, length( $2 )))
+CONTEXT:  SQL statement "SELECT  trim(substr( $1 , 2, length( $2 )))"
+	PL/pgSQL function "get_horarios_todos" line 8 at return
+LOG:  statement: SELECT  ''
+CONTEXT:  SQL statement "SELECT  ''"
+	PL/pgSQL function "get_periodos_todos" line 4 at block variables initialization
+LOG:  statement:  SELECT * FROM horarios A, disciplinas_ofer_compl B where A.id = B.ref_horario and B.ref_disciplina_ofer =  $1  ORDER BY B.dia_semana
+CONTEXT:  SQL statement " SELECT * FROM horarios A, disciplinas_ofer_compl B where A.id = B.ref_horario and B.ref_disciplina_ofer =  $1  ORDER BY B.dia_semana"
+	PL/pgSQL function "get_periodos_todos" line 5 at for over select rows
+LOG:  statement: SELECT  trim(substr( $1 , 2, length( $2 )))
+CONTEXT:  SQL statement "SELECT  trim(substr( $1 , 2, length( $2 )))"
+	PL/pgSQL function "get_periodos_todos" line 8 at return
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during startup
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during startup
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during startup
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during startup
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during startup
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','3'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '3' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during startup
+LOG:  statement: SELECT   $1  ||'/' || ( $2 ::varchar)
+CONTEXT:  SQL statement "SELECT   $1  ||'/' || ( $2 ::varchar)"
+	PL/pgSQL function "professor_disciplina_ofer_todos" line 6 at assignment
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during startup
+	SQL function "get_dia_semana_abrv" statement 1
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during startup
+	SQL function "get_turno" statement 1
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during startup
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during startup
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during startup
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during startup
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during startup
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','4'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '4' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during startup
+	SQL function "get_dia_semana_abrv" statement 1
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during startup
+	SQL function "get_turno" statement 1
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during startup
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during startup
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during startup
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during startup
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during startup
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','5'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '5' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during startup
+	SQL function "get_dia_semana_abrv" statement 1
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during startup
+	SQL function "get_turno" statement 1
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during startup
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during startup
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during startup
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during startup
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during startup
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','6'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '6' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during startup
+	SQL function "get_dia_semana_abrv" statement 1
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during startup
+	SQL function "get_turno" statement 1
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during startup
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during startup
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during startup
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during startup
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during startup
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','7'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '7' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during startup
+	SQL function "get_dia_semana_abrv" statement 1
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during startup
+	SQL function "get_turno" statement 1
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during startup
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during startup
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during startup
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during startup
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during startup
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','9'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '9' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during startup
+	SQL function "get_dia_semana_abrv" statement 1
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during startup
+	SQL function "get_turno" statement 1
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during startup
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during startup
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during startup
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during startup
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during startup
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','8'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '8' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during inlining
+	SQL function "get_dia_semana_abrv" during startup
+LOG:  statement: select abrv from dias where id = $1
+CONTEXT:  SQL function "get_dia_semana_abrv_" during startup
+	SQL function "get_dia_semana_abrv" statement 1
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during inlining
+	SQL function "get_turno" during startup
+LOG:  statement: select nome from turnos where id = $1
+CONTEXT:  SQL function "get_turno_" during startup
+	SQL function "get_turno" statement 1
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during startup
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during startup
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during startup
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during startup
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during startup
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','10'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '10' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','11'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '11' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','12'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '12' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','13'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '13' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','14'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '14' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','15'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '15' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','16'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '16' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','17'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '17' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','18'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '18' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','19'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '19' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','20'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '20' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','21'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '21' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','22'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '22' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','23'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '23' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','24'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '24' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','25'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '25' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','26'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '26' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','27'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '27' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','28'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '28' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','29'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '29' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','30'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '30' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','31'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '31' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','32'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '32' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement:  select id, 	      ref_disciplina,        descricao_disciplina(ref_disciplina),        professor_disciplina_ofer_todos(id),        dia_disciplina_ofer_todos(id),        get_dia_semana_abrv(dia_disciplina_ofer_todos(id)),        turno_disciplina_ofer_todos(id), 	      get_turno(turno_disciplina_ofer_todos(id)),        get_horarios_todos(id),        get_periodos_todos(id),        ref_curso,        get_color_campus(ref_campus),        get_campus(ref_campus),        get_status_disciplina('795','2','33'),       get_num_matriculados(id),        num_alunos,        check_matricula_pessoa(id, '795'),        turma,        ref_periodo_turma  from disciplinas_ofer  where ref_disciplina = '33' and        ref_periodo = '1' and        ref_curso = '2' and ref_campus = '1' and        is_cancelada <> '1' order by dia_disciplina_ofer_todos(id), turno_disciplina_ofer_todos(id);
+LOG:  statement: select descricao_extenso from disciplinas where id = $1
+CONTEXT:  SQL function "descricao_disciplina" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_dia_semana_abrv_(substr($1,0,strpos($1,'/'))) || '/' || get_dia_semana_abrv(substr($1,strpos($1,'/')+1))) else trim(get_dia_semana_abrv_($1)) end;
+CONTEXT:  SQL function "get_dia_semana_abrv" during inlining
+LOG:  statement: select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;
+CONTEXT:  SQL function "get_turno" during inlining
+LOG:  statement: select color from campus where id = $1
+CONTEXT:  SQL function "get_color_campus" during inlining
+LOG:  statement: select
+	nome_campus from campus where id = $1
+CONTEXT:  SQL function "get_campus" during inlining
+LOG:  statement: select status from disciplinas_todos_alunos where ref_pessoa = $1 and ref_curso = $2 and ref_disciplina = $3
+CONTEXT:  SQL function "get_status_disciplina" during inlining
+LOG:  statement: select count(*) from matricula where ref_disciplina_ofer = $1 and dt_cancelamento is null
+CONTEXT:  SQL function "get_num_matriculados" during inlining
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining

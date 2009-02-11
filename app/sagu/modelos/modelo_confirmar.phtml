@@ -1,0 +1,95 @@
+<? require("../../../lib/common.php"); ?>
+<html>
+<head>
+<script language="PHP">
+
+/*******************************************************************
+
+CheckFormParameters(array("id",
+                          "razao_social",
+                          "sigla",
+                          "logotipo",
+                          "rua",
+                          "complemento",
+                          "bairro",
+                          "cep",
+                          "ref_cidade"));
+
+*******************************************************************/
+
+</script>
+</head>
+<body bgcolor="#FFFFFF">
+<br>
+<form method="post" action="configuracao_empresa.php3" name="myform">
+  <table cols=2 width="500" align="center">
+    <tr> 
+      <td bgcolor="#000099" colspan="2" height="28"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Confirma&ccedil;&atilde;o 
+        de Opera&ccedil;&atilde;o</b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Raz&atilde;o 
+        Social&nbsp;</font></td>
+      <td width="70%"> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"> 
+        <?echo($razao_social);?> </font> 
+        <input name="razao_social" type=hidden value="<?echo($razao_social);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sigla&nbsp;</font></td>
+      <td width="70%"> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"> 
+        <?echo($sigla);?> </font> 
+        <input name="sigla" type=hidden value="<?echo($sigla);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Rua&nbsp;</font></td>
+      <td width="70%"> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"> 
+        <?echo($rua);?> </font> 
+        <input name="rua" type=hidden value="<?echo($rua);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Complemento&nbsp;</font></td>
+      <td width="70%"> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"> 
+        <?echo($complemento);?> </font> 
+        <input name="complemento" type=hidden value="<?echo($complemento);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Bairro&nbsp;</font></td>
+      <td width="70%"> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"> 
+        <?echo($bairro);?> </font> 
+        <input name="bairro" type=hidden value="<?echo($bairro);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cep&nbsp;</font></td>
+      <td width="70%"> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"> 
+        <?echo($cep);?> </font> 
+        <input name="cep" type=hidden value="<?echo($cep);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cidade&nbsp;</font></td>
+      <td width="70%"> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"> 
+        <?echo($ref_cidade);?> </font> 
+        <input name="ref_cidade" type=hidden value="<?echo($ref_cidade);?>">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td width="30%">&nbsp;</td>
+      <td width="70%"> 
+        <input type="submit" value="Grava" name="Submit">
+        <input type="button" value="Voltar" name="Button" onClick="history.go(-1)">
+      </td>
+    </tr>
+  </table>
+</form>
+<p>&nbsp;</p></body>
+</html>

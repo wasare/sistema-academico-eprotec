@@ -1,0 +1,12 @@
+LOG:  statement: select 1 from matricula where ref_disciplina_ofer = $1 and ref_pessoa = $2 and dt_cancelamento is null
+CONTEXT:  SQL function "check_matricula_pessoa" during inlining
+LOG:  statement: select '----- Selecione o Periodo -----','' union all select id||' / '||substr(descricao, 0, 25) as d,id from periodos
+LOG:  statement: select '----- Selecione o Periodo -----','' union all select id||' / '||substr(descricao, 0, 25) as d,id from periodos
+LOG:  statement: select '----- Selecione o Periodo -----','' union all select id||' / '||substr(descricao, 0, 25) as d,id from periodos
+LOG:  statement:  select A.id||' / '||A.abreviatura as d,         A.id  from cursos A, precos_curso B  where A.id = B.ref_curso and        B.ref_periodo = ''  order by A.id;
+LOG:  statement: select '----- Selecione o Periodo -----','' union all select id||' / '||substr(descricao, 0, 25) as d,id from periodos
+LOG:  statement:  select A.id||' / '||A.abreviatura as d,         A.id  from cursos A, precos_curso B  where A.id = B.ref_curso and        B.ref_periodo = '0302'  order by A.id;
+LOG:  statement: select '----- Selecione o Periodo -----','' union all select id||' / '||substr(descricao, 0, 25) as d,id from periodos
+LOG:  statement:  select A.id||' / '||A.abreviatura as d,         A.id  from cursos A, precos_curso B  where A.id = B.ref_curso and        B.ref_periodo = '0301'  order by A.id;
+LOG:  statement: select '----- Selecione o Periodo -----','' union all select id||' / '||substr(descricao, 0, 25) as d,id from periodos
+LOG:  statement:  select A.id||' / '||A.abreviatura as d,         A.id  from cursos A, precos_curso B  where A.id = B.ref_curso and        B.ref_periodo = '0302'  order by A.id;

@@ -1,0 +1,250 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../../../lib/properties.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+
+<html>
+<head>
+<title>Médias por Curso</title>
+
+<script language="PHP">
+function QueryExecute($sql)
+{
+  $conn = new Connection;
+
+  $conn->Open();
+
+  $query = $conn->CreateQuery($sql);
+
+  if ( $query->MoveNext() )
+    $obj = $query->GetRowValues();
+
+  $query->Close();
+
+  $conn->Close();
+
+  return $obj;
+}
+
+if ( $ref_periodo == '' )
+{
+  list ( $ref_periodo ) = QueryExecute($sql_periodos_academico);
+  $ref_periodo = trim(substr($ref_periodo, 0, strpos($ref_periodo, "/")));
+}
+$op_result = SQLArray($sql_periodos_academico);
+
+$sql = " select A.id||' / '||A.abreviatura as d, " .
+       "        A.id " .
+       " from cursos A, precos_curso B " .
+       " where A.id = B.ref_curso and " .
+       "       B.ref_periodo = '$ref_periodo' " .
+       " order by A.id;" ;
+
+$op_result1 = SQLArray($sql);
+
+</script>
+
+<script language="JavaScript">
+
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp()
+{
+  ChangeOption(document.myform.op,document.myform.ref_periodo);
+
+  document.myform.action = 'medias_curso.phtml';
+  document.myform.submit();
+}
+
+function ChangeOp1()
+{
+  ChangeOption(document.myform.op1,document.myform.ref_curso);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+
+  field.focus();
+
+  return true;
+
+}
+</script>
+
+</head>
+
+<script language="PHP">
+
+function BuscaMedias($ref_curso,$ref_periodo)
+{
+
+  // nova conexão com o db
+  $conn = new Connection;
+  $conn->open();
+
+  $sql = " select A.ref_curso as Curso," .
+         "        A.ref_pessoa as Cod," .
+         "        pessoa_nome(A.ref_pessoa) as Nome," .
+         "        round(avg(A.nota_final),2) as Media," .
+         "        count(*) as Cadeiras" .
+         " from matricula A, contratos B" .
+         " where A.ref_curso = '$ref_curso' and " .
+         "       A.nota_final >= 5 and " .
+         "       A.ref_pessoa = B.ref_pessoa and " .
+         "       A.ref_curso  = B.ref_curso and " .
+         "       B.ref_periodo_formatura = '$ref_periodo'" .
+         " group by A.ref_curso, A.ref_pessoa" .
+         " order by 4 desc";
+        
+  $query = $conn->CreateQuery($sql);
+  
+  // cores fundo
+  $bg0 = "#000000";
+  $bg1 = "#DDDDEE";
+  $bg2 = "#EEEEDD";
+ 
+  // cores fonte
+  $fg0 = "#FFFFFF";
+  $fg1 = "#000099";
+  $fg2 = "#000099";
+  
+  $header_font_style = "<font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"#CCCCFF\">";
+
+  echo("<div align=\"center\"><br>");
+  echo("<table width=\"90%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\" align=\"center\">");
+  echo(" <tr bgcolor=\"#000099\">");
+  echo("   <td width=\"7%\" align=\"right\">$header_font_style<b>Curso&nbsp;</b></font></td>");
+  echo("   <td width=\"10%\" align=\"right\">$header_font_style<b>Código&nbsp;</b></font></td>");
+  echo("   <td width=\"64%\" align=\"left\">$header_font_style<b>&nbsp;Nome</b></font></td>");
+  echo("   <td width=\"10%\" align=\"center\">$header_font_style<b>Média</b></font></td>");
+  echo("   <td width=\"7%\" align=\"center\">$header_font_style<b>Cadeiras Concluídas</b></font></td>");
+  echo(" </tr>");
+
+  $i = 0;
+  while ( $query->MoveNext() )
+  {
+     list ( $ref_curso,
+            $ref_pessoa,
+            $nome,
+            $media,
+            $cadeiras ) = $query->GetRowValues();
+
+     if ( $i % 2 )
+     {
+        $bg = $bg1;
+        $fg = $fg1;
+     }
+     else
+     {
+        $bg = $bg2;
+        $fg = $fg2;
+     }
+     
+     echo("<tr bgcolor=\"$bg\">");
+     echo("  <td width=\"7%\" align=\"right\"><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color\"$fg\">$ref_curso&nbsp;</font></td>");
+     echo("  <td width=\"10%\" align=\"right\"><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color\"$fg\">$ref_pessoa&nbsp;</font></td>");
+     echo("  <td width=\"64%\" align=\"left\"><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color\"$fg\">&nbsp;$nome</font></td>");
+     echo("  <td width=\"10%\" align=\"center\"><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color\"$fg\">$media</font></td>");
+     echo("  <td width=\"7%\" align=\"center\"><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color\"$fg\">$cadeiras</font></td>");
+     echo("</tr>");
+
+     $i++;
+  }
+
+  echo(" <tr bgcolor=\"#000099\">");
+  echo("   <td colspan=\"4\" align=\"right\">$header_font_style<b>Total de formandos:&nbsp;</b></font></td>");
+  echo("   <td align=\"right\">$header_font_style<b>$i&nbsp;</b></font></td>");
+  echo(" </tr>");
+  echo("</table></div>");
+
+}
+
+</script>
+
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" name="myform">
+  <table width="90%" border="0" cellspacing="2" cellpadding="0" align="center">
+    <tr>
+      <td bgcolor="#000099" colspan="2" height="28" align="center">
+        <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Médias Finais dos Formandos por Curso</b></font>
+      </td>
+    </tr>
+
+    <tr>
+      <td width="81" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Per&iacute;odo da Formatura:</font></td>
+      <td width="296">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td> 
+              <input type="text" name="ref_periodo" onChange="ChangeCode('ref_periodo','op')" size="8" value="<?echo($ref_periodo)?>">
+            </td>
+            <td>&nbsp;</td>
+            <td width="100%"><font color="#000000"> 
+              <script language="PHP">
+                 ComboArray("op",$op_result,$ref_periodo,"ChangeOp()");
+              </script>
+              </font></td>
+          </tr>
+      </table>
+      </td>
+    </tr>
+    <tr>
+      <td width="81" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Curso:</font></td>
+      <td width="296">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td> 
+              <input type="text" name="ref_curso" onChange="ChangeCode('ref_curso','op1')" size="8" value="<?echo($ref_curso)?>">
+            </td>
+            <td>&nbsp;</td>
+            <td width="100%"><font color="#000000"> 
+              <script language="PHP">
+		ComboArray("op1",$op_result1,$ref_curso,"ChangeOp1()");
+	      </script>
+              </font></td>
+          </tr>
+      </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="2" align="center">
+        <hr size="1">
+        <input type="submit" name="gerar" value=" Gerar ">
+        <input type="button" name="Submit22" value="  Sair  " onClick="javascript:history.go(-1)">
+      </td>
+    </tr>
+  </table>
+
+<?
+   if ( isset($gerar) )
+   {
+      BuscaMedias($ref_curso,$ref_periodo);
+   }
+?>
+
+</form>
+</body>
+</html>

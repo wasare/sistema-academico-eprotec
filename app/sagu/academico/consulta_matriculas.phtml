@@ -1,0 +1,124 @@
+<? require("../../../lib/common.php"); ?>
+<html>
+<head>
+<title>Número de Alunos Não Matriculados por Curso</title>
+<script language="PHP">
+
+CheckFormParameters(array("ref_periodo"));
+
+function ListaCursos($ref_periodo)
+{
+   $conn = new Connection;
+
+   $conn->Open();
+
+   $sql = " select distinct ref_pessoa, " .
+          "                 pessoa_nome(ref_pessoa), " .
+          "                 ref_curso, " .
+          "                 curso_desc(ref_curso), " .
+          "                 ref_campus, " .
+          "                 get_campus(ref_campus), " .
+          "                 pessoa_fone(ref_pessoa) " .
+          " from matricula  " .
+          " where ref_periodo = get_periodo_anterior('$ref_periodo') and " .
+    	  "       dt_cancelamento is null and " .
+          "       obs_aproveitamento = '' and " .
+	      "       ref_pessoa not in (select distinct ref_pessoa " .
+          "                          from matricula " .
+          "                          where ref_periodo = '$ref_periodo' and " .
+    	  "                                dt_cancelamento is null and  " .
+          "                                obs_aproveitamento = '') " .
+          " order by ref_campus, ref_curso, pessoa_nome(ref_pessoa); ";
+  
+   $query = $conn->CreateQuery($sql);
+
+   echo("<center><table width=\"95%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+
+   $i=1;
+
+   // cores fundo
+   $bg0 = "#000000";
+   $bg1 = "#EEEEFF";
+   $bg2 = "#FFFFEE";
+ 
+   // cores fonte
+   $fg0 = "#FFFFFF";
+   $fg1 = "#000099";
+   $fg2 = "#000099";
+
+   $aux_curso=0;
+
+   while( $query->MoveNext() )
+   {
+     list ( $ref_pessoa, 
+            $nome, 
+            $ref_curso, 
+            $curso, 
+            $ref_campus, 
+            $campus, 
+            $fones) = $query->GetRowValues();
+
+     if ($i == 1)
+     {
+         echo ("<td bgcolor=\"#000099\" colspan=\"3\" height=\"28\" align=\"center\"><font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><b>Alunos não Matriculados por Curso</b></font></td>");
+         echo ("<tr>");
+         echo ("<td bgcolor=\"#000099\" colspan=\"3\" height=\"28\"> <font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><b>Período: " . $ref_periodo . "</b></font></td>");
+         echo ("</tr>"); 
+         echo ("<tr bgcolor=\"#000000\">\n");
+         echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cód</b></font></td>");
+         echo ("<td width=\"45%\" align=\"left\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Nome</b></font></td>");
+         echo ("<td width=\"45%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Fones</b></font></td>");
+         echo ("  </tr>"); 
+        }
+
+     if ($ref_curso!=$aux_curso)
+        {
+          echo("<td bgcolor=\"#FFFFFF\" colspan=\"3\"></td>");
+          echo ("<tr>");
+          echo ("<td bgcolor=\"#000000\" colspan=\"3\"><font size=\"2\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><b>Curso: " . $ref_curso . ' :' . $curso . " Campus: " . $campus . "</b></font></td>");
+          echo ("</tr>"); 
+          $aux_curso=$ref_curso;
+        }
+
+     if ( $i % 2 )
+        {
+          echo("<tr bgcolor=\"$bg1\">\n");
+          echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$ref_pessoa</td>");
+          echo ("<td width=\"45%\" align=\"left\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$nome</td>");
+          echo ("<td width=\"45%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$fones</td>");
+          echo("  </tr>");
+         }
+      else
+         {
+          echo("<tr bgcolor=\"$bg2\">\n");
+          echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$ref_pessoa</td>");
+          echo ("<td width=\"45%\" align=\"left\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$nome</td>");
+          echo ("<td width=\"45%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$fones</td>");
+          echo("  </tr>\n");
+         }
+
+     $i++;
+
+   }
+
+   echo("<tr><td colspan=\"3\"><hr></td></tr>");
+   echo("</table></center>");
+
+   $query->Close();
+
+   $conn->Close();
+}
+</script>
+</head>
+
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="" name="myform">
+<script language="PHP">
+  ListaCursos($ref_periodo);
+</script>
+<div align="center"> 
+  <input type="button" name="Button" value="  Voltar  " onclick="javascript:history.go(-1)">
+</div>
+</form>
+</body>
+</html>

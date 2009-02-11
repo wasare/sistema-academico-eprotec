@@ -1,0 +1,130 @@
+<? require("../../../../lib/common.php"); ?>
+<? require("../../lib/GetField.php3"); ?>
+<html>
+<head>
+<title>Untitled Document</title>
+<script language="PHP">
+function ListaAlunos($ref_periodo, $ref_curso, $ref_campus, $ref_disciplina, $status_aluno, $status_disciplina)
+{
+   $vet[1][1] = 'Somente Alunos Ativos';
+   $vet[1][2] = 'Alunos Ativos e Passivos';
+   $vet[2][1] = 'Somente as disciplinas concluídas';
+   $vet[2][2] = 'Disciplinas concluídas e matriculadas';
+
+   $conn = new Connection;
+
+   $conn->open();
+
+   $sql = " select A.ref_pessoa, " .
+          "        pessoa_nome(A.ref_pessoa),  " .
+          "        pessoa_fone(A.ref_pessoa), " .
+          "        descricao_disciplina($ref_disciplina), " .
+          "        get_campus($ref_campus) " .
+    	  " from matricula A, contratos B " .
+    	  " where A.ref_contrato = B.id and " .
+          "       A.ref_curso = B.ref_curso and " .
+          "       A.ref_campus = B.ref_campus and " .
+          "       B.ref_curso = '$ref_curso' and " .
+          "       B.ref_campus = '$ref_campus' and " .
+    	  "       A.ref_disciplina = '$ref_disciplina' and " .
+    	  "       A.dt_cancelamento is null ";
+
+          if ($status_aluno == 1)       // Somente alunos ativos
+          {
+             $sql .= " and B.ref_last_periodo = '$ref_periodo' " .
+                     " and B.dt_desativacao is null ";
+          }
+
+          if ($status_disciplina == 1)  //Somente disciplinas aprovadas com nota
+          {
+             $sql .= " and A.nota_final >= 5 ";
+          }
+          
+   $sql.= " order by pessoa_nome(A.ref_pessoa);";
+
+   $query = $conn->CreateQuery($sql);
+
+   echo("<center><table width=\"95%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+
+   $i=1;
+
+   // cores fundo
+   $bg0 = "#000000";
+   $bg1 = "#EEEEFF";
+   $bg2 = "#FFFFEE";
+ 
+   // cores fonte
+   $fg0 = "#FFFFFF";
+   $fg1 = "#000099";
+   $fg2 = "#000099";
+
+   while( $query->MoveNext() )
+   {
+     list ( $ref_pessoa,
+            $pessoa_nome, 
+            $pessoa_fone, 
+            $desc_disciplina,
+    	    $desc_campus) = $query->GetRowValues();
+   
+     if ($i == 1)
+     {
+         echo ("<tr><td bgcolor=\"#000099\" colspan=\"5\" height=\"35\"><font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><b>LISTA DE ALUNOS QUE CURSARAM A DISCIPLINA $desc_disciplina</b></font></td></tr>");
+         echo ("<tr><td bgcolor=\"#000099\"colspan=\"5\"><font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><b>Período, Curso e Campus: $ref_periodo, $ref_curso e $desc_campus</b></font></td></tr>");
+         echo ("<tr><td bgcolor=\"#000099\"colspan=\"5\"><font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><b>Opções: {$vet[1][$status_aluno]} e {$vet[2][$status_disciplina]}</b></font></td></tr>");
+         echo ("<tr bgcolor=\"#000000\">\n");
+         echo ("<td width=\"5%%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
+         echo ("<td width=\"10%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cód</b></font></td>");
+         echo ("<td width=\"35%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Nome</b></font></td>");
+         echo ("<td width=\"40%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Fone</b></font></td>");
+         echo ("<td width=\"10%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Curso</b></font></td>");
+         echo ("  </tr>"); 
+        }
+
+     if ( $i % 2 )
+        {
+          echo("<tr bgcolor=\"$bg1\">\n");
+          echo ("<td width=\"5%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$i</td>");
+          echo ("<td width=\"10%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$ref_pessoa</td>");
+          echo ("<td width=\"35%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$pessoa_nome</td>");
+          echo ("<td width=\"40%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$pessoa_fone</td>");
+          echo ("<td width=\"10%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$ref_curso</td>");
+
+          echo("  </tr>");
+         }
+      else
+         {
+          echo("<tr bgcolor=\"$bg2\">\n");
+          echo ("<td width=\"5%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$i</td>");
+          echo ("<td width=\"10%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$ref_pessoa</td>");
+          echo ("<td width=\"35%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$pessoa_nome</td>");
+          echo ("<td width=\"40%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$pessoa_fone</td>");
+          echo ("<td width=\"10%\" height=\"20\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$ref_curso</td>");
+
+          echo("  </tr>\n");
+         }
+
+     $i++;
+
+   }
+
+   echo("</table></center>");
+
+   $query->Close();
+
+   $conn->Close();
+}
+</script>
+</head>
+
+<body bgcolor="#FFFFFF">
+<br>
+<form method="post" action="">
+<p> 
+<script language="PHP">
+  ListaAlunos($ref_periodo, $ref_curso, $ref_campus, $ref_disciplina, $status_aluno, $status_disciplina);
+</script>
+</p>
+</form>
+<hr>
+</body>
+</html>

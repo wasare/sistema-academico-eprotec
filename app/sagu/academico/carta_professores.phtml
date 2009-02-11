@@ -1,0 +1,144 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../../../lib/properties.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+<?
+$op2_opcoes = SQLArray($sql_periodos_academico);
+?>
+<html>
+<head>
+<script language="JavaScript">
+function Carta_Tecnico(ref_periodo, data_inicio, data_reuniao, hora_reuniao, DataImpressao, num_oficio)
+{
+    location="/relat/carta_professores_tecnico_ps.php3" +  
+    	     "?ref_periodo=" + document.myform.ref_periodo.value + 
+    	     "&data_inicio=" + document.myform.data_inicio.value + 
+	         "&data_reuniao=" + document.myform.data_reuniao.value + 
+    	     "&hora_reuniao=" + document.myform.hora_reuniao.value + 
+	         "&DataImpressao=" + document.myform.DataImpressao.value + 
+	         "&num_oficio=" + document.myform.num_oficio.value;
+}
+
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp2()
+{
+  ChangeOption(document.myform.op2,document.myform.ref_periodo);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+
+  field.focus();
+
+  return true;
+}
+</script>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="../relat/carta_professores_ps.php3" name="myform">
+  <table cols=2 width="90%" align="center">
+    <tr bgcolor="#000099"> 
+      <td colspan="3" height="28">
+        <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Carta para Professores</b></font></div>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="85"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Per&iacute;odo&nbsp;&nbsp; 
+        </font></td>
+      <td width="50"> 
+        <input name="ref_periodo" type=text size="7" onChange="ChangeCode('ref_periodo','op2')" value="<?echo($ref_periodo)?>">
+        <font color="#000000"> <font color="#000000"> <a href="javascript:'"> 
+        </a> </font> </font> </td>
+      <td><font color="#000000"> 
+        <script language="PHP">ComboArray("op2",$op2_opcoes,$ref_periodo,"ChangeOp2()");</script>
+        </font></td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF" width="85"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Início das Aulas&nbsp;</font></td>
+      <td colspan="2">
+        <input type="text" name="data_inicio" value="26 de julho, segunda-feira" size="30"></font>
+      </td>
+    </tr>
+<!--<tr>
+      <td bgcolor="#CCCCFF" width="85"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Data da Reunião&nbsp;</font></td>
+      <td colspan="2">
+        <input type="text" name="data_reuniao" value="25 de fevereiro" size="30"></font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF" width="85"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Horário da Reunião&nbsp;</font></td>
+      <td colspan="2">
+        <input type="text" name="hora_reuniao" value="18h às 22h, no auditório do Prédio 7" size="30"></font>
+      </td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#CCCCFF" width="85"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Confirmação de Presença&nbsp;</font></td>
+      <td colspan="2">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Data:</font><input type="text" name="confirm_data" value="24/02/04" size="8" maxlength="8">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Email:</font><input type="text" name="confirm_email" value="ensino@univates.br" size="18" maxlength="18">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Telefone:</font><input type="text" name="confirm_telefone" value="3714-7008" size="9" maxlength="9">
+      </td>
+    </tr>
+-->
+    
+    <tr>
+      <td bgcolor="#CCCCFF" width="85"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Emissão&nbsp;&nbsp;</font></td>
+      <td colspan="2">
+        <input type="text" name="DataImpressao" value="<? echo date("d/m/Y") ?>" size="10"></font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF" width="85"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Número Ofício&nbsp;</font></td>
+      <td colspan="2">
+        <input type="text" name="num_oficio" value="" size="3"></font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Tipo:</font></td>
+       <td colspan="2">
+      	<INPUT type="radio" name="opcao" value="1" checked>Graduação&nbsp;&nbsp;&nbsp;&nbsp;
+      	<INPUT type="radio" name="opcao" value="2">Técnico
+       </td>
+    </tr>
+    <tr> 
+      <td colspan="3"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="3"> 
+        <div align="center"> 
+          <input type="submit" name="Submit"   value="   Gerar   ">
+  	  <!--<input type="button" name="Submit2"  value="  Técnico  " onClick="Carta_Tecnico('<?=$ref_periodo?>','<?=$data_inicio?>','<?=$data_reuniao?>','<?=$hora_reuniao?>','<?=$DataImpressao?>','<?=$num_oficio?>')">-->
+          <input type="button" name="Submit22" value="    Sair    " onClick="javascript:history.go(-1)">
+        </div>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

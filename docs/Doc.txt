@@ -1,0 +1,17 @@
+
+
+ESTRUTURA
+=========
+
+\SITIO
+	\appcode
+	\images
+	\relatorios
+	\SpryAssets
+	\Templates
+	\testes
+
+
+
+ATALHOS - arquivo: atalhos.php
+==============================

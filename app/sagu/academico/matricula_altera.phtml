@@ -1,0 +1,577 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../lib/GetPessoaNome.php3"); ?>
+<? require("../lib/InvData.php3"); ?>
+<?  require("../lib/SQLCombo.php3");
+
+  $op_opcoes1 = SQLArray("select nome_campus, id from campus order by nome_campus");
+  $op_opcoes2 = SQLArray("select descricao,id from motivos order by descricao");
+  $op_opcoes3 = SQLArray("select id||' '||descricao as d,id from periodos order by d");
+  $op_opcoes4 = SQLArray("select descricao,id from tipos_pgto");
+?>
+<html>
+<head>
+<script language="PHP">
+
+CheckFormParameters(array("id"));
+
+$conn = new Connection;
+
+$conn->Open();
+
+$sql = "select " .
+       "    id," .
+       "    ref_pessoa," .
+       "    ref_contrato," .
+       "    ref_campus," .
+       "    ref_periodo," .
+       "    ref_curso," .
+       "    ref_disciplina," .
+       "    descricao_disciplina(ref_disciplina)," .
+       "    ref_curso_subst," .
+       "    ref_disciplina_subst," .
+       "    descricao_disciplina(ref_disciplina_subst)," .
+       "    ref_disciplina_ofer," .
+       "    nota1," .
+       "    nota2," .
+       "    nota," .
+       "    nota_exame," .
+       "    nota_final," .
+       "    conceito," .
+       "    conceito_exame," .
+       "    conceito_final," .
+       "    num_faltas," .
+       "    obs_aproveitamento," .
+       "    ref_motivo_matricula," .
+       "    dt_matricula," .
+       "    hora_matricula," .
+       "    fl_liberado," .
+       "    ref_liberacao_ed_fisica," .
+       "    ref_motivo_cancelamento," .
+       "    dt_cancelamento," .
+       "    carga_horaria_aprov," .
+       "    creditos_aprov," .
+       "    ref_instituicao," .
+       "    fl_exibe_displ_hist," .
+       "    complemento_disc, " .
+       "    turma," .
+       "    processo, " .
+       "    status_disciplina, " .
+       "    fl_internet, " .
+       "    ip " .
+       "  from matricula where id = '$id'";
+
+$query = $conn->CreateQuery($sql);
+
+SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+
+list ( $id,
+       $ref_pessoa,
+       $ref_contrato,
+       $ref_campus,
+       $ref_periodo,
+       $ref_curso,
+       $ref_disciplina,
+       $descricao_disciplina,
+       $ref_curso_subst,
+       $ref_disciplina_subst,
+       $descricao_disciplina_subst,
+       $ref_disciplina_ofer,
+       $nota1,
+       $nota2,
+       $nota,
+       $nota_exame,
+       $nota_final,
+       $conceito,
+       $conceito_exame,
+       $conceito_final,
+       $num_faltas,
+       $obs_aproveitamento,
+       $ref_motivo_matricula,
+       $dt_matricula,
+       $hora_matricula,
+       $fl_liberado,
+       $ref_liberacao_ed_fisica,
+       $ref_motivo_cancelamento,
+       $dt_cancelamento,
+       $carga_horaria_aprov,
+       $creditos_aprov,
+       $ref_instituicao,
+       $fl_exibe_displ_hist,
+       $complemento_disc,
+       $turma,
+       $processo,
+       $status_disciplina,
+       $fl_internet,
+       $ip) = $query->GetRowValues();
+
+$query->Close();
+
+$conn->Close();
+
+$processo = trim($processo);
+$dt_matricula = InvData($dt_matricula);
+$dt_cancelamento = InvData($dt_cancelamento);
+
+$nome_aluno = GetPessoaNome($ref_pessoa,true);
+
+</script>
+<script language="JavaScript">
+function buscaContrato()
+{
+  var pessoa = document.myform.ref_pessoa.value;
+
+  if ( pessoa == '' )
+  {
+    alert("Código da pessoa inválido ou não especificado!");
+    return;
+  }
+
+  var title = 'Seleção Contrato';
+
+  var sql = "select A.id as Contrato, A.ref_curso as Curso, B.descricao as Descricao, A.ref_campus as Campus, A.dt_desativacao is not null as Desat" +
+            "  from contratos A, cursos B" +
+            "  where A.ref_pessoa = " + pessoa + " and " +
+            "        A.dt_desativacao is null and" +
+            "        A.ref_curso = B.id";
+
+  var url = "../generico/post/lista_sql.php3?title=" + escape(title) + "&sql=" + escape(sql);
+
+  window.setResultCallback = window.setContrato;
+ 
+  var wnd = window.open(url,'buscaContrato','toolbar=no,width=550,height=350,scrollbars=yes');
+
+}
+
+function setContrato(contrato,curso,descricao,campus)
+{
+  document.myform.ref_contrato.value = contrato;
+  document.myform.ref_curso.value = curso;
+  document.myform.ref_campus.value = campus;
+}
+
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp1()
+{
+  ChangeOption(document.myform.op1,document.myform.ref_campus);
+}
+
+function ChangeOp2()
+{
+  ChangeOption(document.myform.op2,document.myform.ref_motivo_ativacao);
+}
+
+function ChangeOp3()
+{
+  ChangeOption(document.myform.op3,document.myform.ref_periodo);
+}
+
+function ChangeOp4()
+{
+  ChangeOption(document.myform.op4,document.myform.ref_tipo_pgto);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+  field.focus();
+  return true;
+}
+</script>
+<script language="JavaScript">
+var tipo_busca;
+
+function buscaCurso()
+{
+  tipo_busca = 1;
+
+  var url = "../generico/post/lista_cursos_nome.php3" + 
+            "?id=" + escape(document.myform.ref_curso.value) + 
+            "&curso=" + escape(document.myform.curso.value);
+
+  var wnd = window.open(url,'busca','toolbar=no,width=550,height=350,scrollbars=yes');
+}
+function _busca()
+{
+  tipo_busca = 2;
+
+  var url = "/generico/post/lista_pessoas.php3" +
+            "?pnome=" + escape(document.myform.pessoa.value);
+  var wnd = window.open(url,'busca','toolbar=no,width=530,height=350,scrollbars=yes');
+}
+
+function buscaDiscp()
+{
+  tipo_busca = 3;
+
+  var url = '../generico/post/lista_disciplinas_curso.php3' + 
+            '?ref_curso=' + escape(document.myform.ref_curso.value);
+
+  var wnd = window.open(url,'busca','toolbar=no,width=550,height=350,scrollbars=yes');
+}
+
+function setResult(arg1,arg2)
+{
+  if  (tipo_busca == 1)
+  {
+    document.myform.ref_curso.value = arg1;
+    document.myform.curso.value = arg2;
+  }
+  else
+  {
+    document.myform.ref_pessoa.value = arg1;
+    document.myform.pessoa.value = arg2;
+  }
+}
+
+</script>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<table width="85%" border="0" cellspacing="0" cellpadding="0" height="60" align="center">
+  <tr bgcolor="#000099"> 
+    <td height="35"> 
+      <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF"> 
+        Consulta/Altera&ccedil;&atilde;o da Matr&iacute;cula do Aluno</font></b></font></div>
+    </td>
+  </tr>
+</table>
+<br>
+<FORM method="post" action="post/matricula_altera.php3" name="myform">
+  <div align="center">
+    <table cols=2 width="85%" align="center">
+      <tr> 
+        <td width="40%"> 
+          <div align="right"><font face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#000099"><font color="#FF0033">Aluno: 
+            </font></font></b></font></div>
+        </td>
+        <td width="60%"> <font face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#FF0033"><?php echo($ref_pessoa);
+echo(' - ');
+echo($nome_aluno);
+ ?> </font></b></font></td>
+      </tr>
+      <script language="PHP">
+      echo("<tr>");
+      echo("<td bgcolor=\"#CCCCFF\" width=\"161\"><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"#00009C\">&nbsp;C&oacute;d. Disciplina Oferecida</font></td>");
+      echo("<td colspan=\"2\" width=\"410\">");
+      echo("  <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
+       echo("   <tr>");
+	    if ( $ref_disciplina_ofer != '' )
+	    {
+	    echo("<td width=\"20%\"> <font color=\"#0000FF\" size=\"2\" face=\"Verdana, Arial, Helvetica, sans-serif\">");echo("$ref_disciplina_ofer");
+	    echo("<input name=\"ref_disciplina_ofer\" type=\"hidden\" size=\"20\" value=\"$ref_disciplina_ofer\">");
+	    echo("</font></td>");
+	    }
+	    if ( $ref_disciplina_ofer == '' )
+	    {
+	    echo("<font color=\"#0000FF\" size=\"2\" face=\"Verdana, Arial, Helvetica, sans-serif\">");
+            echo("<input name=\"ref_disciplina_ofer\" type=\"text\" size=\"20\" value=\"$ref_disciplina_ofer\">");
+            echo("</font></td>");
+	    }
+          
+     echo("</tr>
+        </table>
+      </td>
+    </tr>");
+    </script>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Per&iacute;odo&nbsp;</font></td>
+        <td width="60%"> <font color="#0000FF" size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <INPUT name="ref_periodo" type="text" size="10" value="<?php echo($ref_periodo); ?>"></FONT></td>
+      </tr>
+      
+      <tr>
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Contrato</font><font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="1"><br>&nbsp;(Contrato - Curso - Campus)</font></td>
+      <td>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+              <input name="ref_contrato" type=text size="10" maxlength="10" value="<?echo($ref_contrato);?>">
+            </td>
+            <td>
+              <input type="text" name="ref_curso" size="10" maxlength="10" value="<?echo($ref_curso);?>">
+            </td>
+            <td>
+              <input type="text" name="ref_campus" size="10" maxlength="10" value="<?echo($ref_campus);?>">
+            </td>
+            <td><a href="javascript:buscaContrato()"><img src="../images/find.gif" width="16" height="16" border="0"></a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina&nbsp;do Curr&iacute;culo </font></td>
+        <td>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+              <input name="ref_disciplina" type=text size="10" maxlength="10" value="<?echo($ref_disciplina);?>">
+            </td>
+            <td>
+              <input type="text" name="descricao_disciplina" size="30" maxlength="30" value="<?echo($descricao_disciplina);?>">
+            </td>
+          </tr>
+        </table>
+      </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Complemento Disciplina</font></td>
+        <td width="60%"> 
+          <INPUT name="complemento_disc" type="text" value="<?echo($complemento_disc);?>" size="42" maxlength="200">
+        </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina Cursada</font></td>
+        <td>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+              <input name="ref_disciplina_subst" type=text size="10" maxlength="10" value="<?echo($ref_disciplina_subst);?>">
+            </td>
+            <td>
+              <input type="text" name="descricao_disciplina_subst" size="30" maxlength="30" value="<?echo($descricao_disciplina_subst);?>">
+            </td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" rowspan="6"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Notas</font>
+        </td>
+      </tr>
+      <tr> 
+        <td> 
+          <INPUT name="nota1" type="text" value="<?echo($nota1);?>" size="6" maxlength="6"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Primeira Nota</font>
+        </td>
+      </tr>
+      <tr> 
+        <td> 
+          <INPUT name="nota2" type="text" value="<?echo($nota2);?>" size="6" maxlength="6"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Segunda Nota</font>
+        </td>
+      </tr>
+      <tr> 
+        <td> 
+          <INPUT name="nota" type="text" value="<?echo($nota);?>" size="6" maxlength="6"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Média</font>
+        </td>
+      </tr>
+      <tr> 
+        <td> 
+          <INPUT name="nota_exame" type="text" value="<?echo($nota_exame);?>" size="6" maxlength="6"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nota do Exame</font>
+        </td>
+      </tr>
+      <tr> 
+        <td> 
+          <INPUT name="nota_final" type="text" value="<?echo($nota_final);?>" size="6" maxlength="6"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nota Final</font>
+        </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Freqüência&nbsp;</font></td>
+        <td width="60%"> 
+          <INPUT name="num_faltas" type="text" value="<?echo($num_faltas);?>" size="6" maxlength="6">
+        </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Conceito&nbsp;</font></td>
+        <td width="60%"> 
+          <INPUT name="conceito" type="text" value="<?echo($conceito);?>" size="6" maxlength="6">
+        </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Turma&nbsp;</font></td>
+        <td width="60%"> 
+          <INPUT name="turma" type="text" value="<?echo($turma);?>" size="6" maxlength="6">
+        </td>
+      </tr>
+
+      <tr> 
+        <td colspan="2"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">Aproveitamento:</font></td>
+      </tr>
+      
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Observação Aproveitamento</font></td>
+        <td width="60%"> 
+          <INPUT name="obs_aproveitamento" type="text" value="<?echo($obs_aproveitamento);?>" size="42">
+        </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Instituição onde foi Cursada a Disciplina</font></td>
+        <td width="60%"> 
+          <INPUT name="ref_instituicao" type="text" value="<?echo($ref_instituicao);?>" size="6" maxlength="6">
+        </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Carga Hor&aacute;ria Aproveitamento</font></td>
+        <td width="60%"> 
+          <INPUT name="carga_horaria_aprov" type="text" value="<?echo($carga_horaria_aprov);?>" size="6" maxlength="6">
+        </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cr&eacute;ditos do Aproveitamento</font></td>
+        <td width="60%"> 
+          <INPUT name="creditos_aprov" type="text" value="<?echo($creditos_aprov);?>" size="6" maxlength="6">
+        </td>
+      </tr>
+      <tr> 
+        <td width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">Matr&iacute;cula:</font></td>
+        <td width="60%">&nbsp;</td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data de Matrícula</font><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C"><br>&nbsp;(dd-mm-aaaa)</font></td>
+        <td width="60%"><?echo($dt_matricula);?></td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Hora Matr&iacute;cula</font></td>
+        <td width="60%"> 
+          <?echo($hora_matricula);?></td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Status da disciplina no ato da matrícula</font></td>
+        <td width="60%"> 
+          <?
+          if ($status_disciplina == 't')
+            echo("Desbloqueada");
+          else
+            echo("Liberada");
+          ?>
+        </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Fleg Internet</font></td>
+        <td width="60%"> 
+          <?
+          echo($opcoes[$fl_internet]);
+          if ($ip)
+            echo(" - $ip");
+          ?>
+        </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Motivo de Matr&iacute;cula&nbsp;</font></td>
+        <td width="60%"> 
+          <?echo($ref_motivo_matricula);?></td>
+      </tr>
+      <tr> 
+        <td colspan="2"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">Cancelamento:</font></td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Cancelamento</font><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C"><br>&nbsp;(dd-mm-aaaa)</font></td>
+        <td width="60%"> 
+         <INPUT name="dt_cancelamento" type="text" size="10" maxlength="10" value="<?echo($dt_cancelamento);?>"></td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Motivo de Cancelamento&nbsp;</font></td>
+        <td width="60%"> 
+          <?echo($ref_motivo_cancelamento);?></td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso Substitu&iacute;do</font></td>
+        <td width="60%"> 
+          <INPUT name="ref_curso_subst" type="text" value="<?echo($ref_curso_subst);?>" size="6" maxlength="6">
+        </td>
+      </tr>
+      <tr> 
+
+        <td colspan="2"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">Libera&ccedil;&atilde;o:</font></td>
+      </tr>
+      
+      <tr> 
+        <td bgcolor="#CCCCFF" rowspan="1" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Liberado</font></td>
+        <td width="60%"> 
+          <?
+              if ( $fl_liberado == 1 )
+                  echo('<input type="radio" name="fl_liberado" value="1" checked>1-Reprovado (Excesso de Faltas)');
+              else
+                  echo('<input type="radio" name="fl_liberado" value="1">1-Reprovado (Excesso de Faltas)');
+          ?>
+          <br>
+          <?
+              if ( $fl_liberado == 2 )
+                  echo('<input type="radio" name="fl_liberado" value="2" checked>2-Desistente');
+              else
+                  echo('<input type="radio" name="fl_liberado" value="2">2-Desistente');
+          ?>
+          <br>
+          <?
+              if ( $fl_liberado == 3 )
+                  echo('<input type="radio" name="fl_liberado" value="3" checked>3-Aprovado');
+              else
+                  echo('<input type="radio" name="fl_liberado" value="3">3-Aprovado');
+          ?>
+          <br>
+          <?
+              if ( $fl_liberado == 4 )
+                  echo('<input type="radio" name="fl_liberado" value="4" checked>4-Dispensado');
+              else
+                  echo('<input type="radio" name="fl_liberado" value="4">4-Dispensado');
+          ?>
+          </td>
+      </tr>
+
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Educa&ccedil;&atilde;o 
+          F&iacute;sica&nbsp;</font></td>
+        <td width="60%"> 
+          <INPUT name="ref_liberacao_ed_fisica" type="text" value="<?echo($ref_liberacao_ed_fisica);?>" size="6" maxlength="6">
+        </td>
+      </tr>
+      <tr> 
+        <td colspan="2"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">Outros:</font></td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Mostra Disciplina Cursada e do Currículo no Histórico?</font></td>
+        <td width="60%">
+        <select name="fl_exibe_displ_hist">
+          <option selected><?echo($historico[$fl_exibe_displ_hist]); ?></option>
+          <?if ($fl_exibe_displ_hist == 'N')
+          { echo "<option value=\"S\">Sim</option>";}
+            if ($fl_exibe_displ_hist == 'S')
+          { echo "<option value=\"N\">Não</option>";};?>
+        </select>
+        </td>
+      </tr>
+      <tr> 
+        <td bgcolor="#CCCCFF" width="40%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Uso exclusivo para alunos com Processos Protocolados nesta disciplina</font></td>
+        <td width="60%"> 
+          <textarea name="processo" cols="40" rows="2"><?echo($processo);?></textarea>
+        </td>
+      </tr>
+      <tr> 
+        <td colspan="2"> 
+          <hr size="1">
+        </td>
+      </tr>
+      <tr> 
+        <td colspan="2" align="center"> 
+          <input type="submit" name="Submit"  value=" Salvar ">
+          <input type="button" name="Submit2" value=" Voltar " onclick="javascript:history.go(-1)">
+          <input type="hidden" name="id" value="<?echo($id);?>">
+          <input type="hidden" name="ref_pessoa" value="<?echo($ref_pessoa);?>">
+        </td>
+      </tr>
+    </table>
+  </div>
+</form>
+</body>
+</html>

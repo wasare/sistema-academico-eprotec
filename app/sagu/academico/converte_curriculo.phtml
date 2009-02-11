@@ -1,0 +1,148 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../lib/AutenticaSenha.php3"); ?>
+
+<script language="PHP">
+
+//CheckFormParameters(array("usuario", "senha"));
+
+//AutenticaSenha($usuario, $senha);
+
+</script>
+
+<html>
+<head>
+<script language="JavaScript">
+function buscaOpcao(pf_opcao)
+{
+  tipo_busca=pf_opcao;
+  if (tipo_busca == 1)
+  {
+    var url = "../generico/post/lista_cursos_nome.php3" +
+              "?id=" + escape(document.myform.curso_antigo.value) +
+              "&curso=" + escape(document.myform.curso_antigo_desc.value);
+  }
+  else if (tipo_busca == 2)
+  {
+    var url = "../generico/post/lista_cursos_nome.php3" +
+              "?id=" + escape(document.myform.curso_novo.value) +
+              "&curso=" + escape(document.myform.curso_novo_desc.value);
+  }
+  else if (tipo_busca == 3)
+  {
+    var url = "/generico/post/lista_pessoas.php3" +
+              "?pnome=" + escape(document.myform.aluno_nome.value);
+  }
+  
+  var wnd = window.open(url,'busca','toolbar=no,width=550,height=350,scrollbars=yes');
+}
+
+function setResult(id,nome)
+{
+   if (tipo_busca == 1)
+   {
+      document.myform.curso_antigo.value = id;
+      document.myform.curso_antigo_desc.value = nome;
+   }
+   else if (tipo_busca == 2)
+   {
+      document.myform.curso_novo.value = id;
+      document.myform.curso_novo_desc.value = nome;
+   }
+   else if (tipo_busca == 3)
+   {
+      document.myform.aluno_id.value = id;
+      document.myform.aluno_nome.value = nome;
+   }
+}
+
+</script>
+
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+ <FORM method="POST" action="post/converte_curriculo.php3" name="myform">
+  <table width="90%" align="center">
+    <tr> 
+      <td bgcolor="#000099" colspan="2" height="28" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Converte Currículo</b></font></td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso Antigo</font></td>
+      <td colspan="3" width="70%">
+       <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+         <td width="10%">
+            <input name="curso_antigo" type=text size="6" maxlength="10">
+         </td>
+         <td width="100%">
+            <input type="text" name="curso_antigo_desc" size="35">
+         </td>
+         <td>
+         <div align="right">
+            <input type="button" value="..." onClick="buscaOpcao(1)" name="button22"></div>
+         </td>
+        </tr>
+       </table>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso Novo</font></td>
+      <td colspan="3" width="70%">
+       <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+         <td width="10%">
+            <input name="curso_novo" type=text size="6" maxlength="10">
+         </td>
+         <td width="100%">
+            <input type="text" name="curso_novo_desc" size="35">
+         </td>
+         <td>
+         <div align="right">
+            <input type="button" value="..." onClick="buscaOpcao(2)" name="button22"></div>
+         </td>
+        </tr>
+       </table>
+      </td>
+    </tr>
+    <tr> 
+      <TD bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Converte para Alunos:&nbsp;</font></td>
+      <td colspan="3">
+      	<INPUT type="radio" name="opcao" value="1" checked>Ativos e Passivos&nbsp;&nbsp;&nbsp;&nbsp;
+      	<INPUT type="radio" name="opcao" value="2">Somente Ativos
+      </td>
+    </tr>
+    <tr> 
+      <TD colspan="4"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Obs.: Caso queira fazer a conversão somente para um aluno, informe os dados abaixo. Senão deixe o campo em branco.</font>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF" width="119"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Aluno</font></td>
+      <td colspan="3">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="10%">
+              <input type="text" name="aluno_id" size="6">
+            </td>
+            <td width="100%">
+              <input type="text" name="aluno_nome" size="35">
+            </td>
+            <td align="right">
+              <input type="button" value="..." onClick="buscaOpcao(3)" name="button">
+           </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <TD colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" align="center"> 
+        <input type="submit" name="Submit" value=" Converter ">
+        <input type="button" name="Button2" value="   Sair   " onClick="javascript:history.go(-1)">
+      </td>
+    </tr>
+  </table>
+  </form>
+  </body>
+</html>

@@ -1,0 +1,219 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../../../lib/properties.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+<html>
+<head>
+<title>Alunos por Créditos</title>
+
+<script language="PHP">
+function QueryExecute($sql)
+{
+  $conn = new Connection;
+
+  $conn->Open();
+
+  $query = $conn->CreateQuery($sql);
+
+  if ( $query->MoveNext() )
+    $obj = $query->GetRowValues();
+
+  $query->Close();
+
+  $conn->Close();
+
+  return $obj;
+}
+
+if ( $ref_periodo == '' )
+{
+  list ( $ref_periodo ) = QueryExecute($sql_periodos_academico);
+  $ref_periodo = trim(substr($ref_periodo, 0, strpos($ref_periodo, "/")));
+}
+$op_result = SQLArray($sql_periodos_academico);
+
+$sql = " select A.id||' / '||A.abreviatura as d, " .
+       "        A.id " .
+       " from cursos A, precos_curso B " .
+       " where A.id = B.ref_curso and " .
+       "       B.ref_periodo = '$ref_periodo' " .
+       " order by A.id;" ;
+
+$op_result1 = SQLArray($sql);
+
+$sql = " select nome_campus, id from campus" .
+       " order by id;" ;
+
+$op_result2 = SQLArray($sql);
+
+</script>
+
+<script language="JavaScript">
+function buscaDisciplina()
+{
+  var url;
+
+  url = '../generico/post/lista_disciplinas_todas.php3' +
+        '?desc=' + escape(document.myform.ref_disciplina_nome.value);
+  
+  var wnd = window.open(url,'busca','toolbar=no,width=600,height=350,scrollbars=yes');
+}
+
+function setResult(arg1,arg2)
+{
+  document.myform.ref_disciplina.value = arg1;
+  document.myform.ref_disciplina_nome.value = arg2;
+}
+
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp()
+{
+  ChangeOption(document.myform.op,document.myform.ref_periodo);
+
+  document.myform.action = 'aptos_cursar_disciplina.phtml';
+  document.myform.submit();
+}
+
+function ChangeOp1()
+{
+  ChangeOption(document.myform.op1,document.myform.ref_curso);
+}
+
+function ChangeOp2()
+{
+  ChangeOption(document.myform.op2,document.myform.ref_campus);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+
+  field.focus();
+
+  return true;
+}
+</script>
+</head>
+
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="post/aptos_cursar_disciplina.php3" name="myform">
+  <table width="90%" border="0" cellspacing="2" cellpadding="0" align="center">
+    <tr> 
+      <td bgcolor="#000099" colspan="2" height="28" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Listagem de alunos com status em determinada disciplina</b></font></td>
+    </tr>
+    <tr> 
+      <td width="81" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Per&iacute;odo:</font></td>
+      <td width="296"> <font color="#000000"> </font> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td> 
+              <input type="text" name="ref_periodo" onChange="ChangeCode('ref_periodo','op')" size="8" value="<?echo($ref_periodo);?>">
+            </td>
+            <td>&nbsp;</td>
+            <td width="100%"><font color="#000000"> 
+              <script language="PHP">
+                 ComboArray("op",$op_result,$ref_periodo,"ChangeOp()");
+              </script>
+              </font></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td width="81" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Curso:</font></td>
+      <td width="296"> <font color="#000000"> </font> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td> 
+              <input type="text" name="ref_curso" onChange="ChangeCode('ref_curso','op1')" size="8">
+            </td>
+            <td>&nbsp;</td>
+            <td width="100%"><font color="#000000"> 
+              <script language="PHP">
+                ComboArray("op1",$op_result1,$ref_curso,"ChangeOp1()");
+              </script>
+              </font></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <TD width="81" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Campus:</font></td>
+      <td width="296">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>
+              <input type="text" name="ref_campus" onChange="ChangeCode('ref_campus','op2')" size="8">
+            </td>
+            <td>&nbsp;</td>
+            <td width="100%"><font color="#000000">
+              <script language="PHP">
+                ComboArray("op2",$op_result2,$ref_campus,"ChangeOp2()");
+              </script>
+              </font></td>
+          </tr>
+      </table>
+      </td>
+    </tr>   
+    <tr>
+      <td bgcolor="#CCCCFF" width="174"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina</font></td>
+      <td width="381">
+         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+             <td width="9%">
+               <input name="ref_disciplina" type=text size="8">
+          </td>
+          <td width="100%"><font color="#000000"><font color="#000000">
+               <input name="ref_disciplina_nome" type=text size="30">
+               </font></font>
+	  </td>
+          <td width="0%">
+	  <div align="right"><font color="#000000"><font color="#000000">
+	       <input type="button" value="..." onClick="buscaDisciplina()" name="button">
+               <font color="#000000"> </font> </font></font></div>
+	  </td>
+         </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td width="81" bgcolor="#CCCCFF"><font face="Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&nbsp;Status:</font></td>
+      <td width="296">
+ 	<input type="radio" name="ref_status" value="1" checked onClick="Javascript:alert('AVISO! \nListagem referente a disciplinas aptas a cursar')">Aptos a Cursar&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="radio" name="ref_status" value="0" onClick="Javascript:alert('AVISO! \nListagem referente a disciplinas Cursadas')">Cursadas&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="radio" name="ref_status" value="2" onClick="Javascript:alert('AVISO! \nListagem referente a disciplinas Bloqueadas')">Bloqueadas
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" align="center"> 
+        <hr size="1">
+        <input type="submit" name="Submit"  value="  Gerar  ">
+        <input type="button" name="Button2" value="   Sair   " onClick="javascript:history.go(-1)">
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

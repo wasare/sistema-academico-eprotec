@@ -1,0 +1,263 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../lib/vestibular/common.php3"); ?>
+<html>
+<head>
+<title>UNIVATES</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="PHP">
+function Inscritos_Idade($ref_periodo)
+{
+  $conn = new Connection;
+  $conn->Open();
+  
+  $sql = " select A.ref_curso_atual, " .
+  	 " 	  A.ref_campus_atual, " .
+	 "        curso_desc(A.ref_curso_atual) as curso, " .
+	 "	  get_campus(A.ref_campus_atual) as campus, " .
+	 "	  pessoa_faixa_etaria(pessoa_idade(A.ref_pessoa)), " .
+	 "	  get_sexo(A.ref_pessoa), " .
+	 "        count(*) " .
+	 " from livro_matricula A, status_matricula B " .
+	 " where A.ref_status = B.id and " .
+	 "       A.ref_periodo  = '$ref_periodo' and " .
+	 "       B.fl_in_lm = 'f' and " .
+	 "       A.ref_curso_atual <> 6 " . 
+	 " group by 1, 2, 3, 4, 5, 6 ". 
+	 " union select 999999, 0, '0', '0', '0', '0', 0";
+	 // Isto precisa para funcionar a soma da ultima linha
+ 
+ $query = $conn->CreateQuery($sql);
+
+  $n = $query->GetColumnCount();
+
+  // cores fundo
+  $bg0 = "#000000";
+  $bg1 = "#EEEEFF";
+  $bg2 = "#FFFFEE";
+
+  // cores fonte
+  $fg0 = "#FFFFFF";
+  $fg1 = "#000099";
+  $fg2 = "#000099";
+  
+  echo("<hr>");
+  echo("<table width=\"80%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\" align=\"center\">");
+
+  echo("<tr bgcolor=\"$bg0\">\n");
+  echo ("<td valign=\"top\"><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b>Curso</b></font></td>");
+  echo ("<td valign=\"top\"><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b>Campus</b></font></td>");
+  echo ("<td valign=\"top\"><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b>Descrição</b></font></td></td>");
+  echo ("<td valign=\"top\"><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b>Homens</b></font></td>");
+  echo ("<td valign=\"top\"><Font face=\"Verdana\" size=\"2\" color=\"$fg0\"><b>Mulheres</b></font></td>");
+  echo("  </tr>"); 
+
+  $curso_grp      = '';
+  $curso_grp_desc = '';
+
+  $total_m = 0; 
+  $total_f = 0;
+
+  $nova_linha = true;
+
+  $i = 1;
+
+  $num_insc['A']['M'] = $num_insc['A']['F'] = 0;
+  $num_insc['B']['M'] = $num_insc['B']['F'] = 0;
+  $num_insc['C']['M'] = $num_insc['C']['F'] = 0;     
+  $num_insc['D']['M'] = $num_insc['D']['F'] = 0;
+  $num_insc['E']['M'] = $num_insc['E']['F'] = 0;
+  $num_insc['F']['M'] = $num_insc['F']['F'] = 0;     
+  $num_insc['G']['M'] = $num_insc['G']['F'] = 0;
+  $num_insc['H']['M'] = $num_insc['H']['F'] = 0;
+  $num_insc['I']['M'] = $num_insc['I']['F'] = 0;     
+  $num_insc['J']['M'] = $num_insc['J']['F'] = 0;     
+  $num_insc['K']['M'] = $num_insc['K']['F'] = 0;     
+
+  while ( true )
+  {
+    $eof = !$query->MoveNext();
+
+    if ( $eof && $nova_linha )
+    {
+    	echo("<tr bgcolor=\"$bg\">\n");
+    	echo ("<td valign=\"top\"><Font $font>TOTAIS GERAIS</td>");
+    	echo ("<td valign=\"top\"><Font $font>&nbsp;</td>");
+    	echo ("<td valign=\"top\"><Font $font>&nbsp;</td>");
+    	echo ("<td valign=\"top\" align = \"center\"><Font $font>Mas. $total_sexo[M]</td>");
+    	echo ("<td valign=\"top\" align = \"center\"><Font $font>Fem. $total_sexo[F]</td>");
+	echo ("</tr>");
+      break;
+    }
+    if ( !$eof )
+    {
+      list ( $ref_curso, $ref_campus, $curso, $campus, $cat, $sexo, $num ) = $query->GetRowValues();
+
+      if ( $curso_grp == '' )
+      {
+        $curso_grp       = $ref_curso;
+        $curso_grp_desc  = $curso;
+	$campus_grp      = $ref_campus;
+	$campus_grp_desc = $campus;
+      }
+
+      $total_m = $num_insc['A']['M'] + $num_insc['B']['M'] + $num_insc['C']['M'] + $num_insc['D']['M'] + $num_insc['E']['M'] + $num_insc['F']['M'] + $num_insc['G']['M'] + $num_insc['H']['M'] + $num_insc['I']['M'] + $num_insc['J']['M'] + $num_insc['K']['M'];
+      
+      $total_f = $num_insc['A']['F'] + $num_insc['B']['F'] + $num_insc['C']['F'] + $num_insc['D']['F'] + $num_insc['E']['F'] + $num_insc['F']['F'] + $num_insc['G']['F'] + $num_insc['H']['F'] + $num_insc['I']['F'] + $num_insc['J']['F'] + $num_insc['K']['F'];
+      
+      $total_sexo[$sexo] += $num;   
+      $nova_linha = false;
+    }
+
+    // gera linha
+    if ( !$nova_linha && (($curso_grp != $ref_curso) || ($campus_grp != $ref_campus) || $eof ) )
+    {
+      if ( $i % 2 )
+      {
+        $fg = $fg1;
+	$bg = $bg1;
+      }
+      else
+      {
+        $fg = $fg2;
+	$bg = $bg2;
+      }
+
+      $font = "face=\"Verdana\" size=\"2\" color=\"$fg\"";
+
+      echo("<tr bgcolor=\"$bg\">\n");
+      echo ("<td valign=\"top\"><Font $font>$curso_grp</td>");
+      echo ("<td valign=\"top\"><Font $font>$campus_grp_desc</td>");
+      echo ("<td valign=\"top\"><Font $font>$curso_grp_desc</td>");
+      echo ("<td valign=\"top\"><Font $font>");
+
+      // tabela resultado
+      echo ("<table>");
+      echo ("<tr>");
+
+      // coluna masculinos campos
+      echo ("<td>");
+      echo ("<font size=1 face=\"Courier New, Courier, mono\">");
+      echo ("  < 18 <br>");
+      echo ("19..24 <br>");
+      echo ("25..29 <br>");
+      echo ("30..34 <br>");
+      echo ("35..39 <br>");
+      echo ("40..44 <br>");
+      echo ("45..49 <br>");
+      echo ("50..54 <br>");
+      echo ("55..59 <br>");
+      echo ("60..64 <br>");
+      echo ("  > 65 <br>");
+      echo ("Totais");
+      echo ("</font>");
+      echo ("</td>");
+
+      // coluna masculinos valores
+      echo ("<td>");
+      echo ("<font color=red size=1 face=\"Courier New, Courier, mono\">");
+      echo ($num_insc['A']['M'] . "<br>");
+      echo ($num_insc['B']['M'] . "<br>");
+      echo ($num_insc['C']['M'] . "<br>");
+      echo ($num_insc['D']['M'] . "<br>");
+      echo ($num_insc['E']['M'] . "<br>");
+      echo ($num_insc['F']['M'] . "<br>");
+      echo ($num_insc['G']['M'] . "<br>");
+      echo ($num_insc['H']['M'] . "<br>");
+      echo ($num_insc['I']['M'] . "<br>");
+      echo ($num_insc['J']['M'] . "<br>");
+      echo ($num_insc['K']['M'] . "<br>");
+      echo ($total_m . "<br>");
+      echo ("</font>");
+      echo ("</td>");
+
+      echo ("</tr>");
+      echo ("</table>");
+
+      echo ("</td>");
+
+      echo ("<td valign=\"top\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">");
+      echo ("<table>");
+      echo ("<tr>");
+
+      // coluna 
+      echo ("<td>");
+      echo ("<font size=1 face=\"Courier New, Courier, mono\">");
+      echo ("  < 18 <br>");
+      echo ("19..24 <br>");
+      echo ("25..29 <br>");
+      echo ("30..34 <br>");
+      echo ("35..39 <br>");
+      echo ("40..44 <br>");
+      echo ("45..49 <br>");
+      echo ("50..54 <br>");
+      echo ("55..59 <br>");
+      echo ("60..64 <br>");
+      echo ("  > 65 <br>");
+      echo ("Totais");
+      echo ("</font>");
+      echo ("</td>");
+      echo ("<td>");
+
+      echo ("<font color=red size=1 face=\"Courier New, Courier, mono\">");
+      echo ($num_insc['A']['F'] . "<br>");
+      echo ($num_insc['B']['F'] . "<br>");
+      echo ($num_insc['C']['F'] . "<br>");
+      echo ($num_insc['D']['F'] . "<br>");
+      echo ($num_insc['E']['F'] . "<br>");
+      echo ($num_insc['F']['F'] . "<br>");
+      echo ($num_insc['G']['F'] . "<br>");
+      echo ($num_insc['H']['F'] . "<br>");
+      echo ($num_insc['I']['F'] . "<br>");
+      echo ($num_insc['J']['F'] . "<br>");
+      echo ($num_insc['K']['F'] . "<br>");
+      echo ($total_f . "<br>");
+      echo ("</font>");
+
+      echo ("</td>");
+      echo ("</tr>");
+      echo ("</table></td>");
+      echo("  </tr>");
+
+      $curso_grp       = $ref_curso;
+      $curso_grp_desc  = $curso;
+      $campus_grp      = $ref_campus;
+      $campus_grp_desc = $campus;
+
+      $num_insc['A']['M'] = $num_insc['A']['F'] = 0;
+      $num_insc['B']['M'] = $num_insc['B']['F'] = 0;
+      $num_insc['C']['M'] = $num_insc['C']['F'] = 0;     
+      $num_insc['D']['M'] = $num_insc['D']['F'] = 0;
+      $num_insc['E']['M'] = $num_insc['E']['F'] = 0;
+      $num_insc['F']['M'] = $num_insc['F']['F'] = 0;     
+      $num_insc['G']['M'] = $num_insc['G']['F'] = 0;
+      $num_insc['H']['M'] = $num_insc['H']['F'] = 0;
+      $num_insc['I']['M'] = $num_insc['I']['F'] = 0;     
+      $num_insc['J']['M'] = $num_insc['J']['F'] = 0;     
+      $num_insc['K']['M'] = $num_insc['K']['F'] = 0;     
+      $total_m = 0;
+      $total_f = 0;
+
+      $nova_linha = true;
+
+      $i++; // para alteração de cores
+    }
+
+    $num_insc[$cat][$sexo] = $num;
+  }
+
+  echo("</table>");
+  echo("<hr>");
+
+  $query->Close();
+
+  $conn->Close();
+}
+</script>
+</head>
+<body bgcolor="#FFFFFF" link="#000000" vlink="#000000" alink="#000000">
+<?
+   Inscritos_Idade($ref_periodo);
+?>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../../../lib/properties.php"); ?>
+<html>
+<head>
+<title>Caderno de Chamadas</title>
+<script language="PHP">
+CheckFormParameters(array('periodo_id','data_em','opcao'));
+
+$properties->Set("periodo_id",$periodo_id);
+$properties->Save();
+
+</script>
+
+<script language="JavaScript">
+
+function Select_Disc(id_disc, data_em, dia, turno, periodo_id, curso_id, campus_id)
+{
+  var url = "/relat/caderno_chamada_ps.php3" +
+            "?id_disc=" + escape(id_disc) + 
+            "&data_em=" + data_em + 
+            "&dia=" + dia + 
+            "&turno=" + turno + 
+            "&ref_periodo=" + periodo_id +
+            "&curso_id=" + curso_id +
+            "&campus_id=" + campus_id;
+
+  location = url;
+}
+
+function Select_Disc_Ata(id_disc, data_em, dia, turno, periodo_id, curso_id, campus_id)
+{
+  var url = "/relat/ata_exame_ps.php3" +
+            "?id_disc=" + escape(id_disc) + 
+            "&data_em=" + data_em + 
+            "&dia=" + dia + 
+            "&turno=" + turno + 
+            "&ref_periodo=" + periodo_id +
+            "&curso_id=" + curso_id +
+            "&campus_id=" + campus_id;
+            
+  location = url;
+}
+
+function Select_Disc_Anexo(id_disc, data_em, dia, turno, periodo_id, curso_id, campus_id)
+{
+  var url = "/relat/anexo_conteudo_ps.php3" +
+            "?id_disc=" + escape(id_disc) + 
+            "&data_em=" + data_em + 
+            "&dia=" + dia + 
+            "&turno=" + turno + 
+            "&ref_periodo=" + periodo_id +
+            "&curso_id=" + curso_id +
+            "&campus_id=" + campus_id;
+          
+  location = url;
+}
+
+function Select_Disc_Tecnico(id_disc, data_em, dia, turno, periodo_id, curso_id, campus_id)
+{
+  var dias_letivos = prompt("Quantos dias letivos teve o semestre?","");
+  var data_apuracao = prompt("Qual foi a data de apuração final do rendimento escolar (dd-mm-aaaa)?","");
+  
+  if (dias_letivos=="" || dias_letivos==null || data_apuracao=="" || data_apuracao==null)
+  {
+     alert("Cancelar OK");
+  }
+  else
+  {
+    var url = "/relat/ata_tecnico_ps.php3" +
+              "?id_disc=" + escape(id_disc) + 
+              "&data_em=" + data_em + 
+              "&dia=" + dia + 
+              "&turno=" + turno + 
+              "&ref_periodo=" + periodo_id +
+              "&curso_id=" + curso_id +
+              "&campus_id=" + campus_id +
+              "&dias_letivos=" + escape(dias_letivos) + 
+              "&data_apuracao=" + escape(data_apuracao);
+            
+    location = url;
+  }
+}
+
+</script>
+</head>
+
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<script language="PHP">
+$conn = new Connection;
+
+$conn->open();
+
+if($opcao == 1)
+{
+  // por disciplina
+  $sql = "  select A.id, " .  // Oferecida
+         "         B.id, " .  // Complementar
+         "         A.ref_curso, " .
+         "         A.ref_campus, " .
+         "         get_campus(A.ref_campus), " .
+         "         get_color_campus(A.ref_campus), " .
+         "         A.ref_periodo, " .
+         "         A.ref_disciplina," .
+         "         descricao_disciplina(A.ref_disciplina)," .
+         "         B.dia_semana, " .
+         "         get_dia_semana(B.dia_semana), " .
+         "         B.turno, " .
+         "         get_turno(B.turno), " .
+         "         curso_desc(A.ref_curso), ".
+         "         A.is_cancelada " .
+         "  from disciplinas_ofer A, disciplinas_ofer_compl B " .
+         "  where A.id = B.ref_disciplina_ofer and " .
+         "        A.ref_periodo='$periodo_id' and " .
+         // A pedido da Néri, Atividades Complementares não devem aparecer aqui. Beto - 01-12-2003
+   	     "	      (get_curriculo_mco(A.ref_curso, A.ref_campus, A.ref_disciplina) is null or " .
+         "         get_curriculo_mco(A.ref_curso, A.ref_campus, A.ref_disciplina) <> 'A') and ";
+
+         
+         if ($curso_id)
+         {
+            $sql .= " A.ref_curso='$curso_id' and ";
+         }
+         
+  $sql.= "        A.is_cancelada='0' " .
+         "  order by B.dia_semana, A.ref_disciplina;";
+}
+elseif ($opcao == 2)
+{
+  // por dia, turno e campus
+  $sql = "  select distinct A.ref_periodo, " .
+         "         B.dia_semana, " .
+         "         get_dia_semana(B.dia_semana), " .
+         "         B.turno, " .
+         "         get_turno(B.turno), " .
+         "         A.ref_campus, " .
+         "         get_campus(A.ref_campus), " .
+         "         get_color_campus(A.ref_campus) " .
+         "  from disciplinas_ofer A, disciplinas_ofer_compl B " .
+         "  where A.id = B.ref_disciplina_ofer and " .
+   	     "	      A.ref_periodo='$periodo_id' and " .
+         // A pedido da Néri, Atividades Complementares não devem aparecer aqui. Beto - 01-12-2003
+   	     "	      (get_curriculo_mco(A.ref_curso, A.ref_campus, A.ref_disciplina) is null or " .
+         "         get_curriculo_mco(A.ref_curso, A.ref_campus, A.ref_disciplina) <> 'A') and ";
+
+         if ($curso_id)
+         {
+            $sql .= " A.ref_curso = '$curso_id' and ";
+         }
+         
+  $sql.= "        A.is_cancelada='0' " .
+         "  order by B.dia_semana, A.ref_campus, B.turno";
+}
+
+$query = $conn->CreateQuery($sql);
+
+</script>
+<? 
+if($opcao == 1) // por disciplina
+{
+?>
+<table width=90% align="center" cellspacing="0" cellpadding="0" border="0">
+  <tr bgcolor="#000099">
+    <td colspan="9" height="28" align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Cadernos de Chamada / Atas de Exame por Disciplina</b></font></td>
+  </tr>
+  <tr bgcolor="#000099">
+    <td colspan="9" height="28"><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Curso: <?if ($curso_id) echo($curso_id); else echo("TODOS OS CURSOS");?> / Período: <?echo($periodo_id)?><div align="right">Data de Emissão:  <?echo($data_em)?></div> </b></font></td>
+  </tr>
+  <tr bgcolor="#000000">
+    <td><Font face="Verdana" size="2" color="#ffffff"><b>Cad.</b></font></td>
+    <td><Font face="Verdana" size="2" color="#ffffff"><b>Ata.</b></font></td>
+    <td><Font face="Verdana" size="2" color="#ffffff"><b>Ane.</b></font></td>
+    <td><Font face="Verdana" size="2" color="#ffffff"><b>Tec.</b></font></td>
+    <td align="center"><Font face="Verdana" size="2" color="#ffffff"><b>Código</b></font></td>
+    <td><Font face="Verdana" size="2" color="#ffffff"><b>Disciplina / Professor</b></font></td>
+    <td align="center"><Font face="Verdana" size="2" color="#ffffff"><b>Dia</b></font></td>
+    <td align="center"><Font face="Verdana" size="2" color="#ffffff"><b>Campus</b></font></td>
+    <td align="center"><Font face="Verdana" size="2" color="#ffffff"><b>Ofer</b></font></td>
+  </tr>
+  <script language="PHP">
+  for ( $i=0; $query->MoveNext(); $i++ )
+  {
+    list ( $id_ofer,
+           $id_compl,
+           $ref_curso,
+           $ref_campus,
+           $campus,
+           $color_campus,
+           $ref_periodo,
+           $ref_disciplina,
+           $descricao_disciplina,
+           $dia_semana,
+           $dia_semana_desc,
+           $turno,
+           $turno_desc,
+           $curso_desc ) = $query->GetRowValues();
+
+    $href = "<a href=\"javascript:Select_Disc('$id_ofer', '$data_em','$dia_semana','$turno','$curso_id','$ref_campus')\"><img src=\"../images/select.gif\" title='Caderno Chamada' border=0></a>";
+
+    $href1 = "<a href=\"javascript:Select_Disc_Ata('$id_ofer', '$data_em','$dia_semana','$turno','$curso_id','$ref_campus')\"><img src=\"../images/select.gif\" title='Ata Exame' border=0></a>";
+    
+    $href2 = "<a href=\"javascript:Select_Disc_Anexo('$id_ofer', '$data_em','$dia_semana','$turno','$curso_id','$ref_campus')\"><img src=\"../images/select.gif\" title='Folha Anexa' border=0></a>";
+    
+    $href3 = "<a href=\"javascript:Select_Disc_Tecnico('$id_ofer', '$data_em','$dia_semana','$turno','$curso_id','$ref_campus')\"><img src=\"../images/select.gif\" title='Ata Técnico' border=0></a>";
+
+    $sql = " select ref_professor, " .
+           "        pessoa_nome(ref_professor) " .
+           " from disciplinas_ofer_prof " .
+           " where ref_disciplina_ofer = '$id_ofer' and " .
+           "       ref_disciplina_compl = '$id_compl'";
+
+    $query2 = $conn->CreateQuery($sql);
+
+    if ( $i % 2 == 0 )
+    {
+       $bg = "#EEEEFF";
+    }
+    else
+    {
+       $bg = "#FFFFEE";
+    }
+    
+    </script>
+    <tr bgcolor="<?echo($bg)?>" valign="top">
+    	<td><font color="#000099"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?echo($href)?></font></b></font></td>
+    	<td><font color="#000099"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?echo($href1)?></font></b></font></td>
+    	<td><font color="#000099"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?echo($href2)?></font></b></font></td>
+    	<td><font color="#000099"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?echo($href3)?></font></b></font></td>
+    	<td align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000099"><?echo($ref_disciplina)?></font></td>
+    	<td><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000099"><?echo($descricao_disciplina)?></font></td>
+    	<td align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000099"><?echo($dia_semana_desc)?></font></td>
+    	<td align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="<?echo($color_campus);?>"><b><?echo($campus)?></b></font></td>
+    	<td align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000099"><?echo($id_ofer)?></font></td>
+    </tr>
+    <script language="PHP">
+  
+    while( $query2->MoveNext() ) // while
+    {
+    list ($ref_professor,
+          $professor_nome) = $query2->GetRowValues();
+
+    </script>
+      <tr bgcolor="<?echo($bg)?>" valign="top">
+        <td colspan="5">&nbsp;</td>
+        <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000099"><i>
+        <?echo($professor_nome)?>&nbsp;</i></font></td>
+        <td colspan="3">&nbsp;</td>
+      </tr>
+    <script language="PHP">
+    } // end while
+  
+  $query2->Close();
+  
+  } // for
+</script>
+<tr><td colspan="9"><hr></td></tr>
+</table>
+
+<? } 
+elseif ($opcao == 2) // por dia, turno e campus
+{ ?>
+
+<table width=90% align="center" cellspacing="0" cellpadding="0" border="0">
+  <tr bgcolor="#000099">
+    <td colspan="7" height="28" align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Cadernos de Chamada / Atas de Exame por Dia da Semana, Turno e Campus</b></font></td>
+  </tr>
+  <tr bgcolor="#000099">
+    <td colspan="7" height="28"><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Curso: <?if ($curso_id) echo($curso_id); else echo("TODOS OS CURSOS");?> / Período: <?echo($periodo_id)?><div align="right">Data de Emissão:  <?echo($data_em)?></div> </b></font></td>
+  </tr>
+  <tr bgcolor="#000000">
+    <td><font face="Verdana" size="2" color="#ffffff"><b>Cad.</b></font></td>
+    <td><font face="Verdana" size="2" color="#ffffff"><b>Ata.</b></font></td>
+    <td><font face="Verdana" size="2" color="#ffffff"><b>Ane.</b></font></td>
+    <td><font face="Verdana" size="2" color="#ffffff"><b>Téc.</b></font></td>
+    <td><font face="Verdana" size="2" color="#ffffff"><b>Dia da Semana</b></font></td>
+    <td align="center"><Font face="Verdana" size="2" color="#ffffff"><b>Turno</b></font></td>
+    <td align="center"><Font face="Verdana" size="2" color="#ffffff"><b>Campus</b></font></td>
+  </tr>
+  <script language="PHP">
+  for ( $i=0; $query->MoveNext(); $i++ )
+  {
+    list ( $ref_periodo,
+           $dia_semana,
+           $dia_semana_desc,
+           $turno,
+           $turno_desc,
+           $ref_campus,
+           $campus,
+           $color_campus) = $query->GetRowValues();
+
+    $href = "<a href=\"javascript:Select_Disc('0','$data_em','$dia_semana','$turno','$ref_periodo','$curso_id','$ref_campus')\"><img src=\"../images/select.gif\" title='Caderno Chamada' border=0></a>";
+    $href1 = "<a href=\"javascript:Select_Disc_Ata('0','$data_em','$dia_semana','$turno','$ref_periodo','$curso_id','$ref_campus')\"><img src=\"../images/select.gif\" title='Ata Exame' border=0></a>";
+    $href2 = "<a href=\"javascript:Select_Disc_Anexo('0','$data_em','$dia_semana','$turno','$ref_periodo','$curso_id','$ref_campus')\"><img src=\"../images/select.gif\" title='Folha Anexa' border=0></a>";
+    $href3 = "<a href=\"javascript:Select_Disc_Tecnico('0','$data_em','$dia_semana','$turno','$ref_periodo','$curso_id','$ref_campus')\"><img src=\"../images/select.gif\" title='Atas Técnico' border=0></a>";
+    
+    if ( $i % 2 == 0 )
+    { 
+      $bg = '#EEEEFF'; 
+      $fg = '#000099';
+    }
+    else
+    {
+      $bg = '#FFFFEE';
+      $fg = '#000099';
+    }
+    </script>
+    <tr bgcolor="<?echo($bg);?>" valign="top">
+      <td><font color="<?echo($fg);?>"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?echo($href)?></font></b></font></td>
+      <td><font color="<?echo($fg);?>"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?echo($href1)?></font></b></font></td>
+      <td><font color="<?echo($fg);?>"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?echo($href2)?></font></b></font></td>
+      <td><font color="<?echo($fg);?>"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?echo($href3)?></font></b></font></td>
+      <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="<?echo($fg);?>"><?echo($dia_semana_desc)?>
+      <td align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="<?echo($fg);?>"><?echo($turno_desc)?>
+      <td align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="<?echo($color_campus);?>"><b><?echo($campus)?></b>
+    </tr>
+    <script language="PHP">
+  } // for
+</script>
+<tr><td colspan="7"><hr></td></tr>
+</table>
+<? } ?>
+
+  <script language="PHP">
+   $query->Close();
+
+   $conn->Close();
+</script>
+<form name="form1" >
+  <div align="center">
+    <input type="button" name="Button2" value="  Voltar  " onClick="location='cadernos_chamada_periodo.phtml'">
+  </div>
+</form>
+</body>
+</html>

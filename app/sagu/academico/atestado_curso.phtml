@@ -1,0 +1,274 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+<? require("../generico/busca_nome.php3"); ?>
+<?
+  $op_opcoes3 = SQLArray($sql_periodos_academico);
+
+?>
+<html>
+<head>
+<script language="JavaScript">
+
+function seta_campo(ref_pessoa)
+{
+url = 'atestado_curso.phtml' +
+      '?ref_pessoa=' + escape(document.myform.ref_pessoa.value);
+
+self.location=(url);
+}
+
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp3()
+{
+  ChangeOption(document.myform.op3,document.myform.ref_periodo);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+
+  field.focus();
+
+  return true;
+}
+
+function BuscaPessoa()
+{
+  var url = "/generico/post/lista_pessoas.php3" +
+            "?pnome=" + escape(document.myform.aluno_nome.value);
+
+  var wnd = window.open(url,'busca','toolbar=no,width=530,height=350,scrollbars=yes');
+  
+}
+
+function buscaContrato()
+{
+  var pessoa = document.myform.ref_pessoa.value;
+
+  if ( pessoa == '' )
+  {
+    alert("Código da pessoa inválido ou não especificado!");
+    return;
+  }
+
+  var title = 'Seleção Contrato';
+
+  var sql = " select A.id as Id, " +
+            "        A.ref_curso as Curso, " +
+    	    "        B.descricao as Descricao, " +
+    	    "        A.ref_campus as Campus, " +
+    	    "        A.dt_desativacao as Desativacao, " +
+    	    "        A.ref_last_periodo as Periodo " +
+            "  from contratos A, cursos B" +
+            "  where A.ref_pessoa = " + pessoa + " and " +
+            "        A.ref_curso = B.id";
+
+  var url = "../generico/post/lista_sql.php3?title=" + escape(title) + "&sql=" + escape(sql);
+
+  window.setResultCallback = window.setContrato;
+  
+  var wnd = window.open(url,'buscaContrato','toolbar=no,width=550,height=350,scrollbars=yes');
+
+}
+
+function setContrato(id,ref_curso,descricao,ref_campus,dt_desativacao,ref_last_periodo)
+{
+  document.myform.ref_contrato.value = id;
+  document.myform.ref_curso.value = ref_curso;
+  document.myform.ref_campus.value = ref_campus;
+  document.myform.ref_periodo.value = ref_last_periodo;
+}
+
+function buscaCarimbo()
+{
+  var title = 'Seleção de Carimbos';
+
+  var sql = " select A.id as Id, " +
+            "        A.nome as Nome, " +
+    	    "        A.texto as Funcao, " +
+    	    "        B.nome_setor as Setor" +
+            " from carimbos A, sagu_setores B" +
+            " where A.ref_setor = B.id " +
+            " order by A.nome";
+
+  var url = "../generico/post/lista_sql.php3?title=" + escape(title) + "&sql=" + escape(sql);
+
+  window.setResultCallback = window.setCarimbo;
+  
+  var wnd = window.open(url,'buscaCarimbos','toolbar=no,width=550,height=350,scrollbars=yes');
+
+}
+
+function setCarimbo(id,nome,texto,nome_setor)
+{
+    document.myform.carimb1.value = nome;
+    document.myform.func1.value = texto;
+    document.myform.setor1.value = nome_setor;
+}
+
+function setResult(id,nome)
+{
+  document.myform.ref_pessoa.value = id;
+  document.myform.aluno_nome.value = nome;
+}
+
+</SCRIPT>
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="/relat/atestado_curso.php3" name="myform">
+  <table width="90%" align="center">
+    <tr> 
+      <td bgcolor="#000099" colspan="2" height="28" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Atestados de Matrícula Curso</b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Aluno</font></td>
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td> 
+              <input type="text" name="ref_pessoa" size="10" onChange="javascript:seta_campo(ref_pessoa)" value="<?echo($ref_pessoa);?>">
+            </td>
+            <td> 
+              <input type="text" name="aluno_nome" size="40" value="<?echo($aluno_nome);?>">
+            </td>
+            <td> 
+              <input type="button" value="..." onClick="BuscaPessoa()" name="button">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Contrato</font></td>
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="20%"> 
+              <input name="ref_contrato" type=text size="10" maxlength="10" value="<?echo($ref_contrato);?>">
+            </td>
+            <td width="15%" bgcolor="#CCCCFF"> <font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">&nbsp;Curso</font> 
+            </td>
+            <td width="15%"><font face="Verdana, Arial, Helvetica, sans-serif"> 
+              <input type="text" name="ref_curso" size="10" maxlength="10" value="<?echo($ref_curso);?>">
+              </font> 
+            </td>
+            <td width="15%" bgcolor="#CCCCFF"> <font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">&nbsp;Campus</font> 
+            </td>
+            <td width="15%"><font face="Verdana, Arial, Helvetica, sans-serif"> 
+              <input type="text" name="ref_campus" size="5" maxlength="5" value="<?echo($ref_campus);?>"></font> 
+            </td>
+              
+            <td width="20%"><a href="javascript:buscaContrato()"><img src="../images/find.gif" width="16" height="16" border="0" alt="Selecionar Contrato"></a> 
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Per&iacute;odo</font></td>
+      <td> <font color="#000000">
+        <input type="text" name="ref_periodo" size="10" onChange="ChangeCode('ref_periodo','op3')" value="<?echo($ref_periodo);?>">
+        <script language="PHP">
+          ComboArray("op3",$op_opcoes3,$ref_periodo,"ChangeOp3()")
+        </script>
+        </font></td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Tipo de Atestado</font></td>
+      <td> <font color="#000000">
+        <INPUT type="radio" name="tipo_curso" value="1" checked>Cursos de Graduação&nbsp;&nbsp;&nbsp;&nbsp;
+        <INPUT type="radio" name="tipo_curso" value="2">Cursos Técnicos&nbsp;&nbsp;&nbsp;&nbsp;
+      </td>
+    </tr>
+    
+    <tr> 
+      <td colspan="2"> 
+         <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#000099">Carimbos:</font></b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Carimbo</font></td>
+      <td> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="20%"> 
+              <input name="carimb1" type=text size="20" value="<?echo($carimb1);?>">
+            </td>
+            <td width="15%" bgcolor="#CCCCFF"> <font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">&nbsp;Função</font> 
+            </td>
+            <td width="15%"><font face="Verdana, Arial, Helvetica, sans-serif"> 
+              <input type="text" name="func1" size="20" value="<?echo($func1);?>">
+              </font> 
+            </td>
+            <td width="15%" bgcolor="#CCCCFF"> <font face="Verdana, Arial, Helvetica, sans-serif" color="#000099" size="2">&nbsp;Setor</font> 
+            </td>
+            <td width="15%"><font face="Verdana, Arial, Helvetica, sans-serif"> 
+              <input type="text" name="setor1" size="20" value="<?echo($setor1);?>"></font> 
+            </td>
+              
+            <td width="20%"><a href="javascript:buscaCarimbo()"><img src="../images/find.gif" width="16" height="16" border="0" alt="Selecionar Carimbo"></a> 
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Data Emissão do Atestado</font></td>
+      <td> <font color="#000000">
+           <input type="text" name="DataImpressao" value="<? echo date("d/m/Y") ?>" size="10"></font>
+        </font></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+         <hr size="1">
+      </td>
+    </tr>
+    <?if (!empty($ref_pessoa))
+      { $nome = Busca_Nome($ref_pessoa);
+      ?>
+      <script language="javascript">
+           document.myform.aluno_nome.value="<? echo($nome); ?>";
+      </script>
+      <?
+      }
+    ?>
+    <tr> 
+      <td colspan="2"> 
+        <div align="center"> 
+          <input type="submit" name="Submit"   value=" Imprimir ">
+          <input type="reset"  name="Submit2"  value="  Limpar  ">
+          <input type="button" name="Submit22" value="  Voltar  " onclick="location='atestados.phtml'">
+        </div>
+      </td>
+    </tr>
+  </table>
+  </form>
+</body>
+</html>

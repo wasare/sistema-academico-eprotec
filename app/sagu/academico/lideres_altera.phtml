@@ -1,0 +1,154 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../../../lib/config.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+<?
+   $op1_opcoes = SQLArray($sql_periodos_academico);
+?>
+<html>
+<head>
+<script language="JavaScript">
+function buscaPessoa()
+{
+    var url = "/generico/post/lista_pessoas.php3" +
+              "?pnome=" + escape(document.myform.pessoa.value);
+
+    var wnd = window.open(url,'busca','toolbar=no,width=530,height=350,scrollbars=yes');
+}
+
+function setResult(arg1, arg2, arg3)
+{
+    document.myform.ref_pessoa.value = arg1;
+    document.myform.pessoa.value = arg2;
+}
+
+</script>
+
+
+<script language="PHP">
+CheckFormParameters(array("id"));
+
+$conn = new Connection;
+
+$conn->Open();
+
+$sql = " select A.id, " .
+       "        A.ref_periodo, " .
+       "        A.ref_disciplina_ofer, " .
+       "        A.ref_disciplina_ofer_compl, " .
+       "        descricao_disciplina(get_disciplina_de_disciplina_of(A.ref_disciplina_ofer)), " .
+       "        A.ref_pessoa, " .
+       "        B.nome, " .
+       "        B.email" .
+       " from lideres A, pessoas B " . 
+       " where A.ref_pessoa = B.id and " .
+       "       A.id = '$id'";
+
+$query = $conn->CreateQuery($sql);
+
+SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+
+list ( $id,
+       $ref_periodo,
+       $ref_disciplina_ofer,
+       $ref_disciplina_ofer_compl,
+       $descricao_disciplina,
+       $ref_pessoa,
+       $nome_pessoa,
+       $email_pessoa) = $query->GetRowValues();
+
+$query->Close();
+$conn->Close();
+
+</script>
+
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="post/lideres_altera.php3" name="myform">
+  <table width="90%" align="center">
+    <tr> 
+      <td bgcolor="#000099" colspan="2" height="28" align="center"> 
+      <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Alteraçao de Líderes de Turma</b></font></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="20%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Código 
+        </font>
+      </td>
+      <td width="80%"> 
+        <input name="id" type="hidden" value="<?echo($id)?>">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0000FF">
+        <?echo($id);?>
+        </font>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="20%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Per&iacute;odo 
+        </font>
+      </td>
+      <td width="80%"> 
+        <input name="ref_periodo" type="hidden" value="<?echo($ref_periodo)?>">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0000FF">
+        <?echo($ref_periodo);?>
+        </font>
+      </td>
+    </tr>
+
+    <tr>
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Código da Disciplina Oferecida&nbsp;</font></td>
+      <td colspan="3" width="70%">
+       <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+         <td>
+            <input type="hidden" name="ref_disciplina_ofer" value="<?echo($ref_disciplina_ofer)?>">
+            <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0000FF">
+            <? echo("$ref_disciplina_ofer - $descricao_disciplina");?>
+            </font>
+         </td>
+        </tr>
+       </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Código da Disciplina Oferecida Compl</font></td>
+      <td> 
+        <input name="ref_disciplina_ofer_compl" type="hidden" value="<?echo($ref_disciplina_ofer_compl)?>">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0000FF">
+        <?echo($ref_disciplina_ofer_compl);?>
+        </font>
+      </td>
+    </tr>
+    
+    <tr>
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Aluno&nbsp;</font></td>
+      <td width="70%">
+       <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+         <td>
+            <input type=text name="ref_pessoa" size="7" value="<?=$ref_pessoa?>" maxlength="10">
+            <input type="text" name="pessoa" value="<?=$nome_pessoa?>" size="30">
+         </td>
+         <td>
+         <div align="right">
+            <input type="button" value="..." onClick="buscaPessoa()" name="button2"></div>
+         </td>
+        </tr>
+       </table>
+      </td>
+    </tr>
+
+    <tr> 
+      <td colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <div align="center"> 
+          <input type="submit" name="Submit"  value=" Salvar ">
+          <input type="button" name="Submit2" value=" Voltar " onclick="javascript:history.go(-1)">
+        </div>
+      </td>
+    </tr>
+  </table>
+  </form>
+  </body>
+</html>

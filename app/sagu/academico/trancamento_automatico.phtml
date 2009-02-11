@@ -1,0 +1,106 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../lib/AutenticaSenha.php3"); ?>
+
+<script language="PHP">
+
+CheckFormParameters(array("usuario", "senha"));
+
+AutenticaSenha($usuario, $senha);
+
+</script>
+
+<html>
+<head>
+<title>Trancamento Automático</title>
+
+<script language="JavaScript">
+function Trancamento_Automatico(ref_last_periodo, usuario, senha)
+{
+  var ref_motivo_desativacao = prompt("Qual o motivo de fechamento dos contratos???","13");
+  if (ref_motivo_desativacao == "" || ref_motivo_desativacao == 0 || ref_motivo_desativacao==null)
+  {
+     alert("Cancelar OK");
+  }
+  else
+  {
+  var url = "post/trancamento_automatico.php3" +
+            "?ref_last_periodo=" + escape(ref_last_periodo) + 
+            "&ref_motivo_desativacao=" + escape(ref_motivo_desativacao) +
+            "&usuario=" + escape(usuario) +
+            "&senha=" + escape(senha); 
+      location = url;
+  }
+}
+</script>
+</head>
+<body bgcolor="#FFFFFF">
+<form method="post" action="">
+  <center><br><br>
+    <table width="90%" border="1">
+      <tr> 
+        <td colspan="3"><b><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="red">Esta tela permite fechar automaticamente contratos abertos que estão com determinado último período informados. Basta clicar no botão executar e informar o motivo de fechamento.</font></b></td>
+      </tr>
+      <tr bgcolor="#000099"> 
+        <td width="30%"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#FFFFFF">Período</font></b></td>
+        <td width="30%" ><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#FFFFFF">Num. Contratos</font></b></td>
+        <td width="40%" align="center"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#FFFFFF">Executar 
+          A&ccedil;&atilde;o</font></b></td>
+      </tr>
+
+<script language="PHP">
+
+  $conn = new Connection;
+
+  $conn->Open();
+  
+  $sql = " select ref_last_periodo, " .
+         "        count(*) " .
+         " from contratos " .
+         " where dt_desativacao is null " .
+         " group by ref_last_periodo;";
+
+  $query = $conn->CreateQuery($sql);
+
+  SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+ 
+  $total = 0;
+  
+  while ($query->MoveNext())
+  {
+    list ($ref_last_periodo,
+          $numero) = $query->GetRowValues();
+
+</script>
+
+      <tr> 
+        <td width="30%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo($ref_last_periodo)?></font></td>
+        <td width="30%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo($numero)?></font></td>
+        <td width="40%"> 
+          <div align="center"> 
+            <input type="button" name="Submit" value="Executar" onClick="javascript:Trancamento_Automatico('<? echo($ref_last_periodo); ?>','<? echo($usuario); ?>','<? echo($senha); ?>')">
+          </div>
+        </td>
+      </tr>
+<script language="PHP">
+   $total += $numero;
+   }
+   
+   $query->Close();
+
+   $conn->Close();
+   
+</script>
+      <tr> 
+        <td width="30%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><b>TOTAL CONTRATOS</b></font></td>
+        <td width="30%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><b><? echo($total)?></b></font></td>
+        <td width="40%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">&nbsp;</font></td>
+      </tr>
+    
+    </table>
+  </center> 
+<div align="center">
+  <input type="button" name="Button" value=" Sair " onClick="javascript:history.go(-1)">
+</div>
+</form>
+</body>
+</html>

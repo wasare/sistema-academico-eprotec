@@ -1,0 +1,164 @@
+<?php
+
+/**
+* Filtro de periodo, aluno, curso
+* @author Santiago Silva Pereira
+* @version 1
+* @since 23-01-2009
+**/
+
+header("Cache-Control: no-cache");
+
+//INCLUSAO DE BIBLIOTECAS
+require("../../lib/common.php");
+require("../../lib/config.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php"); 
+
+
+//Criando a classe de conexão
+$Conexao = NewADOConnection("postgres");
+
+//Setando como conexão persistente
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+
+//EXECUTANDO SQL COM ADODB
+$Result1 = $Conexao->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
+
+//Se Result1 falhar	
+if (!$Result1){
+    print $Conexao->ErrorMsg();
+    die();
+}	
+
+$sa_periodo_id = $_SESSION['sa_periodo_id'];
+
+?>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+        <script src="../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
+        <script language="javascript" src="../../lib/prototype.js"></script>
+        <script language="javascript" src="../../lib/functions.js"></script>
+        <script language="javascript">
+            <!--
+
+            //Oculta
+            function Oculta(id){
+                document.getElementById(id).style.display = "none";
+            }
+            //Exibe
+            function Exibe(id){
+                document.getElementById(id).style.display = "inline";
+            }
+
+            function ConsultaCursos(){
+
+                var codigo_pessoa = $F('codigo_pessoa');
+                var url = 'matricula_contratos.php';
+                var pars = 'codigo_pessoa=' + codigo_pessoa;
+
+                var myAjax = new Ajax.Updater(
+                'RespostaCursos',
+                url,
+                {
+                    method: 'get',
+                    parameters: pars
+                });
+            }
+
+            function ChangeOption(opt,fld){
+                var i = opt.selectedIndex;
+                if ( i != -1 ){
+                    fld.value = opt.options[i].value;
+                }else{
+                    fld.value = '';
+                }
+            }
+
+            function ChangeOp() {
+                ChangeOption(document.form1.periodo,document.form1.periodo_id);
+            }
+
+            function ChangeCode(fld_name,op_name){
+                var field = eval('document.form1.' + fld_name);
+                var combo = eval('document.form1.' + op_name);
+                var code  = field.value;
+                var n     = combo.options.length;
+                for ( var i=0; i<n; i++ ){
+                    if ( combo.options[i].value == code ){
+                        combo.selectedIndex = i;
+                        return;
+                    }
+                }
+
+                alert(code + ' não é um código válido!');
+                field.focus();
+                return true;
+            }
+            -->
+        </script>
+
+        <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
+        <link href="../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
+
+        <title>SA</title>
+    </head>
+    <body onload="Oculta('Submit')">
+
+        <form method="post" action="matricula_regular.php" name="form1">
+
+            <div align="center" style="height:600px;">
+                <h1>Processo de Matrícula</h1>
+                <h4>Identifica&ccedil;&atilde;o do Per&iacute;odo e do Aluno: Etapa 1/2</h4>
+
+                <div class="box_geral">
+
+                    <!-- Entrada do Periodo -->
+                    Selecione um per&iacute;odo:<br>
+                    <span id="sprytextPeriodo">
+		    <input type="text" id="periodo_id" name="periodo_id" value="<?=$sa_periodo_id?>" size="10" onchange="ChangeCode('periodo_id','periodo')" />
+                        <?php  print $Result1->GetMenu('periodo',null,true,false,0,'onchange="ChangeOp()"'); ?>
+                        <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
+                    </span><br>
+
+                    <!-- Entrada do Aluno-->
+                    Selecione um aluno:<br>
+                    <span id="sprytextPessoa">
+                        <input type="text" name="codigo_pessoa" id="codigo_pessoa" size="10" />
+                        <input type="text" name="nome_pessoa" id="nome_pessoa" size="35" >
+                    <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span></span>
+
+                    <a href="javascript:abre_consulta_rapida('../consultas_rapidas/pessoas/index.php')">
+                        <img src="../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
+                    </a>
+                    <br /><br />
+                    <input type="button" name="teste" id="teste" value="Exibir cursos" onclick="Exibe('Submit');ConsultaCursos();" />
+                    <div id="RespostaCursos"></div>
+                </div>
+                <br>
+
+                <!--<input type="button" value="  Voltar  " onclick="javascript:history.back(-1)" name="Button" />-->
+
+                <input type="hidden" name="first" value="1">
+
+                <input type="submit" name="Submit" id="Submit"  value=" >> Matr&iacute;cula Regular " />
+
+            </div>
+
+        </form>
+
+        <script type="text/javascript">
+            <!--
+            var sprytextPeriodo = new Spry.Widget.ValidationTextField("sprytextPeriodo");
+            var sprytextPessoa = new Spry.Widget.ValidationTextField("sprytextPessoa");
+            //-->
+        </script>
+
+    </body>
+</html>

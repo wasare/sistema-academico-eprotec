@@ -1,0 +1,204 @@
+<? require("../../../lib/common.php"); ?>
+
+<html>
+<head>
+
+<script language="PHP">
+function MostraCadastros()
+{
+  $conn = new Connection;
+
+  $conn->Open();
+
+  $sql= "select A.id_old, " . 
+    	"	    B.nome, " .
+        "       A.id_new, " .
+	    "   	C.nome " .
+        " from cadastro_duplo A, instituicoes B, instituicoes C " .
+    	" where B.id = A.id_old and " .
+	    "       C.id = A.id_new and " .
+    	"       A.tipo = 'instituicoes' " .
+	    " order by B.nome";
+
+  $query = $conn->CreateQuery($sql);
+
+  $n = $query->GetColumnCount();
+
+  echo("<br><center><table width=\"90%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+
+  $i=1;
+
+  // cores fundo
+  $bg0 = "#000000";
+  $bg1 = "#DDDDFF";
+  $bg2 = "#FFFFDD";
+
+  // cores fonte
+  $fg0 = "#FFFFFF";
+  $fg1 = "#000099";
+  $fg2 = "#000099";
+
+  while( $query->MoveNext() )
+  {
+    list ($old,
+          $nome_old,
+          $novo,
+          $nome_new) = $query->GetRowValues();
+
+     if ($nome_old == '')
+     {
+       $nome_old = 'NI';
+     }
+     if ($nome_new == '')
+     {
+       $nome_new = 'NI';
+     }
+
+     $href = "<a href=\"javascript:Confirma_Exclui('$old','$novo')\"><img src=\"../images/delete.gif\" title='Excluir Cadastro' align='absmiddle' border=0></a>";
+     
+     $href1 = "<a href=\"javascript:Unifica_Cadastro('$old','$novo','$nome_old','$nome_new')\"><img src=\"../images/close.gif\" title='Unificar o Cadastro da Pessoa' align='absmiddle' border=0></a>";
+     $href2 = "<a href=\"javascript:mostra_cadastro('$old')\"><img src=\"../images/update.gif\" title=\"Verifica Cadastro\" align='absmiddle' border=0></a>";
+     $href3 = "<a href=\"javascript:Unifica_Cadastro('$novo','$old','$nome_new','$nome_old')\"><img src=\"../images/close.gif\" title='Unificar o Cadastro da Pessoa' align='absmiddle' border=0></a>";
+     $href4 = "<a href=\"javascript:mostra_cadastro('$novo')\"><img src=\"../images/update.gif\" title=\"Verifica Cadastro\" align='absmiddle' border=0></a>";
+
+    if ($i == 1) //monta cabecalho da tabela
+    {
+      echo("<tr bgcolor=\"#000000\">\n");
+      echo ("<td width=\"8%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Código Original</b></font></td>");
+      echo ("<td width=\"38%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Nome da Instituição</b></font></td>");
+      echo ("<td width=\"8%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Código do Duplicado</b></font></td>");
+      echo ("<td width=\"38%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Nome da Instituição</b></font></td>");
+      echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Ação</b></font></td>");
+      echo("</tr>");
+    }
+    
+    if ( $i % 2 )
+    {
+       $bg = $bg1;
+       $fg = $fg1;
+    }
+    else
+    {
+       $bg = $bg2;
+       $fg = $fg2;
+    }
+    
+    echo("<tr bgcolor=\"$bg\">\n");
+    echo ("<td width=\"8%\" align=\"right\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\"><b>$old$href2$href1</b></td>");
+    echo ("<td width=\"38%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\"><b>$nome_old</b></td>");
+    echo ("<td width=\"8%\" align=\"right\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\"><b>$novo$href4$href3</b></td>");
+    echo ("<td width=\"38%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\"><b>$nome_new</b></td>");
+    echo ("<td width=\"8%\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\"><b>$href</b></td>");
+    echo("</tr>");
+
+    $i++;
+
+  } // while
+  
+  $total = $i - 1;
+
+  echo("<tr bgcolor=\"#000000\">\n");
+  echo ("<td width=\"92%\" colspan=\"4\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Total de instituições</b></font></td>");
+  echo ("<td width=\"8%\" align=\"right\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>$total</b></font></td>");
+  echo("</tr>");
+  echo("</table></center>");
+
+  $query->Close();
+
+  $conn->Close();
+}
+
+</script>
+
+<script language="JavaScript">
+function Confirma_Exclui(arg1, arg2)
+{
+  url = 'post/instit_duplic_exclui.php3?id_old=' + arg1 + '&id_new=' + arg2;
+ 
+  if (confirm("Você tem certeza que deseja EXCLUIR o cadastro duplo: "+arg1+" - "+arg2+" ?"))
+       location=(url)
+  else
+       alert("Exclusão Cancelada.");
+}
+
+function Unifica_Cadastro(arg1, arg2, arg3, arg4)
+{
+  url = 'post/unifica_instit.php3?id_valido=' + arg1 + '&id_invalido=' + arg2 + '&nome_instituicao=' + arg3;
+
+  conf = "ATENÇÃO:\n\n"
+  conf = conf + "Ao confirmar esta operação, o cadastro da instituição\n"
+  conf = conf + arg2 +" - "+ arg4 +"\n"
+  conf = conf + "será unificado ao cadastro da instituição\n"
+  conf = conf + arg1 +" - "+ arg3 +"\n"
+  conf = conf + "Dessa forma, todas as referências à instituição "+ arg2 +" serão transferidas para "
+  conf = conf + "a instituição "+ arg1 +".\n\n"
+  conf = conf + "Tem certeza que deseja realizar esta operação?"
+
+  if ( confirm( conf ) )
+       location=url
+  else
+       alert("Unificação Cancelada.");
+}
+
+function mostra_cadastro(id)
+{
+  var url = "../vestibular/instituicao_altera.phtml?id=" + escape(id);
+
+  window.open(url,'instituicao','resizable=yes, toolbar=no,width=840,height=620,scrollbars=yes');
+}
+
+</script>
+
+<script language="JavaScript">
+function _init()
+{
+  document.myform.id_old.focus();
+}
+</script>
+
+</head>
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
+<form method="post" action="post/instit_duplic.php3" name="myform">
+  <table width="90%" align="center">
+    <tr bgcolor="#000099"> 
+      <td height="35" colspan="2"> 
+        <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Inclusão de Instituições Duplicadas</font></b></font></div>
+      </td>
+    </tr>
+    <tr>
+      <td height="20" bgcolor="#CCCCFF" width="246"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Código 1</font></td>
+      <td height="20" bgcolor="#CCCCFF" width="247"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Código 2</font></td>
+    </tr>
+    <tr>
+      <td width="250">
+        <input name="id_old" type=text size="15" maxlength="15">
+      <td width="250">
+        <input name="id_new" type=text size="15" maxlength="15">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" align="center"> 
+        <input type="submit" name="Submit"  value=" Salvar ">
+        <input type="reset"  name="Submit2" value=" Limpar ">
+        <input type="button" name="Button2" value=" Voltar " onClick="location='cadastro_duplo_idx.phtml'">
+      </td>
+    </tr>
+    <tr> 
+      <td>&nbsp; </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <div align="center">
+          <? MostraCadastros(); ?>
+        </div>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

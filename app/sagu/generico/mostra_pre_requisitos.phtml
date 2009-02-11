@@ -1,0 +1,110 @@
+<? require("../../../lib/common.php"); ?>
+
+<html>
+<head>
+<title></title>
+<script language="PHP">
+function Mostra_Pre_Requisitos($ref_disciplina, $ref_curso)
+{
+
+  $conn = new Connection;
+
+  $conn->Open();
+
+  $sql = " select ref_disciplina,".
+  	 "        descricao_disciplina(ref_disciplina), " .
+	 "        ref_disciplina_pre, " .
+	 "        descricao_disciplina(ref_disciplina_pre) " .
+         "        from pre_requisitos ".
+         " where ref_disciplina = $ref_disciplina and ".
+         "       ref_curso = $ref_curso";
+
+  $query = $conn->CreateQuery($sql);
+
+  echo("<center><table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+
+  $i=1;
+
+  // cores fundo
+  $bg0 = "#000000";
+  $bg1 = "#EEEEFF";
+  $bg2 = "#FFFFEE";
+
+  // cores fonte
+  $fg0 = "#FFFFFF";
+  $fg1 = "#000099";
+  $fg2 = "#000099";
+ 
+  $ctrl = 'false';
+  
+  while( $query->MoveNext() )
+  {
+    list( $ref_disciplina,
+          $nome_disciplina,
+	  $ref_disciplina_pre,
+          $nome_disciplina_pre) = $query->GetRowValues();
+    
+    $ctrl = 'true';
+    
+    if ($i == 1)
+    {
+      echo("<tr bgcolor=\"#000000\">\n");
+      echo ("<td align=left width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Código</b></font></td>");
+      echo ("<td align=left width=\"80%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Disciplina Pré Requisito</b></font></td>");
+      echo("  </tr>"); 
+    }
+
+    if ( $i % 2)
+    {
+      $bg = $bg1;
+      $fg = $fg2;
+    }
+    else
+    {
+      $bg = $bg2;
+      $fg = $fg1;
+    }
+
+    echo("<tr bgcolor=\"$bg\">\n");
+    echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\">$ref_disciplina_pre</td>");
+    echo ("<td width=\"40%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg\">$nome_disciplina_pre</td>");
+    echo("  </tr>");
+
+  $i++;
+
+  }
+  if ($ctrl == 'false')
+  {
+    echo("<tr>");
+    echo ("<td colspan=\"2\" align=\"center\"><Font face=\"Verdana\" size=\"2\" color=\"red\"><b>A Disciplina $ref_disciplina não tem pré requisito cadastrado!!!</b></td>");
+    echo("</tr>");
+  }
+
+  echo("</table></center>");
+
+  $query->Close();
+
+  $conn->Close();
+}
+</script>
+</head>
+
+<body bgcolor="#FFFFFF">
+<table cols=2 width="500" align="center" cellpadding="0" cellspacing="0" border="1" bordercolor="#CCCCFF">
+  <tr bgcolor="#FFFFFF"> 
+    <td height="33" colspan="2"> 
+        <div align="center"><b>
+	<font face="Verdana, Arial, Helvetica, sans-serif" size="3" color="#FF0000"><br>
+         Consulta Pré requisitos da disciplina <i><?echo($ref_disciplina);?></i><br><br>
+        <?PHP Mostra_Pre_Requisitos($ref_disciplina, $ref_curso); ?> 
+        </b></font></div>
+    </td>
+  </tr>
+</table>
+<div align="center"><br>
+  <form method="post" action="">
+    <input type="button" name="Submit" value="Fecha Janela" onClick="javascript:window.close();">
+  </form>
+</div>
+</body>
+</html>
