@@ -1,0 +1,122 @@
+<?
+
+  global $PS;
+ 
+  require('pslib.class');
+
+  echo("This file is for compatibility with files writed for version 0.02 of PSLib <BR>");
+  echo("If you are stating a new file this is not required, use the pslib.class. See historico.php3 for more details how to create .ps files <BR>");
+  echo("Suggestions, bugs and/or comments are welcome. <BR>");
+  echo("--------------------------------------------<BR>");
+  echo("Este arquivo deve ser utilizado para compatibilidade com a versao 0.02 da PSLib<BR>");
+  echo("Se voce estiver comecando um arquivo novo este arquivo nao eh necessario, utilize o pslib.class. Veja o arquivo historico.php3 para maiores detalhes sobre como criar um arquivo .ps<BR>");
+  echo("Sugestoes, bugs e/ou comentarios sao bem vindos<BR>");
+  echo("--------------------------------------------<BR>");
+  echo("Vilson Cristiano Gartner - vgartner@univates.br<BR>");
+
+  
+  function PS_open($file, $author, $title, $orientation)
+  {
+     $PS = new postscript( $file, $author, $title, $orientation);
+  }
+
+
+  function PS_begin_page($file, $page)
+  {
+      $file = 'no longer used';
+      $PS->begin_page($page);
+  }
+  
+  
+  function PS_close($file)
+  {
+      $PS->close();
+  }
+  
+  
+  function PS_end_page($file)
+  {
+      $PS->end_page();
+  }
+  
+  
+  function PS_line($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth)
+  {
+      $PS->line($xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth);
+      
+  }
+  
+  
+  function PS_moveto($file, $xcoord, $ycoord)
+  {
+      $PS->moveto($xcoord, $ycoord);
+  }
+  
+  
+  function PS_moveto_font($file, $xcoord, $ycoord, $font_name, $font_size)
+  {
+      $PS->moveto_font($xcoord, $ycoord, $font_name, $font_size);
+  }
+  
+  
+  function PS_open_ps($file, $ps_file)
+  {
+      $PS->open_ps($ps_file);
+  }
+  
+  
+  function PS_rect($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth)
+  {
+      $PS->rect($xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth);
+      
+  }
+  
+  
+  function PS_rect_fill($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth, $darkness)
+  {
+      $PS->rect_fill($xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth, $darkness);
+      
+  }
+  
+  
+  function PS_rotate($file, $degrees)
+  {
+      $PS->rotate($degrees);
+  }
+  
+  
+  function PS_set_font($file, $font_name, $font_size)
+  {
+      $PS->set_font($font_name, $font_size);
+  }
+  
+  
+  function PS_show($file, $text)
+  {
+      $PS->show($text);
+  }
+  
+  
+  function PS_show_eval($file, $text)
+  {
+      //temporarily disabled
+  }
+  
+  
+  function PS_show_xy($file, $text, $xcoord, $ycoord)
+  {
+      $PS->show_xy($text, $xcoord, $ycoord);
+  }
+  
+  
+  function PS_show_xy_font($file, $text, $xcoord, $ycoord, $font_name, $font_size)
+  {
+      $PS->show_xy_font($text, $xcoord, $ycoord, $font_name, $font_size);
+  }
+  
+  function PS_set_acent($file)
+  {
+      // function no longer used.
+  }
+  
+?>

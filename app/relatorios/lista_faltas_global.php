@@ -57,12 +57,14 @@ if ( is_numeric($aluno_id) )
 
 $sql .= "  GROUP BY p.id, p.nome, m.ref_periodo, m.ref_curso   ORDER BY 2";
 
-// echo $sql; die;
+//echo $sql; die;
 
 $sql = 'SELECT * FROM ('. $sql .') AS T1 ORDER BY lower(to_ascii("Nome"));';
 
 //EXECUTANDO SQL DA CONSULTA PRINCIPAL
 $Result1 = $Conexao->Execute($sql);
+
+//$Conexao->ErrorMsg();
 
 //numero de ocorrencias
 $num_result = $Result1->RecordCount();

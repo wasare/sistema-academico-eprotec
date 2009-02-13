@@ -2,7 +2,7 @@
 set_time_limit(120);
 
 if ( !$SAGU_HOST )
-  $SAGU_HOST = "sistemas.cefetbambui.edu.br/sa/";
+  $SAGU_HOST = "dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/";
 
 
 // inicialização padrão

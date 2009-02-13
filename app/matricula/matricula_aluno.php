@@ -48,30 +48,26 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
         <script language="javascript">
             <!--
 
-            //Oculta
+            //Oculta botoes
             function Oculta(id){
                 document.getElementById(id).style.display = "none";
             }
-            //Exibe
+            //Exibe botoes
             function Exibe(id){
                 document.getElementById(id).style.display = "inline";
             }
-
+			
+			//Ajax que busca os contratos e os cursos
             function ConsultaCursos(){
 
                 var codigo_pessoa = $F('codigo_pessoa');
                 var url = 'matricula_contratos.php';
                 var pars = 'codigo_pessoa=' + codigo_pessoa;
 
-                var myAjax = new Ajax.Updater(
-                'RespostaCursos',
-                url,
-                {
-                    method: 'get',
-                    parameters: pars
-                });
+                var myAjax = new Ajax.Updater('RespostaCursos',url, {method: 'get',parameters: pars});
             }
 
+			//Preenche periodo
             function ChangeOption(opt,fld){
                 var i = opt.selectedIndex;
                 if ( i != -1 ){
@@ -85,7 +81,8 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
                 ChangeOption(document.form1.periodo,document.form1.periodo_id);
             }
 
-            function ChangeCode(fld_name,op_name){
+            function ChangeCode(fld_name,op_name)
+            {
                 var field = eval('document.form1.' + fld_name);
                 var combo = eval('document.form1.' + op_name);
                 var code  = field.value;
@@ -101,17 +98,18 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
                 field.focus();
                 return true;
             }
+
             -->
         </script>
 
-        <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
+        <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
         <link href="../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
 
         <title>SA</title>
     </head>
-    <body onload="Oculta('Submit')">
+    <body onload="Oculta('regular');Oculta('avulsa')">
 
-        <form method="post" action="matricula_regular.php" name="form1">
+        <form method="post" name="form1">
 
             <div align="center" style="height:600px;">
                 <h1>Processo de Matrícula</h1>
@@ -120,35 +118,35 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
                 <div class="box_geral">
 
                     <!-- Entrada do Periodo -->
-                    Selecione um per&iacute;odo:<br>
+                    Selecione um per&iacute;odo:<br />
                     <span id="sprytextPeriodo">
-		    <input type="text" id="periodo_id" name="periodo_id" value="<?=$sa_periodo_id?>" size="10" onchange="ChangeCode('periodo_id','periodo')" />
+		    		<input type="text" id="periodo_id" name="periodo_id" value="<?=$sa_periodo_id?>" size="10" onchange="ChangeCode('periodo_id','periodo')" />
                         <?php  print $Result1->GetMenu('periodo',null,true,false,0,'onchange="ChangeOp()"'); ?>
                         <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
-                    </span><br>
+                    </span><br />
 
                     <!-- Entrada do Aluno-->
-                    Selecione um aluno:<br>
+                    Selecione um aluno:<br />
                     <span id="sprytextPessoa">
                         <input type="text" name="codigo_pessoa" id="codigo_pessoa" size="10" />
-                        <input type="text" name="nome_pessoa" id="nome_pessoa" size="35" >
+                        <input type="text" name="nome_pessoa" id="nome_pessoa" size="35" />
                     <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span></span>
 
                     <a href="javascript:abre_consulta_rapida('../consultas_rapidas/pessoas/index.php')">
                         <img src="../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
                     </a>
                     <br /><br />
-                    <input type="button" name="teste" id="teste" value="Exibir cursos" onclick="Exibe('Submit');ConsultaCursos();" />
+                    <input type="button" name="teste" id="teste" value="Exibir cursos" onclick="Exibe('regular');Exibe('avulsa');ConsultaCursos();" />
                     <div id="RespostaCursos"></div>
                 </div>
-                <br>
+                <br />
 
                 <!--<input type="button" value="  Voltar  " onclick="javascript:history.back(-1)" name="Button" />-->
 
-                <input type="hidden" name="first" value="1">
+                <input type="hidden" name="first" value="1" />
 
-                <input type="submit" name="Submit" id="Submit"  value=" >> Matr&iacute;cula Regular " />
-
+                <input type="button" name="regular" id="regular"  value=" Matr&iacute;cula regular " onclick="document.form1.action = 'matricula_regular.php';document.form1.submit();" />&nbsp;
+                <input type="button" name="avulsa" id="avulsa"  value=" Matr&iacute;cula avulsa " onclick="document.form1.action = 'matricula_avulsa.php';document.form1.submit();" />
             </div>
 
         </form>

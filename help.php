@@ -13,7 +13,7 @@ require ("lib/config.php");
 <link href="Styles/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<div align="center">
+<div align="center" />
 
         <table width="350" cellpadding="0" cellspacing="0" class="pesquisa">
           <tr>

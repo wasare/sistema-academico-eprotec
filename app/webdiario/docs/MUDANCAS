@@ -1,0 +1,33 @@
+---------------------------
+Sistema de Web Diário - MUDANCAS (Changelog)
+Última Versão do Sistema:
+---------------------------
+
+2007-11-* - Wanderson Santiago dos Reis <wanderson at cefetbambui dot edu dot br>
+      * Otimização de consulta de alunos
+      * melhoria no estilo das diversas tabelas de resultados de pesquisas 
+
+2007-10-* - Wanderson Santiago dos Reis <wanderson at cefetbambui dot edu dot br>
+      * Adicionado suporte total a diários multi-professor(lançamento de notas e faltas)
+      * Integração da Interface da Coordenação ao Módulo do professor
+
+2007-09-* - Wanderson Santiago dos Reis <wanderson at cefetbambui dot edu dot br>
+      * Adicionado estado aos diários (aberto, finalizado e concluído)
+      * Adicionado módulo de acompanhamento de coordenadores (Interface Coordenação)
+      * Adicionada Papeleta parcial
+      * Papeleta multi-professor
+
+2007-08-* - Wanderson Santiago dos Reis <wanderson at cefetbambui dot edu dot br>
+      * Convertido para multi-períodos      
+      * Adicionado o controle de acesso por períodos e de forma individual para períodos anteriores, por arquivo de configuração
+
+
+2007-03-* - Wanderson Santiago dos Reis <wanderson at cefetbambui dot edu dot br>
+      * Adicionada nova maneira de seleção de diários/períodos, visando melhorar a usabilidade.
+      * Adicionadas papeleta completa, relatório completo de faltas, resolução de pendências aperfeiçoada, inclusão de nota extra para reavaliação/recuperação, entre outras melhorias não listadas (rastreadas).
+      * Adicionada interface para secretaria com funções básicas de consulta e acompanhamento dos diários.
+
+
+2006-*-* - Wanderson Santiago dos Reis <wanderson at cefetbambui dot edu dot br>
+      * Diversas alterações importantes e não listadas (rastreadas) como múltiplos diários da mesma disciplina em um mesmo período.
+      * Versão inicial do webdiario disponível em http://codigolivre.org.br/projects/webdiario

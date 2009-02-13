@@ -14,6 +14,7 @@ if ( !empty($SessionAuth) ){
 
 $properties->Cleanup();
 
+$sagu_cookie = '';
 SetCookie("SessionAuth","",0,"/","$sagu_cookie",0); 
 SetCookie("SessionUsuario","",0,"/","$sagu_cookie",0);
 
@@ -46,7 +47,7 @@ SetCookie("SessionUsuario","",0,"/","$sagu_cookie",0);
       <input type="password" name="pwd" maxlength="20" style="width:140px;" />
       <p>
         <input type="submit" name="Submit" value=" Entrar " />
-        <?php echo($TestCookie);?>
+        <!--<\?php echo($TestCookie);?>-->
         <input type="hidden" name="home" value="https://<?php echo($SAGU_HOST); ?>/inicio.php" />
         <br />
       </p>

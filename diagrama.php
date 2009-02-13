@@ -68,7 +68,7 @@ a {
 -->
 </style>
 </head>
-<body onLoad="javascript: abrir()">
+<body onload="javascript: abrir()">
 
 <div id="popup">
   <strong>Avisos:</strong><br />
