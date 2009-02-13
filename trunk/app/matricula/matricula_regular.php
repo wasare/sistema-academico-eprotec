@@ -3,15 +3,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>SA</title>
-<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
-<script language="JavaScript" src="matricula.js"></script>
+<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript">
+<!--
+function confirma()
+{
+	if (confirm('Tem certeza que deseja matricular o aluno nas disciplinas selecionadas?'))
+	{
+		document.form1.submit();
+	} else {
+		// se não confirmar, coloque o codigo aqui
+    }
+}
+function selecionar_tudo()
+{
+		for (i=0;i<document.form1.elements.length;i++)
+  		if(document.form1.elements[i].type == "checkbox")
+     		document.form1.elements[i].checked=1
+} 
+
+function deselecionar_tudo()
+{
+		for (i=0;i<document.form1.elements.length;i++)
+  		if(document.form1.elements[i].type == "checkbox")
+    		document.form1.elements[i].checked=0
+}
+-->
+</script>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 </head>
 <body onload="Oculta('matricular')">
 <div align="center" style="height:600px;">
   <h1>Processo de Matr&iacute;cula Regular</h1>
   <h4>Sele&ccedil;&atilde;o das disciplinas: Etapa 2/2</h4>
-  <!--<strong>Identifica&ccedil;&atilde;o do aluno</strong>-->
   <div class="box_geral"> <strong>Aluno: </strong>
     <?=$aluno_id?>
     -
@@ -45,13 +69,12 @@
         <?=$MarcaDisciplina?>
       </p>
     </div>
-    <input type="hidden" name="periodo_id" value="<?=$periodo_id?>">
-    <input type="hidden" name="curso_id" value="<?=$curso_id?>">
-    <input type="hidden" name="aluno_id" value="<?=$aluno_id?>">
-    <input type="hidden" name="id_contrato" value="<?=$id_contrato?>">
-    <input type="hidden" name="ref_campus" value="<?=$ref_campus?>">
+    <input type="hidden" name="periodo_id" value="<?=$periodo_id?>" />
+    <input type="hidden" name="curso_id" value="<?=$curso_id?>" />
+    <input type="hidden" name="aluno_id" value="<?=$aluno_id?>" />
+    <input type="hidden" name="id_contrato" value="<?=$id_contrato?>" />
+    <input type="hidden" name="ref_campus" value="<?=$ref_campus?>" />
     <p>
-      <input type="button" value="  Voltar  " onclick="javascript:history.back(-1)" name="Button" />
       <input type="button" name="matricular" id="matricular" onclick="confirma()" value="Matricular" />
     </p>
   </form>

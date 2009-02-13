@@ -198,14 +198,13 @@ else
     </tr>
     <?php echo exibeMatriculadas(montaListaMatriculas($id_mat), $Conexao); ?>
   </table>
-  <p>
+  <br /><br />
   <form id="form1" name="form1" method="post" action="">
     <input name="lista_matriculas" type="hidden" value="<?php echo montaListaMatriculas($id_mat);?>" />
     <input name="opcao" type="hidden" value="" />
     <input type="submit" name="button2" id="button2" value="Cancelar" onclick="document.form1.opcao.value = 'cancel'" />
     <input type="submit" name="button" id="button" value="Confirmar" onclick="document.form1.opcao.value = 'confirm'" />
   </form>
-  </p>
 </div>
 </body>
 </html>

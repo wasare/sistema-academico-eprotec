@@ -3,7 +3,7 @@
 set_time_limit(120);
 
 // VARIAVEIS PARA O SAGU
-$sagu_cookie = ".sistemas.cefetbambui.edu.br";
+$sagu_cookie = ".dev.cefetbambui.edu.br";
 
 // onde colocar variaveis de ambiente
 $SAGU_PATH   = dirname(__FILE__) . '/../app/sagu';
@@ -14,7 +14,7 @@ $LoginHost   = 'dados.cefetbambui.edu.br';
 $LoginDB     = 'sagu';
 $LoginUID    = "";
 $LoginPWD    = "";
-$LoginURL    = "https://sistemas.cefetbambui.edu.br/sa/index.php";
+$LoginURL    = "https://dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/index.php";
 $LoginACL    = "$SAGU_PATH/users.acl";
 $ErrorURL    = dirname(__FILE__) . '/../app/sagu/fatalerror.phtml';
 $SuccessURL  = dirname(__FILE__) . '/../app/sagu/modelos/modelo_exito.phtml';

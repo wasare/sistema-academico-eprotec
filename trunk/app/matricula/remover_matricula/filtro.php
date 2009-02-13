@@ -100,17 +100,16 @@ onchange="ChangeCode('periodo1','periodo')" />
       C&oacute;digo do Aluno:<br />
       <span id="sprytextPessoa">
       <input type="text" name="codigo_pessoa" id="codigo_pessoa" size="10" />
-      <input type="text" name="nome_pessoa" id="nome_pessoa" size="35" >
+      <input type="text" name="nome_pessoa" id="nome_pessoa" size="35" />
       <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span></span>
       <a href="javascript:abre_consulta_rapida('../../consultas_rapidas/pessoas/index.php')">
       <img src="../../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
       </a>
-      <p>
+      <br /><br />
       <div align="center">
         <input type="submit" name="avancar" id="avancar" value="Avan&ccedil;ar" />
-        <input type="button" value="  Voltar  " onClick="javascript:history.back(-1)" name="Button">
+        <input type="button" value="  Voltar  " onclick="javascript:history.back(-1)" name="Button" />
       </div>
-      </p>
     </div>
   </div>
 </form>
