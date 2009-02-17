@@ -56,7 +56,7 @@ SetCookie("SessionUsuario","",0,"/","$sagu_cookie",0);
   </div>
   </div>
   <p>
-  <span class="atalhos"> <a href="https://sistemas.cefetbambui.edu.br/webdiario" target="_blank">Ir para o WebDi&aacute;rio</a></span></p>
+  <span class="atalhos"> <a href="<?php echo $BASE_URL . 'app/webdiario'; ?>" target="_blank">Ir para o WebDi&aacute;rio</a></span></p>
 </div>
 </body>
 </html>

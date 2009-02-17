@@ -50,10 +50,10 @@ function ListaPessoas()
   $like = "";
   
   if ( $id != "" )
-    $like = "$id";
+    $like = $_POST['id'];
 
   if ( $desc != "" )
-    $like = "$desc%";
+    $like = $_POST['desc']."%";
 
   else if ( $like != "" )
     $like = "$like%";
@@ -82,7 +82,7 @@ function ListaPessoas()
   if ( $id != '' )
   {
     $where .= ( $where == '' ) ? ' where ' : ' and ';
-    $where .= "id = '$id' and tipo_pessoa='f'";
+    $where .= "id = '".$_POST['id']."' and tipo_pessoa='f'";
   }
 
   if ( $desc != '' )
@@ -90,7 +90,7 @@ function ListaPessoas()
    // $where .= ( $where == '' ) ? ' where ' : ' and ';
     //$where .= "upper(nome) like upper('$desc%') and tipo_pessoa='f'";
     $where .= " WHERE lower(to_ascii(nome)) ";
-    $where .= " SIMILAR TO lower(to_ascii('$desc%')) ";
+    $where .= " SIMILAR TO lower(to_ascii('". $_POST['desc']."%')) ";
     $where .= " AND tipo_pessoa='f' ";
   }
 
@@ -184,11 +184,11 @@ function ListaPessoas()
         <td width="1">&nbsp;</td>
         <td width="102"> 
           <div align="left">
-            <input type="text" name="id" size="15" onChange="javascript:seta_campo(id)" value="<?echo($id)?>">
+            <input type="text" name="id" size="15" onChange="javascript:seta_campo(id)" value="<?=$_POST['id']?>">
           </div>
         </td>
         <td width="311"> 
-          <input type="text" name="desc" size="40" value="<?echo($desc)?>">
+          <input type="text" name="desc" size="40" value="<?=$_POST['desc']?>">
         </td>
         <td width="74"> 
           <div align="right">

@@ -1,10 +1,12 @@
 <script language="PHP">
 
+require_once("../../../lib/config.php");
+
 Function AutenticaSenha($usuario, $senha)
 {
-    global /var/www/sistemas.cefetbambui.edu.br/sistema_academico/app/sagu;
+    global $BASE_DIR . 'app/sagu';
 
-    $fd = fopen ("/var/www/sistemas.cefetbambui.edu.br/sistema_academico/app/sagu/file.txt", "r");
+    $fd = fopen ($BASE_DIR ."app/sagu/file.txt", "r");
     $x = 0;
  
     while (!feof ($fd)) 

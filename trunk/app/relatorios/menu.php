@@ -46,17 +46,18 @@ img {
         <a href="pesquisa_matriculados_por_cidade.php" title="Alunos matriculados por cidade de origem" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" alt="" />&nbsp;Alunos Matriculados por curso e cidade</a><br />
         <a href="pesquisa_cursos_no_periodo.php" title="Cursos em andamento" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" alt="" />&nbsp;Cursos em andamento por per&iacute;odo</a><br />
         <a href="pesquisa_diarios.php" title="Andamento dos di&aacute;rio no per&iacute;odo" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" alt="" />&nbsp;Di&aacute;rios (andamento no per&iacute;odo)</a><br />
-        <a href="pesquisa_ficha_academica.php" title="Vida acad&ecirc;mica do aluno por curso" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" />&nbsp;Ficha Acad&ecirc;mica</a><a href="../../relatorios/pesquisa_todos_alunos_periodo.php" title="Alunos n&atilde;o aprovados" target="_self" class="menu_link"><br />    
-        <a href="pesquisa_boletim.php" title="Boletim escolar" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" />&nbsp;Boletim Escolar</a><br />    
+        <a href="pesquisa_ficha_academica.php" title="Vida acad&ecirc;mica do aluno por curso" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" />&nbsp;Ficha Acad&ecirc;mica</a><a href="../../relatorios/pesquisa_todos_alunos_periodo.php" title="Alunos n&atilde;o aprovados" target="_self" class="menu_link"><br />
+        <img src="../../images/icons/lupa.png" />&nbsp;Boletim Escolar</a><br />    
         <a href="pesquisa_faltas_global.php" title="Relat&oacute;rio de Faltas Global por Per&iacute;odo / Curso" 
 target="_self" class="menu_link"><img src="../../images/icons/lupa.png" />&nbsp;Faltas Global</a><br />    
 
-        </a></p>
+    </p>
     </td>
-    <td valign="top"><p>Em desenvolvimento:</p>
-      <p><!--<a href="boletim/" title="Boletim" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" /><span class="style1">&nbsp;Boletim<br />-->
-      </span></a><a href="matriz/filtro.php" title="Emiss&atilde;o de Hist&oacute;rico Escolar" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" alt="" />&nbsp;<span class="style1">Hist&oacute;rico</span></a><a href="boletim" title="Boletim" target="_self" class="menu_link"><span class="style1"><br />
-      </span></a><a href="pesquisa_declaracao.php" title="Emiss&atilde;o de Declara&ccedil;&otilde;es Diversas" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" />&nbsp;<span class="style1">Declara&ccedil;&atilde;o</span></a></p></td>
+    <td valign="top">
+    <a href="consultas_diversas/index.php" title="Relat&oacute;rio de consultas diversas" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" alt="" />&nbsp;Consultas diversas</a>
+    <p>Em desenvolvimento:</p>
+<a href="matriz/filtro.php" title="Emiss&atilde;o de Hist&oacute;rico Escolar" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" alt="" />&nbsp;<span class="style1">Hist&oacute;rico</span></a><a href="boletim" title="Boletim" target="_self" class="menu_link"><span class="style1"><br />
+    </span></a><a href="pesquisa_declaracao.php" title="Emiss&atilde;o de Declara&ccedil;&otilde;es Diversas" target="_self" class="menu_link"><img src="../../images/icons/lupa.png" />&nbsp;<span class="style1">Declara&ccedil;&atilde;o</span></a></td>
   </tr>
   <tr>
     <td colspan="2">&nbsp;</td>

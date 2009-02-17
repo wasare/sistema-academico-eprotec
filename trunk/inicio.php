@@ -50,7 +50,7 @@ require ("lib/config.php");
                     <li><a href="app/sagu/consulta_inclui_usuarios.phtml" target="frame2">Usu&aacute;rios do sistema</a></li>
                     <li><a><hr></a></li>
                     <li><a href="app/acessowebdiario/index.php" target="frame2">Acesso WebDi&aacute;rio</a></li>
-                    <li><a href="https://sistemas.cefetbambui.edu.br/webdiario" target="frame2">WebDi&aacute;rio</a></li>
+                    <li><a href="<?php echo $BASE_URL . 'app/webdiario'; ?>" target="frame2">WebDi&aacute;rio</a></li>
                   </ul>
               </li>
             </ul>

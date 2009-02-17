@@ -39,22 +39,21 @@ function lista_diarios($value, $conn)
         disciplinas_ofer o, disciplinas d
     WHERE
         o.ref_disciplina = d.id AND
-        d.descricao_disciplina ILIKE '%$value%' AND
+        lower(to_ascii(d.descricao_disciplina)) ILIKE lower(to_ascii('%$value%')) AND
         o.ref_periodo = '".$_SESSION['sa_periodo_id']."'
-    ORDER BY 2 LIMIT 40
-    ";
+    ORDER BY to_ascii(d.descricao_disciplina) LIMIT 40;";
 
     //echo $sql; die;
     
     $Result1 = $conn->Execute($sql);
 
     $tabela = '<table class="tabela">';
-    $tabela .= '<tr bgcolor="silver"><td></td><td><b>Di&aacute;rio - Disciplina - Turma - Professor</b></td></tr>';
+    $tabela .= '<tr bgcolor="silver"><td></td><td><b>Di&aacute;rio - Disciplina <br /> Curso - Turma(periodo) - Professor</b></td></tr>';
     while (!$Result1->EOF)
     {
         $tabela .= "<tr><td><a href=\"javascript:send(" .$Result1->fields[0]. ")\">Enviar</a></td>";
         $tabela .= "<td> ".$Result1->fields[0]." - <b>".$Result1->fields[1]."</b><br />".
-                    $Result1->fields[4]." - ".$Result1->fields[3]."</td>";
+                    $Result1->fields[2]." - ".$Result1->fields[4].'('. $_SESSION['sa_periodo_id'] .") - ".$Result1->fields[3]."</td>";
 
         $Result1->MoveNext();
     }
