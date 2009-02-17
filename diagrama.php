@@ -50,10 +50,6 @@ a {
 	text-decoration:underline;
 	color:#0033CC;
 }
-.style5 {
-	color: #999999;
-	font-size: 10px;
-}
 #popup {
 	position: absolute;
 	top: 10%;
@@ -92,7 +88,9 @@ a {
     <tr>
       <td align="center"><br />
         <p><a href="index.php"> Sair do Sistema</a> - <!--<a href="mapa_do_sistema.php">Mapa do Sistema</a> --> <a href="javascript: abrir();">Avisos</a> - <a href="#">Ajuda e Documenta&ccedil;&atilde;o</a> </p>
-        <p class="texto1 style1">&copy;2008 - CEFET-Bambuí</p></td>
+        <p class="texto1 style1"><strong>Sistema Acad&ecirc;mico - vers&atilde;o 0.4</strong><br />
+          &copy;2008 - CEFET-Bambuí<br />
+      </p></td>
     </tr>
   </table>
 </center>
