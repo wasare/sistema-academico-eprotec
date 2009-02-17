@@ -6,8 +6,8 @@ ini_set('display_errors',0);
 
 date_default_timezone_set('America/Sao_Paulo');
 
-$BASE_URL = 'https://sistemas.cefetbambui.edu.br/webdiario/2008/';
-$BASE_DIR = '/var/www/sistemas.cefetbambui.edu.br/webdiario/2008/';
+$BASE_URL = 'https://dev.cefetbambui.edu.br/desenvolvimento/app/webdiario/';
+$BASE_DIR = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/app/webdiario/';
 
 require_once($BASE_DIR.'conf/conn_diario.php');
 

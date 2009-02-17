@@ -4,10 +4,14 @@
 
   //setlocale (LC_ALL, 'pt_BR');
   date_default_timezone_set('America/Sao_Paulo');
+  
   error_reporting(E_ALL & ~E_NOTICE);
 
   $inicio       = "inicio.php";      //Módulo inicial do SAGU
   $SAGU_HOST 	= "dev.cefetbambui.edu.br/desenvolvimento/sistema_academico";  //Host
+
+  $BASE_URL = 'https://dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/';
+  $BASE_DIR = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/'; 
 
   //Dados da Instituição
   $IEendereco = "";

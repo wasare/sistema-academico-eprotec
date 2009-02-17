@@ -98,7 +98,7 @@ a {
 </center>
 
 <map name="Map" id="Map">
-  <area shape="rect" coords="406,40,565,79" href="app/matricula/matricula_aluno.php" alt="Matr&iacute;cula individual" />
+  <area shape="rect" coords="406,40,582,58" href="app/matricula/matricula_aluno.php" alt="Matr&iacute;cula individual" /><area shape="rect" coords="406,62,580,82" href="#" />
   <area shape="rect" coords="406,85,557,102" href="app/matricula/remover_matricula/filtro.php" alt="Remover matr&iacute;cula" /><area shape="rect" coords="230,37,348,87" href="app/sagu/academico/consulta_inclui_contratos.phtml" alt="Contratos" />
   <area shape="rect" coords="16,31,158,89" href="app/sagu/academico/consulta_inclui_pessoa.phtml" alt="Pessoa f&iacute;sica" /><area shape="rect" coords="25,149,114,185" href="app/sagu/generico/index.phtml" alt="Cadastros gen&eacute;ricos" />
   <area shape="rect" coords="229,212,323,246" href="app/sagu/academico/consulta_inclui_professores.phtml" alt="professores" />
