@@ -5,19 +5,8 @@
 ARQUIVOS QUE PRECISAM SER ALTERADOS
 =====================================
 
-
-app/sagu/lib/common_not_login.php3:  $SAGU_HOST = "dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/";
-
-lib/config.php: $SAGU_HOST 	= "dev.cefetbambui.edu.br/desenvolvimento/sistema_academico";  //Host
-lib/config.php:$BASE_URL = 'https://dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/';
-lib/config.php:$BASE_DIR = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/';
-
-
-lib/common.php:$sagu_cookie = ".dev.cefetbambui.edu.br";
-lib/common.php:$LoginURL    = "https://dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/index.php";
-
-
-app/webdiario/conf/webdiario.conf.php:$BASE_URL = 'https://dev.cefetbambui.edu.br/desenvolvimento/app/webdiario/';
-app/webdiario/conf/webdiario.conf.php:$BASE_DIR = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/app/webdiario/';
-
+configuracao.php
+lib/config.php
+lib/common.php
+app/wediario/conf/wediario.conf.php
 

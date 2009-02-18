@@ -9,10 +9,10 @@
   $versao = '0.'. @file_get_contents ('VERSAO.TXT'); 
 
   $inicio       = "inicio.php";      //Módulo inicial do SAGU
-  $SAGU_HOST 	= "dev.cefetbambui.edu.br/desenvolvimento/sistema_academico";  //Host
+  $SAGU_HOST 	= $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico';
 
-  $BASE_URL = 'https://dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/';
-  $BASE_DIR = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/'; 
+  $BASE_URL = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico/';
+  $BASE_DIR = dirname(__FILE__) . '/';
 
   //Dados da Instituição
   $IEendereco = "";

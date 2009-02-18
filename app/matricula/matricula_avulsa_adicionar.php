@@ -225,7 +225,7 @@ else
 		if($DiarioMatricular == '')
 		{
 		    $msg = '<p><div align="center"><b><font color="#CC0000">'.
-	    	'Nenhum di&aacute;rio dispon&iacute;vel ou o aluno j&aacute; esta matriculado neste di&aacute;rio!'.
+	    	'di&aacute;rio n&atilde;o dispon&iacute;vel ou o aluno j&aacute; est&aacute; matriculado neste di&aacute;rio/disciplina!'.
 			'</font></b></div></p>';
 		}
 		else

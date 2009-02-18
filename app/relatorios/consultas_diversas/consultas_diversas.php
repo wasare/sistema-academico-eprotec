@@ -1,10 +1,13 @@
 <?php 
-require("/var/www/sagu/html/lib/common.php3"); 
-require("/var/www/sagu/html/lib/config.php3"); 
-require("/var/www/sagu/html/lib/InvData.php3");
-require("/var/www/sagu/html/lib/GetPessoaNome.php3"); 
-require("/var/www/sagu/html/lib/StatusDisciplina.php3"); 
-require("/var/www/sagu/html/lib/properties.php3"); 
+
+require("../../../lib/common.php");
+require("../../../lib/config.php");
+
+require("../../sagu/lib/InvData.php3");
+require("../../sagu/lib/GetPessoaNome.php3"); 
+require("../../sagu/lib/StatusDisciplina.php3"); 
+
+require("../../../lib/properties.php"); 
 
 $properties->Set('periodo',$periodo); 
 $properties->Set('pessoa',$pessoa); 
