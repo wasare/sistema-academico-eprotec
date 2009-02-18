@@ -6,6 +6,7 @@
   date_default_timezone_set('America/Sao_Paulo');
   
   error_reporting(E_ALL & ~E_NOTICE);
+  $versao = '0.'. @file_get_contents ('VERSAO.TXT'); 
 
   $inicio       = "inicio.php";      //Módulo inicial do SAGU
   $SAGU_HOST 	= "dev.cefetbambui.edu.br/desenvolvimento/sistema_academico";  //Host

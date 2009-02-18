@@ -28,8 +28,7 @@ function consulta_generica(ender){
 }
 
 function AproveitaDisciplina(ref_pessoa,ref_disciplina,ref_curso,ref_matricula,nota_final,conceito_final){
- url = '/academico/aproveitamento_int.phtml' +
-       '?ref_pessoa=' + ref_pessoa +
+ url = '/academico/aproveitamento_int.phtml?ref_pessoa=' + ref_pessoa +
        '&ref_disciplina_subst=' + ref_disciplina +
        '&ref_curso_subst=' + ref_curso +
        '&ref_matricula=' + ref_matricula +
