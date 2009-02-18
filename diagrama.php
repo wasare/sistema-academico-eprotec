@@ -88,7 +88,7 @@ a {
     <tr>
       <td align="center"><br />
         <p><a href="index.php"> Sair do Sistema</a> - <!--<a href="mapa_do_sistema.php">Mapa do Sistema</a> --> <a href="javascript: abrir();">Avisos</a> - <a href="#">Ajuda e Documenta&ccedil;&atilde;o</a> </p>
-        <p class="texto1 style1"><strong>Sistema Acad&ecirc;mico - vers&atilde;o 0.4</strong><br />
+        <p class="texto1 style1"><strong>Sistema Acad&ecirc;mico - vers&atilde;o <?=$versao?></strong><br />
           &copy;2008 - CEFET-Bambuí<br />
       </p></td>
     </tr>
