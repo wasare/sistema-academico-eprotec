@@ -1,16 +1,19 @@
 <?
 set_time_limit(120);
 
-if ( !$SAGU_HOST )
-  $SAGU_HOST = "dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/";
+require_once("../../../lib/config.php");
 
+/*
+if ( !$SAGU_HOST )
+  $SAGU_HOST = "sistemas.cefetbambui.edu.br/sistema_academico/";
+*/
 
 // inicialização padrão
 $LoginDB     = "sagu";
 $LoginUID    = "";
 $LoginPWD    = "";
 $LoginHost   = "dados.cefetbambui.edu.br";
-$LoginURL    = "http://$SAGU_HOST/";
+$LoginURL    = "https://$SAGU_HOST/";
 $LoginACL    = "../html/users.acl"; 
 $ErrorURL    = "../fatalerror.phtml";
 $SuccessURL  = "../modelos/modelo_exito.phtml";

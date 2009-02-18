@@ -5,20 +5,17 @@ header("Cache-Control: no-cache");
 //INCLUSAO DE BIBLIOTECAS
 require("../../../lib/common.php");
 require("../../../lib/config.php");
+require("../../../lib/properties.php");
 require("../../../configuracao.php");
 require("../../../lib/adodb/adodb.inc.php");
 
 
 //Criando a classe de conexão
-
+$Conexao = NewADOConnection("postgres");
 
 //Setando como conexão persistente
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
-
-//require("/var/www/sagu/html/lib/common.php3");
-//require("/var/www/sagu/html/lib/config.php3");
-//require("/var/www/sagu/html/lib/properties.php3");
 
 $periodo = $properties->Get("periodo","0");
 $pessoa = $properties->Get("pessoa","0"); 
@@ -26,9 +23,9 @@ $pessoa = $properties->Get("pessoa","0");
 
 function SQL_Combo($nome,$sql,$default,$onchange)
 {
-    $Conexao = NewADOConnection("postgres");
-    //$conn = new Connection;
-    //$conn->Open();
+    //$Conexao = NewADOConnection("postgres");
+    $conn = new Connection;
+    $conn->Open();
     $query = $conn->CreateQuery($sql);
 
     if ( $onchange != "" )
@@ -46,8 +43,8 @@ function SQL_Combo($nome,$sql,$default,$onchange)
         echo("  <option value=\"$value\">$text</option>\n");
     }
     echo("</select>");
-    //$query->Close();
-    //$conn->Close();
+    $query->Close();
+    $conn->Close();
 }
 
 ?>
