@@ -10,11 +10,15 @@
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../lib/config.php");
 require("../../configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
-print_r($_POST);
+
+$diario_id = $_POST['id_diario'];
+$curso_id = $_POST['curso_id'];
+$aluno_id = $_POST['aluno_id'];
+$id_contrato = $_POST['id_contrato'];
+$ref_campus = $_POST['ref_campus'];
 
 //Criando a classe de conexao ADODB
 $Conexao = NewADOConnection("postgres");
@@ -22,26 +26,13 @@ $Conexao = NewADOConnection("postgres");
 //Setando como conexao persistente
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
-/**
- * @var string 
- */
 $sa_periodo_id = $_POST['periodo_id'];
-/**
- * @var string 
- */
-$aluno_id = $_POST['aluno_id'];
-/**
- * @var string 
- */
-$id_contrato = $_POST['id_contrato'];
-/**
- * @var string 
- */
 $first = $_POST['first'];
-/**
- * @var integer   
- */
+$second = $_POST['second'];
 $checar_turma = $_POST['checar_turma'];
+
+$msg_erro = '';
+
 
 $_SESSION['sa_periodo_id'] = $sa_periodo_id;
 
@@ -97,110 +88,30 @@ $aluno_nome = $RsAluno->fields[0];
 
 $disciplinas_liberadas = 0;
 
-
-// EXIBE AS DISCIPLINAS DISPONÍVEIS
-// Primeiro acesso na pagina
-
-if ($first){
-
-    // -- Verifica as disciplinas não cursadas do aluno mas com oferta em qualquer tempo
-    // CONSIDERA SOMENTE SOMATORIO FINAL DE NOTA E FALTAS
-    //  FIXME:  tratar o campus
-$sqlDisciplinas = "
-SELECT DISTINCT
-        o.id as diario, d.descricao_disciplina || ' (' || o.ref_disciplina || ')' as disciplina, o.ref_curso, o.ref_periodo, o.turma
+$sqlDisciplina = "SELECT o.id || ' - ' || d.descricao_disciplina || ' (' || o.ref_disciplina || ')' || ' - ' || o.turma || '(' || o.ref_periodo || ')'  as disciplina
         FROM
-                disciplinas d, disciplinas_ofer o, periodos s
+                disciplinas d, disciplinas_ofer o
         WHERE
                 d.id = o.ref_disciplina AND
                 d.id = o.ref_disciplina AND
                 o.is_cancelada = 0 AND
-                s.id = o.ref_periodo AND
-                o.ref_campus = '$ref_campus' AND
-                o.id IN 
-        (            
-SELECT 
- DISTINCT
- id FROM
- (
--- seleciona as disciplinas do currículo que não foram cursadas mas ofertadas a qualquer tempo
-SELECT DISTINCT
-        o.ref_disciplina as matriculada, o.ref_disciplina
-        FROM
-                matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s
-        WHERE
-                m.ref_pessoa = p.id AND
-                p.id = '$aluno_id' AND
-                m.ref_disciplina_ofer = o.id AND
-                o.fl_digitada = 't' AND
-                d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
-                s.id = o.ref_periodo AND
-                d.id IN (
-                  select distinct ref_disciplina
-                        from cursos_disciplinas
-                        where ref_curso = '$curso_id'
-                ) AND
-                ( m.nota_final < 60 OR
-                m.num_faltas > ( d.carga_horaria * 0.25) ) ) AS T1
-                
-FULL OUTER JOIN (
--- seleciona todas as ofertas de disciplinas em aberto do curriculo aluno
-SELECT DISTINCT
-        o.ref_disciplina, o.id
-        FROM
-                disciplinas d, cursos_disciplinas c, disciplinas_ofer o, periodos s
-        WHERE
-                c.ref_disciplina = d.id AND
-                d.id = o.ref_disciplina AND
-                d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
-                o.fl_digitada = 'f' AND
-                s.id = o.ref_periodo AND
-                d.id IN (
-                  select distinct ref_disciplina
-                        from cursos_disciplinas
-                        where ref_curso = '$curso_id'
-                ) 
-) AS T2 USING (ref_disciplina)
-WHERE matriculada is not null
-) ORDER BY 2, 4 DESC, 3; ";
+                o.id = $diario_id;";
 
- 
-    $RsDisciplinas = $Conexao->Execute($sqlDisciplinas);
+$RsDisciplina = $Conexao->Execute($sqlDisciplina);
+/**
+ * @var string Nome da Disciplina
+ */
+$nome_disciplina = $RsDisciplina->fields[0];
 
-    $DisciplinasNaoCursadas = '';
-    while(!$RsDisciplinas->EOF){
 
-        $ref_disciplina_ofer  = $RsDisciplinas->fields[0];
-        $descricao_disciplina = $RsDisciplinas->fields[1];
-        $ref_curso            = $RsDisciplinas->fields[2];
-        $ref_periodo          = $RsDisciplinas->fields[3];
-        $turma                = $RsDisciplinas->fields[4];
 
-        $DisciplinasNaoCursadas .= "<input type=\"radio\" name=\"id_diario\" ".
-                   "id=\"id_diarios\" value=\"$ref_disciplina_ofer\" onclick=\"Exibe('dispensar')\" />";
-        $DisciplinasNaoCursadas .= '&nbsp;&nbsp;';
-        $DisciplinasNaoCursadas .= "<strong>$ref_disciplina_ofer - $descricao_disciplina</strong> - $ref_curso - $turma($ref_periodo) <br />";
+// PROCESSA A DISPENSA SE NAO HOUVER ERROS
+if ( $second == 1 )
+{
 
-        $RsDisciplinas->MoveNext();
-	
-        $code++;
+  
 
-    }
 }
-
-$count = count($code); //soma quantos diarios
-
-// se existir diarios
-if ( $count == 0 ) {
-
-    $DisciplinasNaoCursadas = '
-   <div align="center">
-       <b><font color="#CC0000">Nenhuma disciplina dispon&iacute;vel</font></b>
-   </div>';
-}
-
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -208,10 +119,39 @@ if ( $count == 0 ) {
 <head>
 <title>SA</title>
 <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="../../lib/prototype.js"></script>
+<script language="javascript" src="../../lib/functions.js"></script>
+
+
+<script language="javascript">
+
+
+function info() {
+    var id = $F("dispensa_tipo");
+    var url = 'dispensa_info.php';
+    var parametros = 'op=' + id ;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: parametros, onLoading: carregando, onComplete: escreve});
+}
+
+//mostra o carregamento
+function carregando(){
+    $("msg").innerHTML = "<h2>Carregando...</h2>";
+}
+
+// Escreve a tabela de listagem de clientes
+function escreve(request){
+    //trata caracteres especiais para sair em formato correto para o browser
+    $("dispensa_info").innerHTML = unescape(request.responseText);
+    $("msg").innerHTML = "";
+}
+
+
+</script>
+
 <script language="JavaScript" src="dispensa.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 </head>
-<body onload="Oculta('dispensar')">
+<body onload="Oculta('processa')">
 <div align="center" style="height:600px;">
   <h1>Processo de Dispensa de Disciplina</h1>
   <h4>Tipo e informa&ccedil;&otilde;es sobre a dispensa: Etapa 3/3</h4>
@@ -233,13 +173,15 @@ if ( $count == 0 ) {
     <strong>Cidade: </strong>
     <?=$campus_nome?>
   </div>
-  <form name="form1" method="post" action="dispensa_disciplina.post.php">
+  <form name="dispensa_frm" id="dispensa_frm" method="post" action="dispensa_disciplina.post.php">
   <div class="box_geral"> 
-                        <!-- FIXME: exibir informações da disciplina sendo dispensada -->
-                    Selecione o tipo de dispensa:<br />
-                        <select id="dispensa_tipo" name="dispensa_tipo" onchange="ChangeOp()">
+        <!-- FIXME: exibir informações da disciplina sendo dispensada -->
+				&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ( Di&aacute;rio - Disciplina  - Turma(Per&iacute;odo de oferta)) <br />
+                 <strong>Disciplina a dispensar: </strong>&nbsp; <?=$nome_disciplina?> <br /> <br />
+                    Selecione o tipo / motivo da dispensa:<br />
+                        <select id="dispensa_tipo" name="dispensa_tipo" onchange="info();Exibe('processa')">
 			<option></option>
-			<option value='1'>Educa&ccedil;&atilde;o F&iacute;sica (Decreto Lei 1.044 de 21/10/1969)</option>
+			<option value='4'>Educa&ccedil;&atilde;o F&iacute;sica (Decreto Lei 1.044 de 21/10/1969)</option>
 			<option value='2'>Aproveitamento de Estudos (ATO/DGPG/N&ordm; 01/2009)</option>
 			<option value='3'>Certifica&ccedil;&atilde;o de Experi&ecirc;ncia (ATO/DGPG/N&ordm; 02/2009)</option>
 	</select>
@@ -247,16 +189,21 @@ if ( $count == 0 ) {
     <br />
   </div>
 
-    <input type="hidden" name="periodo_id" value="<?=$periodo_id?>">
+    <span id="msg"></span>
+	<span id="dispensa_info"></span>
+
+    <input type="hidden" name="diario_id"  value="<?=$diario_id?>">
     <input type="hidden" name="curso_id" value="<?=$curso_id?>">
     <input type="hidden" name="aluno_id" value="<?=$aluno_id?>">
     <input type="hidden" name="id_contrato" value="<?=$id_contrato?>">
     <input type="hidden" name="ref_campus" value="<?=$ref_campus?>">
     <p>
       <input type="button" value="  Voltar  " onclick="javascript:history.back(-1)" name="Button" />
-      <input type="button" name="dispensar" id="dispensar" onclick="confirma()" value=">> Prosseguir" />
+      <input type="button" name="processa" id="processa" onclick="valida('dispensa_frm');" value=">> Processar dispensa" />
     </p>
   </form>
+
+
 </div>
 </body>
 </html>

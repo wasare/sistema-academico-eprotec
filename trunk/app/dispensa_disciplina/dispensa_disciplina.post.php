@@ -4,7 +4,6 @@ header("Cache-Control: no-cache");
 
 //-- ARQUIVO E BIBLIOTECAS
 require("../../lib/common.php");
-require("../../lib/config.php");
 require("../../configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
@@ -13,55 +12,54 @@ $Conexao = NewADOConnection("postgres");
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 
-//-- PARAMETROS
-$periodo_id  = $_POST["periodo_id"];
-$curso_id    = $_POST["curso_id"];
-$aluno_id    = $_POST["aluno_id"];
-$id_contrato = $_POST["id_contrato"];
-$ref_campus  = $_POST["ref_campus"];
-$id_diarios  = $_POST["id_diarios"]; //Array com todos os diarios a matricular
+print_r($_POST);
 
-$msg = '<h3><font color=\"#006600\">Disciplinas matr&iacute;culadas:</font></h3>'; //-- Variavel com a resposta para o usuario
+die;
+
+// Array ( [dispensa_tipo] => 4 [ref_liberacao_ed_fisica] => 1 ) 
+
+// Array ( [dispensa_tipo] => 3 [nota_final] => 87 ) 
+
+// Array ( [dispensa_tipo] => 2 [ref_instituicao] => 182 [instituicao_nome] => CESEC Professor João de Oliveira Barbosa [obs_aproveitamento] => Física [nota_final] => 87 ) 
+
+
+//-- PARAMETROS
+$dispensa_tipo  = $_POST['dispensa_tipo'];
+$ref_liberacao_ed_fisica  = $_POST['ref_liberacao_ed_fisica'];
+$processo  = $_POST['processo'];
+$diario_id  = $_POST['diario_id'];
+$ref_instituicao  = $_POST['ref_instituicao'];
+$obs_aproveitamento  = $_POST['obs_aproveitamento'];
+$nota_final  = $_POST['nota_final'];
+
+
+$periodo_id  = $_POST['periodo_id'];
+$curso_id    = $_POST['curso_id'];
+$aluno_id    = $_POST['aluno_id'];
+$id_contrato = $_POST['id_contrato'];
+$ref_campus  = $_POST['ref_campus'];
+
+
+
+$msg = '<h3><font color=\"#006600\">Dispensa de Disciplina:</font></h3>'; //-- Variavel com a resposta para o usuario
 
 $sqlInsereDiario = "BEGIN;"; //-- Variavel com a sql de insercao dos diarios
 
-// FIXME: atualizar o contrato somente quando pelo menos uma matricula for efetivada
-//-- Atualizando o contrato para o periodo corrente
-$sqlAtualizaContrato = "
-UPDATE contratos SET
-  cod_status = null,
-  ref_last_periodo = '$periodo_id'
-WHERE
-  id = '$id_contrato'";
-
-if($Conexao->Execute($sqlAtualizaContrato) === false)
-{
-    $msg .= ">> <font color=\"#FF0000\">Erro ao atualizar contrato: $Conexao->ErrorMsg()</font><br>";
-}
-else
-{
-    $msg .= ">> Contrato atualizado para o per&iacute;odo<br>";
-}
-
-
-
-//-- Percorre os diarios
-foreach($id_diarios as $diario){
 
 	//-- Verifica se o aluno ja esta matriculado nesta disciplina oferecida
 
-	$sqlMatriculado = "
+	$sqlDispensado = "
   	SELECT 
     	count(ref_disciplina_ofer)
   	FROM 
     	matricula
   	WHERE 
-    	ref_disciplina_ofer = '$diario' AND
+    	ref_disciplina_ofer = '$diario_id' AND
     	ref_periodo = '$periodo_id' AND
     	ref_pessoa  = '$aluno_id'";
 	
-	$RsMatriculado = $Conexao->Execute($sqlMatriculado);
-	$Result1 = $RsMatriculado->fields[0];
+	$RsDispensado = $Conexao->Execute($sqlDispensado);
+	$Result1 = $RsDispensado->fields[0];
 
          	
 	if($Result1 == 0){
@@ -76,7 +74,7 @@ foreach($id_diarios as $diario){
 		FROM 
 	  		disciplinas_ofer 
 		WHERE 
-	  		id = $diario";
+	  		id = $diario_id";
 		
 		$RsDisciplina = $Conexao->Execute($sqlDisciplina);
 		
@@ -89,12 +87,12 @@ foreach($id_diarios as $diario){
     	$sqlVerificaVagas = "
 		SELECT
     	  count(*),
-	      check_matricula_pessoa('$diario','$aluno_id'),
-    	  num_alunos('$diario')
+	      check_matricula_pessoa('$diario_id','$aluno_id'),
+    	  num_alunos('$diario_id')
 	    FROM
     	  matricula
 	    WHERE
-    	  ref_disciplina_ofer = '$diario' AND
+    	  ref_disciplina_ofer = '$diario_id' AND
 	      dt_cancelamento is null";
 	  
 		$RsVerificaVagas = $Conexao->Execute($sqlVerificaVagas);
@@ -115,13 +113,13 @@ foreach($id_diarios as $diario){
 		//-- Se o total de vagas excedeu não matricula
 		if (($num_matriculados+1) > $tot_alunos)
     	{
-	       $msg .= "<p>>> <b><font color=\"#FF0000\">Aluno n&atilde;o matriculado!</font></b><br>";
+	       $msg .= "<p>>> <b><font color=\"#FF0000\">Aluno n&atilde;o dispensado!</font></b><br>";
 		   $msg .= "Disciplina <b>$disciplina_descricao</b> ($disciplina_id) excedeu n&uacute;mero m&aacute;ximo de alunos.</p>";
     	}
 	    else
     	{
 			$alunos_matriculados = $num_matriculados + 1;
-			$msg .= "<p>>> <b>Di&aacute;rio: </b>$diario - "; 
+			$msg .= "<p>>> <b>Di&aacute;rio: </b>$diario_id - "; 
 			$msg .= "<b>$disciplina_descricao</b> ($disciplina_id) - ";
 			$msg .= "<b>Matric./Vagas: </b> ".$alunos_matriculados."/$tot_alunos.</p>";
 			
@@ -156,24 +154,22 @@ foreach($id_diarios as $diario){
         	   '$disciplina_id',
 				'$ref_curso_subst',
 	           '$ref_disciplina_subst',
-    	       '$diario',
-        	   get_complemento_ofer('$diario'),
+    	       '$diario_id',
+        	   get_complemento_ofer('$diario_id'),
 	           'S',
     	       date(now()),
         	    now(),
 	           'f'
     	    );";
 			
-			$diarios_matriculados[] = $diario;
+			$diario_id_matriculado = $diario_id;
 	
 		}//fim total de vagas
 	}
 	else{
-	       $msg .= "<p>>> <b><font color=\"#FF0000\">Aluno j&aacute; matriculado no di&aacute;rio $diario!</font></b></p>";
+	       $msg .= "<p>>> <b><font color=\"#FF0000\">Aluno j&aacute; matriculado no di&aacute;rio $diario_id!</font></b></p>";
 	}//fim matriculados
 	
-}//fim foreach
-
 $sqlInsereDiario .= "COMMIT;";
 
 
@@ -183,10 +179,7 @@ $RsInsereDiario = $Conexao->Execute($sqlInsereDiario);
 if (!$RsInsereDiario)
 {
 	$title = "<h3><font color=\"#FF0000\">Erro ao efetuar matricula!</font></h3>";
-	$msg = ">> Di&aacute;rio: $diario<br>";
-	/*$msg .= ">> Aluno: $aluno_id<br>";
-	$msg .= ">> Per&iacute;odo: $periodo_id<br>";
-	$msg .= ">> Curso: $curso_id";*/
+	$msg = ">> Di&aacute;rio: $diario_id<br>";
 	$msg .= "<p><b>Informa&ccedil;&otilde;es sobre o erro:</b><br>$Conexao->ErrorMsg()</p>";
 }
 
@@ -196,8 +189,8 @@ $cabecalho .= ">> <strong>Curso</strong>: $curso_id  - <strong>Per&iacute;odo</s
 // ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO 
 require_once('atualiza_diario.php');
 
-foreach($diarios_matriculados as $matriculado){
-	atualiza_matricula("$aluno_id","$matriculado");
+foreach($diario_id_dispensado as $dispensado){
+	atualiza_matricula("$aluno_id","$dispensado");
 }
 
 // ^ ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO ^ //
@@ -212,12 +205,12 @@ foreach($diarios_matriculados as $matriculado){
 </head>
 <body>
 <div align="center">
-  <h1>Processo de Matr&iacute;cula</h1>
+  <h1>Processo de Dispensa de Disciplina</h1>
   <div class="box_geral"> 
 	<?=$title?>
        <?=$cabecalho?>
     <?=$msg?>
   </div>
-  <a href="matricula_aluno.php">Nova matr&iacute;cula</a> <a href="../../diagrama.php">P&aacute;gina inicial</a> </div>
+  <a href="dispensa_aluno.php">Nova Dispensa</a> <a href="../../diagrama.php">P&aacute;gina inicial</a> </div>
 </body>
 </html>
