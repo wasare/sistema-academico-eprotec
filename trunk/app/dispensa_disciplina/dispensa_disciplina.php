@@ -120,8 +120,10 @@ SELECT DISTINCT
 SELECT 
  DISTINCT
  id FROM
- (
--- seleciona as disciplinas do currículo que não foram cursadas mas ofertadas a qualquer tempo
+ (";
+
+//-- seleciona as disciplinas do currículo que não foram cursadas mas ofertadas a qualquer tempo
+$sqlDisciplinas .= "
 SELECT DISTINCT
         o.ref_disciplina as matriculada, o.ref_disciplina
         FROM
@@ -130,7 +132,6 @@ SELECT DISTINCT
                 m.ref_pessoa = p.id AND
                 p.id = '$aluno_id' AND
                 m.ref_disciplina_ofer = o.id AND
-                --o.fl_digitada = 'f' AND -- somente em diario finalizados
                 d.id = o.ref_disciplina AND
                 o.is_cancelada = 0 AND
                 d.id IN (
@@ -139,10 +140,14 @@ SELECT DISTINCT
                         where ref_curso = '$curso_id'
                 ) AND
                 ( m.nota_final < 60 OR
-                m.num_faltas > ( d.carga_horaria * 0.25) ) ) AS T1
+                m.num_faltas > ( d.carga_horaria * 0.25) ) 
+				) AS T1
                 
-FULL OUTER JOIN (
--- seleciona todas as ofertas de disciplinas em aberto do curriculo aluno
+FULL OUTER JOIN (";
+
+//-- seleciona todas as ofertas de disciplinas em aberto do curriculo aluno, mas sem matricula feita e sem aprovação
+
+$sqlDisciplinas .= "
 SELECT DISTINCT
         o.ref_disciplina, o.id
         FROM
@@ -152,17 +157,28 @@ SELECT DISTINCT
                 d.id = o.ref_disciplina AND
                 d.id = o.ref_disciplina AND
                 o.is_cancelada = 0 AND
-               -- o.fl_digitada = 'f' AND -- somente em diario aberto/finalizado
                 s.id = o.ref_periodo AND
                 d.id IN (
                   select distinct ref_disciplina
                         from cursos_disciplinas
                         where ref_curso = '$curso_id'
-                ) 
+                ) AND
+				d.id NOT IN (
+                    select distinct o.ref_disciplina from 
+						disciplinas_ofer o where
+						   o.id IN (
+									select distinct ref_disciplina_ofer
+						                 from matricula m
+									where
+										m.ref_pessoa = $aluno_id)
+				)
+
 ) AS T2 USING (ref_disciplina)
--- WHERE matriculada is null
+WHERE matriculada is null 
 ) ORDER BY 2, 4 DESC, 3; ";
 
+// -- o.fl_digitada = 'f' AND -- somente em diario aberto/finalizado
+//
 //echo  $sqlDisciplinas;
 
     $RsDisciplinas = $Conexao->Execute($sqlDisciplinas);
@@ -206,6 +222,7 @@ if ( $count == 0 ) {
 <head>
 <title>SA</title>
 <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="../../lib/prototype.js"></script>
 <script language="JavaScript" src="dispensa.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 </head>

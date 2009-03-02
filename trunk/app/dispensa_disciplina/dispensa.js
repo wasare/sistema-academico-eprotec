@@ -9,6 +9,8 @@
 	function Exibe(id)
 	{
 		document.getElementById(id).style.display = "inline";
+        if ($F('dispensa_tipo') == -1)
+				Oculta(id);
 	}
 
 
@@ -34,7 +36,7 @@
 
 	   var params = Form.serialize(frm);
 
-	   objAjax = new Ajax.Request('dispensa_info.php', {
+	   objAjax = new Ajax.Request('dispensa_valida.php', {
         	method: 'post', parameters: params,
         	onComplete: function(req) {
                 var resp = unescape(req.responseText);

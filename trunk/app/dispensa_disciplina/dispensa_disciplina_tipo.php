@@ -88,7 +88,7 @@ $aluno_nome = $RsAluno->fields[0];
 
 $disciplinas_liberadas = 0;
 
-$sqlDisciplina = "SELECT o.id || ' - ' || d.descricao_disciplina || ' (' || o.ref_disciplina || ')' || ' - ' || o.turma || '(' || o.ref_periodo || ')'  as disciplina
+$sqlDisciplina = "SELECT o.id || ' - ' || d.descricao_disciplina || ' (' || o.ref_disciplina || ')' || ' - ' || o.turma || '(' || o.ref_periodo || ')'  as disciplina, o.ref_periodo
         FROM
                 disciplinas d, disciplinas_ofer o
         WHERE
@@ -102,16 +102,8 @@ $RsDisciplina = $Conexao->Execute($sqlDisciplina);
  * @var string Nome da Disciplina
  */
 $nome_disciplina = $RsDisciplina->fields[0];
+$periodo_id = $RsDisciplina->fields[1];
 
-
-
-// PROCESSA A DISPENSA SE NAO HOUVER ERROS
-if ( $second == 1 )
-{
-
-  
-
-}
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -180,10 +172,10 @@ function escreve(request){
                  <strong>Disciplina a dispensar: </strong>&nbsp; <?=$nome_disciplina?> <br /> <br />
                     Selecione o tipo / motivo da dispensa:<br />
                         <select id="dispensa_tipo" name="dispensa_tipo" onchange="info();Exibe('processa')">
-			<option></option>
-			<option value='4'>Educa&ccedil;&atilde;o F&iacute;sica (Decreto Lei 1.044 de 21/10/1969)</option>
-			<option value='2'>Aproveitamento de Estudos (ATO/DGPG/N&ordm; 01/2009)</option>
-			<option value='3'>Certifica&ccedil;&atilde;o de Experi&ecirc;ncia (ATO/DGPG/N&ordm; 02/2009)</option>
+			<option value="-1"></option>
+			<option value="4">Educa&ccedil;&atilde;o F&iacute;sica (Decreto Lei 1.044 de 21/10/1969)</option>
+			<option value="2">Aproveitamento de Estudos (ATO/DGPG/N&ordm; 01/2009)</option>
+			<option value="3">Certifica&ccedil;&atilde;o de Experi&ecirc;ncia (ATO/DGPG/N&ordm; 02/2009)</option>
 	</select>
 
     <br />
@@ -197,6 +189,7 @@ function escreve(request){
     <input type="hidden" name="aluno_id" value="<?=$aluno_id?>">
     <input type="hidden" name="id_contrato" value="<?=$id_contrato?>">
     <input type="hidden" name="ref_campus" value="<?=$ref_campus?>">
+    <input type="hidden" name="periodo_id" value="<?=$periodo_id?>">
     <p>
       <input type="button" value="  Voltar  " onclick="javascript:history.back(-1)" name="Button" />
       <input type="button" name="processa" id="processa" onclick="valida('dispensa_frm');" value=">> Processar dispensa" />

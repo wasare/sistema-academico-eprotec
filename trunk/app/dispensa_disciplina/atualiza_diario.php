@@ -126,51 +126,202 @@ function calcNotaReavaliacao($o,$nd,$ne) {
 }
 
 
-function atualiza_matricula($aluno,$getofer){
+function lanca_nota($aluno,$nota_final,$getofer,$codprova=1) 
+{
 
-	// RECUPERA INFORMACOES DO DIARIO
-	$qryDisc = " SELECT DISTINCT
-				prof.ref_professor, o.ref_disciplina, o.ref_periodo 
-				FROM 
-				disciplinas_ofer o, disciplinas_ofer_prof prof
-            	WHERE
-                 o.id = '" . $getofer . "' AND 
-				 o.is_cancelada = 0 AND
-				 o.id = prof.ref_disciplina_ofer ;";
+	// FIXME: antes de gravar a nota verificar:
+    //     - se nota não é > 100
+    //     - lançamento de nota extra, não lançar nota caso exista a extra
+	$msg = '';
 
+   	$nota = str_replace(",",".",$nota_final); 
+   
+	//$sqlUpdate = 'BEGIN;';
 
-	$qry1 = consulta_sql($qryDisc);
+	$sqlUpdate .= "UPDATE matricula
+                             SET 
+                            nota_final = $nota 
+                          WHERE 
+                             ref_pessoa = $aluno AND
+                             ref_disciplina_ofer = $getofer;";
+    $sqlUpdate .= "UPDATE 
+                     diario_notas 
+                  SET 
+                     nota = $nota 
+                  WHERE 
+                     d_ref_disciplina_ofer = $getofer AND
+                     ref_diario_avaliacao = $codprova AND 
+                     ra_cnec = $aluno;";
 
-	//echo $qryDisc;
-	//die;
+   //$sqlUpdate = 'COMMIT;';
+
+	$qry1 = consulta_sql($sqlUpdate);
 
 	if(is_string($qry1)) {
+        envia_erro($qry1);
+        $msg = 'p>>> <b><font color="#FF0000">Falha ao atualizar Nota '. $codprova .' do aluno '. $aluno .' Di&aacute;rio '. $getofer .'</font></b></p>';
+    }
 
-		envia_erro($qry1);
-		exit;
-	}
-	else {
+	return $msg;
+}
 
-		// A DISCIPLINA EXISTE
 
-		if(pg_numrows($qry1) > 0) {
+/*
+ // FIXME  -- para as faltas construir a chamada a partir de uma data inicial
+function lanca_chamada($aluno,$num_faltas,$getofer,$data_inicial) 
+{
 
-			while($linha = pg_fetch_array($qry1))
+	
+
+
+
+}
+
+// FIXME  -- gravar o conteúdo de aula na primeira chamada e anexar uma observação
+function lanca_conteudo($getofer,$data_inicial,$conteudo) 
+{
+
+
+
+}
+*/
+
+
+function atualiza_matricula($aluno,$getofer,$abre_diario=FALSE) {
+
+
+	// RECUPERA INFORMACOES DO DIARIO
+    $qryDisc = " SELECT DISTINCT
+                o.ref_disciplina, o.ref_periodo 
+                FROM 
+                disciplinas_ofer o
+                WHERE
+                 o.id = '" . $getofer . "' AND 
+                 o.is_cancelada = 0 ;";
+
+
+    $qry1 = consulta_sql($qryDisc);
+
+
+    if(is_string($qry1)) {
+
+        envia_erro($qry1);
+        exit;
+    }
+    else {
+
+        // A DISCIPLINA EXISTE
+
+        if(pg_numrows($qry1) > 0) {
+
+            while($linha = pg_fetch_array($qry1))
+            {
+                $getdisciplina = @$linha['ref_disciplina'];
+                $getperiodo = @$linha['ref_periodo'];
+                $id = 0;
+            }
+
+			$grupo = ($id . "-" . $getperiodo . "-" . $getdisciplina . "-" . $getofer);
+    		$grupo_novo = ("%-" . $getperiodo . "-%-" . $getofer);
+			$getcurso = getCurso($getperiodo,$getdisciplina,$getofer);
+
+        } // ^ A DISCIPLINA EXISTE
+    }
+	// ^ RECUPERA INFORMACOES DO DIARIO ^ //
+
+	$sql1 = "SELECT
+    grupo
+    FROM diario_formulas
+    WHERE
+    grupo ILIKE '$grupo_novo';";
+
+
+    $qryFormula = consulta_sql($sql1);
+
+    if(is_string($qry))
+    {
+        envia_erro($qry);
+        exit;
+    }
+
+    $num_formula = pg_numrows($qryFormula);
+
+    // INICIALIZA O DIARIO CASO NECESSÁRIO
+	if($abre_diario AND !empty($grupo) AND is_numeric($getcurso))
+    {
+
+		$grupo_inicial = ($id ."-" . $getperiodo . "-". $id ."-" . $getofer);
+
+		if($num_formula == 0) 
+		{
+
+			// PASSO 1
+			$numprovas = 6;
+
+			// PASSO 2
+			for ($cont=1; $cont <= $numprovas; $cont++)
 			{
-				$getdisciplina = @$linha['ref_disciplina'];
-				$getperiodo = @$linha['ref_periodo'];
-				$id = @$linha['ref_professor'];
+   				$prova[] = 'Nota '.$cont;
 			}
 
-		} // ^ A DISCIPLINA EXISTE
-	}
+			// PASSO 3 - EXCLUI REFERENCIAS PERDIDAS 
+			$sqldel = "BEGIN; DELETE FROM diario_formulas WHERE grupo ILIKE '$grupo_novo';";
+			$sqldel .= "DELETE FROM diario_notas WHERE rel_diario_formulas_grupo ILIKE '$grupo_novo'; COMMIT;";
+
+			$qrydel =  consulta_sql($sqldel);
+
+			if(is_string($qrydel))
+			{
+    			envia_erro($qrydel);
+		    	exit;
+			}
+
+			reset($prova);
+
+			// REGISTRA A FORMULA PARA O DIARIO E INICIALIZA OS REGISTROS
+			$sql1 = 'BEGIN;';
+
+			while (list($index,$value) = each($prova))
+			{
+   				$descricao_prova = $prova[$index];
+  	 			$num_prova=($index+1);
+   				$frm='P1';
+   				$sql1 .= "INSERT INTO diario_formulas (ref_prof, ref_periodo, ref_disciplina, prova, descricao, formula, grupo) values('$id','$getperiodo','$getdisciplina','$num_prova','$descricao_prova','$frm','$grupo_inicial');";
+
+			}
+
+			$sql1 .= 'COMMIT;';
+
+			$qry1 = consulta_sql($sql1);
+
+			if(is_string($qry1))
+			{
+    			envia_erro($qry1);
+    			exit;
+			}
+			$formula = '';
+
+			for ($cont = 1; $cont <= $numprovas; $cont++)
+			{
+   					if($cont == 1)
+  				{
+      				$formula .= 'P'.$cont;
+   				}
+   				else
+   				{
+      				$formula .= '+P'.$cont;
+   				}
+			}
 
 
+			// PASSO 4 E FINAL
+			require_once('processa_formula_diario.php');
 
-	$grupo = ($id . "-" . $getperiodo . "-" . $getdisciplina . "-" . $getofer);
+			// ^ REGISTRA A FORMULA PARA O DIARIO E INICIALIZA REGISTROS ^ //
+		}
+    } // ^ INICIALIZA O DIARIO CASO NECESSÁRIO ^ //
 
-	$grupo_novo = ("%-" . $getperiodo . "-%-" . $getofer);
-
+    
 
 	$flag_pendencia = 0;
 
@@ -180,28 +331,10 @@ function atualiza_matricula($aluno,$getofer){
 	//echo $getperiodo . " - ". $getdisciplina ." - ". $getofer;
 	//die;
 
-	$getcurso = getCurso($getperiodo,$getdisciplina,$getofer);
-
 
 	// VERIFICA PENDENCIAS RELACIONADAS AO LANCAMENTO DE NOTAS
-	$sql1 = "SELECT
-	grupo
-	FROM diario_formulas
-	WHERE
-	grupo ILIKE '$grupo_novo';";
 
-
-	$qryFormula = consulta_sql($sql1);
-
-	if(is_string($qry))
-	{
-		envia_erro($qry);
-		exit;
-	}
-
-	$numformula = pg_numrows($qryFormula);
-
-	if($numformula == 6) {
+	if($num_formula == 6) {
 
 		$qryNotas = 'SELECT
 		    m.ref_pessoa, id_ref_pessoas 
@@ -223,7 +356,6 @@ function atualiza_matricula($aluno,$getofer){
 		  id_ref_pessoas IS NULL 
 	        ORDER BY id_ref_pessoas;';
 
-		//echo $qryNotas;
 
 
 		$qry = consulta_sql($qryNotas);
@@ -240,7 +372,6 @@ function atualiza_matricula($aluno,$getofer){
 
 		if ($NumReg > 0)
 		{
-			$getcurso = getCurso($getperiodo,$getdisciplina,$getofer);
 
 			while($registro = pg_fetch_array($qry))
 			{
@@ -490,7 +621,7 @@ function atualiza_matricula($aluno,$getofer){
 
 				// MENSAGEM DE ERRO AO GRAVAR AS ALTERACOES OU ENVIA EMAIL AVISANDO ALGUEM
 				$msg_erro = "";
-                                envia_erro($res);
+                envia_erro($res);
 
 				//^ MENSAGEM DE ERRO AO GRAVAR AS ALTERACOES OU ENVIA EMAIL AVISANDO ALGUEM
 
