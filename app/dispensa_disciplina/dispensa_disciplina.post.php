@@ -7,14 +7,20 @@ require("../../lib/common.php");
 require("../../configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
+
+
+// PROCESSA A DISPENSA SE NAO HOUVER ERROS
+if ( $second != 1 )
+	die;
+
+$flag_processa = 1;
+
+require_once('dispensa_valida.php');
+
 //-- Conectando com o PostgreSQL
 $Conexao = NewADOConnection("postgres");
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
-
-print_r($_POST);
-
-die;
 
 // Array ( [dispensa_tipo] => 4 [ref_liberacao_ed_fisica] => 1 ) 
 
@@ -30,6 +36,7 @@ $processo  = $_POST['processo'];
 $diario_id  = $_POST['diario_id'];
 $ref_instituicao  = $_POST['ref_instituicao'];
 $obs_aproveitamento  = $_POST['obs_aproveitamento'];
+$obs_final  = $_POST['obs_final'];
 $nota_final  = $_POST['nota_final'];
 
 
@@ -40,10 +47,38 @@ $id_contrato = $_POST['id_contrato'];
 $ref_campus  = $_POST['ref_campus'];
 
 
+// PARAMETROS SQL
+
+// APROVEITAMENTO DE ESTUDOS
+if ($dispensa_tipo == 2)
+{
+
+ 	$insert_sql = ',ref_instituicao,obs_aproveitamento,nota_final';
+ 	$values_sql = ",$ref_instituicao,'$obs_aproveitamento', $nota_final";
+
+}
+// CERTIFICACAO DE EXPERIENCIAS
+if ($dispensa_tipo == 3)
+{
+	$insert_sql = ',nota_final';
+    $values_sql = ",$nota_final";
+
+}
+
+// EDUCACAO FISICA
+if ($dispensa_tipo == 4)
+{
+	$insert_sql = ',obs_final, ref_liberacao_ed_fisica';
+    $values_sql = ",'$obs_final',$ref_liberacao_ed_fisica";
+}
+
+$insert_sql .= ',ref_motivo_matricula, processo';
+$values_sql .= ",$dispensa_tipo,'$processo'";
+
 
 $msg = '<h3><font color=\"#006600\">Dispensa de Disciplina:</font></h3>'; //-- Variavel com a resposta para o usuario
 
-$sqlInsereDiario = "BEGIN;"; //-- Variavel com a sql de insercao dos diarios
+$sqlInsereDispensa = ""; //-- Variavel com a sql de insercao da dispensa
 
 
 	//-- Verifica se o aluno ja esta matriculado nesta disciplina oferecida
@@ -127,7 +162,7 @@ $sqlInsereDiario = "BEGIN;"; //-- Variavel com a sql de insercao dos diarios
 			$ref_curso_subst = 0;
 			$ref_disciplina_subst = 0;
 		
-			$sqlInsereDiario .= "
+			$sqlInsereDispensa .= "
 			INSERT INTO matricula
     	    (
         	   ref_contrato,
@@ -144,6 +179,7 @@ $sqlInsereDiario = "BEGIN;"; //-- Variavel com a sql de insercao dos diarios
     	       dt_matricula,
         	   hora_matricula,
 	           status_disciplina
+			   $insert_sql
     	    )
         	VALUES (
 	           '$id_contrato',
@@ -152,7 +188,7 @@ $sqlInsereDiario = "BEGIN;"; //-- Variavel com a sql de insercao dos diarios
 	           '$curso_id',
     	       '$periodo_id',
         	   '$disciplina_id',
-				'$ref_curso_subst',
+			   '$ref_curso_subst',
 	           '$ref_disciplina_subst',
     	       '$diario_id',
         	   get_complemento_ofer('$diario_id'),
@@ -160,40 +196,44 @@ $sqlInsereDiario = "BEGIN;"; //-- Variavel com a sql de insercao dos diarios
     	       date(now()),
         	    now(),
 	           'f'
+			   $values_sql
     	    );";
 			
-			$diario_id_matriculado = $diario_id;
-	
 		}//fim total de vagas
 	}
 	else{
 	       $msg .= "<p>>> <b><font color=\"#FF0000\">Aluno j&aacute; matriculado no di&aacute;rio $diario_id!</font></b></p>";
 	}//fim matriculados
 	
-$sqlInsereDiario .= "COMMIT;";
 
+//echo $sqlInsereDispensa; //die;
 
 //-- Inserindo a matricula
-$RsInsereDiario = $Conexao->Execute($sqlInsereDiario);
+$RsInsereDiario = $Conexao->Execute($sqlInsereDispensa);
 			
 if (!$RsInsereDiario)
 {
-	$title = "<h3><font color=\"#FF0000\">Erro ao efetuar matricula!</font></h3>";
-	$msg = ">> Di&aacute;rio: $diario_id<br>";
-	$msg .= "<p><b>Informa&ccedil;&otilde;es sobre o erro:</b><br>$Conexao->ErrorMsg()</p>";
+	$title = "<h3><font color=\"#FF0000\">Erro ao efetuar a dispensa!</font></h3>";
+	$msg .= ">> Di&aacute;rio: $diario_id<br>";
+    
+	$msg .= "<p><b>Informa&ccedil;&otilde;es adicionais:</b>".$Conexao->ErrorMsg."</p>";
+}
+else
+{
+	// ATUALIZA NOTAS E FALTAS NO DIARIO
+
+	require_once('atualiza_diario.php');
+
+    atualiza_matricula($aluno_id,$diario_id,TRUE);
+    if(is_numeric($nota_final) AND $nota_final >= 50 )
+		$msg .= lanca_nota($aluno_id,$nota_final,$diario_id);
+
+	// ^ ATUALIZA NOTAS E FALTAS NO DIARIO ^ //
 }
 
 $cabecalho = ">> <strong>Aluno</strong>: $aluno_id <br />";
 $cabecalho .= ">> <strong>Curso</strong>: $curso_id  - <strong>Per&iacute;odo</strong>: $periodo_id <br />";
 
-// ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO 
-require_once('atualiza_diario.php');
-
-foreach($diario_id_dispensado as $dispensado){
-	atualiza_matricula("$aluno_id","$dispensado");
-}
-
-// ^ ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO ^ //
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
