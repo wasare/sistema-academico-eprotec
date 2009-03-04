@@ -12,8 +12,8 @@ require("../../../lib/adodb/adodb.inc.php");
 $sql = "SELECT id, nome 
 		FROM public.pessoas
 		WHERE 
-		lower(to_ascii(\"nome\")) like lower(to_ascii('%".$_POST['nome']."%')) 
-		ORDER BY nome LIMIT 50";
+		lower(to_ascii(nome)) ilike lower(to_ascii('".$_POST['nome']."%')) 
+		ORDER BY to_ascii(nome) LIMIT 50;";
 
 
 //Criando a classe de conexão ADODB
@@ -36,8 +36,10 @@ $tabela.= "  </tr>";
 while(!$RsNome->EOF){
 
     $tabela.= "<tr bgcolor='#DDDDDD'>";
-	$tabela.= "   <td align=\"left\">" . iconv("iso-8859-1", "utf-8", $RsNome->fields[1]) . "</td>";
-    $tabela.= "   <td align=\"left\"><a href=\"javascript:send(" .$RsNome->fields[0]. ", '". iconv("iso-8859-1", "utf-8", $RsNome->fields[1]) . "')\"><img src=\"../../../images/icons/apply.png\" alt=\"Enviar\" /></a></td>";
+	//$tabela.= "   <td align=\"left\">" . iconv("iso-8859-1", "utf-8", $RsNome->fields[1]) . "</td>";
+    //$tabela.= "   <td align=\"left\"><a href=\"javascript:send(" .$RsNome->fields[0]. ", '". iconv("iso-8859-1", "utf-8", $RsNome->fields[1]) . "')\"><img src=\"../../../images/icons/apply.png\" alt=\"Enviar\" /></a></td>";
+    $tabela.= "   <td align=\"left\">" . $RsNome->fields[1] . "</td>";
+    $tabela.= "   <td align=\"left\"><a href=\"javascript:send(" .$RsNome->fields[0]. ", '". $RsNome->fields[1] . "')\"><img src=\"../../../images/icons/apply.png\" alt=\"Enviar\" /></a></td>";
 	$tabela.= "</tr>";
 	$RsNome->MoveNext();
 }
