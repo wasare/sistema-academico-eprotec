@@ -1,4 +1,0 @@
-EXTRATO DE MATRÍCULAS (05-02-2006 até 05-06-2006) Campus - 1 - CEFET-BAMBUí
-
-Centro de Custo, Descrição do Curso, Alunos Início, Créditos Início, Alunos com Transações de Saída, Créditos Saída, Alunos Com Transações de Entrada, Créditos Entrada, Saldo Alunos, Saldo Créditos
-SOMA TOTAL,, 0, 0.00, 0, 0.00, 0, 0.00, 0, 0.00

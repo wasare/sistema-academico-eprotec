@@ -1,5 +1,12 @@
-<? require("../../../../lib/common.php");?> 
-<? require("../../lib/InvData.php3"); 
+<?php
+
+require_once("../../../../lib/common.php");
+require("../../lib/InvData.php3"); 
+
+
+$status = $_POST[status];
+
+
 
 CheckFormParameters(array("id",
                           "ref_campus",

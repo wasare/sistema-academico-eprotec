@@ -1,9 +1,13 @@
-<? require("../../../../lib/common.php"); ?>
-<? require("../../lib/vestibular/common.php3"); ?>
-<? require("../../lib/InvData.php3"); ?>
+<?php
+
+require("../../../../lib/common.php");
+//require("../../lib/vestibular/common.php3");
+require("../../lib/InvData.php3");
+
+?>
 <html>
 <head>
-<script language="PHP">
+<?php
 
 CheckFormParameters(array("id",
                           "descricao",
@@ -95,7 +99,7 @@ SuccessPage("Inclusão de Período",
             "location='../periodos.phtml'",
             "O código do período é <b>$id</b>.",
             "location='../consulta_periodos.phtml'");
-</script>
+?>
 </HEAD>
 <BODY></BODY>
 </HTML>

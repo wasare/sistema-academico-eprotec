@@ -1,9 +1,10 @@
 <? require("../../../../lib/common.php"); ?>
-<html>
-<head>
-<title>Cadastro de Cidade</title>
 
-<script language="PHP">
+<html>
+    <head>
+        <title>Cadastro de Cidade</title>
+
+        <script language="PHP">
 
 CheckFormParameters(array("nome",
                           "cep",
@@ -16,7 +17,7 @@ $conn = new Connection;
 
 $conn->Open();
 $conn->Begin();
-    
+
 $sql = "insert into aux_cidades (" .
        "     id," .
        "     nome," .
@@ -45,8 +46,8 @@ SuccessPage("Inclusão de Cidades",
             "O código da Cidade é $id",
             "location='../consulta_cidades.phtml'");
 
-</script>
-</head>
-<body>
-</body>
+        </script>
+    </head>
+    <body>
+    </body>
 </html>
