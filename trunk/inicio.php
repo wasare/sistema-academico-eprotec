@@ -25,7 +25,7 @@ require ("lib/config.php");
             <td width="50" valign="middle"><a href="inicio.php"><img src="images/icon_sa.gif" alt="Principal" width="40" height="34" /></a><a href="inicio.php" class="titulo1"></a></td>
             <td width="230"><a href="inicio.php" class="titulo1">Sistema Acad&ecirc;mico</a></td>
             <td valign="top"><div align="right" class="texto1"><strong>Desenvolvimento: </strong></div></td>
-            <td width="200" valign="middle">&nbsp;<a href="http://www.cefetbambui.edu.br" target="_blank"><img src="images/cefet.png" alt="CEFET-Bambu&iacute;" title="CEFET-Bambu&iacute;" width="51" height="34" /></a>&nbsp;&nbsp;<a href="http://cefetbambui.edu.br/gerencia_ti" target="_blank"><img src="images/gti.jpg" alt="Ger&ecirc;ncia TI" title="Ger&ecirc;ncia de TI" width="50" height="34" /></a></td>
+            <td width="200" valign="middle">&nbsp;<a href="http://www.cefetbambui.edu.br" target="_blank"><img src="images/ifmg.jpg" alt="CEFET-Bambu&iacute;" title="CEFET-Bambu&iacute;" /></a>&nbsp;&nbsp;<a href="http://cefetbambui.edu.br/gerencia_ti" target="_blank"><img src="images/gti.jpg" alt="Ger&ecirc;ncia TI" title="Ger&ecirc;ncia de TI" width="50" height="34" /></a></td>
           </tr>
         </table></td>
     </tr>
@@ -38,9 +38,18 @@ require ("lib/config.php");
               <li><a href="app/sagu/academico/consulta_inclui_contratos.phtml" target="frame2">Contratos</a></li>
               <li><a href="app/sagu/academico/consulta_inclui_professores.phtml" target="frame2">Professores</a></li>
               <li><a href="app/sagu/academico/coordenadores.phtml" target="frame2">Coordenadores</a></li>
+              <li><a href="#" class="MenuBarItemSubmenu">Gen&eacute;rico</a>
+                  <ul>
+                    <li><a href="app/sagu/generico/paises_inclui.phtml" target="frame2">Pa&iacute;s</a></li>
+                    <li><a href="app/sagu/generico/consulta_inclui_estados.phtml" target="frame2">Estado</a></li>
+                    <li><a href="app/sagu/generico/consulta_cidades.phtml" target="frame2">Cidade</a></li>
+                    <li><a href="app/sagu/generico/configuracao_empresa.phtml" target="frame2">Empresa</a></li>
+                    <li><a href="app/sagu/generico/campus_inclui.phtml" target="frame2">Campus</a></li>
+                    <li><a href="app/sagu/generico/consulta_inclui_instituicoes.phtml" target="frame2">Institui&ccedil;&atilde;o</a></li>
+                  </ul>
+              </li>
               <li><a href="#" class="MenuBarItemSubmenu">Sistema</a>
                   <ul>
-                    <li><a href="app/sagu/generico/index.phtml" target="frame2">Gen&eacute;ricos</a></li>
                     <li><a href="app/sagu/academico/consulta_periodos.phtml" target="frame2">Per&iacute;odos</a></li>
                     <li><a href="app/sagu/academico/consulta_inclui_departamentos.phtml" target="frame2">Departamentos</a></li>
                     <li><a href="app/sagu/academico/areas_ensino.phtml" target="frame2">&Aacute;rea de ensino</a></li>
@@ -68,6 +77,7 @@ require ("lib/config.php");
           <li><a href="#" class="MenuBarItemSubmenu">Matr&iacute;culas</a>
             <ul>
               <li><a href="app/matricula/matricula_aluno.php" target="frame2">Matricular</a></li>
+              <li><a href="app/dispensa_disciplina/dispensa_aluno.php" target="frame2">Dispensar Disciplina</a></li>
               <li><a href="app/matricula/remover_matricula/filtro.php" target="frame2">Excluir Matr&iacute;cula</a></li>
             </ul>
           </li>
