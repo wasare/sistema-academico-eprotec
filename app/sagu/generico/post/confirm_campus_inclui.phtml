@@ -1,14 +1,12 @@
-<? require("../../../../lib/common.php"); ?>
-<? require("../../lib/financeiro/common.php3"); ?>
+<?php
+require("../../../../lib/common.php");
+//require("../../lib/financeiro/common.php3");
+
+CheckFormParameters(array("ref_empresa","nome_campus","cidade_campus"));
+$empresa_nome=GetEmpresa($ref_empresa,true);
+?>
 <html>
 <head>
-<script language="PHP">
-CheckFormParameters(array("ref_empresa",
-                          "nome_campus",
-                          "cidade_campus"));
-
-$empresa_nome=GetEmpresa($ref_empresa,true);
-</script>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
 <form method="post" action="campus_inclui.php3" name="myform">
