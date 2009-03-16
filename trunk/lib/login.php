@@ -1,31 +1,42 @@
 <?php 
 
-require_once("config.php"); 
+require_once("config.php");
+
+
+//Dados de index.php
+$uid = $_POST['uid'];
+$pwd = $_POST['pwd'];
+$home = $_POST['home'];
+
 
 // load database abstraction layer
-$no_login_check = true; // ! não fazer um check do login !
-require("common.php");
+//$no_login_check = true; // ! não fazer um check do login!
 
-$CookieDomain = "$sagu_cookie";
+$CookieDomain = "$sagu_cookie";// lib/config.php
 $SessionAuth  = "$uid:$pwd";
 $SessionID    = getmypid();
 
-$conn = new Connection;
-$cid = @$conn->Open(true); // @  deixa de fazer o tratamento de erro padrao
-@$conn->Close();
+setcookie('no_login_check',true,time() + 12 * 3600,"/","$CookieDomain",0);
+SetCookie("SessionAuth","$SessionAuth",time() + 12 * 3600,"/","$CookieDomain",0);
 
-//LogSQL("*** CID=$cid ***");
+require_once("common.php");
+
+$conn = new Connection;
+$cid = @$conn->Open(true); // @ deixa de fazer o tratamento de erro padrao
+@$conn->Close();
 
 // caso tem acesso log o LOGIN
 if ( ! $cid )
 {
-  LogSQL("*** LOGIN RECUSADO (db=$LoginDB,uid=$uid,pwd=) ***");
-  include("../msg_login_recusado.php");
-  exit;
+    LogSQL("*** LOGIN RECUSADO (db=$LoginDB,uid=$uid,pwd=) ***");
+    include("../msg_login_recusado.php");
+    exit;
 }
 
+
+
 // gravar autenticação do usuário no cookie SessionAuth
-SetCookie("SessionAuth","$SessionAuth",time() + 12 * 3600,"/","$CookieDomain",0);
+//SetCookie("SessionAuth","$SessionAuth",time() + 12 * 3600,"/","$CookieDomain",0);
 SetCookie("SessionID","$SessionID",time() + 12 * 3600,"/","$CookieDomain",0);
 SetCookie("SessionUsuario","$uid",time() + 12 * 3600,"/","$CookieDomain",0);
 
