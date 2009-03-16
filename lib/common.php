@@ -107,11 +107,14 @@ class Connection  {
     // opens a connection to the specified data source
     function Open($no_SaguAssert=false)
     {
-        global $SessionAuth,$LoginUID,$LoginPWD,$LoginDB,$LoginHost;
+        global $LoginUID,$LoginPWD,$LoginDB,$LoginHost;
 
-        if ( ! empty($SessionAuth) )
-        list ( $LoginUID, $LoginPWD ) = split(":",$SessionAuth,2);
+        $SessionAuth = $_COOKIE['SessionAuth'];
 
+        if ( ! empty($SessionAuth) ){
+            list ( $LoginUID, $LoginPWD ) = split(":",$SessionAuth,2);
+
+        }
         // LogSQL("*** SessionAuth=$SessionAuth ***");
 
         $arg = "host=$LoginHost dbname=$LoginDB port=5432 user=$LoginUID password=$LoginPWD";
@@ -120,6 +123,7 @@ class Connection  {
         $this->id = @pg_Connect($arg);
 
         $this->level = 0;
+
 
         if ( empty($no_SaguAssert) || !$no_SaguAssert )
         {
@@ -277,8 +281,9 @@ function LogSQL($sql,$force=false)
 //          consistent manner of error handling. This function
 //          does not return from execution.
 // -----------------------------------------------------------
-function FatalExit($msg="",$info="",$href="")
-{ global $ErrorURL;
+function FatalExit($msg="",$info="",$href=""){
+
+    global $ErrorURL;
 
     if ( $msg == "" )
     $msg = "Erro inesperado ou acesso proibido";
@@ -577,8 +582,9 @@ function GetIdentity($seq,$SaguAssert=true,$msg="")
 //          cookie defined, if it is not defined, the default 
 //          login page is called.
 // -----------------------------------------------------------
-function CheckLogin()
-{ global $SessionAuth,$LoginURL;
+function CheckLogin(){
+
+    global $SessionAuth,$LoginURL;
 
     if ( empty($SessionAuth) )
     {
@@ -591,8 +597,9 @@ function CheckLogin()
 // -----------------------------------------------------------
 // userid : allowed | denied : url1,url2,
 // -----------------------------------------------------------
-function CheckAccess($user,$path)
-{ global $LoginACL;
+function CheckAccess($user,$path){
+
+    global $LoginACL;
 
     // LogSQL("*** CheckAccess($user,$path) ***");
 
@@ -695,6 +702,34 @@ function real_to_int($valor)
     return($valor_novo);
 }
 
+
+
+
+function GetEmpresa($id,$SaguAssert)
+{
+    $sql = "select id,razao_social from configuracao_empresa where id=$id";
+
+    $conn = new Connection;
+
+    $conn->Open();
+
+    $query = $conn->CreateQuery($sql);
+
+    if ( $query->MoveNext() )
+    $obj = $query->GetValue(2);
+
+    $query->Close();
+
+    $conn->Close();
+
+    if ( $SaguAssert )
+    SaguAssert(!empty($obj),"Empresa [$id] nao definido!");
+
+    return $obj;
+}
+
+
+
 // ------------------------------------------------------------------
 // [PABLO:] Para testes use banco de dados teste para usuário teste
 // ------------------------------------------------------------------
@@ -708,46 +743,17 @@ if ( ! empty($SessionAuth) )
     $LoginDB = "teste";
 }
 
-// when the global variable $no_login_check is set to true, we skip
-// the check, otherwise the check is performed.
+
+
+// Faz a verificacao de login
+
+$no_login_check = $_COOKIE['no_login_check'];
+
 if ( empty($no_login_check) || !$no_login_check )
 {
     CheckLogin();
-
     // buscar authenticação do cookie
     list ( $LoginUID, $LoginPWD ) = split(":",$SessionAuth,2);
-
-    //  CheckAccess($LoginUID,$REQUEST_URI);
-}
-
-
-/**
- * Busca a empresa/instituicao
- * @param <type> $id
- * @param <type> $SaguAssert
- * @return <type>
- */
-function GetEmpresa($id,$SaguAssert)
-{
-    $sql = "select id,razao_social from configuracao_empresa where id=$id";
-
-    $conn = new Connection;
-
-    $conn->Open();
-
-    $query = $conn->CreateQuery($sql);
-
-    if ( $query->MoveNext() )
-      $obj = $query->GetValue(2);
-
-    $query->Close();
-
-    $conn->Close();
-
-    if ( $SaguAssert )
-      SaguAssert(!empty($obj),"Empresa [$id] nao definido!");
-
-    return $obj;
 }
 
 ?>

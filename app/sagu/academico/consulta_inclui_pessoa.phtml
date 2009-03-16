@@ -31,7 +31,10 @@
             }
         </script>
 
-        <script language="PHP">
+<?php
+
+$id = $_POST['id'];
+$desc = $_POST['desc'];
 
 $hasmore = false;
 
@@ -150,16 +153,19 @@ function ListaPessoas()
 
     return $count;
 }
-        </script>
+?>
+<link href="../estilo.css" rel="stylesheet" type="text/css" />
     </head>
 
     <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
+
         <form method="post" action="consulta_inclui_pessoa.phtml" name="selecao">
             <div align="center">
+                <div class="titulo">
+                    <h2>Pessoa F&iacute;sica</h2>
+                </div>
                 <p>
-                    <input type="button" value="   Incluir   " onClick="location='pessoaf_inclui.phtml'" name="incluir">
-                    <!-- <input type="button" value="    Sair    " onClick="javascript:history.go(-1)" name="sair"> -->
-                    <input type="button" value="    Voltar    " onClick="javascript:history.back(-1)" name="sair">
+                    <input type="button" value="   Incluir   " onClick="location='pessoaf_inclui.phtml'" name="incluir">         
                 </p>
                 <hr width="500">
                 <p><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0000FF"><b><font color="#FF0000">CUIDADO PARA N&Atilde;O DUPLICAR CADASTROS !</font></b></font> </p>
@@ -181,7 +187,7 @@ function ListaPessoas()
                         <td width="1">&nbsp;</td>
                         <td width="102">
                             <div align="left">
-                                <input type="text" name="id" size="15" onChange="javascript:seta_campo(id)" value="<?=$_POST['id']?>">
+                                <input type="text" name="id" size="15" value="<?=$_POST['id']?>">
                             </div>
                         </td>
                         <td width="311">
@@ -200,14 +206,17 @@ function ListaPessoas()
                     </tr>
                     <tr>
                         <td colspan="4">
-                            <?PHP ListaPessoas(); ?>
+                            <?php ListaPessoas(); ?>
                             <script language="javascript">
                                 document.selecao.desc.value="<? echo($nome); ?>";
                             </script>
-                            <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font color="#FF0000">
-                                            <?PHP  if ( $hasmore )
-                                            echo("<BR><center>Se o aluno não estiver listado, seja mais específico.</center>"); ?>
-                        </font></b></font></font> </td>
+                            <font face="Verdana, Arial, Helvetica, sans-serif" color="#FF0000" size="2"><b>
+                                            <?php
+                                            if ( $hasmore )
+                                            echo("<BR><center>Se o aluno não estiver listado, seja mais específico.</center>");
+                                            ?>
+                            </b></font>
+                        <td>
                     </tr>
                     <tr align="center">
                         <td colspan="4">
@@ -220,14 +229,12 @@ function ListaPessoas()
                                 <ul>
                                     <li><font face="Arial, Helvetica, sans-serif" size="2" color="#0000CC"><b><font face="Verdana, Arial, Helvetica, sans-serif">Se o aluno que voc&ecirc; pesquisou estiver presente na lista pesquisada, n&atilde;o &eacute; necess&aacute;rio inclu&iacute;-lo novamente.</font></b></font></li>
                                     <li><b><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0000CC">Se voc&ecirc; quiser consultar ou alterar os dados de um aluno da lista pesquisada, clique na imagem correspondente.</font></b></li>
-                                    <li><font face="Arial, Helvetica, sans-serif" size="2" color="#0000CC"><b><font face="Verdana, Arial, Helvetica, sans-serif">Se o aluno n&atilde;o estiver na lista acima, ele n&atilde;o est&aacute; cadastrado no sistema. Clique no bot&atilde;o &quot;Incluir&quot; para fazer um novo cadastro.</font></b></font></li>
                                 </ul>
                             </div>
                         </td>
                     </tr>
                 </table>
-                <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font color="#FF0000">
-            </font></b></font></font> </div>
+             </div>
         </form>
     </body>
 </html>
