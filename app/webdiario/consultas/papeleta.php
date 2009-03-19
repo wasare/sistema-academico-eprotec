@@ -45,7 +45,8 @@ $sql3 = "SELECT
 			(a.dt_cancelamento is null) AND
 			
 			a.ref_disciplina_ofer = '$oferecida' AND
-			a.ref_pessoa = b.id
+			a.ref_pessoa = b.id AND 
+            a.ref_motivo_matricula = 0
 			
          ORDER BY lower(to_ascii(nome));" ;
 
@@ -91,8 +92,6 @@ $sql5 = " SELECT fl_digitada, fl_concluida
             WHERE
                id = '$oferecida';";
 		   
-//echo $sql5;
-         
 $qry3 = consulta_sql($sql3);
 
 if(is_string($qry3))
@@ -137,17 +136,39 @@ if(is_string($qry5))
 else {
 
 	$flag = pg_fetch_array($qry5,0);
-/*
-    echo $flag;
-    echo '<br />';
-
-    print_r($flag);
-*/
     $fl_digitada = $flag[0];
     $fl_concluida = $flag[1];
 
 }
 
+// APROVEITAMENTO DE ESTUDOS 2
+// CERTIFICACAO DE EXPERIENCIAS 3
+// EDUCACAO FISICA 4
+$msg_dispensa = '';
+
+$sql_dispensas = "SELECT COUNT(*) 
+         			FROM 
+						matricula a, pessoas b
+         			WHERE 
+            
+            		(a.dt_cancelamento is null) AND            
+            		a.ref_disciplina_ofer = '$oferecida' AND
+            		a.ref_pessoa = b.id AND 
+            		a.ref_motivo_matricula IN (2,3,4) ;" ;
+
+$qry_dispensas = consulta_sql($sql_dispensas);
+
+if(is_string($qry_dispensas))
+{
+    echo $qry_dispensas;
+    exit;
+}
+else {
+
+    $dispensas = pg_numrows($qry_dispensas);
+    if ($dispensas > 0 )
+        $msg_dispensa .= '<font size="-1" color="brown"><strong>*</strong> ' . $dispensas . ' aluno(s) dispensado(s) neste di&aacute;rio, consulte a papeleta completa para exib&iacute;-lo(s). </font>';
+}
 
 
 ?>
@@ -316,6 +337,9 @@ while($row3=pg_fetch_array($qry3))
 
 
 </table>
+
+<?=$msg_dispensa?>
+
 <hr width="60%" size="1" align="left" color="#FFFFFF">
 
 <?php
