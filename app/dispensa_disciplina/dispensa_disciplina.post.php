@@ -220,8 +220,13 @@ if (!$RsInsereDiario)
 }
 else
 {
-	// ATUALIZA NOTAS E FALTAS NO DIARIO
 
+   // EXCLUI FALTAS DO DIARIO PARA EVITAR REPROVAÇÃO POR FALTAS
+   $sqlFaltas = "DELETE FROM diario_chamadas WHERE ra_cnec = $aluno_id AND ref_disciplina_ofer = $diario_id;";
+   $RsFaltas = $Conexao->Execute($sqlFaltas);
+   // ^ EXCLUI FALTAS DO DIARIO PARA EVITAR REPROVAÇÃO POR FALTAS ^ //
+     
+	// ATUALIZA NOTAS E FALTAS NO DIARIO
 	require_once('atualiza_diario.php');
 
     atualiza_matricula($aluno_id,$diario_id,TRUE);
