@@ -26,7 +26,8 @@ $sql3 = "SELECT
 			(a.dt_cancelamento is null) AND
             a.ref_periodo = '$getperiodo' AND 
             a.ref_disciplina_ofer = '$getofer' AND
-            a.ref_pessoa = b.id 
+            a.ref_pessoa = b.id AND 
+            a.ref_motivo_matricula = 0
          ORDER BY lower(to_ascii(nome));" ;
 
 
@@ -51,20 +52,6 @@ else
       $sql4 .=  ";";
 }
 
-
-/*
-$sql5 = " SELECT 
-            DISTINCT 
-               a.id, a.descricao as descricao, b.id, c.descricao as periodo 
-            FROM 
-               cursos a, disciplinas_ofer b, periodos c 
-            WHERE 
-               b.ref_periodo = '$getperiodo' AND 
-               c.id = '$getperiodo' AND 
-               b.ref_curso = a.id AND 
-               b.id = '$getofer';";
-*/ 
-//echo $sql5;
          
 $qry3 = consulta_sql($sql3);
 
@@ -100,15 +87,39 @@ if(is_string($qry5))
 else {
 
 	$flag = pg_fetch_array($qry5,0);
-/*
-    echo $flag;
-    echo '<br />';
-
-    print_r($flag);
-*/
     $fl_digitada = $flag[0];
     $fl_concluida = $flag[1];
 }
+
+// APROVEITAMENTO DE ESTUDOS 2
+// CERTIFICACAO DE EXPERIENCIAS 3
+// EDUCACAO FISICA 4
+$msg_dispensa = '';
+
+$sql_dispensas = "SELECT COUNT(*) 
+                    FROM 
+                        matricula a, pessoas b
+                    WHERE 
+            
+                    (a.dt_cancelamento is null) AND            
+                    a.ref_disciplina_ofer = '$getofer' AND
+                    a.ref_pessoa = b.id AND 
+                    a.ref_motivo_matricula IN (2,3,4) ;" ;
+
+$qry_dispensas = consulta_sql($sql_dispensas);
+
+if(is_string($qry_dispensas))
+{
+    echo $qry_dispensas;
+    exit;
+}
+else {
+
+    $dispensas = pg_numrows($qry_dispensas);
+    if ($dispensas > 0 )
+        $msg_dispensa .= '<font size="-1" color="brown"><strong>*</strong> ' . $dispensas . ' aluno(s) dispensado(s) neste di&aacute;rio. </font>';
+}
+
 
 
 ?>
@@ -349,16 +360,106 @@ while($row3=pg_fetch_array($qry3))
 ?>
 
 </table>
+
+<?=$msg_dispensa?>
+
 <hr width="60%" size="1" align="left" color="#FFFFFF">
 
 <?php
 	
-print("Aulas dadas: <b>$result</b>&nbsp;&nbsp;&nbsp;");
-print("Aulas previstas na estrututa curricular: <b>$cargap</b><br>");
-print("<center>ASSINATURA(S):</center>");
+	print("Aulas dadas: <b>$result</b>&nbsp;&nbsp;&nbsp;");
+	print("Aulas previstas na estrututa curricular: <b>$cargap</b><br>");
+	print("<center>ASSINATURA(S):</center>");
+
+    echo '<br />';
+
+    $i = 0;
+
+    if (!empty($msg_dispensa)) {
+	
+		$sql_dispensas = "SELECT 
+         b.nome, b.id AS ra_cnec, a.ordem_chamada, a.nota_final, a.num_faltas, a.ref_motivo_matricula 
+         FROM matricula a, pessoas b
+         WHERE 
+            
+            (a.dt_cancelamento is null) AND            
+            a.ref_disciplina_ofer = '$getofer' AND
+            a.ref_pessoa = b.id AND 
+            a.ref_motivo_matricula IN (2,3,4)            
+         	ORDER BY lower(to_ascii(nome));" ;	
+	   
+		$qry_dispensa = consulta_sql($sql_dispensas);
+
+		if(is_string($qry_dispensa))
+		{
+    		echo $qry_dispensa;
+    		exit;
+		}
+		
+?>
+		<h4> Alunos Dispensados </h4>
+		<table width="80%" cellspacing="0" cellpadding="0" class="papeleta">
+        <tr bgcolor="#cccccc">
+			<td width="10%" align="center"><b>Matr&iacute;cula</b></td>
+			<td width="60%" ><b>Nome</b></td>
+			<td width="10%" align="center"><b>Nota</b></td>
+			<td width="20%" align="center"><b>Motivo</b></td>
+		</tr>
+
+<?php
+	while($row3=pg_fetch_array($qry_dispensa))
+	{
+		$nome_f = $row3['nome'];
+		$racnec = $row3['ra_cnec'];
+		$racnec = str_pad($racnec, 5, "0", STR_PAD_LEFT) ;
+		$num = $row3['ordem_chamada'];
+        $motivo_matricula = $row3['ref_motivo_matricula'];
+
+		if($row3['nota_final'] != 0) {
+			$nota = getNumeric2Real($row3['nota_final']);
+		}
+		else {
+			$nota = $row3['nota_final'];
+		}
+
+		if ($nota < 60)
+		{
+			$nota = "<font color=\"red\"><b>$nota</b></font>";
+		}
+
+        // APROVEITAMENTO DE ESTUDOS 2
+		// CERTIFICACAO DE EXPERIENCIAS 3
+		// EDUCACAO FISICA 4
+        switch ($motivo_matricula) {
+    		case 2:
+        		$motivo_matricula = 'Aproveitamento de estudos';
+        		break;
+    		case 3:
+        		$motivo_matricula = 'Certificação de experi&ecirc;ncia';
+        		break;
+    		case 4:
+        		$motivo_matricula = 'Educa&ccedil;&atilde;o f&iacute;sica';
+        		break;
+		}
+
+		//<td width=\"10%\">$num</td>\n
+		if ( ($i % 2) == 0) { $rcolor = $r1; } else { $rcolor = $r2; }
+
+		print("<tr bgcolor=\"$rcolor\">\n");
+		print("<td align=\"center\" width=\"10%\">$racnec</td>\n <td width=\"60%\">$nome_f</td>\n ");
+		print ("<td width=\"10%\" align=\"center\">$nota</td>\n ");
+		print ("<td width=\"20%\" align=\"center\">$motivo_matricula</td>\n ");
+		print("</tr>\n ");
+
+		$i++;
+	}
+} // end if - somente exibe se houver dispensa
 
 ?>
-<br><br>
+
+
+</table>
+<br /><br />
 <input type="button" value="Imprimir" onClick="window.print()">
 </body>
 </html>
