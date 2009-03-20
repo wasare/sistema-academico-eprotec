@@ -1,13 +1,13 @@
 <?php 
 
-require("../../../lib/common.php");
-require("../../../lib/config.php");
+require("../../lib/common.php");
+require("../../lib/config.php");
 
-require("../../sagu/lib/InvData.php3");
-require("../../sagu/lib/GetPessoaNome.php3"); 
-require("../../sagu/lib/StatusDisciplina.php3"); 
+require("../sagu/lib/InvData.php3");
+require("../sagu/lib/GetPessoaNome.php3"); 
+require("../sagu/lib/StatusDisciplina.php3"); 
 
-require("../../../lib/properties.php"); 
+require("../../lib/properties.php"); 
 
 
 $periodo_id = $_POST['periodo'];
@@ -153,15 +153,15 @@ function Mostra_Matricula() {
 		}
 
 		if ($fl_internet == 't') {
-			$fl_internet = "<img src=\"../../sagu/images/internet.gif\" alt=\"Matrícula feita pela Internet\" title=\"Matrícula feita pela Internet\">";
+			$fl_internet = "<img src=\"../sagu/images/internet.gif\" alt=\"Matrícula feita pela Internet\" title=\"Matrícula feita pela Internet\">";
 		} else {
-			$fl_internet = "<img src=\"../../sagu/images/normal.gif\" alt=\"Matrícula feita na sede\" title=\"Matrícula feita na sede\">";
+			$fl_internet = "<img src=\"../sagu/images/normal.gif\" alt=\"Matrícula feita na sede\" title=\"Matrícula feita na sede\">";
 		}
 
 		if ($status_disciplina == 't') {
-			$status_disciplina = "<img src=\"../../sagu/images/autorizado.gif\" alt=\"Matrícula com desbloqueio\" title=\"Matrícula com desbloqueio\">";
+			$status_disciplina = "<img src=\"../sagu/images/autorizado.gif\" alt=\"Matrícula com desbloqueio\" title=\"Matrícula com desbloqueio\">";
 		} else {
-			$status_disciplina = "<img src=\"../../sagu/images/liberado.gif\" alt=\"Matrícula sem desbloqueio\" title=\"Matrícula sem desbloqueio\">";
+			$status_disciplina = "<img src=\"../sagu/images/liberado.gif\" alt=\"Matrícula sem desbloqueio\" title=\"Matrícula sem desbloqueio\">";
 		}
 
 		if ($dt_cancelamento == 't') {
@@ -191,16 +191,16 @@ function Mostra_Matricula() {
         // EDUCACAO FISICA 4
         switch ($ref_motivo_matricula) {
             case 0:
-                echo '<img src="../../../images/check_nossa.gif" alt="Cursada na institui&ccedil;&atilde;o" title="Cursada na institui&ccedil;&atilde;o" />';
+                echo '<img src="../../images/check_nossa.gif" alt="Cursada na institui&ccedil;&atilde;o" title="Cursada na institui&ccedil;&atilde;o" />';
                 break;
             case 2:
-				echo '<img src="../../../images/check_aproveitamento_estudos.gif" alt="Aproveitamento de Estudos" title="Aproveitamento de Estudos" />';
+				echo '<img src="../../images/check_aproveitamento_estudos.gif" alt="Aproveitamento de Estudos" title="Aproveitamento de Estudos" />';
                 break;
             case 3:
-			    echo '<img src="../../../images/check_certificacao_experiencia.gif" alt="Certificação de experi&ecirc;ncia" title="Certificação de experi&ecirc;ncia" />';
+			    echo '<img src="../../images/check_certificacao_experiencia.gif" alt="Certificação de experi&ecirc;ncia" title="Certificação de experi&ecirc;ncia" />';
                 break;
             case 4:
-                echo '<img src="../../../images/check_educacao_fisica.gif" alt="Dispensado de Educa&ccedil;&atilde;o f&iacute;sica" />';
+                echo '<img src="../../images/check_educacao_fisica.gif" alt="Dispensado de Educa&ccedil;&atilde;o f&iacute;sica" />';
                 break;
         }
 
@@ -335,15 +335,15 @@ function Mostra_Matricula_Geral() {
 		}
 
 		if ($fl_internet == 't') {
-			$fl_internet = "<img src=\"../../sagu/images/internet.gif\" alt=\"Matrícula feita pela Internet\" title=\"Matrícula feita pela Internet\">";
+			$fl_internet = "<img src=\"../sagu/images/internet.gif\" alt=\"Matrícula feita pela Internet\" title=\"Matrícula feita pela Internet\">";
 		} else {
-			$fl_internet = "<img src=\"../../sagu/images/normal.gif\" alt=\"Matrícula feita na sede\" title=\"Matrícula feita na sede\">";
+			$fl_internet = "<img src=\"../sagu/images/normal.gif\" alt=\"Matrícula feita na sede\" title=\"Matrícula feita na sede\">";
 		}
 
 		if ($status_disciplina == 't') {
-			$status_disciplina = "<img src=\"../../sagu/images/autorizado.gif\" alt=\"Matrícula com desbloqueio\" title=\"Matrícula com desbloqueio\">";
+			$status_disciplina = "<img src=\"../sagu/images/autorizado.gif\" alt=\"Matrícula com desbloqueio\" title=\"Matrícula com desbloqueio\">";
 		} else {
-			$status_disciplina = "<img src=\"../../sagu/images/liberado.gif\" alt=\"Matrícula sem desbloqueio\" title=\"Matrícula sem desbloqueio\">";
+			$status_disciplina = "<img src=\"../sagu/images/liberado.gif\" alt=\"Matrícula sem desbloqueio\" title=\"Matrícula sem desbloqueio\">";
 		}
 
 		if ($dt_cancelamento == 't') {
@@ -372,16 +372,16 @@ function Mostra_Matricula_Geral() {
         // EDUCACAO FISICA 4
         switch ($ref_motivo_matricula) {
             case 0:
-                echo '<img src="../../../images/check_nossa.gif" alt="Cursada na institui&ccedil;&atilde;o" title="Cursada na institui&ccedil;&atilde;o" />';
+                echo '<img src="../../images/check_nossa.gif" alt="Cursada na institui&ccedil;&atilde;o" title="Cursada na institui&ccedil;&atilde;o" />';
                 break;
             case 2:
-                echo '<img src="../../../images/check_aproveitamento_estudos.gif" alt="Aproveitamento de Estudos" title="Aproveitamento de Estudos" />';
+                echo '<img src="../../images/check_aproveitamento_estudos.gif" alt="Aproveitamento de Estudos" title="Aproveitamento de Estudos" />';
                 break;
             case 3:
-                echo '<img src="../../../images/check_certificacao_experiencia.gif" alt="Certificação de experi&ecirc;ncia" title="Certificação de experi&ecirc;ncia" />';
+                echo '<img src="../../images/check_certificacao_experiencia.gif" alt="Certificação de experi&ecirc;ncia" title="Certificação de experi&ecirc;ncia" />';
                 break;
             case 4:
-                echo '<img src="../../../images/check_educacao_fisica.gif" alt="Dispensado de Educa&ccedil;&atilde;o f&iacute;sica" />';
+                echo '<img src="../../images/check_educacao_fisica.gif" alt="Dispensado de Educa&ccedil;&atilde;o f&iacute;sica" />';
                 break;
         }
 
@@ -488,18 +488,18 @@ function Mostra_Matricula_Outros() {
 			echo ("</tr>");
 		}
 
-		$href = "<a href=\"matricula_altera.phtml?id=$id\"><img src=\"../../sagu/images/select.gif\" alt='Ver Matrícula' title='Ver Matrícula' align='absmiddle' border=0></a>";
+		$href = "<a href=\"matricula_altera.phtml?id=$id\"><img src=\"../sagu/images/select.gif\" alt='Ver Matrícula' title='Ver Matrícula' align='absmiddle' border=0></a>";
 
 		if ($fl_internet == 't') {
-			$fl_internet = "<img src=\"../../sagu/images/internet.gif\" alt=\"Matrícula feita pela Internet\" title=\"Matrícula feita pela Internet\">";
+			$fl_internet = "<img src=\"../sagu/images/internet.gif\" alt=\"Matrícula feita pela Internet\" title=\"Matrícula feita pela Internet\">";
 		} else {
-			$fl_internet = "<img src=\"../../sagu/images/normal.gif\" alt=\"Matrícula feita na sede\" title=\"Matrícula feita na sede\">";
+			$fl_internet = "<img src=\"../sagu/images/normal.gif\" alt=\"Matrícula feita na sede\" title=\"Matrícula feita na sede\">";
 		}
 
 		if ($status_disciplina == 't') {
-			$status_disciplina = "<img src=\"../../sagu/images/autorizado.gif\" alt=\"Matrícula com desbloqueio\" title=\"Matrícula com desbloqueio\">";
+			$status_disciplina = "<img src=\"../sagu/images/autorizado.gif\" alt=\"Matrícula com desbloqueio\" title=\"Matrícula com desbloqueio\">";
 		} else {
-			$status_disciplina = "<img src=\"../../sagu/images/liberado.gif\" alt=\"Matrícula sem desbloqueio\" title=\"Matrícula sem desbloqueio\">";
+			$status_disciplina = "<img src=\"../sagu/images/liberado.gif\" alt=\"Matrícula sem desbloqueio\" title=\"Matrícula sem desbloqueio\">";
 		}
 
 		if ($i % 2) {
@@ -598,7 +598,7 @@ function Mostra_Contratos() {
 
 		$url = "post/troca_contrato.php3?ref_pessoa=$ref_pessoa%26ref_contrato=$ref_contrato%26ref_curso=$ref_curso%26ref_campus=$ref_campus";
 
-		$href1 = "<a href=\"/academico/pede_senha.phtml?url=$url\"><img src=\"../../sagu/images/obs.gif\" alt='Converte Disciplinas deste Contrato para Outro. Casos de Trancamento por Débito Financeiro' title='Converte Disciplinas deste Contrato para Outro. Casos de Trancamento por Débito Financeiro' align='absmiddle' border=0></a>";
+		$href1 = "<a href=\"/academico/pede_senha.phtml?url=$url\"><img src=\"../sagu/images/obs.gif\" alt='Converte Disciplinas deste Contrato para Outro. Casos de Trancamento por Débito Financeiro' title='Converte Disciplinas deste Contrato para Outro. Casos de Trancamento por Débito Financeiro' align='absmiddle' border=0></a>";
 
 		if ($i % 2) {
 			$bg = $bg1;
@@ -634,19 +634,19 @@ function _select(param1,param2,param3)
  window.opener.setResult(param1,param2,param3);
 }
 </script>
-<link href="../../../Styles/style.css" rel="stylesheet" type="text/css">
+<link href="../../Styles/style.css" rel="stylesheet" type="text/css">
 </head>
 <body marginwidth="20" marginheight="20">
 <center>
 <div style="width: 760px;" align="center">
-  <div align="center" style="text-align:center; font-size:12px;"> <img src="../../../images/armasbra.jpg" width="57" height="60"><br />
+  <div align="center" style="text-align:center; font-size:12px;"> <img src="../../images/armasbra.jpg" width="57" height="60"><br />
     MEC-SETEC<br />
     CENTRO FEDERAL DE EDUCAÇÃO TECNOLÓGICA DE BAMBUÍ-MG<br />
     SETOR DE REGISTROS ESCOLARES <br />
     <br />
     <br />
   </div>
-  <h2>Consultas Diversas - Aluno</h2>
+  <h2>Ficha Global do Aluno</h2>
   Aluno: <?php echo $pessoa . '  -  ' . $nome_aluno;?>
   <form method="post" action="" name="myform">
     <?php 
@@ -666,10 +666,10 @@ function _select(param1,param2,param3)
 <div align="left">
     <h4>Legenda</h4>
 
-    <img src="../../../images/check_nossa.gif" alt="Cursada na institui&ccedil;&atilde;o" title="Cursada na institui&ccedil;&atilde;o" /> Disciplina Cursada na Institui&ccedil;&atilde;o<br />
-    <img src="../../../images/check_aproveitamento_estudos.gif" alt="Aproveitamento de Estudos" title="Aproveitamento de Estudos" /> Aproveitamento de Estudos <br />
-    <img src="../../../images/check_certificacao_experiencia.gif" alt="Certificação de experi&ecirc;ncia" title="Certificação de experi&ecirc;ncia" /> Certica&ccedil;&atilde;o Experi&ecirc;ncia <br />
-     <img src="../../../images/check_educacao_fisica.gif" alt="Dispensado de Educa&ccedil;&atilde;o f&iacute;sica" /> Dispensado de Educa&ccedil;&atilde;o f&iacute;sica<br />
+    <img src="../../images/check_nossa.gif" alt="Cursada na institui&ccedil;&atilde;o" title="Cursada na institui&ccedil;&atilde;o" /> Disciplina Cursada na Institui&ccedil;&atilde;o<br />
+    <img src="../../images/check_aproveitamento_estudos.gif" alt="Aproveitamento de Estudos" title="Aproveitamento de Estudos" /> Aproveitamento de Estudos <br />
+    <img src="../../images/check_certificacao_experiencia.gif" alt="Certificação de experi&ecirc;ncia" title="Certificação de experi&ecirc;ncia" /> Certica&ccedil;&atilde;o Experi&ecirc;ncia <br />
+     <img src="../../images/check_educacao_fisica.gif" alt="Dispensado de Educa&ccedil;&atilde;o f&iacute;sica" /> Dispensado de Educa&ccedil;&atilde;o f&iacute;sica<br />
 </div>
     <div align="center">
       <input type="button" name="Button" value="Voltar" onClick="javascript:history.go(-1)">
