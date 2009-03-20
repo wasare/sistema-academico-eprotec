@@ -1,6 +1,6 @@
 <?php
 // http://sagu.cefetbambui.edu.br/diario/movimentos/lancanotas/lanca1.php
-include_once('../conf/webdiario.conf.php');
+include_once('../webdiario.conf.php');
 
 
 $getofer = $_GET['ofer'];

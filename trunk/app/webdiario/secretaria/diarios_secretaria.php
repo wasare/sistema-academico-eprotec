@@ -1,8 +1,8 @@
 <?php
 
-include_once('../conf/webdiario.conf.php');
+require_once('../webdiario.conf.php');
 
-require_once($BASE_DIR.'conf/verifica_acesso.php');
+require_once($BASE_DIR_WEBDIARIO .'conf/verifica_acesso.php');
 
 //print_r($_SESSION); die;
 

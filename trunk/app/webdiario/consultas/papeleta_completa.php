@@ -2,7 +2,7 @@
 # write by lucas@cneccapivari.br
 # this is a free software, you can modify follow the GNU/GPL
 
-include_once('../conf/webdiario.conf.php');
+include_once('../webdiario.conf.php');
 
 $getdisciplina = $_GET['disc'];
 $getofer = $_GET['ofer'];
@@ -115,7 +115,8 @@ if(is_string($qry_dispensas))
 }
 else {
 
-    $dispensas = pg_numrows($qry_dispensas);
+	$dispensas = pg_fetch_row($qry_dispensas);
+    $dispensas = $dispensas[0];
     if ($dispensas > 0 )
         $msg_dispensa .= '<font size="-1" color="brown"><strong>*</strong> ' . $dispensas . ' aluno(s) dispensado(s) neste di&aacute;rio. </font>';
 }
@@ -435,7 +436,7 @@ while($row3=pg_fetch_array($qry3))
         		$motivo_matricula = 'Aproveitamento de estudos';
         		break;
     		case 3:
-        		$motivo_matricula = 'Certificação de experi&ecirc;ncia';
+        		$motivo_matricula = 'Certifica&ccedil;&atilde;o de experi&ecirc;ncia';
         		break;
     		case 4:
         		$motivo_matricula = 'Educa&ccedil;&atilde;o f&iacute;sica';

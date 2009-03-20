@@ -1,5 +1,5 @@
 <?php
-include ('../../conf/webdiario.conf.php');
+include ('../../webdiario.conf.php');
                                print '<script language=javascript>
                                if(window.confirm("ATENÇÃO !! Este processo apaga a formula e as notas referentes , pressione (OK) para continuar  ou (CANCELAR) para voltar !")){
                                window.alert(" ATENÇÃO !!!   ESTE PROCESSO ESCLUIRÁ A FORMULA E TODAS AS NOTAS REFERENTES !!!");

@@ -1,5 +1,5 @@
 <?php
-include ('../../conf/webdiario.conf.php');
+include ('../../webdiario.conf.php');
 /////////////////////////////////$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname");
          $sql1 = "DELETE FROM diario_avaliacao WHERE id = $id";
          $query1 = pg_exec($dbconnect, $sql1);

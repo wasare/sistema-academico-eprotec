@@ -1,20 +1,23 @@
 <?php
 
+require_once('../../lib/config.php');
+
 @session_start();
 
-ini_set('display_errors',0);
+ini_set('display_errors',1);
 
 date_default_timezone_set('America/Sao_Paulo');
 
-$BASE_URL = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico/app/webdiario/';
-$BASE_DIR = dirname(__FILE__) . '/';
+$BASE_URL = $BASE_URL .'app/webdiario/';
 
-require_once($BASE_DIR.'conf/conn_diario.php');
+$BASE_DIR  = dirname(__FILE__) . '/';
+
+require_once($BASE_DIR.'/conn_diario.php');
 
 $CSS_DIR = $BASE_URL.'css/';
 
 /*Define onde está a página de erro*/
-$erro = $BASE_URL.'erro.php';
+$erro = $BASE_URL .'erro.php';
 
 $speriodo = $_SESSION['lst_periodo'];
 
@@ -31,7 +34,10 @@ $L['20052'] = array('1406','4487');
 $Movimento = array('0','1','3','4','8','10');
 
 // PERIODOS ATUALMENTE LIBERADOS PARA TODOS OS PROFESSORES
-$Autorizado = array('20031','20032','20041','20042','20051','20052','20061','20062','','20071','20072','20081','20082');
+$Autorizado = array('20031','20032','20041','20042','20051','20052','20061','20062','','20071','20072','20081','20082','20091');
+
+
+$P['20091'] = "'09','0901','09011','09012'";
 
 $P['20082'] = "'08','0802','08021','08022'";
 $P['20081'] = "'08','0801','08011','08012'";
@@ -53,7 +59,7 @@ $P['20032'] = "'07021','07022','0702'";
 
 
 // INCLUI FUNCOES 
-require_once($BASE_DIR.'lib/functions_diario.php');
+require_once($BASE_DIR.'../lib/functions_diario.php');
 
 
 ?>

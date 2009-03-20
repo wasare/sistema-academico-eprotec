@@ -1,5 +1,5 @@
 <?php
-include ('../../conf/webdiario.conf.php');
+include ('../../webdiario.conf.php');
 
 $sql1 = "SELECT DISTINCT
       a.login,

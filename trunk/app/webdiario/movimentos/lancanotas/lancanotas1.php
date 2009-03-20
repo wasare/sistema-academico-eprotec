@@ -1,6 +1,6 @@
 <?php
 
-include_once('../../conf/webdiario.conf.php');
+include_once('../../webdiario.conf.php');
 
 
 $getdisciplina = $_GET['disc'];
@@ -10,6 +10,7 @@ $id = $_SESSION['id'];
 
 
 $grupo = ($id . "-" . $getperiodo . "-" . $getdisciplina . "-" . $getofer);
+
 
 $grupo_novo = ("%-" . $getperiodo . "-%-" . $getofer);
 

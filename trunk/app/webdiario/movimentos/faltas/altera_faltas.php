@@ -1,6 +1,6 @@
 <?php
 
-include_once('../../conf/webdiario.conf.php');
+include_once('../../webdiario.conf.php');
 
 //altera_faltas.php?flag=146025&data=05/02/2007&chamada=146025&id=2472&getperiodo=0701&disc=107001&ofer=1715
 

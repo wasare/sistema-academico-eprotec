@@ -64,7 +64,7 @@ function ver_pendencia($soma_notas_diario, $total_nota_matricula)
 function ver_nota_aluno_webdiario($racnec, $getperiodo, getofer)
 {
 	
-	include_once('../conf/webdiario.conf.php');
+	include_once('../webdiario.conf.php');
 	
 	$sqlnotas = 'SELECT DISTINCT 
     b.nome, c.nota, ref_diario_avaliacao

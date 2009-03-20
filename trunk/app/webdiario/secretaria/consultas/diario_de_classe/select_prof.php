@@ -1,5 +1,5 @@
 <?php
-include ('../../conf/webdiario.conf.php');
+include ('../../webdiario.conf.php');
 ///////////////$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname") or die ("Não foi possivel conectar à fonte de dados");
 
       /* AJUSTA A FORMATAÇÃO DE DATAS PARA O PADRÃO POSTGRESQL */

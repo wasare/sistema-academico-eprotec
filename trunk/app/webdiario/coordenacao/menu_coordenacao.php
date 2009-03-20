@@ -1,8 +1,7 @@
 <?php
 
-include_once('../conf/webdiario.conf.php');
-
-include_once('verifica_acesso.php');
+require_once('../webdiario.conf.php');
+require_once($BASE_DIR_WEBDIARIO .'conf/verifica_acesso.php')
 
 if ( !IsSet($_SESSION['login']) ) 
 {

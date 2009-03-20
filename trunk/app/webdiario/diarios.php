@@ -1,7 +1,7 @@
 <?php
 
 	
-include_once('conf/webdiario.conf.php');
+require_once('webdiario.conf.php');
 
 
 // CONECTA BD

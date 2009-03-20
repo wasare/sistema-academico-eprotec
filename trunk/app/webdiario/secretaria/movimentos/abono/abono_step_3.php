@@ -1,5 +1,5 @@
 <?php
-include_once ('../../conf/webdiario.conf.php');
+include_once ('../../webdiario.conf.php');
 
 $var = explode(":",$_GET[getdisciplina]);
 $getdisciplina = $var[0];

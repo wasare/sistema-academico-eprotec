@@ -1,7 +1,7 @@
 <?php
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
-include_once('../../conf/webdiario.conf.php');
+include_once('../../webdiario.conf.php');
 
 // CONECT NO BANCO
 

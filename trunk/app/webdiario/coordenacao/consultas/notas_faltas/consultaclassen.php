@@ -1,5 +1,5 @@
 <?php
-include_once ('../../../conf/webdiario.conf.php');
+include_once ('../../../webdiario.conf.php');
 
 $sql1="select d.id, d.descricao_disciplina, d.descricao_extenso, d.carga_horaria from disciplinas d, disciplinas_ofer o where o.ref_periodo = '$getperiodo' and d.id = o.ref_disciplina order by d.descricao_disciplina";
 $query1=pg_exec($dbconnect, $sql1);

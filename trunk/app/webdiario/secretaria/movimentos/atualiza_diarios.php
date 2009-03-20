@@ -1,10 +1,7 @@
 <?php
 
-    include_once('../verifica_acesso.php');
-
-    include_once('../../conf/webdiario.conf.php');
-
-    //print_r($_GET);
+require_once('../../webdiario.conf.php');
+require_once($BASE_DIR_WEBDIARIO .'conf/verifica_acesso.php');
 
 if(isset($_GET['btnOK']) && $_GET['btnOK'] == 'sim' ) {
 	
