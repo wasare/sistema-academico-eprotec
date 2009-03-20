@@ -21,7 +21,7 @@ function calcula($equation)
        return $return;
 }
 
-include_once ('../../conf/webdiario.conf.php');
+include_once ('../../webdiario.conf.php');
 // CONECT NO BANCO
 
 /////////////Seleciona Fórmula

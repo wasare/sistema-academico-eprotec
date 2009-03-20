@@ -1,5 +1,5 @@
 <?php
-include("conf/webdiario.conf.php");
+include("webdiario.conf.php");
 
 setcookie ("us", "0", time( )-9999);
 setcookie ("login", "0", time( )-9999);

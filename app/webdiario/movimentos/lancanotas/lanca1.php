@@ -1,5 +1,5 @@
 <?php
-include_once('../../conf/webdiario.conf.php');
+include_once('../../webdiario.conf.php');
 // CONECTA BD
 
 /* AJUSTA A FORMATAÇÃO DE DATAS PARA O PADRÃO POSTGRESQL */

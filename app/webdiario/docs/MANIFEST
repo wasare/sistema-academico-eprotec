@@ -34,7 +34,7 @@
 ./menu.php
 ./conf
 ./conf/conn_diario.php
-./conf/webdiario.conf.php
+./webdiario.conf.php
 ./manutencao.php
 ./relat
 ./relat/ps
@@ -230,7 +230,7 @@
 ./menu.php
 ./conf
 ./conf/conn_diario.php
-./conf/webdiario.conf.php
+./webdiario.conf.php
 ./manutencao.php
 ./relat
 ./relat/ps

@@ -2,7 +2,7 @@
 # write by lucas@cneccapivari.br
 # this is a free software, you can modify follow the GNU/GPL
 
-include_once('../conf/webdiario.conf.php');
+include_once('../webdiario.conf.php');
 
 $disciplina = $_GET['disc'];
 $getofer = $_GET['ofer'];
@@ -165,9 +165,11 @@ if(is_string($qry_dispensas))
 }
 else {
 
-    $dispensas = pg_numrows($qry_dispensas);
-    if ($dispensas > 0 )
+    $dispensas = pg_fetch_row($qry_dispensas);
+    $dispensas = $dispensas[0];
+    if ($dispensas > 0 ) {
         $msg_dispensa .= '<font size="-1" color="brown"><strong>*</strong> ' . $dispensas . ' aluno(s) dispensado(s) neste di&aacute;rio, consulte a papeleta completa para exib&iacute;-lo(s). </font>';
+    }
 }
 
 

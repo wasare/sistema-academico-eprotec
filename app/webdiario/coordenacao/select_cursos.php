@@ -1,8 +1,7 @@
 <?php
 
-    include_once('verifica_acesso.php');
-
-    include_once('../conf/webdiario.conf.php');
+    require_once('../webdiario.conf.php');
+    require_once($BASE_DIR_WEBDIARIO .'conf/verifica_acesso.php');
 
     if($_SESSION['select_periodo'] === "" OR !isset($_SESSION['select_periodo']))
     {

@@ -1,5 +1,5 @@
 <?PHP
-include ('../../conf/webdiario.conf.php');
+include ('../../webdiario.conf.php');
 
 
 $grupo = ($id."-".$getperiodo."-".$getdisciplina);

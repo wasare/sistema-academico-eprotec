@@ -2,7 +2,7 @@
 
     include_once('verifica_acesso.php');
 
-    include_once('../conf/webdiario.conf.php');
+    include_once('../webdiario.conf.php');
 
     if($_SESSION['periodo'] === "" OR !isset($_SESSION['periodo']))
     {

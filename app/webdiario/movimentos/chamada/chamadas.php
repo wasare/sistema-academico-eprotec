@@ -1,6 +1,6 @@
 <?php
 
-include_once('../../conf/webdiario.conf.php');
+include_once('../../webdiario.conf.php');
 
 if (is_finalizado($_GET['ofer'])){
     header("Location: $erro");

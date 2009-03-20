@@ -1,5 +1,5 @@
 <?php
-include ('../../conf/webdiario.conf.php');
+include ('../../webdiario.conf.php');
 // CONECT NO BANCO
 ////////////////////////$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname");
 

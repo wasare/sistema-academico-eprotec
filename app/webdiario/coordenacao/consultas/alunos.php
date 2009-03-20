@@ -14,7 +14,7 @@ Tel.: (19)3492-1869
 $st = '#F3F3F3';
 
 
-include_once('../../conf/webdiario.conf.php');
+include_once('../../webdiario.conf.php');
 
 if($_SESSION['periodo'] === "" OR !isset($_SESSION['periodo']) OR $_SESSION['select_prof'] === "" OR !isset($_SESSION['select_prof']))
 {

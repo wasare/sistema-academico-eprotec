@@ -14,7 +14,7 @@ Tel.: (19)3492-1869
 
 $st = '#F3F3F3';
 
-include_once('../conf/webdiario.conf.php');
+include_once('../webdiario.conf.php');
 
 $btnOK = false;
 

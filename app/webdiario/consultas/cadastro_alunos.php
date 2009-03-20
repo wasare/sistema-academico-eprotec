@@ -1,5 +1,5 @@
 <?php
-include ('../conf/webdiario.conf.php');
+include ('../webdiario.conf.php');
 
 //print_r($_SESSION);
 

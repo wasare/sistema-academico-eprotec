@@ -1,6 +1,6 @@
 <?php
 
-include ('../conf/webdiario.conf.php');
+include ('../webdiario.conf.php');
 
 
 $flag = $_GET['flag'];

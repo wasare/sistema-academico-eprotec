@@ -1,5 +1,5 @@
 <?php
-include_once('../conf/webdiario.conf.php');
+include_once('../webdiario.conf.php');
 
 /* AJUSTA A FORMATAÇÃO DE DATAS PARA O PADRÃO POSTGRESQL */
 //$data_postgres = gmdate("Y") . "-" . gmdate("m") . "-" . gmdate("d");

@@ -1,6 +1,6 @@
 <?php
 
-include_once('../../conf/webdiario.conf.php');
+include_once('../../webdiario.conf.php');
 
 
 $getdisciplina = $_GET['disc'];

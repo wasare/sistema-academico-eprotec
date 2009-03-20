@@ -6,7 +6,7 @@ http://sagu.cefetbambui.edu.br/diario/relat/caderno_chamada_ps.php3?id=2491&getp
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
 
-require_once('../conf/webdiario.conf.php');
+require_once('../webdiario.conf.php');
 // CONECTA BD
 
 

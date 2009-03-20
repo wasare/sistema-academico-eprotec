@@ -1,5 +1,5 @@
 <?php
-include("../../conf/webdiario.conf.php");
+include("../../webdiario.conf.php");
 
 $user = $_POST['user'];
 $senha = md5($_POST['senha']);

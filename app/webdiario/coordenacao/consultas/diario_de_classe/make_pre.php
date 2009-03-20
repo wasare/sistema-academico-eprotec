@@ -56,7 +56,7 @@ function MM_openBrWindow(theUrl,winName,features) { //2.1
 </head>
 
 <?
-include ("../../conf/webdiario.conf.php");
+include ("../../webdiario.conf.php");
 
 
 

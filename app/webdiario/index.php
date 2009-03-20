@@ -45,15 +45,15 @@ session_destroy();
             </tr>
             <tr>
               <td height="6"><span class="login">Per&iacute;odo:</span></td>
-              <td height="6">
-                <select id="speriodo" name="speriodo">
-                  <option value="20082" selected="selected">2008 / 2&ordm; Semestre</option>
-                  <option value="20081" >2008 / 1&ordm; Semestre</option>
-                  <option value="20072" >2007 / 2&ordm; Semestre</option>
-                  <option value="20071" >2007 / 1&ordm; Semestre</option>
-                  <option value="20062" >2006 / 2&ordm; Semestre</option>
-                  <option value="20061" >2006 / 1&ordm; Semestre</option>
-                </select></td>
+              <td height="6"><select id="speriodo" name="speriodo">
+                <option value="20091" selected="selected">2009 / 1&ordm; Semestre</option>
+                <option value="20082" >2008 / 2&ordm; Semestre</option>
+                <option value="20081" >2008 / 1&ordm; Semestre</option>
+                <option value="20072" >2007 / 2&ordm; Semestre</option>
+                <option value="20071" >2007 / 1&ordm; Semestre</option>
+                <option value="20062" >2006 / 2&ordm; Semestre</option>
+                <option value="20061" >2006 / 1&ordm; Semestre</option>
+              </select></td>
             </tr>
             <tr>
               <td colspan="2" height="41" align="center">
@@ -63,7 +63,7 @@ session_destroy();
 				<p align="center"><a href="senha/">Esqueceu sua senha?<br>Primeiro acesso?</a> <br />  <br /> <a href="../docs/manual_webdiario_professor.pdf">Manual do Webdi&aacute;rio (M&oacute;dulo Professor)</a></p></td>
             </tr>
           </table>
-		  </td>
+	    </td>
 	  </tr>
       <tr>
         <td height="50" valign="middle"><div align="center"><img src="img/postgres.gif"> <img src="img/php.png"> <img src="img/linux.png"> <img src="img/gti.gif"></div></td>
