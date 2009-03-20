@@ -3,11 +3,11 @@
 header("Cache-Control: no-cache");
 
 //INCLUSAO DE BIBLIOTECAS
-require("../../../lib/common.php");
-require("../../../lib/config.php");
-require("../../../lib/properties.php");
-require("../../../configuracao.php");
-require("../../../lib/adodb/adodb.inc.php");
+require("../../lib/common.php");
+require("../../lib/config.php");
+require("../../lib/properties.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php");
 
 
 //Criando a classe de conexão
@@ -118,19 +118,19 @@ function SQL_Combo($nome,$sql,$default,$onchange)
             }
             -->
         </script>
-        <link href="../../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+        <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <form method="post" action="consultas_diversas.php" name="myform">
-            <h2>Consultas diversas</h2>
+        <form method="post" action="lista_ficha_global.php" name="myform">
+            <h2>Ficha Global do Aluno</h2>
             <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                     <td width="68" align="center"><label class="bar_menu_texto">
-                            <input name="input" type="image" src="../../../images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_alunos.php');"/>
+                            <input name="input" type="image" src="../../images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_alunos.php');"/>
                             <br />
                         Exibir</label>
                     </td>
-                    <td width="63" align="center"><label class="bar_menu_texto"> <a href="#" class="bar_menu_texto" onclick="history.back(-1)"> <img src="../../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+                    <td width="63" align="center"><label class="bar_menu_texto"> <a href="#" class="bar_menu_texto" onclick="history.back(-1)"> <img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
                         Voltar</a> </label>
                     </td>
                 </tr>
