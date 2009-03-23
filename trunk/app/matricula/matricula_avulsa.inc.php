@@ -30,6 +30,9 @@ $checar_turma = $_POST['checar_turma'];
 $_SESSION['sa_periodo_id'] = $sa_periodo_id;
 $_SESSION['sa_aluno_id'] = $aluno_id;
 
+$periodo_id = $sa_periodo_id;
+
+
 //Limpa a matriz de sessao com os diarios
 $_SESSION['DiarioMatricular'] = '';
 unset($_SESSION['DiarioMatricular']);

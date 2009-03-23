@@ -1,6 +1,13 @@
-<? require("../../../lib/common.php"); ?>
-<? require("../lib/GetPais.php3"); ?>
-<? require("../lib/GetEstado.php3"); ?>
+<? 
+
+require("../../../lib/common.php");
+require("../lib/GetPais.php3"); 
+require("../lib/GetEstado.php3"); 
+
+
+$id = $_GET['id'];
+
+?>
 <html>
 <head>
 <script language="JavaScript">
@@ -35,7 +42,8 @@ function setResult(id,nome)
 }
 
 </script>
-<script language="PHP">
+<?php 
+
 CheckFormParameters(array("id"));
 
 $conn = new Connection;
@@ -64,7 +72,7 @@ $conn->Close();
 $pais = GetPais($ref_pais, true);
 $estado = GetEstado($ref_estado, true);
 
-</script>
+?>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
 <form method="post" action="post/altera_cidade.php3" name="myform">

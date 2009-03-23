@@ -1,9 +1,56 @@
-<? require("../../../../lib/common.php"); ?>
-<? require("../../lib/InvData.php3"); ?>
-<html>
-<head>
-<title>Cadastrar Pessoa</title>
-<script language="PHP">
+<? 
+
+require("../../../../lib/common.php"); 
+require("../../lib/InvData.php3"); 
+
+$nome                   = $_POST['nome'];
+$rua                    = $_POST['rua'];
+$complemento            = $_POST['complemento'];
+$bairro                 = $_POST['bairro'];
+$cep                    = $_POST['cep'];
+$ref_cidade             = $_POST['ref_cidade'];
+$fone_particular        = $_POST['fone_particular'];
+$fone_profissional      = $_POST['fone_profissional'];
+$fone_celular           = $_POST['fone_celular'];
+$fone_recado            = $_POST['fone_recado'];
+$email                  = $_POST['email'];
+$email_alt              = $_POST['email_alt'];
+$estado_civil           = $_POST['estado_civil'];
+$dt_cadastro            = $_POST['dt_cadastro'];
+$dt_nascimento          = $_POST['dt_nascimento'];
+$rg_data                = $_POST['rg_data'];
+$sexo                   = $_POST['sexo'];
+$rg_numero              = $_POST['rg_numero'];
+$rg_orgao               = $_POST['rg_orgao'];
+$rg_cidade              = $_POST['rg_cidade'];
+$ref_filiacao           = $_POST['ref_filiacao'];
+$ref_naturalidade       = $_POST['ref_naturalidade'];
+$ref_nacionalidade      = $_POST['ref_nacionalidade'];
+$cod_cpf_cgc            = $_POST['cod_cpf_cgc'];
+$titulo_eleitor         = $_POST['titulo_eleitor'];
+$placa_carro            = $_POST['placa_carro'];
+$fl_dados_pessoais      = $_POST['fl_dados_pessoais'];
+$rg_num                 = $_POST['rg_num'];
+$cpf                    = $_POST['cpf'];
+$titulo_eleitord        = $_POST['titulo_eleitord'];
+$quitacao_eleitoral     = $_POST['quitacao_eleitoral'];
+$hist_original          = $_POST['hist_original'];
+$hist_escolar           = $_POST['hist_escolar'];
+$doc_militar            = $_POST['doc_militar'];
+$foto                   = $_POST['foto'];
+$atestado_medico        = $_POST['atestado_medico'];
+$diploma_autenticado    = $_POST['diploma_autenticado'];
+$solteiro_emancipado    = $_POST['solteiro_emancipado'];
+$ano_2g                 = $_POST['ano_2g'];
+$ref_escola_2g          = $_POST['ref_escola_2g'];
+$cidade_2g              = $_POST['cidade_2g'];
+$ref_curso_2g           = $_POST['ref_curso_2g'];
+$cod_passivo            = $_POST['cod_passivo'];
+$obs                    = $_POST['obs'];
+$deficiencia           = $_POST['deficiencia'];
+$cod_externo            = $_POST['cod_externo'];
+$fl_cartao              = $_POST['fl_cartao'];
+
 CheckFormParameters(array(
                               "nome",
                               "rua",
@@ -249,7 +296,10 @@ SuccessPage("Inclusão de Alunos",
             "O código do Aluno é $id_pessoa",
             "location='../consulta_inclui_pessoa.phtml'");
 
-</script>
+?>
+<html>
+<head>
+<title>Cadastrar Pessoa</title>
 </head>
 <body>
 </body>

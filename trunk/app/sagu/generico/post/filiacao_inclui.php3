@@ -1,9 +1,19 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<html>
-    <head>
-        <title>Inclusão de Filiação</title>
-        <script language="PHP">
+require("../../../../lib/common.php"); 
+
+$id               = $_POST['id'];
+$pai_nome         = $_POST['pai_nome'];
+$pai_fone         = $_POST['pai_fone'];
+$pai_profissao    = $_POST['pai_profissao'];
+$pai_instrucao    = $_POST['pai_instrucao'];
+$pai_loc_trabalho = $_POST['pai_loc_trabalho'];
+$mae_nome         = $_POST['mae_nome'];
+$mae_fone         = $_POST['mae_fone'];
+$mae_profissao    = $_POST['mae_profissao'];
+$mae_instrucao    = $_POST['mae_instrucao'];
+$mae_loc_trabalho = $_POST['mae_loc_trabalho'];
+
 
 SaguAssert($pai_nome || $mae_nome, "É necessário informar pelo menos o nome do pai ou da mãe!!!");
 
@@ -58,7 +68,11 @@ $ok = $conn->Execute($sql);  // tire o @ para visualizar mensagens de error do s
 SaguAssert($ok,"Não foi possível incluir a filiação!");
 
 $conn->Close();
-        </script>
+
+?>
+<html>
+    <head>
+        <title>Inclusão de Filiação</title>
         <script language="JavaScript">
             function _select(id,nome_pai,nome_mae)
             {

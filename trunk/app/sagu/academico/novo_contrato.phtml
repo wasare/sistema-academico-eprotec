@@ -1,7 +1,9 @@
-<? require("../lib/SQLCombo.php3");?>
-<? require("../../../lib/common.php"); ?>
-<? require("../../../lib/config.php"); ?>
-<?
+<? 
+
+require("../lib/SQLCombo.php3");
+require("../../../lib/common.php");
+
+
 $op_opcoes1 = SQLArray("select nome_campus, id from campus order by nome_campus");
 $op_opcoes2 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivos order by id");
 $op_opcoes3 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivos order by id");
@@ -11,6 +13,7 @@ $op_opcoes6 = SQLArray("$sql_periodos_academico");
 $op_opcoes7 = SQLArray("$sql_periodos_academico");
 $op_opcoes8 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivos order by id");
 $op_opcoes9 = SQLArray("$sql_periodos_academico");
+
 ?>
 
 <html>

@@ -3,19 +3,22 @@
 require("lib/properties.php");
 require("lib/config.php"); 
 
-if ( !empty($SessionAuth) ){
-    $no_login_check = 1;
-    require_once("lib/common.php");
-    list ( $LoginUID, $LoginPWD ) = split(":",$SessionAuth,2);
-    LogSQL("*** LOGOUT (uid=$LoginUID,pwd=) ***");
 
-    session_destroy();
-}
+unset($_SESSION['SessionAuth']);
+session_destroy();  
 
 $properties->Cleanup();
 
+if (!empty($_SESSION['SessionAuth'])) {
+    
+    require_once("lib/common.php");
+    list ( $LoginUID, $LoginPWD ) = split(":",$SessionAuth,2);
+    LogSQL("*** LOGOUT (uid=$LoginUID,pwd=) ***");
+	
+    session_destroy();
+}
+
 $sagu_cookie = '';
-SetCookie("SessionAuth","",0,"/","$sagu_cookie",0); 
 SetCookie("SessionUsuario","",0,"/","$sagu_cookie",0);
 
 ?>
@@ -56,7 +59,7 @@ SetCookie("SessionUsuario","",0,"/","$sagu_cookie",0);
                 </div>
             </div>
             <p>
-            <span class="atalhos"> <a href="<?php echo $BASE_URL . 'app/webdiario'; ?>" target="_blank">Ir para o WebDi&aacute;rio</a></span></p>
+            <span class="atalhos"><a href="<?php echo $BASE_URL . 'app/webdiario'; ?>" target="_blank">Ir para o WebDi&aacute;rio</a></span></p>
         </div>
     </body>
 </html>

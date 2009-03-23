@@ -668,7 +668,7 @@ function _select(param1,param2,param3)
 
     <img src="../../images/check_nossa.gif" alt="Cursada na institui&ccedil;&atilde;o" title="Cursada na institui&ccedil;&atilde;o" /> Disciplina Cursada na Institui&ccedil;&atilde;o<br />
     <img src="../../images/check_aproveitamento_estudos.gif" alt="Aproveitamento de Estudos" title="Aproveitamento de Estudos" /> Aproveitamento de Estudos <br />
-    <img src="../../images/check_certificacao_experiencia.gif" alt="Certificação de experi&ecirc;ncia" title="Certificação de experi&ecirc;ncia" /> Certica&ccedil;&atilde;o Experi&ecirc;ncia <br />
+    <img src="../../images/check_certificacao_experiencia.gif" alt="Certifica&ccedil;&atilde;o de experi&ecirc;ncia" title="Certificação de experi&ecirc;ncia" /> Certifica&ccedil;&atilde;o Experi&ecirc;ncia <br />
      <img src="../../images/check_educacao_fisica.gif" alt="Dispensado de Educa&ccedil;&atilde;o f&iacute;sica" /> Dispensado de Educa&ccedil;&atilde;o f&iacute;sica<br />
 </div>
     <div align="center">

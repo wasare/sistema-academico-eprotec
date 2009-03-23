@@ -1,5 +1,10 @@
-<? require("../../../../lib/common.php"); ?>
+<? 
 
+require("../../../../lib/common.php"); 
+
+$cnome = $_POST['cnome'];
+
+?>
 <html>
     <head>
         <title>Localizar Instituições</title>
@@ -9,8 +14,8 @@
                 document.selecao.cnome.focus();
             }
         </script>
+<?php 
 
-        <script language="PHP">
 $hasmore = false;
 
 
@@ -105,7 +110,7 @@ function ListaInstituicoes()
     echo("<br><center><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=red><b>Escolha um campo pelo menos!</b></font></center><br>");
 }
 
-        </script>
+?>
         <script language="JavaScript">
             function _select(id,nome)
             {

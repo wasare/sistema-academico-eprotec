@@ -589,7 +589,6 @@ function CheckLogin(){
     if ( empty($SessionAuth) )
     {
         Header("Location: $LoginURL");
-
         exit;
     }
 }
@@ -730,30 +729,12 @@ function GetEmpresa($id,$SaguAssert)
 
 
 
-// ------------------------------------------------------------------
-// [PABLO:] Para testes use banco de dados teste para usuário teste
-// ------------------------------------------------------------------
-if ( ! empty($SessionAuth) )
-{
-    // buscar authenticação do cookie
-    list ( $UID, $PWD ) = split(":",$SessionAuth,2);
+$SessionAuth = $_SESSION['SessionAuth'];
 
-    // caso usuário é teste vai para o bd teste
-    if ($UID == "teste")
-    $LoginDB = "teste";
-}
+/** AUTENTICACAO DO USUARIO **/
+CheckLogin();
 
-
-
-// Faz a verificacao de login
-
-$no_login_check = $_COOKIE['no_login_check'];
-
-if ( empty($no_login_check) || !$no_login_check )
-{
-    CheckLogin();
-    // buscar authenticação do cookie
-    list ( $LoginUID, $LoginPWD ) = split(":",$SessionAuth,2);
-}
+/** VARIAVEIS COM SENHA E LOGIN **/
+list($LoginUID, $LoginPWD) = split(":",$SessionAuth,2);
 
 ?>
