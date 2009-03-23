@@ -1,10 +1,13 @@
-<? require("../../../../lib/common.php"); ?>
+<? 
 
-<html>
-    <head>
-        <title>Cadastro de Cidade</title>
+require("../../../../lib/common.php");
 
-        <script language="PHP">
+
+$nome       = $_POST['nome'];
+$cep        = $_POST['cep'];
+$ref_pais   = $_POST['ref_pais'];
+$ref_estado = $_POST['ref_estado'];
+
 
 CheckFormParameters(array("nome",
                           "cep",
@@ -46,7 +49,10 @@ SuccessPage("Inclusão de Cidades",
             "O código da Cidade é $id",
             "location='../consulta_cidades.phtml'");
 
-        </script>
+?>
+<html>
+    <head>
+        <title>Cadastro de Cidade</title>
     </head>
     <body>
     </body>

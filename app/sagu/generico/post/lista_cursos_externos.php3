@@ -1,4 +1,12 @@
-<? require("../../../../lib/common.php"); ?>
+<? 
+
+require("../../../../lib/common.php"); 
+
+
+$id    = $_POST['id'];
+$curso = $_POST['curso'];
+
+?>
 
 <html>
     <head>
@@ -56,7 +64,8 @@
                     <td colspan="2"> <font face="Arial, Helvetica, sans-serif" size="2" color="#000000">
                     Curso</font></td>
                 </tr>
-                <script language="PHP">
+<?php 
+
 if ( $id != '' || $curso != '' )
 {
     $conn = new Connection;
@@ -86,7 +95,7 @@ if ( $id != '' || $curso != '' )
 
         if ( $i % 2 == 0)
         {
-                </script>
+                ?>
                 <tr bgcolor="#EEEEFF" valign="top">
                 <td width="20"><font face="Arial, Helvetica, sans-serif" size="2">
                 <script language="PHP">

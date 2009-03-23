@@ -2,7 +2,9 @@
 
 <html>
     <head>
-        <script language="PHP">
+<?php 
+
+$id = $_GET['id'];
 
 CheckFormParameters(array("id"));
 
@@ -52,7 +54,7 @@ $query->Close();
 
 $conn->Close();
 
-        </script>
+?>
         <script language="JavaScript">
             function _init()
             {

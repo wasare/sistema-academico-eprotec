@@ -1,4 +1,11 @@
-<? require("../../../../lib/common.php"); ?>
+<? 
+
+require("../../../../lib/common.php"); 
+
+$id   = $_POST['id'];
+$desc = $_POST['desc'];
+
+?>
 
 <html>
     <head>

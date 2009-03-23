@@ -4,7 +4,32 @@ require_once("../../../../lib/common.php");
 require("../../lib/InvData.php3"); 
 
 
-$status = $_POST[status];
+$id                     = $_POST['id']; 
+$ref_campus             = $_POST['ref_campus'];
+$ref_pessoa             = $_POST['ref_pessoa'];
+$ref_curso              = $_POST['ref_curso'];
+$turma                  = $_POST['turma'];
+$ref_periodo_turma      = $_POST['ref_periodo_turma'];
+$id_vestibular          = $_POST['id_vestibular'];
+$dia_vencimento         = $_POST['dia_vencimento'];
+$dt_ativacao            = $_POST['dt_ativacao'];
+$ref_motivo_inicial     = $_POST['ref_motivo_inicial'];
+$ref_motivo_ativacao    = $_POST['ref_motivo_ativacao'];
+$status                 = $_POST['status'];
+$dt_conclusao           = $_POST['dt_conclusao'];
+$dt_desativacao         = $_POST['dt_desativacao'];
+$ref_motivo_desativacao = $_POST['ref_motivo_desativacao'];
+$obs_desativacao        = $_POST['obs_desativacao'];
+$dt_formatura           = $_POST['dt_formatura'];
+$dt_provao              = $_POST['dt_provao'];
+$dt_diploma             = $_POST['dt_diploma'];
+$dt_apostila            = $_POST['dt_apostila'];
+$ref_last_periodo       = $_POST['ref_last_periodo'];
+$ref_periodo_formatura  = $_POST['ref_periodo_formatura'];
+$fl_ouvinte             = $_POST['fl_ouvinte'];
+$fl_formando            = $_POST['fl_formando'];
+$semestre               = $_POST['semestre'];
+$obs                    = $_POST['obs'];
 
 
 

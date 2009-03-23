@@ -1,11 +1,11 @@
 <?php
 
-//	require("../../../lib/config.php"); 
-	require_once("../../../lib/common.php"); 
+require_once("../../../lib/common.php"); 
 // just so we know it is broken
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
 // some basic sanity checks
+
 if(isset($_GET['id']) && is_numeric($_GET['id'])) {
     //connect to the db
     $db = pg_connect("host=$LoginHost port=5432 dbname=$LoginDB user=$LoginUID password=$LoginPWD");

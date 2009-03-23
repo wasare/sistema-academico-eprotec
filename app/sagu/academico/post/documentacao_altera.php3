@@ -2,7 +2,23 @@
 
 <html>
 <head>
-<script language="PHP">
+<?php 
+
+$id                  = $_POST['id'];
+$rg_num              = $_POST['rg_num'];
+$cpf                 = $_POST['cpf'];
+$hist_original       = $_POST['hist_original'];
+$hist_escolar        = $_POST['hist_escolar'];
+$titulo_eleitor      = $_POST['titulo_eleitor'];
+$quitacao_eleitoral  = $_POST['quitacao_eleitoral'];
+$doc_militar         = $_POST['doc_militar'];
+$foto                = $_POST['foto'];
+$atestado_medico     = $_POST['atestado_medico'];
+$diploma_autenticado = $_POST['diploma_autenticado'];
+$solteiro_emancipado = $_POST['solteiro_emancipado'];
+$obs_documentos      = $_POST['obs_documentos'];
+$anotacoes           = $_POST['anotacoes'];
+
 
 CheckFormParameters(array("id"));
 
@@ -82,4 +98,4 @@ SaguAssert($ok,"Não foi possível alterar o registro!");
 SuccessPage("Atualização de Documentação",
             "location='../consulta_inclui_pessoa.phtml'",
             "Documentação atualizada com sucesso.");
-</script>
+?>

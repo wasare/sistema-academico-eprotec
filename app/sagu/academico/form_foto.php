@@ -3,7 +3,7 @@
 
 <?php
 
-require("../../../lib/config.php"); 
+//require("../../../lib/config.php"); 
 require("../../../lib/common.php"); 
 
 
@@ -13,10 +13,6 @@ require_once('bitmap.inc.php');
 
 ini_set("memory_limit","25M");
 
-
-// the upload function
-//function upload(){
-// check if a file was submitted
 if(!isset($_FILES['imgfile'])) {
 
 	        echo '<h3>Por favor, selecione a foto e complete o formul&aacute;rio</h3></p>';
@@ -111,19 +107,7 @@ else {
                 imagejpeg($img, '', 80);
                 $imgdata = pg_escape_bytea(ob_get_contents());
                 // pg_unescape_bytea()
-                ob_end_clean();
-
-/*                //write to db
-				$usuario = $_POST['usuario'];
-				$senha = $_POST['senha'];
-				$pessoa = $_POST['pessoa'];
-				
-                $db = pg_connect("host=localhost port=5432 dbname=sagu user=$usuario password=$senha");
-
-
-				if(!$db)
-*/
-					
+                ob_end_clean();				
 				
 				$select = 'SELECT * FROM pessoas_fotos WHERE ref_pessoa = '.$pessoa.';';
 
@@ -138,11 +122,7 @@ else {
 					$sql = "INSERT INTO pessoas_fotos (ref_pessoa, foto) VALUES ($pessoa, '" . $imgdata . "');";
 				}
 
-				
                 pg_exec($db, $sql);
-
-				//echo $sql;
-
 				
 				if(!$db) { 
 					$msg_error .= '<h4><font color="red">Falha ao salvar o arquivo!</font></h4>';
@@ -175,37 +155,17 @@ if(@isset($_FILES['imgfile']) && @$err_num == 0) {
 
 	  echo '<img title="Foto Pessoa" src="foto.php?id='. $id_foto.'" alt="Foto Pessoa" border="1" width="120" />';
 	  echo '<br /><br /><font size="2" color="red"> Somente &eacute; exibida uma foto diferente quando nova ou substitu&iacute;da!</font> <br /> <br />';
-      echo '<a href="javascript:close()">FECHAR</a>';
+      echo '<a href="consulta_inclui_pessoa.phtml">Voltar</a>';
 	  exit;
 }
 
-       
-
-/*
-
-// check if a file was submitted
-if(!isset($_FILES['imgfile'])) {
-        echo '<h3>Por favor, selecione a foto e complete o formul&aacute;rio</h3></p>';
-}
-else {
-    try {
-		   upload();
-            // give praise and thanks to the php gods
-			echo '<p><font color="green" size="3">Imagem carregada com sucesso!</font></p>';
-        }
-        catch(Exception $e) {
-            echo $e->getMessage();
-			echo '<h4><font color="red">Falha ao carregar o arquivo!</font></h4>';
-
-			echo '<br /><br />'.$msg;
-        }
-    }*/
 ?>
  
 <html>
-    <head><title>Cadastro de Fotos no SAGU</title></head>
+    <head>
+    	<title>Cadastro de Fotos no SAGU</title>
+    </head>
     <body>
- 
         <form enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <input type="hidden" name="MAX_FILE_SIZE" value="100000000" />
             
@@ -221,9 +181,5 @@ else {
 						
             <input type="submit" value="Enviar" />
         </form>
-
-		<!--<img title="IMAGEM 1" src="view.php?image_id=1" alt="IMAGEM 1" border="0">-->
-
-				
     </body>
 </html>

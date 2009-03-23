@@ -32,7 +32,7 @@ color:#0033CC;
   </tr>
   <tr>
     <td valign="top" bgcolor="#FFDFDF">
-    <p>
+    <br /><br />
     <ul><li><a href="#">Contratos</a></li>
       <li><a href="#">Coordenadores</a></li>
       <li>Ferramentas
@@ -54,7 +54,8 @@ color:#0033CC;
         </ul>
       </li>
     </ul>
-    </p></td>
+    <br /><br />
+    </td>
     <td valign="top" bgcolor="#E8FFE8"><p>&nbsp;</p>
       <ul>
         <li><a href="#">Cursos</a></li>

@@ -1,8 +1,14 @@
-<? require("../../../../lib/common.php"); ?>
+<? 
+
+require("../../../../lib/common.php"); 
+
+$id = $_GET['id'];
+
+?>
 
 <html>
 <head>
-<script language="PHP">
+<?php 
 
 CheckFormParameters(array("id"));
 
@@ -22,4 +28,5 @@ $conn->Close();
 SaguAssert($ok,"Nao foi possivel excluir o registro!");
 SuccessPage("Exclusão de Cidades",
             "location='../consulta_cidades.phtml'");
-</script>
+
+?>
