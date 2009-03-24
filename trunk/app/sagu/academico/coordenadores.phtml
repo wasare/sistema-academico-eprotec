@@ -1,13 +1,122 @@
-<? require("../../../lib/common.php"); ?>
-<? require("../../../lib/config.php"); ?>
-<? require("../lib/SQLCombo.php3"); ?>
-<? $op_campus = SQLArray("select nome_campus, id from campus order by 1"); ?>
-<? $op_cursos = SQLArray("select id || ' - ' || descricao,id from cursos order by descricao");?>
+<?php
 
+require("../../../lib/common.php");
+require("../lib/SQLCombo.php3");
+
+$op_campus = SQLArray("select nome_campus, id from campus order by 1");
+$op_cursos = SQLArray("select id || ' - ' || descricao,id from cursos order by descricao");
+
+
+function Coordenadores(){
+	
+
+	$conn = new Connection;
+
+	$conn->Open();
+
+	$sql= " select A.ref_curso, " .
+        "        B.abreviatura, " .
+        "        A.ref_campus, " .
+        "        C.nome_campus, " .
+        "        A.ref_professor, " .
+        "        D.nome, " .
+        "        D.email " .
+        " from coordenadores A, " .
+        "      cursos B, " .
+        "      campus C, " .
+        "      pessoas D " .
+        " where A.ref_curso = B.id and " .
+        "       A.ref_campus = C.id and " .
+        "       A.ref_professor = D.id " .
+        " order by 2,1";
+
+	$query = $conn->CreateQuery($sql);
+
+	$n = $query->GetColumnCount();
+
+	echo("<center><table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+
+	$i=1;
+
+	// cores fundo
+	$bg0 = "#000000";
+	$bg1 = "#EEEEFF";
+	$bg2 = "#FFFFEE";
+
+	// cores fonte
+	$fg0 = "#FFFFFF";
+	$fg1 = "#000099";
+	$fg2 = "#000099";
+
+	while( $query->MoveNext() )
+	{
+		list ($ref_curso,
+		$curso,
+		$ref_campus,
+		$campus,
+		$ref_professor,
+		$professor,
+		$email) = $query->GetRowValues();
+
+		$href1 = "<a href=\"javascript:Confirma_Exclui('$ref_campus','$ref_curso','$ref_professor')\"><img src=\"../images/delete.gif\" title='Excluir Coordenador' align='absmiddle' border=0></a>";
+
+		if ($i == 1)
+		{
+			echo("<tr bgcolor=\"#000000\">\n");
+			echo ("<td width=\"3%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;</b></font></td>");
+			echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Curso</b></font></td>");
+			echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Campus</b></font></td>");
+			echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Professor</b></font></td>");
+			echo ("<td width=\"15%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Email</b></font></td>");
+			echo("  </tr>");
+		}
+
+		if ( $i % 2)
+		{
+			echo("<tr bgcolor=\"$bg1\">\n");
+			echo ("<td width=\"3%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$href1</td>");
+			echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\"><b>$ref_curso - $curso</b></font></td>");
+			echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\"><b>$ref_campus - $campus</b></font></td>");
+			echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\"><b>$ref_professor - $professor</b></font></td>");
+			echo ("<td width=\"15%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\"><b>$email</b></font></td>");
+			echo("  </tr>");
+		}
+		else
+		{
+			echo("<tr bgcolor=\"$bg2\">\n");
+			echo ("<td width=\"3%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$href1</td>");
+			echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\"><b>$ref_curso - $curso</b></font></td>");
+			echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\"><b>$ref_campus - $campus</b></font></td>");
+			echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\"><b>$ref_professor - $professor</b></font></td>");
+			echo ("<td width=\"15%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\"><b>$email</b></font></td>");
+			echo("  </tr>");
+		}
+
+		$i++;
+
+	}
+
+	echo("</table></center>");
+
+	$query->Close();
+
+	$conn->Close();
+}
+
+?>
 <html>
 <head>
-
 <script language="JavaScript">
+
+function Confirma_Exclui(ref_campus,ref_curso,ref_professor)
+{
+  url = 'post/coordenador_exclui.php3?ref_campus=' + ref_campus + '&ref_curso=' + ref_curso + '&ref_professor='+ ref_professor;
+
+  if (confirm("Você tem certeza que deseja excluir este coordenador do curso?"))
+    location=(url)
+  else
+    alert("Exclusão Cancelada.");
+}
 
 function setResult(arg1,arg2)
 {
@@ -51,202 +160,70 @@ function ChangeOp2()
 }
 
 </script>
-
-<script language="PHP">
-
-function Coordenadores()
-{
-
-  $conn = new Connection;
-
-  $conn->Open();
-
-  $sql= " select A.ref_curso, " .
-        "        B.abreviatura, " .
-        "        A.ref_campus, " .
-        "        C.nome_campus, " .
-        "        A.ref_professor, " .
-        "        D.nome, " .
-        "        D.email " .
-        " from coordenadores A, " .
-        "      cursos B, " .
-        "      campus C, " .
-        "      pessoas D " .
-        " where A.ref_curso = B.id and " .
-        "       A.ref_campus = C.id and " .
-        "       A.ref_professor = D.id " .
-        " order by 2,1";
-
-  $query = $conn->CreateQuery($sql);
-
-  $n = $query->GetColumnCount();
-
-  echo("<center><table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
-
-  $i=1;
-
-  // cores fundo
-  $bg0 = "#000000";
-  $bg1 = "#EEEEFF";
-  $bg2 = "#FFFFEE";
-
-  // cores fonte
-  $fg0 = "#FFFFFF";
-  $fg1 = "#000099";
-  $fg2 = "#000099";
-  
-  while( $query->MoveNext() )
-  {
-    list ($ref_curso,
-          $curso,
-          $ref_campus,
-          $campus,
-          $ref_professor,
-          $professor,
-          $email) = $query->GetRowValues();
-
-    $href1 = "<a href=\"javascript:Confirma_Exclui('$ref_campus','$ref_curso')\"><img src=\"../images/delete.gif\" title='Excluir Coordenador' align='absmiddle' border=0></a>";
-
-    if ($i == 1)
-    {
-      echo("<tr bgcolor=\"#000000\">\n");
-      echo ("<td width=\"3%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;</b></font></td>");
-      echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Curso</b></font></td>");
-      echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Campus</b></font></td>");
-      echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Professor</b></font></td>");
-      echo ("<td width=\"15%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Email</b></font></td>");
-      echo("  </tr>"); 
-    }
-
-    if ( $i % 2)
-    {
-      echo("<tr bgcolor=\"$bg1\">\n");
-      echo ("<td width=\"3%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">$href1</td>");
-      echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\"><b>$ref_curso - $curso</b></font></td>");
-      echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\"><b>$ref_campus - $campus</b></font></td>");
-      echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\"><b>$ref_professor - $professor</b></font></td>");
-      echo ("<td width=\"15%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\"><b>$email</b></font></td>");
-      echo("  </tr>");
-    }
-    else
-    {
-      echo("<tr bgcolor=\"$bg2\">\n");
-      echo ("<td width=\"3%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$href1</td>");
-      echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\"><b>$ref_curso - $curso</b></font></td>");
-      echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\"><b>$ref_campus - $campus</b></font></td>");
-      echo ("<td width=\"36%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\"><b>$ref_professor - $professor</b></font></td>");
-      echo ("<td width=\"15%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\"><b>$email</b></font></td>");
-      echo("  </tr>");
-    }
-
-    $i++;
-
-  }
-
-  echo("</table></center>");
-
-  $query->Close();
-
-  $conn->Close();
-}
-
-
-Function Exclui_Coordenador($arg)
-{
-$conn = new Connection;
-
-$conn->Open();
-
-$sql = "delete from coordenadores where ref_curso='$ref_curso' and ref_campus = '$ref_campus';";
-
-$ok = $conn->Execute($sql);  // tire o @ para visualizar mensagens de error do sistema DB
-
-$conn->Close();
-
-SaguAssert($ok,"Não foi possível de excluir o registro!");
-
-}
-</script>
-
-<script language="JavaScript">
-function Confirma_Exclui(ref_campus,ref_curso)
-{
-  url = 'post/coordenador_exclui.php3?ref_campus=' + ref_campus + '&ref_curso=' + ref_curso;
-
-  if (confirm("Você tem certeza que deseja excluir este coordenador do curso?"))
-    location=(url)
-  else
-    alert("Exclusão Cancelada.");
-}
-</script>
 </head>
-<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20"
+	onload="_init()">
 <form method="post" action="post/coordenadores.php3" name="myform">
 <table width="90%" align="center">
-  <tr bgcolor="#000099"> 
-    <td height="35" colspan="2"> 
-      <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Coordenadores</font></b></font></div>
-    </td>
-  </tr>
-  <tr>
-    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font></td>
-    <td>
-       <input name="ref_campus" type=text size="7">
-       <script language="PHP">ComboArray("op",$op_campus,"0","ChangeOp()");</script>
-    </font></td>
-  </tr>
-  <tr>
-    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cursos</font></td>
-    <td>
-       <input name="ref_cursos" type=text size="7">
-       <script language="PHP">ComboArray("op2",$op_cursos,"0","ChangeOp2()");</script>
-    </font></td>
-  </tr>
-  <tr>
-    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Professor</font></td>
-    <td>
-      <table width="65%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td width="0%"><font color="#000000">
-            <input name="ref_professor" type=text size="10" value="<?=$ref_professor?>">
-            </font></td>
-          <td width="100%"><font color="#000000">
-            <input type="text" name="professor" size="35" value="<?=$professor?>">
-            </font></td>
-          <td width="0%">
-            <div><font color="#000000">
-              <input type="button" value="..." onClick="_busca()" name="button2">
-              </font></div>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr> 
-    <td colspan="2"> 
-      <hr size="1">
-    </td>
-  </tr>
-  <tr> 
-    <td height="33" colspan="2"> 
-      <div align="center"> 
-        <input type="submit" name="Submit"  value="  Incluir  ">
-        <input type="button" name="Button2" value="   Voltar   " onClick="javascript:history.back(-1)">
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td height="13" colspan="2">
-      <hr size="1">
-    </td>
-  </tr>
-  <tr> 
-    <td height="33" colspan="2"> 
-      <div align="center">
-        <?PHP Coordenadores(); ?>
-      </div>
-    </td>
-  </tr>
+	<tr bgcolor="#000099">
+		<td height="35" colspan="2">
+		<div align="center"><font size="3"
+			face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Coordenadores</font></b></font></div>
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font></td>
+		<td><input name="ref_campus" type=text size="7"> <script
+			language="PHP">ComboArray("op",$op_campus,"0","ChangeOp()");</script>
+		</font></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cursos</font></td>
+		<td><input name="ref_cursos" type=text size="7"> <script
+			language="PHP">ComboArray("op2",$op_cursos,"0","ChangeOp2()");</script>
+		</font></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Professor</font></td>
+		<td>
+		<table width="65%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td width="0%"><font color="#000000"> <input name="ref_professor"
+					type=text size="10" value="<?=$ref_professor?>"> </font></td>
+				<td width="100%"><font color="#000000"> <input type="text"
+					name="professor" size="35" value="<?=$professor?>"> </font></td>
+				<td width="0%">
+				<div><font color="#000000"> <input type="button" value="..."
+					onClick="_busca()" name="button2"> </font></div>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<hr size="1">
+		</td>
+	</tr>
+	<tr>
+		<td height="33" colspan="2">
+		<div align="center"><input type="submit" name="Submit"
+			value="  Incluir  "></div>
+		</td>
+	</tr>
+	<tr>
+		<td height="13" colspan="2">
+		<hr size="1">
+		</td>
+	</tr>
+	<tr>
+		<td height="33" colspan="2">
+		<div align="center"><?PHP Coordenadores(); ?></div>
+		</td>
+	</tr>
 </table>
 </form>
 </body>

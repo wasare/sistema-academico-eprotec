@@ -1,14 +1,16 @@
-<? require("../../../../lib/common.php"); ?>
-<? require("../../lib/GetPais.php3"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php");
+require("../../lib/GetPais.php3"); 
+
+$id = $_POST['id'];
+$nome = $_POST['nome'];
+$ref_pais = $_POST['ref_pais'];
+
 
 $pais = GetPais($ref_pais, true);
 
-</script>
-<script language="PHP">
+
 CheckFormParameters(array(
     			    "id",
  		            "nome",
@@ -35,7 +37,10 @@ SuccessPage("Inclusão de Estados",
             "location='../estados_inclui.phtml'",
             "O código do Estado é $id",
             "location='../consulta_inclui_estados.phtml'");
-</script>
+?>
+
+<html>
+<head>
 </head>
 <body>
 </body>

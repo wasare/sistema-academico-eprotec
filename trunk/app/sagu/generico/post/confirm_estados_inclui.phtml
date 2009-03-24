@@ -1,8 +1,11 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php"); 
+
+$id = $_POST['id'];
+$nome = $_POST['nome'];
+$ref_pais = $_POST['ref_pais'];
+
 function Get_pais($id,$SaguAssert)
 {
     $sql = "select nome from aux_paises where id=$id";
@@ -25,10 +28,12 @@ function Get_pais($id,$SaguAssert)
 
     return $obj;
 }
-</script>
-<script language="PHP">
+
 CheckFormParameters(array("id","nome","ref_pais"));
-</script>
+?>
+
+<html>
+<head>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
 <form method="post" action="estados_inclui.php3" name="myform">
