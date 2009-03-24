@@ -1,8 +1,11 @@
-<? require("../../../lib/common.php"); ?>
-<? require("../lib/InvData.php3"); ?>
+<?php
 
+require("../../../lib/common.php");
+require("../lib/InvData.php3");
 
+$id = $_GET['id'];
 
+?>
 <html>
 <head>
 <script language="JavaScript">
@@ -48,7 +51,7 @@ function _init()
 
 </script>
 
-<script language="PHP">
+<?php
 
 CheckFormParameters(array("id"));
 
@@ -71,11 +74,11 @@ $query = $conn->CreateQuery($sql);
 SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
 
 list ( $id,
-       $ref_professor,
-       $professor,
-       $ref_departamento,
-       $nome_departamento,
-       $dt_ingresso) = $query->GetRowValues();
+$ref_professor,
+$professor,
+$ref_departamento,
+$nome_departamento,
+$dt_ingresso) = $query->GetRowValues();
 
 $dt_ingresso = InvData($dt_ingresso);
 
@@ -83,77 +86,79 @@ $query->Close();
 
 $conn->Close();
 
-</script>
+?>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
 <form method="post" action="post/professores_edita.php3" name="myform">
 <div align="center">
 <TABLE width="90%">
-  <tr>
-    <td bgcolor="#000099" colspan="2" height="28" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Altera&ccedil;&atilde;o de Professores</b></font></td>
-  </tr>
-  <tr> 
-    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo&nbsp;</font></td>
-    <td><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0000FF"><? echo($id) ?>
-      <input type="hidden" name="id" value="<? echo($id); ?>">
-      </font>
-    </td>
-  </tr>
-  <tr>
-    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Professor</font></td>
-    <td>
-      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td><font color="#000000">
-            <input name="ref_professor" type=text size="6" value="<?=$ref_professor?>">
-            </font></td>
-          <td><font color="#000000">
-            <input type="text" name="professor" size="35" value="<?=$professor?>">
-            </font></td>
-          <td>
-            <div align="right">
-              <input type="button" value="..." onClick="buscaProfessor()" name="button2">
-            </div>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr> 
-    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Departamento</font></td>
-    <td> 
-      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td> 
-            <input name="ref_departamento" type=text size="6" onChange="ChangeCode('ref_departamento','op1')" value="<?=$ref_departamento?>">
-          </td>
-          <td> 
-            <input type="text" name="nome_departamento" size="35" value="<?=$nome_departamento?>">
-          </td>
-          <td> 
-            <div align="right"> 
-              <input type="button" name="Submit3" value="..." onClick="buscaDepartamento()">
-            </div>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr> 
-    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data de Ingresso na Instituição<br>&nbsp;(dd-mm-aaaa)</font></td>
-    <td>
-      <input type="text" name="dt_ingresso" size="10" maxlength="10" value="<?=$dt_ingresso?>">
-    </td>
-  </tr>
-  <tr>
-    <TD colspan="2"><hr></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center">
-      <input type="submit"  name="Submit"  value=" Salvar ">
-      <input type="button"  name="Submit2" value=" Voltar " onClick="history.go(-1)">
-    </td>
-  </tr>
+	<tr>
+		<td bgcolor="#000099" colspan="2" height="28" align="center"><font
+			size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Altera&ccedil;&atilde;o
+		de Professores</b></font></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo&nbsp;</font></td>
+		<td><font face="Verdana, Arial, Helvetica, sans-serif" size="2"
+			color="#0000FF"><? echo($id) ?> <input type="hidden" name="id"
+			value="<? echo($id); ?>"> </font></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Professor</font></td>
+		<td>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td><font color="#000000"> <input name="ref_professor" type=text
+					size="6" value="<?=$ref_professor?>"> </font></td>
+				<td><font color="#000000"> <input type="text" name="professor"
+					size="35" value="<?=$professor?>"> </font></td>
+				<td>
+				<div align="right"><input type="button" value="..."
+					onClick="buscaProfessor()" name="button2"></div>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Departamento</font></td>
+		<td>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td><input name="ref_departamento" type=text size="6"
+					onChange="ChangeCode('ref_departamento','op1')"
+					value="<?=$ref_departamento?>"></td>
+				<td><input type="text" name="nome_departamento" size="35"
+					value="<?=$nome_departamento?>"></td>
+				<td>
+				<div align="right"><input type="button" name="Submit3" value="..."
+					onClick="buscaDepartamento()"></div>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data
+		de Ingresso na Instituição<br>
+		&nbsp;(dd-mm-aaaa)</font></td>
+		<td><input type="text" name="dt_ingresso" size="10" maxlength="10"
+			value="<?=$dt_ingresso?>"></td>
+	</tr>
+	<tr>
+		<TD colspan="2">
+		<hr>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><input type="submit" name="Submit"
+			value=" Salvar "> <input type="button" name="Submit2"
+			value=" Voltar " onClick="history.go(-1)"></td>
+	</tr>
 </table>
 </div>
 </form>

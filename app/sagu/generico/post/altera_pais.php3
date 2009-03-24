@@ -1,8 +1,11 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php"); 
+
+$id = $_POST['id'];
+$nome = $_POST['nome'];
+ 
+
 CheckFormParameters(array("id","nome"));
 
 $conn = new Connection;
@@ -25,7 +28,9 @@ SaguAssert($ok,"Nao foi possivel de atualizar o registro!");
 SuccessPage("Alteração de Países",
 	        "location='../paises_inclui.phtml'",
 	        "As informações do país <b>$nome</b> foram atualizadas com sucesso.");
-</script>
+?>
+<html>
+<head>
 </head>
 <body>
 </body>

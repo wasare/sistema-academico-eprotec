@@ -1,10 +1,10 @@
 <?php
 
 require_once("../../../../lib/common.php");
-require("../../lib/InvData.php3"); 
+require("../../lib/InvData.php3");
 
 
-$id                     = $_POST['id']; 
+$id                     = $_POST['id'];
 $ref_campus             = $_POST['ref_campus'];
 $ref_pessoa             = $_POST['ref_pessoa'];
 $ref_curso              = $_POST['ref_curso'];
@@ -79,55 +79,55 @@ $sql = " update contratos set " .
        "    ref_motivo_desativacao = '$ref_motivo_desativacao'," .
        "    ref_motivo_inicial = '$ref_motivo_inicial',";
 
-       if ( $dt_desativacao=='' )
-         { $sql = $sql . "  dt_desativacao = null,"; }
-       else
-         { $sql = $sql . "  dt_desativacao = '$dt_desativacao',";  }
+if ( $dt_desativacao=='' )
+{ $sql = $sql . "  dt_desativacao = null,"; }
+else
+{ $sql = $sql . "  dt_desativacao = '$dt_desativacao',";  }
 
-       if ( $obs_desativacao=='' )
-         { $sql = $sql . "  obs_desativacao = null,"; }
-       else
-         { $sql = $sql . "  obs_desativacao = '$obs_desativacao',";  }
+if ( $obs_desativacao=='' )
+{ $sql = $sql . "  obs_desativacao = null,"; }
+else
+{ $sql = $sql . "  obs_desativacao = '$obs_desativacao',";  }
 
-       $sql = $sql . " obs = '$obs'," .
+$sql = $sql . " obs = '$obs'," .
        "    desconto = '$desconto',";
 
-       if ( $dt_conclusao=='' )
-       { $sql = $sql . "  dt_conclusao = null,"; }
-       else
-       { $sql = $sql . "  dt_conclusao = '$dt_conclusao',";  }	   
+if ( $dt_conclusao=='' )
+{ $sql = $sql . "  dt_conclusao = null,"; }
+else
+{ $sql = $sql . "  dt_conclusao = '$dt_conclusao',";  }
 
-       if ( $dt_formatura=='' )
-         { $sql = $sql . "  dt_formatura = null,"; }
-         else
-         { $sql = $sql . "  dt_formatura = '$dt_formatura',";  }
+if ( $dt_formatura=='' )
+{ $sql = $sql . "  dt_formatura = null,"; }
+else
+{ $sql = $sql . "  dt_formatura = '$dt_formatura',";  }
 
-       if ( $ref_periodo_turma=='' )
-         { $sql = $sql . "  ref_periodo_turma = null,"; }
-       else
-         { $sql = $sql . "  ref_periodo_turma = '$ref_periodo_turma',";  }
+if ( $ref_periodo_turma=='' )
+{ $sql = $sql . "  ref_periodo_turma = null,"; }
+else
+{ $sql = $sql . "  ref_periodo_turma = '$ref_periodo_turma',";  }
 
-       if ( $turma=='' )
-         { $sql = $sql . "  turma = null,"; }
-       else
-         { $sql = $sql . "  turma = '$turma',";  }
+if ( $turma=='' )
+{ $sql = $sql . "  turma = null,"; }
+else
+{ $sql = $sql . "  turma = '$turma',";  }
 
-       if ( $dt_provao=='' )
-         { $sql = $sql . "  dt_provao = null,"; }
-       else
-         { $sql = $sql . "  dt_provao = '$dt_provao',";  }
+if ( $dt_provao=='' )
+{ $sql = $sql . "  dt_provao = null,"; }
+else
+{ $sql = $sql . "  dt_provao = '$dt_provao',";  }
 
-       if ( $dt_diploma=='' )
-         { $sql = $sql . "  dt_diploma = null,"; }
-       else
-         { $sql = $sql . "  dt_diploma = '$dt_diploma',";  }
+if ( $dt_diploma=='' )
+{ $sql = $sql . "  dt_diploma = null,"; }
+else
+{ $sql = $sql . "  dt_diploma = '$dt_diploma',";  }
 
-       if ( $dt_apostila=='' )
-         { $sql = $sql . "  dt_apostila = null,"; }
-       else
-         { $sql = $sql . "  dt_apostila = '$dt_apostila',";  }
-        
-       $sql = $sql . " ref_last_periodo = '$ref_last_periodo'," .
+if ( $dt_apostila=='' )
+{ $sql = $sql . "  dt_apostila = null,"; }
+else
+{ $sql = $sql . "  dt_apostila = '$dt_apostila',";  }
+
+$sql = $sql . " ref_last_periodo = '$ref_last_periodo'," .
        "    fl_ouvinte = '$is_ouvinte'," .
        "    fl_formando = '$is_formando'," .
        "    percentual_pago = '$percentual_pago'," .

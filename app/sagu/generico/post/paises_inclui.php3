@@ -1,8 +1,9 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php"); 
+
+$nome = $_POST['nome'];
+
 
 CheckFormParameters(array("nome"));
 
@@ -46,8 +47,9 @@ SaguAssert($ok,"Não foi possível inserir o registro!");
 SuccessPage("Inclusão de Países",
             "location='../paises_inclui.phtml'",
             "O código do País é $id_paises");
-</script>
-
+?>
+<html>
+<head>
 </head>
 <body>
 </body>

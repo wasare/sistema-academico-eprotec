@@ -1,9 +1,16 @@
-<? require("../../../../lib/common.php"); ?>
-<? require("../../lib/InvData.php3"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php");
+require("../../lib/InvData.php3"); 
+
+
+$ref_professor     = $_POST['ref_professor'];
+$professor         = $_POST['professor'];
+$ref_departamento  = $_POST['ref_departamento'];
+$nome_departamento = $_POST['nome_departamento'];
+$dt_ingresso       = $_POST['dt_ingresso'];
+
+
 CheckFormParameters(array("ref_professor",
                           "ref_departamento",
                           "dt_ingresso"));
@@ -35,7 +42,9 @@ SuccessPage("Inclusão de Professores",
             "Professor incluído com sucesso!!!.", 
             "location='../consulta_inclui_professores.phtml'");
 
-</script>
+?>
+<html>
+<head>
 </head>
 <body>
 </body>

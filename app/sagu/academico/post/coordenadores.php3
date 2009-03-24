@@ -1,8 +1,13 @@
-<? require("../../../../lib/common.php"); ?>
+<?php
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php"); 
+
+$ref_campus    = $_POST['ref_campus'];
+$ref_cursos    = $_POST['ref_cursos'];
+$ref_professor = $_POST['ref_professor'];
+$professor     = $_POST['professor'];
+
+
 CheckFormParameters(array("ref_campus",
                           "ref_cursos",
                           "ref_professor"));
@@ -31,7 +36,9 @@ SuccessPage("Inclusão de Coordenadores",
             "location='../coordenadores.phtml'",
             "Coordenador incluído com sucesso!!!.");
 
-</script>
+?>
+<html>
+<head>
 </head>
 <body>
 </body>
