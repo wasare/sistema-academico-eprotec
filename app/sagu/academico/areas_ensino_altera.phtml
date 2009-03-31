@@ -1,14 +1,8 @@
-<? require("../../../lib/common.php"); ?>
-<html>
-<head>
-<script language="JavaScript">
-  function _init()
-  {
-    document.myform.area.focus();
-  }
-</script>
+<?php
 
-<script language="PHP">
+require("../../../lib/common.php"); 
+
+$id = $_GET['id'];
 
 CheckFormParameters(array("id"));
 
@@ -31,7 +25,14 @@ list ( $id,
 $query->Close();
 
 $conn->Close();
-
+?>
+<html>
+<head>
+<script language="JavaScript">
+  function _init()
+  {
+    document.myform.area.focus();
+  }
 </script>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">

@@ -1,11 +1,13 @@
-<? require("../../../../lib/common.php"); ?>
+<?php
 
-<script language="PHP">
+require("../../../../lib/common.php");
 
-CheckFormParameters(array("id",
-                          "nome",
-                          "texto",
-                          "ref_setor"));
+$id = $_POST['id'];
+$nome = $_POST['nome'];
+$texto = $_POST['texto'];
+$ref_setor = $_POST['ref_setor'];
+
+CheckFormParameters(array("id","nome","texto","ref_setor"));
 
 $conn = new Connection;
 
@@ -28,4 +30,4 @@ SaguAssert($ok,"Não foi possível alterar o registro!");
 SuccessPage("Alteração do Carimbo",
             "location='../carimbos.phtml'",
             "Carimbo alterado com sucesso.");
-</script>
+?>

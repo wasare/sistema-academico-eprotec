@@ -1,9 +1,11 @@
-<? require("../../../../lib/common.php"); ?>
+<?php
 
-<script language="PHP">
+require("../../../../lib/common.php"); 
 
-CheckFormParameters(array("id",
-                          "area"));
+$id = $_POST['id'];
+$area = $_POST['area'];
+
+CheckFormParameters(array("id", "area"));
 
 $conn = new Connection;
 
@@ -24,4 +26,5 @@ SaguAssert($ok,"Não foi possível alterar o registro!");
 SuccessPage("Alteração de Área de Ensino",
             "location='../areas_ensino.phtml'",
             "Área de Ensino alterada com sucesso.");
-</script>
+
+?>

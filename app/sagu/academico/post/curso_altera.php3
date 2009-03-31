@@ -1,8 +1,24 @@
-<? require("../../../../lib/common.php"); ?>
+<?php
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php");
+
+$id                  = $_POST['id'];
+$descricao           = $_POST['descricao'];
+$abreviatura         = $_POST['abreviatura'];
+$sigla               = $_POST['sigla'];
+$total_creditos      = $_POST['total_creditos'];
+$total_carga_horaria = $_POST['total_carga_horaria'];
+$total_semestres     = $_POST['total_semestres'];
+$grau_academico      = $_POST['grau_academico'];
+$exigencias          = $_POST['exigencias'];
+$agrupo_curso        = $_POST['agrupo_curso'];
+$ref_area            = $_POST['ref_area'];
+$reconhecimento      = $_POST['reconhecimento'];
+$autorizacao         = $_POST['autorizacao'];
+$turno               = $_POST['turno'];
+$ref_tipo_curso      = $_POST['ref_tipo_curso'];
+$historico           = $_POST['historico'];
+
 
 CheckFormParameters(array("id",
                           "descricao",
@@ -44,4 +60,8 @@ SaguAssert($ok,"Não foi possível alterar o registro!");
 SuccessPage("Alteração de Curso",
             "location='../consulta_cursos.phtml'",
             "Curso alterado com sucesso.");
-</script>
+
+?>
+
+<html>
+<head>

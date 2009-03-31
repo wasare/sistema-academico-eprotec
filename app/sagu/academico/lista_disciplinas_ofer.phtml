@@ -1,14 +1,17 @@
-<?
+<?php
+
 require("../../../lib/common.php"); 
-require("../../../lib/config.php"); 
+
+$id_periodo        = $_GET['id_periodo'];
+$id_curso          = $_GET['id_curso'];
+$id_campus         = $_GET['id_campus'];
+$id_disciplina     = $_GET['id_disciplina'];
+$turma             = $_GET['turma'];
+$ref_periodo_turma = $_GET['ref_periodo_turma'];
+$is_cancelada      = $_GET['is_cancelada'];
 
 CheckFormParameters(array('id_periodo'));
-?>
-<html>
-<head>
-<title>Lista de Disciplinas Oferecidas</title>
 
-<?php
 
 function Lista_disciplinas_ofer($ref_periodo, $ref_curso, $ref_campus, $ref_disciplina, $is_cancelada, $turma, $ref_periodo_turma)
 {
@@ -182,6 +185,9 @@ function Lista_disciplinas_ofer($ref_periodo, $ref_curso, $ref_campus, $ref_disc
 
 }
 ?>
+<html>
+<head>
+<title>Lista de Disciplinas Oferecidas</title>
 <script language="JavaScript">
 function Select_Disciplina(id)
 {
@@ -201,7 +207,6 @@ function Select_Alunos(id)
 
 </script>
 </head>
-
 <body bgcolor="#FFFFFF">
 <form method="post" action="" name="myform">
 <?php

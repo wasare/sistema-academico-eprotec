@@ -1,6 +1,16 @@
-<? require("../../../../lib/common.php"); ?>
+<?php
 
-<script language="PHP">
+require("../../../../lib/common.php");
+
+
+$id                   = $_POST['id'];
+$ref_grupo            = $_POST['ref_grupo'];
+$ref_departamento     = $_POST['ref_departamento'];
+$descricao_disciplina = $_POST['descricao_disciplina'];
+$descricao_extenso    = $_POST['descricao_extenso'];
+$num_creditos         = $_POST['num_creditos'];
+$carga_horaria        = $_POST['carga_horaria'];
+
 
 CheckFormParameters(array("id",
                           "ref_grupo",
@@ -32,4 +42,4 @@ SaguAssert($ok,"Não foi possível alterar o registro!");
 SuccessPage("Alteração de Disciplinas",
             "location='../consulta_disciplinas.phtml'",
             "Disciplina alterada com sucesso.");
-</script>
+?>

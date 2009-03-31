@@ -1,18 +1,31 @@
-<? require("../../../../lib/common.php"); ?>
-<? require("../../../../lib/config.php"); ?>
+<?php 
 
+require("../../../../lib/common.php");
+
+
+$id                  = $_POST['id'];
+$descricao           = $_POST['descricao'];
+$abreviatura         = $_POST['abreviatura'];
+$sigla               = $_POST['sigla'];
+$total_creditos      = $_POST['total_creditos'];
+$total_carga_horaria = $_POST['total_carga_horaria'];
+$total_semestres     = $_POST['total_semestres'];
+$grau_academico      = $_POST['grau_academico'];
+$exigencias          = $_POST['exigencias'];
+$agrupo_curso        = $_POST['agrupo_curso'];
+$ref_area            = $_POST['ref_area'];
+$reconhecimento      = $_POST['reconhecimento'];
+$autorizacao         = $_POST['autorizacao'];
+$turno               = $_POST['turno'];
+$ref_tipo_curso      = $_POST['ref_tipo_curso'];
+$cabecalho_historico = $_POST['cabecalho_historico'];
+
+CheckFormParameters(array("id","descricao","abreviatura",
+                            "turno","agrupo_curso","ref_tipo_curso"));
+
+?>
 <html>
 <head>
-<script language="PHP">
-
-  CheckFormParameters(array("id",
-                            "descricao",
-                            "abreviatura",
-                            "turno",
-                            "agrupo_curso",
-                            "ref_tipo_curso"));
-
-</script>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
 <form method="post" action="curso_ins.php3" name="myform">

@@ -1,11 +1,13 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php"); 
 
-CheckFormParameters(array("id",
-                          "nome"));
+$id         = $_POST['id'];
+$nome       = $_POST['nome'];
+$sucinto    = $_POST['sucinto'];
+$nome_atual = $_POST['nome_atual'];
+
+CheckFormParameters(array("id","nome"));
 
 $conn = new Connection;
 
@@ -28,7 +30,9 @@ SaguAssert($ok,"Não foi possível alterar o registro!");
 SuccessPage("Alteração de Instituição",
             "location='../consulta_inclui_instituicoes.phtml'",
             "Instituição alterada com sucesso.");
-</script>
-</HEAD>
-<BODY></BODY>
-</HTML>
+?>
+<html>
+<head>
+</head>
+<body></body>
+</html>

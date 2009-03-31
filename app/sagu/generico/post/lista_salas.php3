@@ -1,7 +1,12 @@
-<? require("../../../../lib/common.php"); ?>
-<? require("../../../../lib/config.php"); ?>
-<?
-  CheckFormParameters(array('ref_campus'));
+<?php
+
+require("../../../../lib/common.php");
+
+
+$ref_campus = $_GET['ref_campus'];
+
+CheckFormParameters(array('ref_campus'));
+
 ?>
 <html>
 <head>

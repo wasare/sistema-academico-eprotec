@@ -1,7 +1,16 @@
-<? require("../../../../lib/common.php"); ?>
-<html>
-<head>
-<script language="PHP">
+<?php 
+
+require("../../../../lib/common.php");
+
+
+$razao_social = $_POST['razao_social'];
+$sigla        = $_POST['sigla'];
+$rua          = $_POST['rua'];
+$complemento  = $_POST['complemento'];
+$bairro       = $_POST['bairro'];
+$cep          = $_POST['cep'];
+$ref_cidade   = $_POST['ref_cidade'];
+
 
 CheckFormParameters(array("razao_social",
                           "sigla",
@@ -11,7 +20,9 @@ CheckFormParameters(array("razao_social",
                           "cep",
                           "ref_cidade"));
 
-</script>
+?>
+<html>
+<head>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
 <form method="post" action="configuracao_empresa.php3" name="myform">

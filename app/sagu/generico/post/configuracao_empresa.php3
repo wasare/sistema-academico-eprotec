@@ -1,8 +1,15 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php"); 
+
+$razao_social = $_POST['razao_social'];
+$sigla        = $_POST['sigla'];
+$rua          = $_POST['rua'];
+$complemento  = $_POST['complemento'];
+$bairro       = $_POST['bairro'];
+$cep          = $_POST['cep'];
+$ref_cidade   = $_POST['ref_cidade'];
+
 CheckFormParameters(array("razao_social",
                           "sigla",
                           "rua",
@@ -51,4 +58,6 @@ SaguAssert($ok,"Nao foi possivel inserir o registro!");
 SuccessPage("Inclusão de Empresa",
             "location='../configuracao_empresa.phtml'",
             "O código da empresa é <b>$id_config_empresa</b>.");
-</script>
+?>
+<html>
+<head>

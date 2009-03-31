@@ -13,6 +13,7 @@ CheckFormParameters(array("id","nome","ref_pais"));
 $conn = new Connection;
 
 $conn->Open();
+
 $conn->Begin();
 
 $sql = " update aux_estados set " .

@@ -1,6 +1,110 @@
-<? require("../../../lib/common.php"); ?>
-<? require("../../../lib/config.php"); ?>
+<?php
 
+require("../../../lib/common.php");
+
+$hasmore = false;
+
+$sala = $_POST['sala'];
+$capacidade = $_POST['capacidade'];
+
+function ListaSalas()
+{
+	global $sala, $capacidade, $hasmore;
+
+	if ( $sala == "" && ! is_numeric($capacidade) )
+	{
+		echo("<br><center><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=red><b>Informe um campo para fazer a pesquisa!</b></font></center><br>");
+	}
+	else
+	{
+
+		// cores fundo
+		$bg0 = "#000000";
+		$bg1 = "#EEEEFF";
+		$bg2 = "#FFFFEE";
+
+		// cores fonte
+		$fg0 = "#FFFFFF";
+		$fg1 = "#000099";
+		$fg2 = "#000099";
+
+		$conn = new Connection;
+
+		$conn->Open();
+
+		$sql = "select id," .
+             "       numero," .
+             "       ref_campus," .
+             "       capacidade" .
+             " from  salas";
+
+		if ( $sala != "" )
+		{
+			$sql .= " where numero like '$sala'";
+			if ( is_numeric($capacidade) )
+			{
+				$sql .= " and capacidade = $capacidade";
+			}
+		}
+		else
+		{
+			$sql .= " where capacidade = $capacidade";
+		}
+
+		$sql .= " order by numero";
+
+		$query = $conn->CreateQuery($sql);
+
+		echo("<table width=\"490\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+
+		echo("  <tr bgcolor=\"$bg0\">\n");
+		echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Sala</font></b></td>\n");
+		echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Campus</font></b></td>\n");
+		echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Capacidade</font></b></td>\n");
+		echo("    <td width=\"25%\" colspan=\"2\" align=\"center\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Ação</font></b></td>\n");
+		echo("  </tr>\n");
+
+		for ( $i=0; $i<25 && $query->MoveNext(); $i++ )
+		{
+			list ( $id, $sala,$ref_campus,$capacidade ) = $query->GetRowValues();
+
+			if ( $i % 2 )
+			{
+				$bg = $bg1;
+				$fg = $fg1;
+			}
+			else
+			{
+				$bg = $bg2;
+				$fg = $fg2;
+			}
+
+			$registro = $query->GetValue(1);
+			$href  = "<a href=\"sala_edita.phtml?id=$id\"><img src=\"../images/update.gif\" title='Alterar Cadastro' align='absmiddle' border=0></a>";
+			$href1 = "<a href=\"JavaScript:Confirma_Exclui($id,'$sala')\"><img src=\"../images/delete.gif\" title='Excluir Sala' align='absmiddle' border=0></a>";
+
+			echo("  <tr bgcolor=\"$bg\">\n");
+			echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg\">$sala</font></b></td>\n");
+			echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg\">$ref_campus</font></b></td>\n");
+			echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg\">$capacidade</font></b></td>\n");
+			echo("    <td width=\"5%\" align=\"center\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg\">$href</font></b></td>\n");
+			echo("    <td width=\"5%\" align=\"center\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg\">$href1</font></b></td>\n");
+			echo("  </tr>\n");
+		}
+
+		echo("</table>");
+
+		$hasmore = $query->MoveNext();
+
+		$query->Close();
+		$conn->Close();
+
+		$count = $i;
+	}
+
+	return $count;
+}
+?>
 <html>
 <head>
 <title>SAGU - Cadastro de Salas</title>
@@ -9,194 +113,84 @@ function _init()
 {
    document.selecao.sala.focus();
 }
-</script>
-
-<script language="JavaScript">
-   function Confirma_Exclui(arg1,arg2)
-   {
-     url = 'post/sala_exclui.php3?id=' + arg1;
-
-     if (confirm("Você tem certeza que deseja EXCLUIR a sala "+arg2+"?"))
-       location=(url)
-     else
-       alert("Exclusão Cancelada.");
-   }
-</script>
-
-<script language="PHP">
-
-$hasmore = false;
-
-function ListaSalas()
+function Confirma_Exclui(arg1,arg2)
 {
-   global $sala, $capacidade, $hasmore;
+   url = 'post/sala_exclui.php3?id=' + arg1;
 
-   if ( $sala == "" && ! is_numeric($capacidade) )
-   {
-      echo("<br><center><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=red><b>Informe um campo para fazer a pesquisa!</b></font></center><br>");
-   }
+   if (confirm("Você tem certeza que deseja EXCLUIR a sala "+arg2+"?"))
+     location=(url)
    else
-   {
-  
-      // cores fundo
-      $bg0 = "#000000";
-      $bg1 = "#EEEEFF";
-      $bg2 = "#FFFFEE";
-
-      // cores fonte
-      $fg0 = "#FFFFFF";
-      $fg1 = "#000099";
-      $fg2 = "#000099";
-
-      $conn = new Connection;
-  
-      $conn->Open();
-
-      $sql = "select id," .
-             "       numero," .
-             "       ref_campus," .
-             "       capacidade" .
-             " from  salas";
-
-      if ( $sala != "" )
-      {
-         $sql .= " where numero like '$sala'";
-         if ( is_numeric($capacidade) )
-         {
-            $sql .= " and capacidade = $capacidade";
-         }
-      }
-      else
-      {
-         $sql .= " where capacidade = $capacidade";
-      }
-
-      $sql .= " order by numero";
-
-      $query = $conn->CreateQuery($sql);
-
-      echo("<table width=\"490\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
-    
-      echo("  <tr bgcolor=\"$bg0\">\n");
-      echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Sala</font></b></td>\n");
-      echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Campus</font></b></td>\n");
-      echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Capacidade</font></b></td>\n");
-      echo("    <td width=\"25%\" colspan=\"2\" align=\"center\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Ação</font></b></td>\n");
-      echo("  </tr>\n");
-
-      for ( $i=0; $i<25 && $query->MoveNext(); $i++ )
-      {
-         list ( $id, $sala,$ref_campus,$capacidade ) = $query->GetRowValues();
-      
-         if ( $i % 2 )
-         {
-           $bg = $bg1;
-           $fg = $fg1;
-         }
-         else
-         {
-           $bg = $bg2;
-           $fg = $fg2;
-         }
-
-         $registro = $query->GetValue(1);
-         $href  = "<a href=\"sala_edita.phtml?id=$id\"><img src=\"../images/update.gif\" title='Alterar Cadastro' align='absmiddle' border=0></a>";
-         $href1 = "<a href=\"JavaScript:Confirma_Exclui($id,'$sala')\"><img src=\"../images/delete.gif\" title='Excluir Sala' align='absmiddle' border=0></a>";
-
-         echo("  <tr bgcolor=\"$bg\">\n");
-         echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg\">$sala</font></b></td>\n");
-         echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg\">$ref_campus</font></b></td>\n");
-         echo("    <td width=\"25%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg\">$capacidade</font></b></td>\n");
-         echo("    <td width=\"5%\" align=\"center\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg\">$href</font></b></td>\n");
-         echo("    <td width=\"5%\" align=\"center\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg\">$href1</font></b></td>\n");
-         echo("  </tr>\n");
-      }
-
-      echo("</table>");
-    
-      $hasmore = $query->MoveNext();
-
-      $query->Close();
-      $conn->Close();
-
-      $count = $i;
-   }
-
-  return $count;
+     alert("Exclusão Cancelada.");
 }
 </script>
-
 </head>
 
-<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20"
+	onload="_init()">
 <form method="post" action="cadastro_salas.phtml" name="selecao">
-  <div align="center"> 
-    <p> 
-      <input type="button" value="  Incluir  " onClick="location='sala_inclui.phtml'" name="button">
-      <input type="button" value="   Sair   " onClick="javascript:history.go(-1)" name="Button">
-    </p>
-    <hr width="500">
-    <p><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0000FF"><b><font color="#FF0000">CUIDADO PARA N&Atilde;O DUPLICAR CADASTROS !</font></b></font> </p>
-    <table width="500" border="0" cellspacing="0" cellpadding="2" height="168">
-      <tr bgcolor="#0066CC"> 
-        <td colspan="4" height="28"> 
-          <div align="center"><font size="2" color="#FFFFFF"><b><font face="Verdana, Arial, Helvetica, sans-serif">Consulta/Alteração de Salas</font></b></font></div>
-        </td>
-      </tr>
-      <tr> 
-        <td width="1">&nbsp;</td>
-        <td width="102"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">&nbsp;Número da Sala:</font> 
-        </td>
-        <td width="311"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">&nbsp;Capacidade:</font> 
-        </td>
-        <td width="74">&nbsp; </td>
-      </tr>
-      <tr> 
-        <td width="1">&nbsp;</td>
-        <td width="102"> 
-          <div align="left">
-            <input type="text" name="sala" size="15" value="<?echo($sala)?>">
-          </div>
-        </td>
-        <td width="311"> 
-            <input type="text" name="capacidade" size="15" value="<?echo($capacidade)?>">
-        </td>
-        <td width="74"> 
-          <div align="right">
-            <input type="submit" name="botao" value="Localizar">
-          </div>
-        </td>
-      </tr>
-      <tr> 
-        <td colspan="4" align="center"> 
-          <hr size="1" width="490">
-        </td>
-      </tr>
-      <tr> 
-        <td colspan="4">
-          <? ListaSalas(); ?>
-	         <script language="javascript">
+<div align="center">
+<p><input type="button" value="  Incluir  "
+	onClick="location='sala_inclui.phtml'" name="button"></p>
+<hr width="500">
+<p><font face="Verdana, Arial, Helvetica, sans-serif" size="2"
+	color="#0000FF"><b><font color="#FF0000">CUIDADO PARA N&Atilde;O
+DUPLICAR CADASTROS !</font></b></font></p>
+<table width="500" border="0" cellspacing="0" cellpadding="2"
+	height="168">
+	<tr bgcolor="#0066CC">
+		<td colspan="4" height="28">
+		<div align="center"><font size="2" color="#FFFFFF"><b><font
+			face="Verdana, Arial, Helvetica, sans-serif">Consulta/Alteração de
+		Salas</font></b></font></div>
+		</td>
+	</tr>
+	<tr>
+		<td width="1">&nbsp;</td>
+		<td width="102"><font face="Verdana, Arial, Helvetica, sans-serif"
+			size="2">&nbsp;Número da Sala:</font></td>
+		<td width="311"><font face="Verdana, Arial, Helvetica, sans-serif"
+			size="2">&nbsp;Capacidade:</font></td>
+		<td width="74">&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="1">&nbsp;</td>
+		<td width="102">
+		<div align="left"><input type="text" name="sala" size="15"
+			value="<?echo($sala)?>"></div>
+		</td>
+		<td width="311"><input type="text" name="capacidade" size="15"
+			value="<?echo($capacidade)?>"></td>
+		<td width="74">
+		<div align="right"><input type="submit" name="botao" value="Localizar">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4" align="center">
+		<hr size="1" width="490">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4"><? ListaSalas(); ?> <script language="javascript">
 	            document.selecao.desc.value="<? echo($nome); ?>";
-	         </script>
-          <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font color="#FF0000"> 
-          <?
-             if ( $hasmore )
-                echo("<BR><center>Se a sala não estiver listada, seja mais específico.</center>");
-          ?>
-          </font></b></font>
-        </td>
-      </tr>
-      <tr align="center"> 
-        <td colspan="4"> 
-          <hr size="1" width="490">
-        </td>
-      </tr>
-    </table>
-    <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font color="#0000CC"> 
-       <ul>
-          <li>Você pode pesquisar por % para ver todas as salas.</li>
-       </ul>
-    </font></b></font></font> </div>
+	         </script> <font face="Verdana, Arial, Helvetica, sans-serif"><font
+			size="2"><b><font color="#FF0000"> <?
+			if ( $hasmore )
+			echo("<BR><center>Se a sala não estiver listada, seja mais específico.</center>");
+			?> </font></b></font></td>
+	</tr>
+	<tr align="center">
+		<td colspan="4">
+		<hr size="1" width="490">
+		</td>
+	</tr>
+</table>
+<font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font
+	color="#0000CC">
+<ul>
+	<li>Você pode pesquisar por % para ver todas as salas.</li>
+</ul>
+</font></b></font></font></div>
 </form>
 </body>
 </html>

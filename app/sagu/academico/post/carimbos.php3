@@ -1,18 +1,19 @@
-<? require("../../../../lib/common.php"); ?>
+<?php
 
-<html>
-<head>
-<script language="PHP">
-CheckFormParameters(array("nome",
-                          "texto",
-                          "ref_setor"));
+require("../../../../lib/common.php");
+
+$nome = $_POST['nome'];
+$texto = $_POST['texto'];
+$ref_setor = $_POST['ref_setor'];
+
+CheckFormParameters(array("nome","texto","ref_setor"));
 
 $conn = new Connection;
 
 $conn->Open();
 $conn->Begin();
-  
-$sql = " insert into carimbos (nome, texto, ref_setor)" . 
+
+$sql = " insert into carimbos (nome, texto, ref_setor)" .
        " values ('$nome', '$texto', '$ref_setor')";
 
 $ok = $conn->Execute($sql);
@@ -25,8 +26,9 @@ $conn->Close();
 SuccessPage("Inclusão de Carimbos",
             "location='../carimbos.phtml'",
             "Carimbo incluído com sucesso!!!.");
-
-</script>
+?>
+<html>
+<head>
 </head>
 <body>
 </body>

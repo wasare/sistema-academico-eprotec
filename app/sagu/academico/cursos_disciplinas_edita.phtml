@@ -1,18 +1,19 @@
-<? require("../../../lib/common.php"); ?>
-<? require("../lib/SQLCombo.php3"); ?>
-<? require("../../../lib/config.php"); ?>
-<? require("../lib/InvData.php3"); ?>
+<?php
 
-<? $op1_opcoes = SQLArray("select descricao,id from cursos order by descricao"); ?>
-<? $op2_opcoes = SQLArray("select nome_campus, id from campus order by nome_campus"); ?>
+require("../../../lib/common.php");
+require("../lib/SQLCombo.php3");
+require("../lib/InvData.php3");
 
-<html>
-<head>
 
-<script language="PHP">
+$ref_curso      = $_GET['ref_curso'];
+$ref_disciplina = $_GET['ref_disciplina'];
+$ref_campus     = $_GET['ref_campus'];
+
+$op1_opcoes = SQLArray("select descricao,id from cursos order by descricao");
+$op2_opcoes = SQLArray("select nome_campus, id from campus order by nome_campus");
+
 
 $conn = new Connection;
-
 $conn->Open();
 
 $sql = " select ref_curso," .
@@ -39,32 +40,32 @@ $sql = " select ref_curso," .
        " where ref_curso='$ref_curso' and " .
        "       ref_campus='$ref_campus' and " .
        "       ref_disciplina='$ref_disciplina'";
-       
+ 
 $query = $conn->CreateQuery($sql);
 
 SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
 
 list ( $ref_curso,
-       $curso,
-       $ref_campus,
-       $ref_disciplina,
-       $disciplina,
-       $semestre_curso,
-       $curriculo_mco,
-       $equivalencia_disciplina,
-       $disciplina_equiv,
-       $cursa_outra_disciplina,
-       $esconde_historico,
-       $dt_inicio_curriculo,
-       $dt_final_curriculo,
-       $curso_substituido,
-       $disciplina_substituida,
-       $pre_requisito_hora,
-       $exibe_historico,
-       $fl_soma_curriculo,
-       $ref_area,
-       $area) = $query->GetRowValues();
-       
+$curso,
+$ref_campus,
+$ref_disciplina,
+$disciplina,
+$semestre_curso,
+$curriculo_mco,
+$equivalencia_disciplina,
+$disciplina_equiv,
+$cursa_outra_disciplina,
+$esconde_historico,
+$dt_inicio_curriculo,
+$dt_final_curriculo,
+$curso_substituido,
+$disciplina_substituida,
+$pre_requisito_hora,
+$exibe_historico,
+$fl_soma_curriculo,
+$ref_area,
+$area) = $query->GetRowValues();
+ 
 $query->Close();
 
 $conn->Close();
@@ -73,15 +74,15 @@ $dt_inicio_curriculo = InvData($dt_inicio_curriculo);
 $dt_final_curriculo = InvData($dt_final_curriculo);
 $cursa_outra_disciplina = trim($cursa_outra_disciplina);
 
-</script>
+?>
+<html>
+<head>
 <script language="JavaScript">
 function _init()
 {
 document.myform.ref_curso.focus();
 }
-</script>
 
-<script language="JavaScript">
 function ChangeOption(opt,fld)
 {
   var i = opt.selectedIndex;
@@ -123,8 +124,6 @@ function ChangeCode(fld_name,op_name)
 
   return true;
 }
-</script>
-<script language="JavaScript">
 
 var tipo_busca;
 
@@ -180,184 +179,157 @@ function setResult(arg1,arg2)
 }
 </script>
 </head>
-<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
-<form method="post" action="post/cursos_disciplinas_edita.php3" name="myform">
-  <table width="90%" align="center">
-    <tr bgcolor="#000099">
-      <td height="35" colspan="2">
-      <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Altera&ccedil;&atilde;o de Disciplinas nos Cursos</font></b></font></div>
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><b><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso</font></b></td>
-      <td> 
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="10%">
-              <input name="ref_curso" type=text value="<?echo($ref_curso);?>" size="5" onChange="ChangeCode('ref_curso','op1')">
-              <input name="curso_id" type="hidden" value="<?echo($ref_curso);?>">
-            </td>
-            <td width="100%">
-              <input type="text" name="curso" value="<?echo($curso);?>" size="30">
-            </td>
-            <td> 
-              <div align="right">
-                <input type="button" value="..." onClick="buscaOpcao(3)" name="button22">
-              </div>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><b><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font></b></td>
-      <td> 
-        <input name="ref_campus" type="text" value="<?echo($ref_campus);?>" size="5">
-        <input name="campus_id" type="hidden" value="<?echo($ref_campus);?>">
-        <script language="PHP">
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20"
+	onload="_init()">
+<form method="post" action="post/cursos_disciplinas_edita.php3"
+	name="myform">
+<table width="90%" align="center">
+	<tr bgcolor="#000099">
+		<td height="35" colspan="2">
+		<div align="center"><font size="3"
+			face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Altera&ccedil;&atilde;o
+		de Disciplinas nos Cursos</font></b></font></div>
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><b><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso</font></b></td>
+		<td>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td width="10%"><input name="ref_curso" type=text
+					value="<?echo($ref_curso);?>" size="5"
+					onChange="ChangeCode('ref_curso','op1')"> <input name="curso_id"
+					type="hidden" value="<?echo($ref_curso);?>"></td>
+				<td width="100%"><input type="text" name="curso"
+					value="<?echo($curso);?>" size="30"></td>
+				<td>
+				<div align="right"><input type="button" value="..."
+					onClick="buscaOpcao(3)" name="button22"></div>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><b><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font></b></td>
+		<td><input name="ref_campus" type="text"
+			value="<?echo($ref_campus);?>" size="5"> <input name="campus_id"
+			type="hidden" value="<?echo($ref_campus);?>"> <script language="PHP">
 ComboArray("op2",$op2_opcoes,"0","ChangeOp2()");
-</script>
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><b><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina</font></b></td>
-      <td> 
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="9%"> 
-              <input name="ref_disciplina" type=text value="<?echo($ref_disciplina);?>" size="5" onChange="ChangeCode('ref_disciplina','op2')">
-              <input name="disciplina_id" type="hidden" value="<?echo($ref_disciplina);?>">
-            </td>
-            <td width="100%"><font color="#000000"><font color="#000000"> 
-              <input name="ref_disciplina_nome" type=text value="<?echo($disciplina);?>" size="30">
-              </font></font></td>
-            <td width="0%"> 
-              <div align="right"><font color="#000000"><font color="#000000"> 
-                <input type="button" value="..." onClick="buscaOpcao(1)" name="button">
-                <font color="#000000"> </font> </font></font></div>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Semestre 
-        no Curso</font></td>
-      <td> 
-        <input name="semestre_curso" type=text value="<?echo($semestre_curso);?>" size="5">
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Currículo MCOPA</font></td>
-      <td> 
-        <select name="curriculo_mco">
-          <option value="<?echo($curriculo_mco);?>" selected><?echo($curriculos[$curriculo_mco]); ?></option>
-          <option value="M">Mínimo</option>
-          <option value="C">Complementar</option>
-          <option value="O">Optativa</option>
-          <option value="P">Proficiência</option>
-          <option value="A">Atividade Complementar</option>
-        </select>
-      </td>
-    </tr>
-<!--
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina Equivalente </font></td>
-      <td> 
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="10%"> 
-              <input name="equivalencia_disciplina" type=text value="<?echo($equivalencia_disciplina);?>" size="5">
-            </td>
-            <td width="100%"><font color="#000000"><font color="#000000"> 
-              <input name="equivalencia_disciplina_nome" type=text value="<?echo($disciplina_equiv);?>" size="30">
-              </font></font></td>
-            <td width="0%"> 
-              <div align="right"><font color="#000000"><font color="#000000"> 
-                <input type="button" value="..." onClick="buscaOpcao(2)" name="button2">
-                </font></font></div>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>-->
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data In&iacute;cio Curr&iacute;culo<br>&nbsp;(dd-mm-aaaa)</font></td>
-      <td> 
-        <input name="dt_inicio_curriculo" type=text value="<?echo($dt_inicio_curriculo);?>" size="12">
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Final Curr&iacute;culo<br>&nbsp;(dd-mm-aaaa)</font></td>
-      <td> 
-        <input name="dt_final_curriculo" type=text value="<?echo($dt_final_curriculo);?>" size="12">
-      </td>
-    </tr>
-<!--
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso 
-        Substitu&iacute;do </font></td>
-      <td> 
-        <input name="curso_substituido" type=text value="<?echo($curso_substituido);?>" size="5">
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina 
-        Substitu&iacute;da </font></td>
-      <td> 
-        <input name="disciplina_substituida" type=text value="<?echo($disciplina_substituida);?>" size="5">
-      </td>
-    </tr>-->
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Pr&eacute;-Requisito Hora-Aula</font></td>
-      <td>
-        <input name="pre_requisito_hora" type=text value="<?echo($pre_requisito_hora);?>" size="5">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;&Aacute;rea de Ensino&nbsp;</font></td>
-      <td>
-       <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-         <td width="10%">
-            <input type="text" name="ref_area" size="5" maxlength="10" value="<?echo($ref_area);?>">
-         </td>
-         <td width="100%"><font color="#000000">
-            <input type="text" name="area" size="30" value="<?echo($area);?>"></font>
-	 </td>
-	 <td><font color="#000000"><font color="#000000"> <font color="#000000">
-	    <input type="button" value="..." onClick="buscaOpcao(4)" name="button">
-         </font></font></font></td>
-        </tr>
-       </table>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Exibir no Histórico</font></td>
-     <td>
-        <select name="exibe_historico">
-          <option selected><?echo($historico[$exibe_historico]); ?></option>
-	  <?if ($exibe_historico == 'N')
-          { echo "<option value=\"S\">Sim</option>";}
+</script></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><b><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina</font></b></td>
+		<td>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td width="9%"><input name="ref_disciplina" type=text
+					value="<?echo($ref_disciplina);?>" size="5"
+					onChange="ChangeCode('ref_disciplina','op2')"> <input
+					name="disciplina_id" type="hidden"
+					value="<?echo($ref_disciplina);?>"></td>
+				<td width="100%"><font color="#000000"><font color="#000000"> <input
+					name="ref_disciplina_nome" type=text value="<?echo($disciplina);?>"
+					size="30"> </font></font></td>
+				<td width="0%">
+				<div align="right"><font color="#000000"><font color="#000000"> <input
+					type="button" value="..." onClick="buscaOpcao(1)" name="button"> <font
+					color="#000000"> </font> </font></font></div>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Semestre
+		no Curso</font></td>
+		<td><input name="semestre_curso" type=text
+			value="<?echo($semestre_curso);?>" size="5"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Currículo
+		MCOPA</font></td>
+		<td><select name="curriculo_mco">
+			<option value="<?echo($curriculo_mco);?>" selected><?echo($curriculos[$curriculo_mco]); ?></option>
+			<option value="M">Mínimo</option>
+			<option value="C">Complementar</option>
+			<option value="O">Optativa</option>
+			<option value="P">Proficiência</option>
+			<option value="A">Atividade Complementar</option>
+		</select></td>
+	</tr>
+
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data
+		In&iacute;cio Curr&iacute;culo<br>
+		&nbsp;(dd-mm-aaaa)</font></td>
+		<td><input name="dt_inicio_curriculo" type=text
+			value="<?echo($dt_inicio_curriculo);?>" size="12"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data
+		Final Curr&iacute;culo<br>
+		&nbsp;(dd-mm-aaaa)</font></td>
+		<td><input name="dt_final_curriculo" type=text
+			value="<?echo($dt_final_curriculo);?>" size="12"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Pr&eacute;-Requisito
+		Hora-Aula</font></td>
+		<td><input name="pre_requisito_hora" type=text
+			value="<?echo($pre_requisito_hora);?>" size="5"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF" width="30%"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;&Aacute;rea
+		de Ensino&nbsp;</font></td>
+		<td>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td width="10%"><input type="text" name="ref_area" size="5"
+					maxlength="10" value="<?echo($ref_area);?>"></td>
+				<td width="100%"><font color="#000000"> <input type="text"
+					name="area" size="30" value="<?echo($area);?>"></font></td>
+				<td><font color="#000000"><font color="#000000"> <font
+					color="#000000"> <input type="button" value="..."
+					onClick="buscaOpcao(4)" name="button"> </font></font></font></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Exibir
+		no Histórico</font></td>
+		<td><select name="exibe_historico">
+			<option selected><?echo($historico[$exibe_historico]); ?></option>
+			<?if ($exibe_historico == 'N')
+			{ echo "<option value=\"S\">Sim</option>";}
 	  if ($exibe_historico == 'S')
-          { echo "<option value=\"N\">Não</option>";};?>
-        </select>
-     </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <hr size="1">
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <div align="center">
-          <input type="submit" name="Submit"  value=" Salvar ">
-          <input type="button" name="Submit2" value=" Voltar " onClick="history.go(-1)">
-        </div>
-      </td>
-    </tr>
-  </table>
+	  { echo "<option value=\"N\">Não</option>";};?>
+		</select></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<hr size="1">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<div align="center"><input type="submit" name="Submit"
+			value=" Salvar "> <input type="button" name="Submit2"
+			value=" Voltar " onClick="history.go(-1)"></div>
+		</td>
+	</tr>
+</table>
 </form>
 </body>
 </html>

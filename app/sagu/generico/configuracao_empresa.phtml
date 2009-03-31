@@ -1,4 +1,8 @@
-<? require("../../../lib/common.php"); ?>
+<?php
+
+require("../../../lib/common.php");
+
+?>
 <html>
 <head>
 
@@ -32,207 +36,197 @@ function Confirma_Exclui(arg1)
 
 </script>
 
-<script language="PHP">
+<?php
+
 function MostraConfiguracao()
 {
-  $conn = new Connection;
+	$conn = new Connection;
 
-  $conn->Open();
+	$conn->Open();
 
-  $sql= "select id, razao_social from configuracao_empresa";
+	$sql= "select id, razao_social from configuracao_empresa";
 
-  $query = $conn->CreateQuery($sql);
+	$query = $conn->CreateQuery($sql);
 
-  $n = $query->GetColumnCount();
+	$n = $query->GetColumnCount();
 
-  echo("<center><table width=\"90%%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
-  echo("<tr bgcolor=\"#000000\">\n");
-  echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Código</b></font></td>");
-  echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descrição</b></font></td>");
-  echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
-  echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
-  echo("  </tr>"); 
+	echo("<center><table width=\"90%%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+	echo("<tr bgcolor=\"#000000\">\n");
+	echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Código</b></font></td>");
+	echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descrição</b></font></td>");
+	echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
+	echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
+	echo("  </tr>");
 
-  $i=1;
+	$i=1;
 
-  // cores fundo
-  $bg0 = "#000000";
-  $bg1 = "#EEEEFF";
-  $bg2 = "#FFFFEE";
+	// cores fundo
+	$bg0 = "#000000";
+	$bg1 = "#EEEEFF";
+	$bg2 = "#FFFFEE";
 
-  // cores fonte
-  $fg0 = "#FFFFFF";
-  $fg1 = "#000099";
-  $fg2 = "#000099";
-  
-  while( $query->MoveNext() )
-  {
+	// cores fonte
+	$fg0 = "#FFFFFF";
+	$fg1 = "#000099";
+	$fg2 = "#000099";
 
-    $registro = $query->GetValue(1);
-    $href  = "<a href=\"altera_configuracao_empresa.phtml?id=$registro\"><img src=\"../images/update.gif\" title='Alterar Cadastro' align='absmiddle' border=0></a>";
-    $href1 = "<a href=\"javascript:Confirma_Exclui('$registro')\"><img src=\"../images/delete.gif\" title='Excluir Cadastro' align='absmiddle' border=0></a>";
+	while( $query->MoveNext() )
+	{
 
-    if ( $i % 2)
-    {
+		$registro = $query->GetValue(1);
+		$href  = "<a href=\"altera_configuracao_empresa.phtml?id=$registro\"><img src=\"../images/update.gif\" title='Alterar Cadastro' align='absmiddle' border=0></a>";
+		$href1 = "<a href=\"javascript:Confirma_Exclui('$registro')\"><img src=\"../images/delete.gif\" title='Excluir Cadastro' align='absmiddle' border=0></a>";
 
-       echo("<tr bgcolor=\"$bg1\">\n");
-       echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">" . $query->GetValue(1) . "</td>");
-       echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">" . $query->GetValue(2) . "</td>");
-       echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href</font></b></td>\n");
-       echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href1</font></b></td>\n");
+		if ( $i % 2)
+		{
 
-       
-       echo("  </tr>");
+			echo("<tr bgcolor=\"$bg1\">\n");
+			echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">" . $query->GetValue(1) . "</td>");
+			echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">" . $query->GetValue(2) . "</td>");
+			echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href</font></b></td>\n");
+			echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href1</font></b></td>\n");
 
-    }
-    else
-    {
-       echo("<tr bgcolor=\"$bg2\">\n");
-       echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">" . $query->GetValue(1) . "</td>");
-       echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">" . $query->GetValue(2) . "</td>");
-       echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href</font></b></td>\n");
-       echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href1</font></b></td>\n");
 
-       echo("  </tr>");
-    }
+			echo("  </tr>");
 
-    $i++;
+		}
+		else
+		{
+			echo("<tr bgcolor=\"$bg2\">\n");
+			echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">" . $query->GetValue(1) . "</td>");
+			echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">" . $query->GetValue(2) . "</td>");
+			echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href</font></b></td>\n");
+			echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href1</font></b></td>\n");
 
-  }
+			echo("  </tr>");
+		}
 
-  echo("</table></center>");
-  $query->Close();
-  $conn->Close();
+		$i++;
+
+	}
+
+	echo("</table></center>");
+	$query->Close();
+	$conn->Close();
 }
 
 function SQL_Combo($nome,$sql,$default,$onchange)
 {
-  $conn = new Connection;
-  
-  $conn->Open();
+	$conn = new Connection;
 
-  $query = $conn->CreateQuery($sql);
+	$conn->Open();
 
-  if ( $onchange != "" )
-    echo("<select name=\"$nome\" onchange=\"$onchange\">");
-  else
-    echo("<select name=\"$nome\">");
+	$query = $conn->CreateQuery($sql);
 
-  echo("  <option value=\"0\" selected>----- clique aqui -----</option>\n");
-    
-  for ( $i=1; $query->MoveNext(); $i++ )
-  {
-    list ( $text, $value ) = $query->GetRowValues();
-      
-    if ( $value == $default )
-      echo("  <option value=\"$value\" selected>$text</option>\n");
-    else
-      echo("  <option value=\"$value\">$text</option>\n");
-  }
+	if ( $onchange != "" )
+	echo("<select name=\"$nome\" onchange=\"$onchange\">");
+	else
+	echo("<select name=\"$nome\">");
 
-  echo("</select>");
+	echo("  <option value=\"0\" selected>----- clique aqui -----</option>\n");
 
-  $query->Close();
+	for ( $i=1; $query->MoveNext(); $i++ )
+	{
+		list ( $text, $value ) = $query->GetRowValues();
 
-  $conn->Close();
+		if ( $value == $default )
+		echo("  <option value=\"$value\" selected>$text</option>\n");
+		else
+		echo("  <option value=\"$value\">$text</option>\n");
+	}
+
+	echo("</select>");
+
+	$query->Close();
+
+	$conn->Close();
 }
-
-</script>
+?>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
-<form method="post" action="post/confirm_configuracao_inclui.phtml" name="myform">
-  <table width="90%" align="center">
-    <tr> 
-      <td bgcolor="#000099" colspan="2" height="28" align="center">
-        <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Empresa</b></font></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Raz&atilde;o 
-        Social&nbsp;</font></td>
-      <td> 
-        <input name="razao_social" type=text size="50" maxlength="50">
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sigla</font></td>
-      <td> 
-        <input name="sigla" type=text size="10" maxlength="10">
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Rua&nbsp;</font></td>
-      <td> 
-        <input name="rua" type=text size="50" maxlength="50">
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Complemento&nbsp;</font></td>
-      <td> 
-        <input name="complemento" type=text size="50" maxlength="50">
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Bairro&nbsp;</font></td>
-      <td> 
-        <input name="bairro" type=text>
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cidade&nbsp;</font></td>
-      <td> 
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="9%"> 
-              <div align="left"> 
-                <input type="text" name="ref_cidade" size="5" maxlength="10">
-              </div>
-            </td>
-            <td width="100%"> 
-              <div align="left"><font color="#000000"> 
-                <input type="text" name="cnome" size="35">
-                </font></div>
-            </td>
-            <td width="0"><font color="#000000"><font color="#000000"> <font color="#000000"> 
-              <input type="button" value="..." onClick="buscaCidade(1)" name="button">
-              </font></font></font></td>
-          </tr>
-        </table>
-        
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cep&nbsp;</font></td>
-      <td> 
-        <input name="cep" type=text size="9" maxlength="9">
-      </td>
-    </tr>
-    <tr> 
-      <td colspan="2"> 
-        <hr size="1">
-      </td>
-    </tr>
-    <tr> 
-      <td colspan="2" align="center"> 
-        <input type="submit" name="Submit"  value=" Prosseguir ">
-        <input type="reset" name="Submit2"  value="   Limpar   ">
-        <input type="button" name="Button2" value="    Sair    " onClick="javascript:history.go(-1)">
-      </td>
-    </tr>
-    <tr> 
-      <td colspan="2"> 
-        <hr size="1">
-      </td>
-    </tr>
-    <tr> 
-      <td colspan="2"> 
-        <div align="center"> 
-          <script language="PHP">
+<form method="post" action="post/confirm_configuracao_inclui.phtml"
+	name="myform">
+<table width="90%" align="center">
+	<tr>
+		<td bgcolor="#000099" colspan="2" height="28" align="center"><font
+			size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Empresa</b></font></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Raz&atilde;o
+		Social&nbsp;</font></td>
+		<td><input name="razao_social" type=text size="50" maxlength="50"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sigla</font></td>
+		<td><input name="sigla" type=text size="10" maxlength="10"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Rua&nbsp;</font></td>
+		<td><input name="rua" type=text size="50" maxlength="50"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Complemento&nbsp;</font></td>
+		<td><input name="complemento" type=text size="50" maxlength="50"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Bairro&nbsp;</font></td>
+		<td><input name="bairro" type=text></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cidade&nbsp;</font></td>
+		<td>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td width="9%">
+				<div align="left"><input type="text" name="ref_cidade" size="5"
+					maxlength="10"></div>
+				</td>
+				<td width="100%">
+				<div align="left"><font color="#000000"> <input type="text"
+					name="cnome" size="35"> </font></div>
+				</td>
+				<td width="0"><font color="#000000"><font color="#000000"> <font
+					color="#000000"> <input type="button" value="..."
+					onClick="buscaCidade(1)" name="button"> </font></font></font></td>
+			</tr>
+		</table>
+
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cep&nbsp;</font></td>
+		<td><input name="cep" type=text size="9" maxlength="9"></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<hr size="1">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><input type="submit" name="Submit"
+			value=" Prosseguir "> <input type="reset" name="Submit2"
+			value="   Limpar   "> </td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<hr size="1">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<div align="center"><script language="PHP">
             MostraConfiguracao();
-          </script>
-        </div>
-      </td>
-    </tr>
-  </table>
-  </form>
-  </body>
+          </script></div>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
 </html>

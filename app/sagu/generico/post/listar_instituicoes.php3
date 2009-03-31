@@ -1,11 +1,10 @@
-<? header("Cache-Control: no-cache"); ?>
-<? require("../../../../lib/common.php"); ?>
-<? require("../../lib/InvData.php3"); ?>
-<? require("../../../../lib/config.php"); ?>
-<html>
-<head>
-<title>Lista Instituições Cadastradas</title>
-<script language="PHP">
+<?php 
+
+header("Cache-Control: no-cache");
+require("../../../../lib/common.php");
+require("../../lib/InvData.php3");
+ 
+
 function Lista_Instituicoes()
 {
    
@@ -85,16 +84,14 @@ function Lista_Instituicoes()
 
    $conn->Close();
 }
-</script>
+?>
+<html>
+<head>
+<title>Lista Instituições Cadastradas</title>
 </head>
-
 <body bgcolor="#FFFFFF">
 <form method="post" action="">
-  <p>
-    <script language="PHP">
-       Lista_Instituicoes();
-    </script>
-  </p>
+  <p> <?php Lista_Instituicoes(); ?>  </p>
   <div align="center"> 
     <input type="button" name="Button" value="  Voltar  " onclick="location='../consulta_inclui_instituicoes.phtml'">
   </div>

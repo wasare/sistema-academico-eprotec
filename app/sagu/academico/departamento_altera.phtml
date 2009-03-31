@@ -1,8 +1,10 @@
-<? require("../../../lib/common.php"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
+require("../../../lib/common.php"); 
+
+
+$id = $_GET['id'];
+
 CheckFormParameters(array("id"));
 
 $conn = new Connection;
@@ -24,7 +26,10 @@ list ( $id,
 $query->Close();
 $conn->Close();
 
-</script>
+?>
+
+<html>
+<head>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
 <form method="post" action="post/altera_departamento.php3" name="myform">

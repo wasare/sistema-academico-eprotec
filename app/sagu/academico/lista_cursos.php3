@@ -1,106 +1,94 @@
-<? require("../../../lib/common.php"); ?>
-<? require("../../../lib/config.php"); ?>
+<?php
 
-<html>
-<head>
-<title>Untitled Document</title>
-<script language="PHP">
+require("../../../lib/common.php");
+
 function ListaCursos()
 {
-   global $turnos;
+	global $turnos;
 
-   $conn = new Connection;
+	$conn = new Connection;
 
-   $conn->open();
+	$conn->open();
 
-   $sql = " SELECT 
+	$sql = " SELECT
    id, descricao, turno, case when sequencia = 0 then null else sequencia end 
    FROM cursos ORDER BY 2, id, 4;";
-   
-   $query = $conn->CreateQuery($sql);
+	 
+	$query = $conn->CreateQuery($sql);
 
-   $n = $query->GetColumnCount();
+	$n = $query->GetColumnCount();
 
-   echo("<center><table width=\"95%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
-   echo ("<tr>");
-   echo ("<td bgcolor=\"#000099\" colspan=\"4\" height=\"28\" align=\"center\"><font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><b>Listagem de Cursos Cadastrados</b></font></td>");
-   echo ("</tr>"); 
-   
-   echo ("<tr bgcolor=\"#000000\">\n");
-   echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cód</b></font></td>");
-   echo ("<td width=\"75%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descrição</b></font></td>");
-   echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Turno</b></font></td>");
-   echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Seqüência</b></font></td>");
-   echo ("</tr>"); 
+	echo("<center><table width=\"95%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
+	echo ("<tr>");
+	echo ("<td bgcolor=\"#000099\" colspan=\"4\" height=\"28\" align=\"center\"><font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FFFFFF\"><b>Listagem de Cursos Cadastrados</b></font></td>");
+	echo ("</tr>");
+	 
+	echo ("<tr bgcolor=\"#000000\">\n");
+	echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cód</b></font></td>");
+	echo ("<td width=\"75%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descrição</b></font></td>");
+	echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Turno</b></font></td>");
+	echo ("</tr>");
 
-   $i=1;
+	$i=1;
 
-   // cores fundo
-   $bg0 = "#000000";
-   $bg1 = "#EEEEFF";
-   $bg2 = "#FFFFEE";
- 
-   // cores fonte
-   $fg0 = "#FFFFFF";
-   $fg1 = "#000099";
-   $fg2 = "#000099";
+	// cores fundo
+	$bg0 = "#000000";
+	$bg1 = "#EEEEFF";
+	$bg2 = "#FFFFEE";
 
-   while( $query->MoveNext() )
-   {
-     list ( $id, 
-            $descricao, 
-            $turno,
-            $sequencia) = $query->GetRowValues();
-  
-     $href  = "<a href=\"curso_altera.phtml?id=$id\">$id</a>";
-  
-     if ( $i % 2 )
-     {
-        $bg = $bg1;
-        $fg = $fg1;
-     }
-     else
-     {
-        $bg = $bg2;
-        $fg = $fg2;
-     }
-     
-     echo ("<tr bgcolor=\"$bg\">\n");
-     echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$href</td>\n");
-     echo ("<td width=\"75%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$descricao</td>\n");
-     echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">&nbsp;$turnos[$turno]</td>\n");
-     echo ("<td width=\"10%\" align=\"center\">");
-     echo ("<input type=\"text\" name=\"sequencia[]\" value=\"$sequencia\" size=\"4\">");
-     echo ("<input type=\"hidden\" name=\"ref_curso[]\" value=\"$id\">");
-     echo ("</td>\n");
-     echo ("</tr>\n");
-     
-     $i++;
+	// cores fonte
+	$fg0 = "#FFFFFF";
+	$fg1 = "#000099";
+	$fg2 = "#000099";
 
-   }
+	while( $query->MoveNext() )
+	{
+		list ( $id,
+		$descricao,
+		$turno,
+		$sequencia) = $query->GetRowValues();
 
-   echo("<tr><td colspan=\"4\" align=\"center\"><hr></td></tr>");
+		$href  = "<a href=\"curso_altera.phtml?id=$id\">$id</a>";
 
-   echo("</table></center>");
+		if ( $i % 2 )
+		{
+			$bg = $bg1;
+			$fg = $fg1;
+		}
+		else
+		{
+			$bg = $bg2;
+			$fg = $fg2;
+		}
+		 
+		echo ("<tr bgcolor=\"$bg\">\n");
+		echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$href</td>\n");
+		echo ("<td width=\"75%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$descricao</td>\n");
+		echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">&nbsp;$turnos[$turno]</td>\n");
+		echo ("</tr>\n");
+		 
+		$i++;
 
-   $query->Close();
+	}
 
-   $conn->Close();
+	echo("<tr><td colspan=\"4\" align=\"center\"><hr></td></tr>");
+
+	echo("</table></center>");
+
+	$query->Close();
+
+	$conn->Close();
 }
-</script>
+?>
+<html>
+<head>
+<title></title>
 </head>
-
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
-<form method="post" action="post/cursos_config_exibicao.php3">
-  <p> 
-    <script language="PHP">
-       ListaCursos();
-    </script>
-  </p>
-  <div align="center"> 
-    <input type="submit" name="submit" value="  Salvar  ">
-    <input type="button" name="Button" value="  Voltar  " onClick="location='consulta_cursos.phtml'">
-  </div>
+<form name="Form1">
+<p><?php ListaCursos(); ?></p>
+<div align="center"><input type="button" name="Button"
+	value="  Voltar  " onClick="location='consulta_cursos.phtml'"></div>
 </form>
 </body>
 </html>

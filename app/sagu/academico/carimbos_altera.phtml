@@ -1,30 +1,13 @@
-<? require("../../../lib/common.php"); ?>
-<? require("../lib/SQLCombo.php3"); ?>
-<?
-  $op_opcoes = SQLArray("select nome_setor, id from sagu_setores order by nome_setor");
-?>
+<?php
 
-<html>
-<head>
+require("../../../lib/common.php");
+require("../lib/SQLCombo.php3");
 
-<script language="Javascript">
-function ChangeOption(opt,fld)
-{
-  var i = opt.selectedIndex;
 
-  if ( i != -1 )
-    fld.value = opt.options[i].value;
-  else
-    fld.value = '';
-}
+$id = $_GET['id'];
 
-function ChangeOp()
-{
-  ChangeOption(document.myform.op,document.myform.ref_setor);
-}
-</script>
+$op_opcoes = SQLArray("select nome_setor, id from sagu_setores order by nome_setor");
 
-<script language="PHP">
 
 CheckFormParameters(array("id"));
 
@@ -51,6 +34,24 @@ $query->Close();
 
 $conn->Close();
 
+?>
+<html>
+<head>
+<script language="Javascript">
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp()
+{
+  ChangeOption(document.myform.op,document.myform.ref_setor);
+}
 </script>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
@@ -87,9 +88,9 @@ $conn->Close();
       <td bgcolor="#CCCCFF" width="24%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Setor</font></td>
       <td colspan="2"> <font color="#000000">
         <input type="text" name="ref_setor" size="10" value="<?echo($ref_setor);?>">
-        <script language="PHP">
-          ComboArray("op",$op_opcoes,$ref_setor,"ChangeOp()")
-        </script>
+        <?php 
+          ComboArray("op",$op_opcoes,$ref_setor,"ChangeOp()");
+        ?>
         </font></td>
     </tr>
     <tr> 

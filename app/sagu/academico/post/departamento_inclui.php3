@@ -1,7 +1,8 @@
-<? require("../../../../lib/common.php"); ?>
-<html>
-<head>
-<script language="PHP">
+<?php 
+
+require("../../../../lib/common.php"); 
+
+$descricao_depto = $_POST['descricao_depto'];
 
 CheckFormParameters(array("descricao_depto"));
 
@@ -28,7 +29,9 @@ SuccessPage("Inclusão de Departamento",
             "location='../departamento_inclui.phtml'",
             "Departamento incluído com sucesso!!!",
             "location='../consulta_inclui_departamentos.phtml'");
-</script>
+?>
+<html>
+<head>
 </HEAD>
 <BODY></BODY>
 </HTML>

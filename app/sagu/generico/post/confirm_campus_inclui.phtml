@@ -1,9 +1,14 @@
 <?php
+
 require("../../../../lib/common.php");
-//require("../../lib/financeiro/common.php3");
+
+$ref_empresa   = $_POST['ref_empresa'];
+$nome_campus   = $_POST['nome_campus'];
+$cidade_campus = $_POST['cidade_campus'];
 
 CheckFormParameters(array("ref_empresa","nome_campus","cidade_campus"));
 $empresa_nome=GetEmpresa($ref_empresa,true);
+
 ?>
 <html>
 <head>

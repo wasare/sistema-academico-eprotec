@@ -1,16 +1,42 @@
-<? require("../../../lib/config.php"); ?>
-<? require("../../../lib/common.php"); ?>
-<? require("../lib/SQLCombo.php3"); ?>
-<? require("../lib/GetField.php3"); ?>
-<? require("../lib/InvData.php3"); ?>
-<html>
+<?php
 
-<head>
+require("../../../lib/common.php");
+require("../lib/SQLCombo.php3");
+require("../lib/GetField.php3");
+require("../lib/InvData.php3");
 
-<?
-   $op1_opcoes = SQLArray("select nome_campus, id from campus order by nome_campus");
+
+$id = $_GET['id'];
+
+$op1_opcoes = SQLArray("select nome_campus, id from campus order by nome_campus");
+
+CheckFormParameters(array("id"));
+
+$conn = new Connection;
+
+$conn->Open();
+
+$sql = "select id," .
+          "       ref_campus," .
+          "       numero," .
+          "       capacidade" .
+          " from  salas " .
+          " where id = '$id'";
+
+$query = $conn->CreateQuery($sql);
+
+SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+
+list ( $id,
+$campus,
+$sala,
+$capacidade ) = $query->GetRowValues();
+
+$query->Close();
+$conn->Close();
 ?>
-
+<html>
+<head>
 <script language="JavaScript">
 function _init()
 {
@@ -54,86 +80,58 @@ function ChangeCode(fld_name,op_name)
   return true;
 }
 </script>
-
-<script language="PHP">
-
-   CheckFormParameters(array("id"));
-
-   $conn = new Connection;
-
-   $conn->Open();
-
-   $sql = "select id," .
-          "       ref_campus," .
-          "       numero," .
-          "       capacidade" .
-          " from  salas " .
-          " where id = '$id'";
-
-   $query = $conn->CreateQuery($sql);
-
-   SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
-
-   list ( $id,
-          $campus,
-          $sala,
-          $capacidade ) = $query->GetRowValues();
-
-   $query->Close();
-   $conn->Close();
-
-</script>
-
 </head>
-<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20"
+	onload="_init()">
 <form method="post" action="post/sala_edita.php3" name="myform">
-  <table width="90%" align="center">
-    <tr bgcolor="#000099"> 
-      <td height="35" colspan="2">  
-        <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Altera&ccedil;&atilde;o de Cadastro de Salas</font></b></font></div>
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo&nbsp;</font></td>
-      <td> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0000FF"><? echo($id); ?> 
-        <input type="hidden" name="id" value="<? echo($id); ?>">
-        </font></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sala&nbsp;</font></td>
-      <td> 
-        <input name="sala" type=text value="<?echo($sala);?>" size="30">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF" width="85"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Campus</font>
-      </td>
-      <td width="50">
-         <input name="campus" onChange="ChangeCode('campus','op')" type=text size="7" value=<?echo($campus)?>>
-         <font color="#000000"><? ComboArray("op",$op1_opcoes,"0","ChangeOp()"); ?></font>
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Capacidade&nbsp;</font></td>
-      <td> 
-        <input name="capacidade" type=text value="<?echo($capacidade);?>" size="10">
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-          <hr size="1">
-      </td>
-    </tr>
-    <tr> 
-      <td colspan="2"> 
-        <div align="center"> 
-          <input type="submit" name="Submit"  value=" Salvar ">
-          <input type="button" name="Submit2" value=" Voltar " onclick="javascript:history.go(-1)">
-        </div>
-      </td>
-    </tr>
-  </table>
+<table width="90%" align="center">
+	<tr bgcolor="#000099">
+		<td height="35" colspan="2">
+		<div align="center"><font size="3"
+			face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Altera&ccedil;&atilde;o
+		de Cadastro de Salas</font></b></font></div>
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo&nbsp;</font></td>
+		<td><font face="Verdana, Arial, Helvetica, sans-serif" size="2"
+			color="#0000FF"><? echo($id); ?> <input type="hidden" name="id"
+			value="<? echo($id); ?>"> </font></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sala&nbsp;</font></td>
+		<td><input name="sala" type=text value="<?echo($sala);?>" size="30"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF" width="85"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">Campus</font>
+		</td>
+		<td width="50"><input name="campus"
+			onChange="ChangeCode('campus','op')" type=text size="7"
+			value=<?echo($campus)?>> <font color="#000000"><? ComboArray("op",$op1_opcoes,"0","ChangeOp()"); ?></font>
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Capacidade&nbsp;</font></td>
+		<td><input name="capacidade" type=text value="<?echo($capacidade);?>"
+			size="10"></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<hr size="1">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<div align="center"><input type="submit" name="Submit"
+			value=" Salvar "> <input type="button" name="Submit2"
+			value=" Voltar " onclick="javascript:history.go(-1)"></div>
+		</td>
+	</tr>
+</table>
 </form>
 </body>
 </html>
-

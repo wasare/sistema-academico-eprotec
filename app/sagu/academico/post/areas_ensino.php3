@@ -1,8 +1,9 @@
-<? require("../../../../lib/common.php"); ?>
+<?php
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php");
+
+$area = $_POST['area'];
+
 CheckFormParameters(array(
                           "area"));
 
@@ -10,7 +11,7 @@ $conn = new Connection;
 
 $conn->Open();
 $conn->Begin();
-  
+
 $sql = " insert into areas_ensino (" .
        "                               area)" . 
        " values (" .
@@ -26,8 +27,9 @@ $conn->Close();
 SuccessPage("Inclusão de Áreas de Ensino",
             "location='../areas_ensino.phtml'",
             "Área de Ensino incluída com sucesso!!!.");
-
-</script>
+?>
+<html>
+<head>
 </head>
 <body>
 </body>

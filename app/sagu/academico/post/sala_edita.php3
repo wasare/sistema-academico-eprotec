@@ -1,6 +1,12 @@
-<? require("../../../../lib/common.php"); ?>
-<? require("../../lib/InvData.php3"); ?>
-<?
+<?php
+
+require("../../../../lib/common.php");
+require("../../lib/InvData.php3");
+
+$id = $_POST['id'];
+$campus = $_POST['campus'];
+$sala = $_POST['sala'];
+$capacidade = $_POST['capacidade'];
 
 $conn = new Connection;
 

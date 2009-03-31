@@ -118,6 +118,12 @@ if (!$Result1){
         <br />
     Gerar PDF</label>
 </td>
+<td width="73" align="center">
+    <label class="bar_menu_texto">
+        <input type="image" name="imageField" id="imageField" src="../../images/icons/excel.jpg" onclick="submit_opt('xls_alunos.php');" />
+        <br />
+    Gerar XLS</label>
+</td>
 <td width="63" align="center">
     <label class="bar_menu_texto"> <a href="#" class="bar_menu_texto" onclick="history.back(-1)"> <img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
     Voltar</a> </label>

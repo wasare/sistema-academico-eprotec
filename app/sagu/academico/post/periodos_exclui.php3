@@ -1,9 +1,10 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<script language="PHP">
+require("../../../../lib/common.php");
+
+$id = $_GET['id'];
 
 $conn = new Connection;
-
 $conn->Open();
 
 $sql = "delete from periodos where id='$id';";
@@ -16,4 +17,4 @@ SaguAssert($ok,"Não foi possível de excluir o registro!");
 
 SuccessPage("Registro excluído com sucesso",
             "location='../consulta_periodos.phtml'");
-</script>
+?>
