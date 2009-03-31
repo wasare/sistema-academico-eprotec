@@ -1,8 +1,9 @@
-<? require("../../../lib/common.php"); ?>
-<html>
-<head>
+<?php 
 
-<script language="PHP">
+require("../../../lib/common.php"); 
+
+$id = $_GET['id'];
+
 CheckFormParameters(array("id"));
 
 $conn = new Connection;
@@ -38,9 +39,10 @@ list ( $id,
 $query->Close();
 $conn->Close();
 
-</script>
+?>
 
-
+<html>
+<head>
 <script language="JavaScript">
 function buscaCidade()
 {

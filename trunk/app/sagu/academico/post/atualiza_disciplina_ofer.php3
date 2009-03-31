@@ -1,7 +1,18 @@
-<? require("../../../../lib/common.php"); ?>
-<html>
-<head>
-<script language="PHP">
+<?php
+
+require("../../../../lib/common.php");
+
+$id                = $_POST['id'];
+$ref_campus        = $_POST['ref_campus'];
+$ref_curso         = $_POST['ref_curso'];
+$ref_periodo       = $_POST['ref_periodo'];
+$ref_disciplina    = $_POST['ref_disciplina'];
+$num_alunos        = $_POST['num_alunos'];
+$fixar_num_sala    = $_POST['fixar_num_sala'];
+$is_cancelada      = $_POST['is_cancelada'];
+$turma             = $_POST['turma'];
+$ref_periodo_turma = $_POST['ref_periodo_turma'];
+$conteudo          = $_POST['conteudo'];
 
 CheckFormParameters(array("id"));
 
@@ -33,8 +44,4 @@ $conn->Close();
 
 SuccessPage("Registro Atualizado com sucesso","location='../disciplina_ofer.phtml'");
 
-</script>
-</head>
-<body bgcolor="#FFFFFF">
-</body>
-</html>
+?>

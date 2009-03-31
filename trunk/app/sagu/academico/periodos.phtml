@@ -1,7 +1,8 @@
-<? require("../../../lib/common.php"); ?>
-<? require("../../../lib/config.php"); ?>
-<? require("../lib/SQLCombo.php3"); ?>
-<?
+<?php
+
+require("../../../lib/common.php");
+require("../lib/SQLCombo.php3");
+
 
 $op_opcoes5 = SQLArray("select descricao,id from tipos_cobr");
 $op_opcoes6 = SQLArray("select descricao,id from locais_pgto");
@@ -20,9 +21,6 @@ function _init()
 {
   document.myform.id.focus();
 }
-</script>
-
-<script language="JavaScript">
 function ChangeOption(opt,fld)
 {
   var i = opt.selectedIndex;
@@ -90,9 +88,7 @@ function ChangeCode(fld_name,op_name)
 
   return true;
 }
-</script>
 
-<script language="JavaScript">
 function buscaOrig()
 {
   var title = 'Seleção Origens';
@@ -113,232 +109,111 @@ function setOrig(id,nome)
 }
 </script>
 </head>
-<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20"
+	onload="_init()">
 <form method="post" action="post/periodos.php3" name="myform">
 <div align="center">
 <TABLE width="90%">
-    <tr>
-      <td bgcolor="#000099" colspan="2" height="35" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Inclusão de Período</b></font></td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo</font></td>
-      <td>
-        <input name="id" type=text size="12">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Descri&ccedil;&atilde;o</font></td>
-      <td>
-        <input name="descricao" type=text size="40">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Per&iacute;odo
-        Anterior </font></td>
-      <td> <font color="#000000"> </font>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td>
-              <input name="ref_anterior" type=text size="12" onChange="ChangeCode('ref_anterior','op1')">
-            </td>
-            <td width="100%"> <?PHP ComboArray("op1",$op1_options,"0","ChangeOp1()") ?>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <!--<tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cobran&ccedil;a
-        </font></td>
-      <td>
-        <input name="ref_cobranca" type=text onChange="ChangeCode('ref_cobranca','op5')" value="<\?echo($ref_cobranca);?>" size="12" maxlength="12">-->
-        <input name="ref_cobranca" type="hidden" value="0" size="5">
-	<!--<font color="#000000"> <\?php ComboArray("op5",$op_opcoes5,"0","ChangeOp5()"); ?>
-        </font> </td>
-    </tr>-->
-    <!--<tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Origem
-        </font></td>
-      <td>
-        <table width="100%%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td>
-              <table width="100%%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td width="21%">-->
-                    <input name="ref_origem" type="hidden" value="1" size="12" maxlength="12">
-                  <!--</td>
-                  <td width="59%">-->
-                    <input type="hidden" name="origem" size="38" value="Indefinida">
-                  <!--</td>
-                    <td width="20%">
-                    <input type="button" value="..." onClick="buscaOrig()" name="button2">
-                  </td>
-                </tr>
-              </table>
-            </td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-        </table>
-      </td>
-    </tr> -->
-    <!--<tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Hist&oacute;rico&nbsp;Matr&iacute;cula</font></td>
-      <td>
-        <input name="ref_historico" type=text  onChange="ChangeCode('ref_historico','op2')" value="<\?echo($ref_historico);?>" size="12">
-        <\?PHP ComboArray("op2",$op2_options,"0","ChangeOp2()") ?> -->
-       <input name="ref_historico" type="hidden" value="1" size="5">
-    <!--</td>
-    </tr>-->
-  
-    <!--<TR>
-      <TD bgcolor="#CCCCFF"><FONT face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Local de Pagamento</FONT></TD>
-      <TD><INPUT name="ref_local" type="text" onChange="ChangeCode('ref_local','op6')" size="12" maxlength="10"><\?PHP 
-ComboArray("op6",$op_opcoes6,"0","ChangeOp6()"); ?> -->
-      <input name="ref_local" type="hidden" value="1" size="5">
-     <!--</TD>
-    </TR>-->
-    <tr>
-      <td bgcolor="#CCCCFF"> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Inicial<br>&nbsp;(dd/mm/aaaa)</font></td>
-      <td>
-        <input name="dt_inicial" type="text" size="12" maxlength="10">
-        <font face="Verdana, Arial, Helvetica, sans-serif" size="1"> </font></td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Final<br>&nbsp;(dd/mm/aaaa)</font>
-      </td>
-      <td>
-        <input name="dt_final" type=text size="12" maxlength="10">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Média Aprovação sem Exame</font>
-      </td>
-      <td>
-        <input name="media" type="text" size="5" maxlength="5" value="60">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Média Final Aprovação</font>
-      </td>
-      <td>
-        <input name="media_final" type="text" size="5" maxlength="5" value="60">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Início Aulas (Caderno de Chamadas)<br>&nbsp;(dd/mm/aaaa)</font></font>
-      </td>
-      <td>
-        <input name="dt_inicio_aula" type=text size="10" maxlength="10" value=""></font></td>
-    </tr>
-<!--
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Hist&oacute;rico DCE &nbsp;</font></td>
-      <td>
-        <input name="ref_historico_dce" type=text onChange="ChangeCode('ref_historico_dce','op4')" value="<\?echo($ref_historico_dce);?>" size="12">
-        <\?PHP ComboArray("op4",$op2_options,"0","ChangeOp4()") ?> </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa DCE Normal</font></td>
-      <td>
-        <input name="tx_dce_normal" type=text size="5"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C">% - Percentual referente ao valor do crédito base do curso para Veteranos</font>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF" height="28"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa DCE Vestibular</font></td>
-      <td>
-        <input name="tx_dce_vest" type=text size="5"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C">% - Percentual referente ao valor do crédito base do curso para Calouros</font>
-      </td>
-    </tr>-->
-
-    <!--<tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa
-        Acr&eacute;scimo </font></td>
-      <td>-->
-        <input name="tx_acresc" id="tx_acresc" value="" type="hidden" size="5">
-      <!--</td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa Cancelamento </font></td>
-      <td>-->
-        <input name="tx_cancel" id="tx_cancel" value="" type="hidden" size="5">
-     <!-- </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Histórico Taxa</font></td>
-      <td> 
-        <input name="ref_historico_taxa" type=text onChange="ChangeCode('ref_historico_taxa','op7')" 
-value="<\?echo($ref_historico_taxa);?>" size="12">
-        <\?PHP ComboArray("op7",$op2_options,"0","ChangeOp7()") ?> -->
-        <input name="ref_historico_taxa" type="hidden" value="1" size="5">
-   <!--</td>
-    </tr>-->
-    <!--<tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Histórico Cancelamento </font></td>
-      <td>
-        <input name="ref_historico_cancel" type=text onChange="ChangeCode('ref_historico_cancel','op8')" value="<?echo($ref_historico_cancel);?>" size="12">
-        <\?PHP ComboArray("op8",$op2_options,"0","ChangeOp8()") ?> -->
-        <input name="ref_historico_cancel" type="hidden" value="1" size="5">
-    <!--</td>
-    </tr> -->
-
-    <input name="ref_status_vest" type=hidden value="1">
-<!--    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Status Vestibular </font></td>
-      <td>
-        <input name="ref_status_vest" type="text" size="12">
-      </td>
-    </tr>
-
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;% de Isenção por disciplina que o aluno não precisar cursar no semestre: </font></td>
-      <td>
-        <input name="perc_isencao_disciplina" type=text size="12"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C">% - Percentual calculado sobre o valor da disciplina</font>
-      </td>
-    </tr>
-
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;% Cobrado a mais por disciplinas cursadas que não pertencem ao semestre do aluno: </font></td>
-      <td>
-        <input name="perc_disciplina_fora_sem" type=text size="12"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C">% - Percentual calculado sobre o valor da disciplina</font>
-      </td>
-    </tr>
-
-
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa Banco</font></td>
-      <td>
-        <input name="tx_banco" type=text size="12">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Status do Livro Matrícula</font></td>
-      <td> <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-        <input type="radio" name="fl_livro_matricula" value="yes">Sim
-        <input type="radio" name="fl_livro_matricula" value="no" checked>Não</font></td>
-    </tr>-->
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Gerar financeiro?</font></td>
-      <td> <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-        <input type="radio" name="fl_gera_financeiro" value="yes" >Sim
-        <input type="radio" name="fl_gera_financeiro" value="no" checked="checked" />Não</font></td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <hr size="1">
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <div align="center">
-          <input type="submit" name="Submit" value=" Salvar ">
-          <input type="reset" name="Submit2" value=" Limpar ">
-          <input type="button" name="Button" value=" Voltar " onClick="location='consulta_periodos.phtml'">
-        </div>
-      </td>
-    </tr>
-  </table>
+	<tr>
+		<td bgcolor="#000099" colspan="2" height="35" align="center"><font
+			size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Inclusão
+		de Período</b></font></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo</font></td>
+		<td><input name="id" type=text size="12"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Descri&ccedil;&atilde;o</font></td>
+		<td><input name="descricao" type=text size="40"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Per&iacute;odo
+		Anterior </font></td>
+		<td><font color="#000000"> </font>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td><input name="ref_anterior" type=text size="12"
+					onChange="ChangeCode('ref_anterior','op1')"></td>
+				<td width="100%"><?PHP ComboArray("op1",$op1_options,"0","ChangeOp1()") ?>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<input name="ref_cobranca" type="hidden" value="0" size="5">
+	<input name="ref_origem" type="hidden" value="1" size="12"
+		maxlength="12">
+	<input type="hidden" name="origem" size="38" value="Indefinida">
+	<input name="ref_historico" type="hidden" value="1" size="5">
+	<input name="ref_local" type="hidden" value="1" size="5">
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data
+		Inicial<br>
+		&nbsp;(dd/mm/aaaa)</font></td>
+		<td><input name="dt_inicial" type="text" size="12" maxlength="10"> <font
+			face="Verdana, Arial, Helvetica, sans-serif" size="1"> </font></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data
+		Final<br>
+		&nbsp;(dd/mm/aaaa)</font></td>
+		<td><input name="dt_final" type=text size="12" maxlength="10"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Média
+		Aprovação sem Exame</font></td>
+		<td><input name="media" type="text" size="5" maxlength="5" value="60">
+		</td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Média
+		Final Aprovação</font></td>
+		<td><input name="media_final" type="text" size="5" maxlength="5"
+			value="60"></td>
+	</tr>
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data
+		Início Aulas (Caderno de Chamadas)<br>
+		&nbsp;(dd/mm/aaaa)</font></font></td>
+		<td><input name="dt_inicio_aula" type=text size="10" maxlength="10"
+			value=""></font></td>
+	</tr>
+	<input name="tx_acresc" id="tx_acresc" value="" type="hidden" size="5">
+	<input name="tx_cancel" id="tx_cancel" value="" type="hidden" size="5">
+	<input name="ref_historico_taxa" type="hidden" value="1" size="5">
+	<input name="ref_historico_cancel" type="hidden" value="1" size="5">
+	<input name="ref_status_vest" type=hidden value="1">
+	<tr>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Gerar
+		financeiro?</font></td>
+		<td><font face="Verdana, Arial, Helvetica, sans-serif" size="2"> <input
+			type="radio" name="fl_gera_financeiro" value="yes">Sim <input
+			type="radio" name="fl_gera_financeiro" value="no" checked="checked" />Não</font></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<hr size="1">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<div align="center"><input type="submit" name="Submit"
+			value=" Salvar "> <input type="reset" name="Submit2" value=" Limpar ">
+		<input type="button" name="Button" value=" Voltar "
+			onClick="location='consulta_periodos.phtml'"></div>
+		</td>
+	</tr>
+</table>
 </div>
 </form>
 </body>

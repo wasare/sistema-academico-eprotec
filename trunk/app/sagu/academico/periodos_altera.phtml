@@ -1,14 +1,18 @@
-<?php require("../../../lib/common.php"); ?>
-<? require("../../../lib/config.php"); ?>
-<? require("../lib/SQLCombo.php3"); ?>
-<? require("../lib/InvData.php3"); ?>
-<? require("../lib/GetOrigem.php3"); ?>
-<?
+<?php 
 
-  $op1_options = SQLArray($sql_periodos_academico);
-  $op2_options = SQLArray("select id || ' - ' || substr(descricao,1,30), id from historicos where fl_extinto<>true order by id");
-  $op_opcoes5 = SQLArray("select descricao,id from tipos_cobr");
-  $op_opcoes6 = SQLArray("select descricao,id from locais_pgto");
+require("../../../lib/common.php");
+require("../lib/SQLCombo.php3");
+require("../lib/InvData.php3"); 
+require("../lib/GetOrigem.php3"); 
+
+
+$op1_options = SQLArray($sql_periodos_academico);
+$op2_options = SQLArray("select id || ' - ' || substr(descricao,1,30), id from historicos where fl_extinto<>true order by id");
+$op_opcoes5 = SQLArray("select descricao,id from tipos_cobr");
+$op_opcoes6 = SQLArray("select descricao,id from locais_pgto");
+
+
+$id = $_GET['id'];
 
 ?>
 <html>
@@ -18,9 +22,7 @@ function _init()
 {
   document.myform.ref_anterior.focus();
 }
-</script>
 
-<script language="JavaScript">
 function buscaOrig()
 {
   var title = 'Seleção Origens';
@@ -43,9 +45,7 @@ function setOrig(id,nome)
   document.myform.ref_origem.value = id;
   document.myform.origem.value = nome;
 }
-</script>
 
-<script language="JavaScript">
 function ChangeOption(opt,fld)
 {
   var i = opt.selectedIndex;
@@ -113,11 +113,10 @@ function ChangeCode(fld_name,op_name)
   return true;
 }
 </script>
-<script language="PHP">
+<?php 
 
 CheckFormParameters(array("id"));
 
-//$id = $_GET['id'];
 
 $conn = new Connection;
 
@@ -186,7 +185,7 @@ $dt_inicio_aula = InvData($dt_inicio_aula);
 
 $origem = GetOrigem($ref_origem, true);
 
-</script>
+?>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
 <form method="post" action="post/periodos_altera.php3" name="myform">

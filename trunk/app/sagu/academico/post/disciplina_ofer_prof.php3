@@ -1,10 +1,14 @@
-<? require("../../../../lib/common.php"); ?>
+<?php
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php");
 
-  CheckFormParameters(array(
+
+$ref_disciplina_ofer  = $_POST['ref_disciplina_ofer'];
+$ref_disciplina_compl = $_POST['ref_disciplina_compl'];
+$ref_professor = $_POST['ref_professor'];
+$professor = $_POST['professor'];
+
+CheckFormParameters(array(
                             "ref_disciplina_ofer",
                             "ref_disciplina_compl",
                             "ref_professor"));
@@ -21,9 +25,9 @@ $sql = "insert into disciplinas_ofer_prof (" .
        "                               '$ref_disciplina_ofer'," .
        "                               '$ref_disciplina_compl'," .
        "                               '$ref_professor')" ;
-       
-       
  
+ 
+
 
 $ok = $conn->Execute($sql);
 
@@ -35,7 +39,4 @@ SuccessPage("Inclusao de mais de um professor em uma Disciplina Oferecida",
             "location='../atualiza_disciplina_ofer.phtml?id=$ref_disciplina_ofer'",
             "");
 
-</script>
-</HEAD>
-<BODY></BODY>
-</html>
+?>

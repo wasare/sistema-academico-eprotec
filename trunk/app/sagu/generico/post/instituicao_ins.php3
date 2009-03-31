@@ -1,10 +1,12 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
-CheckFormParameters(array(
-                          "nome"));
+require("../../../../lib/common.php");
+
+$nome       = $_POST['nome'];
+$sucinto    = $_POST['sucinto'];
+$nome_atual = $_POST['nome_atual']; 
+
+CheckFormParameters(array("nome"));
 
 $conn = new Connection;
 
@@ -52,8 +54,9 @@ SuccessPage("Inclusão de Instituição",
             "O código da Instituição é $id",
             "location='../consulta_inclui_instituicoes.phtml'");
 
-</script>
-
+?>
+<html>
+<head>
 </head>
 <body>
 </body>

@@ -1,6 +1,10 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<HTML><HEAD><script language="PHP">
+require("../../../../lib/common.php");
+
+$ref_curso      = $_GET['ref_curso'];
+$ref_disciplina = $_GET['ref_disciplina'];
+$ref_campus     = $_GET['ref_campus'];
 
 $conn = new Connection;
 
@@ -16,7 +20,5 @@ SaguAssert($ok,"Não foi possível de excluir o registro!");
 
 SuccessPage("Registro excluído com sucesso",
             "location='../consulta_inclui_cursos_disciplinas.phtml'");
-</script>
-</HEAD>
-<BODY></BODY>
-</HTML>
+
+?>

@@ -1,73 +1,19 @@
-<? require("../../../lib/common.php"); ?>
-<? require("../../../lib/config.php"); ?>
-<? require("../lib/InvData.php3"); ?>
-<? require("../lib/SQLCombo.php3"); ?>
+<?php
 
-<? $op1_opcoes = SQLArray("select nome, id from dias order by id");?>
-<? $op3_opcoes = SQLArray("select nome, id from dias order by id");?>
-<? $op5_opcoes = SQLArray("select descricao || ' - ' || id, id from regimes_disciplinas order by id");?>
+require("../../../lib/common.php");
+require("../lib/InvData.php3"); 
+require("../lib/SQLCombo.php3");
 
-<html>
-<head>
 
-<script language="Javascript">
-function ChangeOption(opt,fld)
-{
-  var i = opt.selectedIndex;
+$id            = $_GET['id'];
+$ref_campus    = $_GET['ref_campus'];
+$ref_professor = $_GET['ref_professor'];
 
-  if ( i != -1 )
-    fld.value = opt.options[i].value;
-  else
-    fld.value = '';
-}
 
-function ChangeOp1()
-{
-  ChangeOption(document.myform.op1,document.myform.dia_semana);
-}
+$op1_opcoes = SQLArray("select nome, id from dias order by id");
+$op3_opcoes = SQLArray("select nome, id from dias order by id");
+$op5_opcoes = SQLArray("select descricao || ' - ' || id, id from regimes_disciplinas order by id");
 
-function ChangeOp2()
-{
-  ChangeOption(document.myform.op2,document.myform.ref_horario);
-}
-
-function ChangeOp3()
-{
-  ChangeOption(document.myform.op3,document.myform.dia_semana_aux);
-}
-
-function ChangeOp4()
-{
-  ChangeOption(document.myform.op4,document.myform.ref_horario_aux);
-}
-
-function ChangeOp5()
-{
-  ChangeOption(document.myform.op5,document.myform.ref_regime);
-}
-
-function ChangeCode(fld_name,op_name)
-{ 
-  var field = eval('document.myform.' + fld_name);
-  var combo = eval('document.myform.' + op_name);
-  var code  = field.value;
-  var n     = combo.options.length;
-  for ( var i=0; i<n; i++ )
-  {
-    if ( combo.options[i].value == code )
-    {
-      combo.selectedIndex = i;
-      return;
-    }
-  }
-
-  field.focus();
-
-  return true;
-}
-</script>
-
-<script language="PHP">
 
 $conn = new Connection;
 
@@ -152,9 +98,64 @@ $op2_opcoes = SQLArray("select turno || ' - ' || hora_ini || ' às ' || hora_fim 
 
 $op4_opcoes = SQLArray("select turno || ' - ' || hora_ini || ' às ' || hora_fim || ' / ' || descricao, id from horarios where ref_periodo = '$ref_periodo' order by id;");
 
-</script>
+?>
+<html>
+<head>
+<script language="Javascript">
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
 
-<script language="JavaScript">
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp1()
+{
+  ChangeOption(document.myform.op1,document.myform.dia_semana);
+}
+
+function ChangeOp2()
+{
+  ChangeOption(document.myform.op2,document.myform.ref_horario);
+}
+
+function ChangeOp3()
+{
+  ChangeOption(document.myform.op3,document.myform.dia_semana_aux);
+}
+
+function ChangeOp4()
+{
+  ChangeOption(document.myform.op4,document.myform.ref_horario_aux);
+}
+
+function ChangeOp5()
+{
+  ChangeOption(document.myform.op5,document.myform.ref_regime);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  field.focus();
+
+  return true;
+}
 
 var cmp;
 
@@ -251,19 +252,16 @@ function setResult(arg1,arg2,arg3)
         </table>
       </td>
     </tr>
-     
-     
     <tr> 
       <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Dia da Semana</font>
       </td>
       <td width="70%"> 
         <input name="dia_semana" type=text size="6" value="<?echo($dia_semana)?>" onChange="ChangeCode('dia_semana','op1')">
         <font color="#000000"> 
-        <script language="PHP">ComboArray("op1",$op1_opcoes,$dia_semana,"ChangeOp1()");</script>
+        <?php ComboArray("op1",$op1_opcoes,$dia_semana,"ChangeOp1()");?>
         </font>
       </td>
     </tr>
-
     <tr> 
       <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Horário</font>
       </td>
@@ -276,7 +274,7 @@ function setResult(arg1,arg2,arg3)
 		}
 		?>" onChange="ChangeCode('ref_horario','op2')">
         <font color="#000000"> 
-        <script language="PHP">ComboArray("op2",$op2_opcoes,$ref_horario,"ChangeOp2()");</script>
+        <?php ComboArray("op2",$op2_opcoes,$ref_horario,"ChangeOp2()");?>
         </font>
       </td>
     </tr>
@@ -291,7 +289,6 @@ function setResult(arg1,arg2,arg3)
         </font>
       </td>
     </tr>
-
     <tr> 
       <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nº Créditos</font></td>
       <td width="70%"> 
@@ -371,11 +368,10 @@ function setResult(arg1,arg2,arg3)
       <td width="70%"> 
         <input name="dia_semana_aux" type=text size="6" value="<?echo($dia_semana_aux)?>" onChange="ChangeCode('dia_semana_aux','op3')">
         <font color="#000000"> 
-        <script language="PHP">ComboArray("op3",$op3_opcoes,$dia_semana_aux,"ChangeOp3()");</script>
+        <?php ComboArray("op3",$op3_opcoes,$dia_semana_aux,"ChangeOp3()");?>
         </font>
       </td>
     </tr>
-
     <tr> 
       <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Horário Auxiliar</font>
       </td>
@@ -386,7 +382,6 @@ function setResult(arg1,arg2,arg3)
         </font>
       </td>
     </tr>
-
     <tr> 
       <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nº Sala Auxiliar</font></td>
       <td width="70%"> 

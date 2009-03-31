@@ -1,13 +1,28 @@
 <?php
 
 require("../../../../lib/common.php");
-//require("../../lib/vestibular/common.php3");
 require("../../lib/InvData.php3");
 
-?>
-<html>
-<head>
-<?php
+
+$id                   = $_POST['id'];
+$descricao            = $_POST['descricao'];
+$ref_anterior         = $_POST['ref_anterior'];
+$ref_cobranca         = $_POST['ref_cobranca'];
+$ref_origem           = $_POST['ref_origem'];
+$origem               = $_POST['origem'];
+$ref_historico        = $_POST['ref_historico'];
+$ref_local            = $_POST['ref_local'];
+$dt_inicial           = $_POST['dt_inicial'];
+$dt_final             = $_POST['dt_final'];
+$media                = $_POST['media'];
+$media_final          = $_POST['media_final'];
+$dt_inicio_aula       = $_POST['dt_inicio_aula'];
+$tx_acresc            = $_POST['tx_acresc'];
+$tx_cancel            = $_POST['tx_cancel'];
+$ref_historico_taxa   = $_POST['ref_historico_taxa'];
+$ref_historico_cancel = $_POST['ref_historico_cancel'];
+$ref_status_vest      = $_POST['ref_status_vest'];
+$fl_gera_financeiro   = $_POST['fl_gera_financeiro'];
 
 CheckFormParameters(array("id",
                           "descricao",
@@ -100,6 +115,8 @@ SuccessPage("Inclusão de Período",
             "O código do período é <b>$id</b>.",
             "location='../consulta_periodos.phtml'");
 ?>
+<html>
+<head>
 </HEAD>
 <BODY></BODY>
 </HTML>

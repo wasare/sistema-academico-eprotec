@@ -1,6 +1,8 @@
-<? require("../../../../lib/common.php"); ?>
+<?php
 
-<script language="PHP">
+require("../../../../lib/common.php");
+
+$id = $_GET['id'];
 
 $conn = new Connection;
 
@@ -18,4 +20,4 @@ SaguAssert($ok,"Não foi possível de excluir o registro!");
 
 SuccessPage("Disciplina excluída com sucesso",
             "location='../consulta_disciplinas.phtml'");
-</script>
+?>

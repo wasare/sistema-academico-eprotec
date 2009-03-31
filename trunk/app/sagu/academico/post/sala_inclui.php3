@@ -1,9 +1,12 @@
-<? require("../../../../lib/common.php"); ?>
-<? require("../../lib/InvData.php3"); ?>
-<html>
-<head>
-<title>Sala Cadastrada</title>
-<?
+<?php
+
+require("../../../../lib/common.php");
+require("../../lib/InvData.php3");
+
+
+$sala = $_POST['sala'];
+$ref_campus = $_POST['ref_campus'];
+$capacidade = $_POST['capacidade'];
 
 CheckFormParameters( array("sala",
                            "ref_campus",
@@ -35,9 +38,10 @@ SuccessPage("Inclusão de Salas",
 
 
 ?>
-
+<html>
+<head>
+<title>Sala Cadastrada</title>
 </head>
-
 <body>
 </body>
 </html>

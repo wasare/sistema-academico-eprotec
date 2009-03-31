@@ -1,10 +1,11 @@
-<? require("../../../../lib/common.php"); ?>
-<html>
-<head>
-<script language="PHP">
+<?php
 
-CheckFormParameters(array("id",
-                          "descricao_depto"));
+require("../../../../lib/common.php"); 
+
+$id = $_POST['id'];
+$descricao_depto = $_POST['descricao_depto'];
+
+CheckFormParameters(array("id","descricao_depto"));
 
 $conn = new Connection;
 
@@ -25,4 +26,6 @@ SaguAssert($ok,"Não foi possível alterar o registro!");
 SuccessPage("Alteração de Departamento",
             "location='../consulta_inclui_departamentos.phtml'",
             "Departamento alterado com sucesso.");
-</script>
+?>
+<html>
+<head>

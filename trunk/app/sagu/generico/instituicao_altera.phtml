@@ -1,7 +1,9 @@
-<? require("../../../lib/common.php"); ?>
-<html>
-<head>
-<script language="PHP">
+<?php 
+
+require("../../../lib/common.php"); 
+
+$id = $_GET['id'];
+
 
 CheckFormParameters(array("id"));
 
@@ -29,7 +31,9 @@ $query->Close();
 
 $conn->Close();
 
-</script>
+?>
+<html>
+<head>
 <script language="JavaScript">
   function _init()
   {

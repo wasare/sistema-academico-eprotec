@@ -1,8 +1,12 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php"); 
+
+
+$ref_empresa   = $_POST['ref_empresa'];
+$nome_campus   = $_POST['nome_campus'];
+$cidade_campus = $_POST['cidade_campus'];
+
 
 CheckFormParameters(array("ref_empresa",
                           "nome_campus",
@@ -38,4 +42,6 @@ SaguAssert($ok,"Nao foi possivel inserir o registro!");
 SuccessPage("Inclusão de Campus",
             "location='../campus_inclui.phtml'",
             "O código do campus é <b>$id_campus</b>.");
-</script>
+?>
+<html>
+<head>

@@ -55,7 +55,7 @@ require_once ("lib/common.php");
                                             <li><a href="app/sagu/academico/cadastro_salas.phtml" target="frame2">Salas</a></li>
                                             <li><a href="app/sagu/academico/carimbos.phtml" target="frame2">Carimbos</a></li>
                                             <!--<li><a href="app/sagu/academico/setores.phtml" target="frame2">Setores</a></li>-->
-                                            <li><a href="app/sagu/consulta_inclui_usuarios.phtml" target="frame2">Usu&aacute;rios do sistema</a></li>
+                                            <li><a href="app/sagu/usuarios/consulta_inclui_usuarios.phtml" target="frame2">Usu&aacute;rios do sistema</a></li>
                                             <li><a><hr></a></li>
                                             <li><a href="app/acessowebdiario/index.php" target="frame2">Acesso WebDi&aacute;rio</a></li>
                                             <li><a href="<?php echo $BASE_URL . 'app/webdiario'; ?>" target="frame2">WebDi&aacute;rio</a></li>

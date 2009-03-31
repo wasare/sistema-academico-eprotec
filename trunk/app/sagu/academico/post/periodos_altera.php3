@@ -1,28 +1,35 @@
-<? require("../../../../lib/common.php"); ?>
-<? require("../../lib/InvData.php3"); ?>
-<html>
-<head>
-<script language="PHP">
+<?php 
+
+require("../../../../lib/common.php");
+require("../../lib/InvData.php3"); 
+
+$id                   = $_POST['id'];
+$ref_anterior         = $_POST['ref_anterior'];
+$ref_cobranca         = $_POST['ref_cobranca'];
+$ref_historico        = $_POST['ref_historico'];
+$descricao            = $_POST['descricao'];
+$dt_inicial           = $_POST['dt_inicial'];
+$dt_final             = $_POST['dt_final'];
+$ref_historico_taxa   = $_POST['ref_historico_taxa'];
+$ref_historico_cancel = $_POST['ref_historico_cancel'];
+$ref_local            = $_POST['ref_local'];
+$ref_origem           = $_POST['ref_origem'];
+$media                = $_POST['media'];
+$media_final          = $_POST['media_final'];
+$dt_inicio_aula       = $_POST['dt_inicio_aula'];
+
 
 CheckFormParameters(array("id",
                           "ref_anterior",
                           "ref_cobranca",
                           "ref_historico",
-                          //"ref_historico_dce",
                           "descricao",
                           "dt_inicial",
                           "dt_final",
-                          //"tx_dce_normal",
-                          //"tx_dce_vest",
                           "ref_historico_taxa",
                           "ref_historico_cancel",
-                          //"tx_acresc",
-                          //"tx_cancel",
-                          //"tx_banco",
-                          //"ref_status_vest",
                           "ref_local",
                           "ref_origem",
-                          //"fl_livro_matricula",
                           "media",
                           "media_final",
                           "dt_inicio_aula"));
@@ -52,20 +59,15 @@ $sql = " update periodos set " .
        "    ref_cobranca = '$ref_cobranca'," .
        "    ref_origem = '$ref_origem'," .
        "    ref_historico = '$ref_historico'," .
-//       "    ref_historico_dce = '$ref_historico_dce'," .
        "    descricao = '$descricao'," .
        "    dt_inicial = '$dt_inicial'," .
        "    dt_final = '$dt_final'," .
-//       "    tx_dce_normal = '$tx_dce_normal'," .
-//       "    tx_dce_vest = '$tx_dce_vest'," .
        "    ref_historico_taxa = '$ref_historico_taxa'," .
        "    ref_historico_cancel = '$ref_historico_cancel'," .
        "    tx_acresc = '$tx_acresc'," .
        "    tx_cancel = '$tx_cancel'," .
        "    tx_banco = '$tx_banco'," .
-//       "    ref_status_vest = '$ref_status_vest'," .
        "    ref_local = '$ref_local'," .
-//       "    fl_livro_matricula = '$fl_livro_matricula'," .
        "    fl_gera_financeiro = '$fl_gera_financeiro'," .
        "    media = '$media', " .
        "    media_final = '$media_final', " .
@@ -81,4 +83,6 @@ SaguAssert($ok,"Não foi possível alterar o registro!");
 SuccessPage("Alteração de Período",
             "location='../consulta_periodos.phtml'",
             "Período alterado com sucesso.");
-</script>
+?>
+<html>
+<head>

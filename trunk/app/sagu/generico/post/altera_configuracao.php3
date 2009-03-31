@@ -1,8 +1,17 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php"); 
+
+$id           = $_POST['id'];
+$razao_social = $_POST['razao_social'];
+$sigla        = $_POST['sigla'];
+$rua          = $_POST['rua'];
+$complemento  = $_POST['complemento'];
+$bairro       = $_POST['bairro'];
+$cep          = $_POST['cep'];
+$ref_cidade   = $_POST['ref_cidade'];
+
+
 CheckFormParameters(array("id","razao_social","sigla","rua","complemento","bairro","cep","ref_cidade"));
 
 $conn = new Connection;
@@ -31,7 +40,9 @@ SaguAssert($ok,"Nao foi possivel de atualizar o registro!");
 SuccessPage("Alteração da Empresa",
 	        "location='../configuracao_empresa.phtml'",
 	        "As informações da empresa <b>$nome</b> foram atualizadas com sucesso.");
-</script>
+?>
+<html>
+<head>
 </head>
 <body>
 </body>

@@ -1,11 +1,18 @@
-<? require("../../../../lib/common.php"); ?>
-<? require("../../lib/VerificaChaveUnica.php3"); ?>
+<?php
 
-<html>
-<head>
-<script language="PHP">
-CheckFormParameters(array("id",
-                          "descricao_disciplina"));
+require("../../../../lib/common.php");
+require("../../lib/VerificaChaveUnica.php3");
+
+
+$id                   = $_POST['id'];
+$ref_grupo            = $_POST['ref_grupo'];
+$ref_departamento     = $_POST['ref_departamento'];
+$descricao_disciplina = $_POST['descricao_disciplina'];
+$descricao_extenso    = $_POST['descricao_extenso'];
+$num_creditos         = $_POST['num_creditos'];
+$carga_horaria        = $_POST['carga_horaria'];
+
+CheckFormParameters(array("id","descricao_disciplina"));
 
 SaguAssert(VerificaChaveUnica("disciplinas", "id", "$id"), "Código já existente");
 
@@ -34,7 +41,7 @@ $sql = " insert into disciplinas ( " .
 $ok = $conn->Execute($sql);
 
 $conn->Finish();
-$conn->Close(); 
+$conn->Close();
 
 SaguAssert($ok,"Nao foi possivel inserir o registro!");
 
@@ -42,9 +49,4 @@ SuccessPage("Inclusão de Disciplinas",
             "location='../disciplinas.phtml'",
             "Disciplina incluída com sucesso!!!",
             "location='../consulta_disciplinas.phtml'");
-
-</script>
-</head>
-<body>
-</body>
-</html>
+?>

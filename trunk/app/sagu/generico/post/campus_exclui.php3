@@ -1,8 +1,8 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php");
+
+$id = $_GET['id'];
 
 CheckFormParameters(array("id"));
 
@@ -22,7 +22,9 @@ $conn->Close();
 SaguAssert($ok,"Nao foi possivel excluir o registro!");
 SuccessPage("Exclusão de Campus",
             "location='../campus_inclui.phtml'");
-</script>
+?>
+<html>
+<head>
 </head>
 <body>
 </body>

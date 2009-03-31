@@ -1,7 +1,12 @@
-<? require("../../../lib/common.php"); ?>
-<? require("../lib/SQLCombo.php3"); ?>
-<? $op1_opcoes = SQLArray("select descricao,id from cursos order by descricao"); ?>
-<? $op2_opcoes = SQLArray("select nome_campus, id from campus order by nome_campus"); ?>
+<?php
+
+require("../../../lib/common.php");
+require("../lib/SQLCombo.php3");
+
+$op1_opcoes = SQLArray("select descricao,id from cursos order by descricao");
+$op2_opcoes = SQLArray("select nome_campus, id from campus order by nome_campus");
+
+?>
 <html>
 <head>
 <script language="JavaScript">
@@ -46,8 +51,7 @@ function ChangeCode(fld_name,op_name)
 
   return true;
 }
-</script>
-<script language="JavaScript">
+
 var tipo_busca;
 
 function buscaOpcao(pf_opcao)
@@ -99,7 +103,6 @@ function setResult(arg1,arg2)
   }
 }
 </script>
-
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
 <form method="post" action="post/cursos_disciplinas.php3" name="myform">
@@ -134,9 +137,7 @@ function setResult(arg1,arg2)
       <td bgcolor="#CCCCFF"><b><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font></b></td>
       <td> 
         <input name="ref_campus" type=text value="1" size="5">
-        <script language="PHP">
-ComboArray("op2",$op2_opcoes,"0","ChangeOp2()");
-</script>
+        <?php ComboArray("op2",$op2_opcoes,"0","ChangeOp2()");?>
       </td>
     </tr>
     <tr> 
