@@ -1,31 +1,36 @@
 <?php 
 require("../../lib/common.php");
-require("../../lib/config.php");
+require_once("../../configuracao.php");
+require_once("../../lib/adodb/adodb.inc.php");
 
-function ListaPreRequisitos( $ref_ofer )
+//Criando a classe de conexao ADODB
+$Conexao = NewADOConnection("postgres");
+
+//Setando como conexao persistente
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+
+
+function ListaPreRequisitos( $diario_id, $curso_id )
 {
+    global $Conexao;
    
-   $conn = new Connection;
-
-   $conn->open();
-
    $sql = " select id, " .
           "        ref_curso, " .
-          "        curso_desc(curso_disciplina_ofer($ref_ofer)), " .
+          "        curso_desc(curso_disciplina_ofer($diario_id)), " .
           "        ref_disciplina, " .
           "        descricao_disciplina(ref_disciplina), " .
           "        ref_disciplina_pre, " .
           "        descricao_disciplina(ref_disciplina_pre) " .
 	      " from pre_requisitos ";
           
-   if ( is_numeric($ref_ofer) ) 
+   if ( is_numeric($diario_id) AND is_numeric($curso_id) ) 
    {
-      $sql .= " where ref_disciplina IN ( select get_disciplina_de_disciplina_of($ref_ofer) )";
+      $sql .= " where ref_disciplina IN ( select get_disciplina_de_disciplina_of($diario_id) ) AND ref_curso = $curso_id ";
    }
           
    $sql .= " order by ref_curso ;";
 
-   $query = $conn->CreateQuery($sql);
+   $query = $Conexao->Execute($sql);
 
    echo("<center><table width=\"95%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
    echo ("<tr><td>&nbsp;</td></tr>");
@@ -46,16 +51,17 @@ function ListaPreRequisitos( $ref_ofer )
    $fg2 = "#000099";
 
    $aux_curso = -1;
-   
-   while( $query->MoveNext() )
+  
+
+   while( !$query->EOF )
    {
-     list ( $id, 
-            $ref_curso,
-            $nome_curso,
-	        $ref_disciplina,
-	        $disciplina,
-            $ref_disciplina_pre,
-	        $disciplina_pre) = $query->GetRowValues();
+      $id					= $query->fields[0];
+      $ref_curso			= $query->fields[1];
+      $nome_curso			= $query->fields[2];
+	  $ref_disciplina		= $query->fields[3];
+	  $disciplina			= $query->fields[4];
+      $ref_disciplina_pre	= $query->fields[5];
+	  $disciplina_pre		= $query->fields[6];
 
    
      if ($aux_curso != $ref_curso)
@@ -93,13 +99,12 @@ function ListaPreRequisitos( $ref_ofer )
      echo("  </tr>");
      
      $i++;
+	 $query->MoveNext();
 
    }
 
    echo("<tr><td colspan=\"8\" align=\"center\"><hr></td></tr>");
    echo("</table></center>");
-
-   $query->Close();
 
 }
 ?> 
@@ -110,7 +115,7 @@ function ListaPreRequisitos( $ref_ofer )
 
 <body bgcolor="#FFFFFF">
   <p>
-    <?php ListaPreRequisitos($_GET['o']); ?>
+    <?php ListaPreRequisitos($_GET['o'], $_GET['c']); ?>
   </p>
 </body>
 </html>

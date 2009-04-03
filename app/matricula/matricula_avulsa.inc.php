@@ -9,10 +9,9 @@
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require("../../lib/common.php");
-require("../../lib/config.php");
-require("../../configuracao.php");
-require("../../lib/adodb/adodb.inc.php");
+require_once("../../lib/common.php");
+require_once("../../configuracao.php");
+require_once("../../lib/adodb/adodb.inc.php");
 
 
 //Criando a classe de conexao ADODB
