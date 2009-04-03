@@ -2,18 +2,18 @@
 
 /**
 * Seleciona as disciplinas para matricular
-* @author Santiago Silva Pereira
-* @version 1
-* @since 23-01-2009
+* @author Santiago Silva Pereira, Wanderson S. Reis
+* @version 2
+* @since 03-04-2009
 **/
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require("../../lib/common.php");
-require("../../lib/config.php");
-require("../../configuracao.php");
-require("../../lib/adodb/adodb.inc.php");
+require_once("../../lib/common.php");
+require_once("../../configuracao.php");
+require_once("../../lib/adodb/adodb.inc.php");
 
+require_once('matricula.inc.php');
 
 //Criando a classe de conexao ADODB
 $Conexao = NewADOConnection("postgres");
@@ -294,103 +294,22 @@ while(!$RsDiarioMatricular->EOF){
         $ConfereDiario = $RsConfereDiario->fields[0];
     }
 
-    //echo '$ConfereDiario: '.$ConfereDiario;
 
-    // -- Verifica se o aluno ja foi aprovado nesta disciplina ou em disciplina equivalente
-    // CONSIDERA SOMENTE SOMATORIO FINAL DE NOTA E FALTAS
-        $sqlEquivalente = "
-        SELECT DISTINCT
-        COUNT(d.id)
-        FROM
-                matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s
-        WHERE
-                m.ref_pessoa = p.id AND
-                p.id = '$aluno_id' AND
-                m.ref_disciplina_ofer = o.id AND
-                d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
-                s.id = o.ref_periodo AND
-                d.id IN (
-                  select distinct ref_disciplina_equivalente
-                        from disciplinas_equivalentes
-                        where ref_disciplina IN ( select get_disciplina_de_disciplina_of('$ofer') )
-                ) AND
-                m.nota_final >= 60 AND
-                m.num_faltas <= ( d.carga_horaria * 0.25); ";
-
-        $RsEquivalente = $Conexao->Execute($sqlEquivalente);
-        $equivalentes = $RsEquivalente->fields[0];
-
-        $txt_equivalente = '';
-        if ($equivalentes > 0 )
-            $txt_equivalente =  ' - <a href="#">[EQUIVALENTE JÁ CURSADA]</a>';
-
-      // -- Verifica se foi aprovado nesta mesma disciplina a qualquer tempo
-        $sqlDisciplina = "
-        SELECT DISTINCT
-        COUNT(d.id)
-        FROM
-                matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s
-        WHERE
-                m.ref_pessoa = p.id AND
-                p.id = '$aluno_id' AND
-                m.ref_disciplina_ofer = o.id AND
-                d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
-                s.id = o.ref_periodo AND
-                d.id IN ( select get_disciplina_de_disciplina_of('$ofer') ) AND
-                m.nota_final >= 60 AND
-                m.num_faltas <= ( d.carga_horaria * 0.25); ";
-
-        //echo $sqlDisciplina; die;
-        $RsDisciplina = $Conexao->Execute($sqlDisciplina);
-        $cursadas = $RsDisciplina->fields[0];
-        
+    // -- Verifica se o aluno foi aprovado ou dispensado nesta disciplina ou em disciplina equivalente a qualquer tempo
         $txt_cursada = '';
-        if ($cursadas > 0 )
+        $flag_cursada = verificaAprovacao($aluno_id,$ref_curso,$ofer);
+        if ($flag_cursada)
             $txt_cursada =  ' - <font color="orange"><strong>[ CURSADA ]</strong></font>';
-                   
-
-   // ^ Verifica se o aluno ja foi aprovado nesta disciplina ou em disciplina equivalente ^ //
-
-    // -- Verifica se o aluno ja eliminou os pré-requisitos
-    // CONSIDERA SOMENTE SOMATORIO FINAL DE NOTA E FALTAS
-        $sqlPreRequisito = "
-        SELECT DISTINCT
-        COUNT(d.id)
-        FROM
-            	matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s
-        WHERE
-             	m.ref_pessoa = p.id AND
-                p.id = '$aluno_id' AND
-                m.ref_disciplina_ofer = o.id AND
-                d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
-                s.id = o.ref_periodo AND
-                d.id IN (
-                  select distinct ref_disciplina_pre
-                        from pre_requisitos
-                        where ref_disciplina IN ( select get_disciplina_de_disciplina_of('$ofer') )
-                ) AND
-                ( m.nota_final < 60 OR
-                m.num_faltas > ( d.carga_horaria * 0.25) ); ";
-
-        // echo $sqlPreRequisito; //die();
-        $RsPreRequisito = $Conexao->Execute($sqlPreRequisito);
-        $requisitos = $RsPreRequisito->fields[0];
-      
+    
+	// -- Verifica se o aluno ja eliminou os pre-requisitos
+        $flag_pre_requisito = verificaRequisitos($aluno_id,$ref_curso,$ofer);
         $txt_pre_requisito = '';
-        if ($requisitos > 0 ) 
-            $txt_pre_requisito =  ' - <a href="consulta_pre_requisito.php?o='.$ofer.'" target="_blank" title="Consultar pr&eacute;-requisito" >[ FALTA PR&Eacute;-REQUISITO ]</a>';
-        
-
-    // -- Verifica se o aluno ja eliminou os pré-requisitos ^ //
+		if ($flag_pre_requisito) 
+            $txt_pre_requisito =  ' - <a href="consulta_pre_requisito.php?o='.$ofer.'&c='. $ref_curso .'" target="_blank" title="Consultar pr&eacute;-requisito" >[ FALTA PR&Eacute;-REQUISITO ]</a>';
 
 
     if($ConfereDiario == 'f') {
-
-        // AND $cursadas == 0
-        if ( $requisitos == 0 )  {
+        if ( !$flag_pre_requisito )  {
         	$DiarioMatricular .= "<input type=\"checkbox\" name=\"id_diarios[]\" ".
                    "id=\"id_diarios[]\" value=\"$ofer\" onclick=\"Exibe('matricular')\" />";
              $disciplinas_liberadas++;
