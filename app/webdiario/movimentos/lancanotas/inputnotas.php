@@ -42,7 +42,8 @@ $sql12 = "SELECT   DISTINCT
 											d.ref_diario_avaliacao = '$getprova' )
 			WHERE
 				(matricula.ref_disciplina_ofer = '$getofer') AND
-				(matricula.dt_cancelamento is null)
+				(matricula.dt_cancelamento is null) AND
+				(matricula.ref_motivo_matricula = 0)
 			ORDER BY lower(to_ascii(pessoas.nome));";
 //  d.rel_diario_formulas_grupo = '$grupo' AND
 
@@ -60,7 +61,9 @@ $sql12 .= "SELECT   DISTINCT
                                             d.ref_diario_avaliacao <> '7')
             WHERE
                 (matricula.ref_disciplina_ofer = '$getofer') AND
-                (matricula.dt_cancelamento is null)
+                (matricula.dt_cancelamento is null) AND
+				(matricula.ref_motivo_matricula = 0)
+
             GROUP BY
                      matricula.ordem_chamada, pessoas.nome, pessoas.id, pessoas.ra_cnec
             ORDER BY pessoas.nome ";
@@ -77,7 +80,7 @@ $sql12 .= "SELECT DISTINCT
                diario_notas d ON (id_ref_pessoas = pessoas.id AND
                                  d.ra_cnec = matricula.ref_pessoa AND d.id_ref_periodos = '$getperiodo' AND d.d_ref_disciplina_ofer = '$getofer' AND d.ref_diario_avaliacao = '$prova')
             WHERE
-               (matricula.ref_disciplina_ofer = '$getofer') AND (matricula.dt_cancelamento is null)";
+               (matricula.ref_disciplina_ofer = '$getofer') AND (matricula.dt_cancelamento is null) AND (matricula.ref_motivo_matricula = 0)";
 
 // AND d.rel_diario_formulas_grupo = '$grupo'
 
@@ -92,7 +95,7 @@ $sql12 .= "SELECT DISTINCT
                diario_notas d ON (id_ref_pessoas = pessoas.id AND
                                  d.ra_cnec = matricula.ref_pessoa AND d.id_ref_periodos = '$getperiodo' AND d.d_ref_disciplina_ofer = '$getofer' AND d.ref_diario_avaliacao = '7')
             WHERE
-               (matricula.ref_disciplina_ofer = '$getofer') AND (matricula.dt_cancelamento is null)";
+               (matricula.ref_disciplina_ofer = '$getofer') AND (matricula.dt_cancelamento is null) AND (matricula.ref_motivo_matricula = 0)";
 
 
 // d.rel_diario_formulas_grupo = '$grupo'
@@ -121,7 +124,8 @@ FROM
 WHERE
   (matricula.ref_periodo = '$getperiodo') AND
   (matricula.ref_disciplina_ofer = '$getofer') AND
-  (matricula.dt_cancelamento isnull)
+  (matricula.dt_cancelamento isnull) AND
+  (matricula.ref_motivo_matricula = 0)
 ORDER BY
   matricula.ordem_chamada;";
 
