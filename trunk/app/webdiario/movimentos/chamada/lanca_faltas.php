@@ -147,7 +147,8 @@ FROM
 WHERE
   (matricula.ref_periodo = '$periodo') AND
   (matricula.ref_disciplina_ofer = '$oferecida') AND 
-  (matricula.dt_cancelamento is null)
+  (matricula.dt_cancelamento is null) AND
+  (matricula.ref_motivo_matricula = 0)
 ORDER BY
    lower(to_ascii(pessoas.nome));"; 
   
