@@ -6,7 +6,6 @@
 
 
 require_once("../../../lib/common.php");
-require_once("../../../lib/config.php");
 require_once("../../../lib/properties.php");
 
 
@@ -64,7 +63,7 @@ class  Boletim extends PDF {
 	    // PREPARA TITULO DO CABECALHO
     	$this->Cell(0,5,'MEC - SETEC',0,1,'L');
     
-	    $this->Cell(0,5,'CENTRO FEDERAL DE EDUCAÇÃO TECNOLÓGICA DE BAMBUÍ - MG',0,1,'L');
+	    $this->Cell(0,5,'IFMG - CAMPUS BAMBUÍ',0,1,'L');
     
     	$this->Cell(0,5,'GERÊNCIA DE REGISTROS ESCOLARES',0,1,'L');
     

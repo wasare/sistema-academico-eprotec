@@ -1,10 +1,9 @@
 <? require("../../../../lib/common.php"); ?>
-<? require("../../../../lib/config.php"); ?>
 <html>
 <head>
 <title><?echo($title);?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<script language="PHP">
+<?php 
 
 $hasmore = false;
 
@@ -104,7 +103,7 @@ function ListaResultado($sql)
   echo("<" . "/script>\n");
 }
 
-</script>
+?>
 </head>
 <body bgcolor="#FFFFFF">
 <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font color="#FF0000">
@@ -118,9 +117,7 @@ function ListaResultado($sql)
     <td> 
       <div align="center"><font size="4" face="Verdana, Arial, Helvetica, sans-serif"><b><font size="4"><b> 
         <font color="#000099"> 
-        <script language="PHP">
-echo($title);
-</script>
+        <?php echo($title);?>
         </font> </b></font></b></font></div>
     </td>
   </tr>

@@ -1,13 +1,8 @@
 <? require("../../../../lib/common.php"); ?>
-<? require("../../../../lib/config.php"); ?>
 <html>
 <head>
 <title><?echo($title);?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<script language="PHP">
-// especifique campos obrigatórios caso necessário
-// ChechFormParameters(array(""));
-</script>
 <script language="JavaScript">
 function _select(id,desc)
 {

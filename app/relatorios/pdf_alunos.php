@@ -3,11 +3,9 @@
   //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
   header ("Cache-Control: no-cache");
   require("../../lib/common.php");
-  require("../../lib/config.php");
   require("../../configuracao.php");
   require("../../lib/adodb/adodb.inc.php");
   require("../../lib/adodb/tohtml.inc.php");
-  //require("../../lib/adodb/adodb-pager.inc.php");
 
 
   //RECEBENDO OS DADOS DO FORMULARIO --

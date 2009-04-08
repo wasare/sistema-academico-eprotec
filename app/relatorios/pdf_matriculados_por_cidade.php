@@ -3,17 +3,12 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../lib/config.php");
 require("../../configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 require("../../lib/adodb/tohtml.inc.php");
-//require("../../lib/adodb/adodb-pager.inc.php");
-
 
 
 $periodo = $_POST["periodo1"];
-
-//echo $periodo;die;
 
 //Criando a classe de conexão ADODB
 $Conexao = NewADOConnection("postgres");
@@ -21,9 +16,6 @@ $Conexao = NewADOConnection("postgres");
 //Setando como conexão persistente
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
   
-//Debug
-//$Conexao->debug=true;
-
 
 $sqlCursos = "
 select distinct 

@@ -128,7 +128,7 @@ function iframeAutoHeight(quem){
 			</li>
 			<li><a href="#" class="MenuBarItemSubmenu">Matr&iacute;culas</a>
 			<ul>
-				<li><a href="app/matricula/matricula_aluno.php" target="frame2">Matricula</a></li>
+				<li><a href="app/matricula/matricula_aluno.php" target="frame2">Matr&iacute;cula</a></li>
 				<li><a href="app/dispensa_disciplina/dispensa_aluno.php"
 					target="frame2">Dispensa de Disciplina</a></li>
 				<li><a href="app/matricula/remover_matricula/filtro.php"

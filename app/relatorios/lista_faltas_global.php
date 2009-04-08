@@ -3,11 +3,9 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../lib/config.php");
 require("../../configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 require("../../lib/adodb/tohtml.inc.php");
-//require("../../lib/adodb/adodb-pager.inc.php");
 
 
 //RECEBENDO OS DADOS DO FORMULARIO --
@@ -17,7 +15,6 @@ $aluno_id = $_POST["aluno"];
 $resp_nome = $_POST["resp_nome"];
 $resp_cargo = $_POST["resp_cargo"];
 
-//print_r($_POST); die;
 
 //Criando a classe de conexão ADODB
 $Conexao = NewADOConnection("postgres");
@@ -25,8 +22,6 @@ $Conexao = NewADOConnection("postgres");
 //Setando como conexão persistente
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
-//print_r($_SESSION);
-//$Conexao->debug = true;
 
 $sql = "
 SELECT DISTINCT
