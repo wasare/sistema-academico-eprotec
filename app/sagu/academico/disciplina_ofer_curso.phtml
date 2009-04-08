@@ -176,8 +176,13 @@ function setResult(arg1,arg2,arg3)
 }
 </script>
 </head>
-<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<body marginwidth="20" marginheight="20">
 <form method="post" action="post/disciplina_ofer.php3" name="myform">
+<input type="hidden" name="dia_semana" value="-1">
+<input type="hidden" name="ref_horario" value="0">
+<input type="hidden" name="ref_regime" value="1">
+<input type="hidden" name="num_creditos_desconto" value="">
+<input type="hidden" name="desconto" value="">
 <table width="90%" align="center">
 	<tr bgcolor="#000099">
 		<td colspan="2" height="40">
@@ -266,19 +271,6 @@ function setResult(arg1,arg2,arg3)
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF" width="109"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nº
-		Créditos </font></td>
-		<td width="387"><input name="num_creditos_desconto"
-			value="<?=$num_creditos_desconto?>" type=text size="6"></td>
-	</tr>
-	<tr>
-		<td bgcolor="#CCCCFF" width="109"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Desconto
-		(%)</font></td>
-		<td width="387"><input name="desconto" type=text size="6"></td>
-	</tr>
-	<tr>
-		<td bgcolor="#CCCCFF" width="109"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Professor</font></td>
 		<td width="387" valign="middle" align="left">
 		<table width="387" border="0" cellpadding="0" cellspacing="0">
@@ -299,37 +291,6 @@ function setResult(arg1,arg2,arg3)
 		</table>
 		</td>
 	</tr>
-
-	<tr>
-		<td bgcolor="#CCCCFF" width="30%"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Dia
-		da Semana</font></td>
-		<td width="70%"><input name="dia_semana" type=text size="6" value="-1"
-			onChange="ChangeCode('dia_semana','op1')"> <font color="#000000"> <script
-			language="PHP">ComboArray("op1",$op1_opcoes,$dia_semana,"ChangeOp1()");</script>
-		</font></td>
-	</tr>
-
-	<tr>
-		<td bgcolor="#CCCCFF" width="30%"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Horário</font>
-		</td>
-		<td width="70%"><input name="ref_horario" type=text size="6" value="0"
-			onChange="ChangeCode('ref_horario','op2')"> <font color="#000000"> <script
-			language="PHP">ComboArray("op2",$op2_opcoes,$ref_horario,"ChangeOp2()");</script>
-		</font></td>
-	</tr>
-
-	<tr>
-		<td bgcolor="#CCCCFF" width="30%"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Regime</font>
-		</td>
-		<td width="70%"><input name="ref_regime" type=text size="6" value="1"
-			onChange="ChangeCode('ref_regime','op3')"> <font color="#000000"> <script
-			language="PHP">ComboArray("op3",$op3_opcoes,$ref_regime,"ChangeOp3()");</script>
-		</font></td>
-	</tr>
-
 	<tr>
 		<td bgcolor="#CCCCFF" width="109"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;N&ordm;

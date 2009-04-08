@@ -1,33 +1,40 @@
-<? require("../../../../lib/common.php"); ?>
-<html>
-<head>
-<script language="PHP">
+<?php
 
-  CheckFormParameters(array( "ref_curso",
+require("../../../../lib/common.php");
+
+
+$ref_curso = $_POST['ref_curso'];
+$curso = $_POST['curso'];
+$ref_disciplina = $_POST['ref_disciplina'];
+$disciplina = $_POST['disciplina'];
+$ref_disciplina_equivalente = $_POST['ref_disciplina_equivalente'];
+$disciplina_equivalente = $_POST['disciplina_equivalente'];
+
+CheckFormParameters(array( "ref_curso",
                              "ref_disciplina",
                              "ref_disciplina_equivalente") );
 
-  $conn = new Connection;
-  $conn->Open();
-  $conn->Begin();
+$conn = new Connection;
+$conn->Open();
+$conn->Begin();
 
-  $sql = " select descricao_disciplina('$ref_disciplina'), " .
+$sql = " select descricao_disciplina('$ref_disciplina'), " .
          "        descricao_disciplina('$ref_disciplina_equivalente'), " .
          "        curso_desc('$ref_curso'); ";
-         
-  $query = $conn->CreateQuery($sql);
-  
-  $query->MoveNext();
-  
-  list ( $descricao1,
-         $descricao2,
-         $curso) = $query->GetRowValues();
+ 
+$query = $conn->CreateQuery($sql);
 
-  $query->Close();
+$query->MoveNext();
 
-  $id = GetIdentity("seq_disciplinas_equivalentes_id");
+list ( $descricao1,
+$descricao2,
+$curso) = $query->GetRowValues();
 
-  $sql = "insert into disciplinas_equivalentes" .
+$query->Close();
+
+$id = GetIdentity("seq_disciplinas_equivalentes_id");
+
+$sql = "insert into disciplinas_equivalentes" .
          "  (" .
          "    id," .
          "    ref_disciplina," .
@@ -42,20 +49,16 @@
          "    '$ref_curso'" .
          "  )";
 
-  $ok = $conn->Execute($sql);
+$ok = $conn->Execute($sql);
 
-  SaguAssert($ok,"Nao foi possivel inserir o registro!");
+SaguAssert($ok,"Nao foi possivel inserir o registro!");
 
-  $conn->Finish();
-  $conn->Close();
+$conn->Finish();
+$conn->Close();
 
-  SuccessPage("Equivalência de de Disciplina incluída com sucesso", 
+SuccessPage("Equivalência de de Disciplina incluída com sucesso",
               "location='../inclui_disciplinas_equivalentes.phtml'",
               "Disciplina: $descricao1 ($ref_disciplina)<br>Disciplina Equivalente: $descricao2 ($ref_disciplina_equivalente)<br>Curso: $curso ($ref_curso)",
               "location='../consulta_disciplinas_equivalentes.phtml'");
 
-</script>
-</head>
-<body>
-</body>
-</html>
+?>

@@ -155,13 +155,16 @@ function ListaCidades()
                 else
                     alert("Exclusão Cancelada.");
             }
-        </script>
+</script>
+<link href="../estilo.css" rel="stylesheet" type="text/css" />
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20"
 	onload="_init()">
 <form method="post" action="consulta_cidades.phtml" name="myform">
 <div align="center">
-<p><input type="button" value=" Incluir " onClick="location='cidades_inclui.phtml'" name="button"></p>
+<div class="titulo"><h2>Cidades</h2></div>
+<p><input type="button" value=" Incluir "
+	onClick="location='cidades_inclui.phtml'" name="button"></p>
 </div>
 <hr align="center" width="500">
 <p align="center"><font face="Verdana, Arial, Helvetica, sans-serif"

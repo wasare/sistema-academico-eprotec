@@ -3,11 +3,9 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../lib/config.php");
 require("../../configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 require("../../lib/adodb/tohtml.inc.php");
-//require("../../lib/adodb/adodb-pager.inc.php");
 
 
 //RECEBENDO OS DADOS DO FORMULARIO --
@@ -122,7 +120,7 @@ $condicao_turma
 
   ORDER BY 2";
 
-$sql = 'SELECT * FROM ('. $sql .') AS T1 ORDER BY lower(to_ascii("Nome"));';
+$sql = 'SELECT * FROM ('. $sql .') AS T1 ORDER BY lower(to_ascii(2));';
 
 //echo $sql;
 //die();
@@ -150,9 +148,7 @@ $Result1 = $Conexao->Execute($sql);
 $num_result = $Result1->RecordCount();
 
 
-
 //Informacoes de cabecalho
-
 $info .= "<strong>Data: </strong>" . date("d/m/Y") . "&nbsp;&nbsp;-&nbsp;&nbsp;";
 $info .= "<strong>Hora: </strong>" . date("H:i:s") . "&nbsp;&nbsp;-&nbsp;&nbsp;";
 $info .= "<strong>Total de Registros: </strong>" . $num_result . "&nbsp;&nbsp;-&nbsp;&nbsp;";
