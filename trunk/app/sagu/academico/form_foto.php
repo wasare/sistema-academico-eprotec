@@ -1,15 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <?php
 
-//require("../../../lib/config.php"); 
 require("../../../lib/common.php"); 
 
-
 require_once('bitmap.inc.php');
-//error_reporting(E_ALL);
-//ini_set('display_errors', 1);
 
 ini_set("memory_limit","25M");
 
@@ -160,7 +153,8 @@ if(@isset($_FILES['imgfile']) && @$err_num == 0) {
 }
 
 ?>
- 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
     	<title>Cadastro de Fotos no SAGU</title>

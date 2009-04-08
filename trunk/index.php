@@ -1,7 +1,6 @@
 <?php
 
 require("lib/properties.php");
-require("lib/config.php"); 
 
 
 unset($_SESSION['SessionAuth']);

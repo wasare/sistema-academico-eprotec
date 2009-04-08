@@ -3,10 +3,8 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
 require_once("../../../lib/common.php");
-require_once("../../../lib/config.php");
 require_once("../../../configuracao.php");
 require_once("../../../lib/adodb/adodb.inc.php");
-//require("../../lib/adodb/tohtml.inc.php");
 
 $s_periodo = '';
 

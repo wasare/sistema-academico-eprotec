@@ -3,7 +3,6 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../lib/config.php");
 require("../../configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
@@ -62,8 +61,8 @@ if($_POST){
 <h1>Editar aviso</h1>
 <form method="post" action="cadastrar.php" name="myform">
   <textarea id="texto" name="texto" style="width:500px;height:200px;"><?php echo $avisos[0]; ?></textarea>
-  <input type="submit" name="Submit"   value=" Alterar">
-  <input type="button" name="Submit1" value="   Fechar   " onClick="window.close()">
+  <input type="submit" name="Submit"   value=" Alterar" />
+  <input type="button" name="Submit1" value="   Fechar   " onClick="window.close()" />
 </form>
 </center>
 </body>

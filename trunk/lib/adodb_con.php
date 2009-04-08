@@ -1,15 +1,14 @@
 <?php
 
 
-	require("../../../config.php");
-	require("../../../common.php");
-   
+require("../../../common.php");
+ 
 function getBRDate($date)
 { // YYYY-MM-DD a DD-MM-YYYY
-        list($year, $month, $day) = split("-", $date);
-        return $day . "/" . $month . "/" . $year;
+list($year, $month, $day) = split("-", $date);
+return $day . "/" . $month . "/" . $year;
 }
-	
+
 session_start();
 
 

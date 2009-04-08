@@ -1,5 +1,4 @@
 <? require("../../../../lib/common.php"); ?>
-<? require("../../../../lib/config.php"); ?>
 <html>
 <head>
 <title><?echo($title);?></title>

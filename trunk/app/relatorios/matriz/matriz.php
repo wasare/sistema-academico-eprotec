@@ -3,7 +3,6 @@
 header("Cache-Control: no-cache");
 //INCLUSAO DE BIBLIOTECAS
 require("../../../lib/common.php");
-require("../../../lib/config.php");
 require_once("../../../configuracao.php");
 require("../../../lib/adodb/adodb.inc.php"); 
 require("../../../lib/adodb/tohtml.inc.php");

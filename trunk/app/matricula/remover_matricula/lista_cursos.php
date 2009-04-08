@@ -2,7 +2,6 @@
 
 //INCLUSAO DE BIBLIOTECAS
 require("../../../lib/common.php");
-require("../../../lib/config.php");
 require("../../../configuracao.php");
 require("../../../lib/adodb/adodb.inc.php"); 
 require("../../../lib/adodb/tohtml.inc.php");
