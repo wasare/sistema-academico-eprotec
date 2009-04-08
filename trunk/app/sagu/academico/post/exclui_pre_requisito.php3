@@ -1,8 +1,8 @@
-<? require("../../../../lib/common.php"); ?>
+<?php
 
-<html>
-<head>
-<script language="PHP">
+require("../../../../lib/common.php"); 
+
+$id = $_GET['id'];
 
 CheckFormParameters(array("id"));
 
@@ -22,6 +22,4 @@ SaguAssert($ok,"Nao foi possivel excluir o registro!");
 SuccessPage("Exclusão de Pré-Requisito",
             "location='../consulta_inclui_pre_requisito.phtml'");
 
-</script></HEAD>
-<BODY></BODY>
-</HTML>
+?>

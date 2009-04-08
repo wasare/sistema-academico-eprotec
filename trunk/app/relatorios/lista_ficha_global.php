@@ -1,7 +1,6 @@
 <?php 
 
 require("../../lib/common.php");
-require("../../lib/config.php");
 
 require("../sagu/lib/InvData.php3");
 require("../sagu/lib/GetPessoaNome.php3"); 

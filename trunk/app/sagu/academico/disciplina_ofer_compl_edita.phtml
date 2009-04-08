@@ -219,6 +219,13 @@ function setResult(arg1,arg2,arg3)
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
 <form method="post" action="post/atualiza_disciplina_ofer_compl.php3" name="myform">
+
+    <input type="hidden" name="dia_semana" value="-1">
+    <input type="hidden" name="ref_horario" value="0">
+    <input type="hidden" name="ref_regime" value="1">
+    <input type="hidden" name="num_creditos_desconto" value="">
+    <input type="hidden" name="desconto" value="">
+    
   <table width="90%" align="center">
     <tr> 
       <td colspan="2" height="28" bgcolor="#000099" align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Alteração dos Dados Complementares da Disciplina Oferecida</b></font></td>
@@ -226,9 +233,7 @@ function setResult(arg1,arg2,arg3)
     <tr>
       <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo</font></td>
       <td width="70%"><font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><font color="#3333FF">
-      <script language="PHP">
-	echo($ref_disciplina_ofer);
-      </script>
+      <?php echo($ref_disciplina_ofer);?>
       <input type="hidden" name="id" value="<? echo($id); ?>">
       <input type="hidden" name="id_prof" value="<? echo($id_prof); ?>">
       <input type="hidden" name="ref_disciplina_ofer" value="<? echo($ref_disciplina_ofer); ?>">
@@ -250,55 +255,6 @@ function setResult(arg1,arg2,arg3)
             </td>
           </tr>
         </table>
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Dia da Semana</font>
-      </td>
-      <td width="70%"> 
-        <input name="dia_semana" type=text size="6" value="<?echo($dia_semana)?>" onChange="ChangeCode('dia_semana','op1')">
-        <font color="#000000"> 
-        <?php ComboArray("op1",$op1_opcoes,$dia_semana,"ChangeOp1()");?>
-        </font>
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Horário</font>
-      </td>
-      <td width="70%"> 
-        <input name="ref_horario" type=text size="6" value="<?php 
-		if(empty($ref_horario)){
-			echo "0";
-		}else{
-			echo($ref_horario);
-		}
-		?>" onChange="ChangeCode('ref_horario','op2')">
-        <font color="#000000"> 
-        <?php ComboArray("op2",$op2_opcoes,$ref_horario,"ChangeOp2()");?>
-        </font>
-      </td>
-    </tr>
-
-    <tr>
-      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Regime</font>
-      </td>
-      <td width="70%">
-        <input name="ref_regime" type=text size="6" value="<?=$ref_regime?>" onChange="ChangeCode('ref_regime','op5')">
-        <font color="#000000">
-        <script language="PHP">ComboArray("op5",$op5_opcoes,$ref_regime,"ChangeOp5()");</script>
-        </font>
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nº Créditos</font></td>
-      <td width="70%"> 
-        <input name="num_creditos_desconto" type=text size="6" value="<?echo($num_creditos_desconto)?>">
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Desconto</font></td>
-      <td width="70%"> 
-        <input name="desconto" type=text size="6" value="<?echo($desconto)?>">
       </td>
     </tr>
     <tr> 

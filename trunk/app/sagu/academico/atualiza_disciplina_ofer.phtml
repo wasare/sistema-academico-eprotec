@@ -5,10 +5,15 @@ require("../lib/GetField.php3");
 require("../lib/SQLCombo.php3");
 
 
-$id = $_POST['id'];
+if($_POST){
+	$id = $_POST['id'];
+}elseif($_GET){
+	$id = $_GET['id'];
+}
 
 function Lista_Complemento($id, $ref_campus)
 {
+	
 	$conn = new Connection;
 	$conn->open();
 	$sql = " select A.id, " .
@@ -195,19 +200,6 @@ $op4_opcoes = SQLArray($sql_periodos_academico);
 <html>
 <head>
 <script language="JavaScript">
-function Inclui_Complemento(id, ref_campus, ref_curso, ref_periodo, ref_disciplina, num_alunos, conteudo, turma, ref_periodo_turma)
-{
-    location="disciplina_ofer_compl.phtml?id_disciplina_ofer=" + id +
-                                        "&ref_campus=" + ref_campus +
-                                        "&ref_curso=" + ref_curso +
-                                        "&ref_periodo=" + ref_periodo +
-                                        "&ref_disciplina=" + ref_disciplina +
-                                        "&num_alunos=" + num_alunos +
-                                        "&turma=" + turma +
-                                        "&ref_periodo_turma=" + ref_periodo_turma +
-                                        "&conteudo=" + conteudo;
-}
-
 var cmp;
 
 function buscaDiscp()
@@ -413,28 +405,13 @@ function ChangeOp4()
 	</tr>
 
 </table>
-<script language="PHP">
-       Lista_Complemento($id, $ref_campus);
-    </script>
-<table cols=2 width="90%" align="center">
-	<tr align="center">
-		<td colspan="2"><font color="#000000" size="2"
-			face="Verdana, Arial, Helvetica, sans-serif"> <input type="button"
-			name="Submit" value=" Incluir outra Ocorrência"
-			onClick="javascript:Inclui_Complemento('<? echo($id)?>','<?echo($ref_campus);?>','<?echo($ref_curso);?>','<?echo($ref_periodo);?>','<?echo($ref_disciplina)?>','<?echo($num_alunos)?>','<? echo($conteudo)?>','<? echo($turma)?>','<? echo($ref_periodo_turma)?>')"></font>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-		<hr size="1">
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" align="center"><input type="submit" name="Submit"
-			value=" Salvar "> <input type="button" name="Submit2"
-			value=" Voltar " onClick="history.go(-1)"></td>
-	</tr>
-</table>
+
+<?php Lista_Complemento($id, $ref_campus);?>
+<br />
+<div align="center">
+		<input type="submit" name="Submit" value=" Salvar ">
+		<input type="button" name="Submit2"	value=" Voltar " onClick="history.go(-1)">
+</div>
 </form>
 </body>
 </html>

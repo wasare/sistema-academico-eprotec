@@ -1,6 +1,9 @@
-<? require("../../../../lib/common.php"); ?>
+<?php
 
-<HTML><HEAD><script language="PHP">
+require("../../../../lib/common.php"); 
+
+
+$id = $_GET['id'];
 
 $conn = new Connection;
 
@@ -16,7 +19,5 @@ SaguAssert($ok,"Não foi possível de excluir o registro!");
 
 SuccessPage("Registro excluído com sucesso",
             "location='../consulta_inclui_pre_requisito.phtml'");
-</script>
-</HEAD>
-<BODY></BODY>
-</HTML>
+
+?>

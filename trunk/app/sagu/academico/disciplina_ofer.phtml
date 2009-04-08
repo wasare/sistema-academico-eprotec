@@ -123,8 +123,10 @@ function AlteraSala()
  location = url;
 }
 </script>
+<link href="../estilo.css" rel="stylesheet" type="text/css" />
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<div class="titulo" align="center"><h2>Disciplinas oferecidas (Di&aacute;rios)</h2></div>
 <form method="post" action="disciplina_ofer_curso.phtml" name="myform">
 <table cols=2 width="90%" align="center">
 	<tr bgcolor="#000099">
@@ -134,7 +136,6 @@ function AlteraSala()
 		de Disciplinas Oferecidas</b></font></div>
 		</td>
 	</tr>
-
 	<tr>
 		<td bgcolor="#CCCCFF" width="20%"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Per&iacute;odo
@@ -144,7 +145,6 @@ function AlteraSala()
 			value="<?echo($ref_periodo)?>"> <font color="#000000"> <?php ComboArray("op2",$op2_opcoes,$ref_periodo,"ChangeOp2()");?>
 		</font></td>
 	</tr>
-
 	<tr>
 		<td bgcolor="#CCCCFF" width="20%"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso</font></td>
@@ -162,14 +162,12 @@ function AlteraSala()
 		</table>
 		</td>
 	</tr>
-
 	<tr>
 		<td bgcolor="#CCCCFF" width="20%"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Turma</font>
 		</td>
 		<td width="80%"><input name="turma" type=text size="7"></td>
 	</tr>
-
 	<tr>
 		<td bgcolor="#CCCCFF" width="20%"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Início
@@ -187,7 +185,6 @@ function AlteraSala()
 			onChange="ChangeCode('ref_campus','op3')"> <font color="#000000"> <?php ComboArray("op3",$op3_opcoes,$ref_campus,"ChangeOp3()");?>
 		</font></td>
 	</tr>
-
 	<tr>
 		<td bgcolor="#CCCCFF" width="20%"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina</font></td>
@@ -203,7 +200,6 @@ function AlteraSala()
 		</table>
 		</td>
 	</tr>
-
 	<tr>
 		<td bgcolor="#CCCCFF" width="20%"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Somente
@@ -216,14 +212,11 @@ function AlteraSala()
 		<hr size="1">
 		</td>
 	</tr>
-
 	<tr>
 		<td colspan="2">
 		<div align="center"><input type="submit" name="Submit1"
 			value=" Prosseguir "> <input type="button" name="button1"
-			value="   Listar   " onClick="BuscaDisciplianasOfer()"> <input
-			type="button" name="button2" value="    Voltar    "
-			onClick="javascript:history.back(-1)"></div>
+			value="   Listar   " onClick="BuscaDisciplianasOfer()"></div>
 		</td>
 	</tr>
 </table>
@@ -254,9 +247,7 @@ function AlteraSala()
 		<td colspan="3">
 		<div align="center"><input type="submit" name="submit2"
 			value=" Prosseguir "> <input type="button" name="button4"
-			value="   Salas   " onClick="AlteraSala()"> <input type="button"
-			name="button3" value="   Voltar   "
-			onClick="javascript:history.back(-1)"></div>
+			value="   Salas   " onClick="AlteraSala()"></div>
 		</td>
 	</tr>
 </table>

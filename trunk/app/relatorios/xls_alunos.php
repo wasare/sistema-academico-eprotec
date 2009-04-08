@@ -15,10 +15,14 @@ $resp_cargo = $_POST["resp_cargo"];
 $turma      = $_POST["turma"];
 
 
-$colunas[] = "Nome";
+$colunas[] = "ID";
 
-$sql = " SELECT DISTINCT p.nome || ' - ' || p.id as \"Nome\" ";
+$sql = " SELECT DISTINCT p.id as \"ID\" ";
 
+if(isset($_POST['nome'])){
+	$colunas[] = "Nome";
+	$sql .= ', p.nome as "Nome" ';
+}
 
 if (isset($_POST["turma2"])) {
 
@@ -126,7 +130,7 @@ if ($aluno != '') {
 
 $sql .= " c.ref_pessoa = p.id $condicao_turma ORDER BY 2";
 
-$sql = 'SELECT * FROM ('. $sql .') AS T1 ORDER BY lower(to_ascii("Nome"));';
+$sql = 'SELECT * FROM ('. $sql .') AS T1 ORDER BY lower(to_ascii(2));';
 
 
 $Conexao = NewADOConnection("postgres");

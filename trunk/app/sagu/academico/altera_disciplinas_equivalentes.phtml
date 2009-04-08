@@ -1,4 +1,43 @@
-<?include("../../../lib/common.php")?>
+<?php
+
+include("../../../lib/common.php");
+
+$id = $_GET['id'];
+
+
+CheckFormParameters(array("id"));
+
+$conn = new Connection;
+
+$conn->Open();
+
+$sql = " select id," .
+       "        ref_disciplina, " .
+       "        descricao_disciplina(ref_disciplina), ".
+       "        ref_disciplina_equivalente, " .
+       "        descricao_disciplina(ref_disciplina_equivalente), ".
+       "        ref_curso, " .
+       "        curso_desc(ref_curso) " .
+       " from disciplinas_equivalentes " .
+       " where id = '$id' ";
+
+$query = $conn->CreateQuery($sql);
+
+while ( $query->MoveNext() )
+{
+list ( $id,
+       $ref_disciplina,
+       $descricao_disciplina,
+       $ref_disciplina_equivalente,
+       $descricao_disciplina_equivalente,
+       $ref_curso,
+       $curso) = $query->GetRowValues();
+
+}
+$query->Close();
+
+$conn->Close();
+?>
 <html>
 <head>
 <script language="JavaScript">
@@ -6,9 +45,7 @@ function _init()
 {
   document.myform.ref_curso.focus();
 }
-</script>
 
-<script language="JavaScript">
 function buscaOpcao(pf_opcao)
 {
   tipo_busca=pf_opcao;
@@ -50,44 +87,6 @@ function setResult(id,nome)
    }
 }
 </script>
-
-<script language="PHP">
-
-CheckFormParameters(array("id"));
-
-$conn = new Connection;
-
-$conn->Open();
-
-$sql = " select id," .
-       "        ref_disciplina, " .
-       "        descricao_disciplina(ref_disciplina), ".
-       "        ref_disciplina_equivalente, " .
-       "        descricao_disciplina(ref_disciplina_equivalente), ".
-       "        ref_curso, " .
-       "        curso_desc(ref_curso) " .
-       " from disciplinas_equivalentes " .
-       " where id = '$id' ";
-
-$query = $conn->CreateQuery($sql);
-
-while ( $query->MoveNext() )
-{
-list ( $id,
-       $ref_disciplina,
-       $descricao_disciplina,
-       $ref_disciplina_equivalente,
-       $descricao_disciplina_equivalente,
-       $ref_curso,
-       $curso) = $query->GetRowValues();
-
-}
-$query->Close();
-
-$conn->Close();
-
-</script>
-
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
 <form method="post" action="post/altera_disciplinas_equivalentes.php3" name="myform">

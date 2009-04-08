@@ -1,7 +1,18 @@
-<? require("../../../../lib/common.php"); ?>
-<html>
-<head>
-<script language="PHP">
+<?php 
+
+require("../../../../lib/common.php");
+
+
+$ref_curso          = $_POST['ref_curso'];
+$ref_disciplina     = $_POST['ref_disciplina'];
+$tipo               = $_POST['tipo'];
+$curso              = $_POST['curso'];
+$disciplina         = $_POST['disciplina'];
+$ref_disciplina_pre = $_POST['ref_disciplina_pre'];
+$disciplina_pre     = $_POST['disciplina_pre'];
+$ref_area           = $_POST['ref_area'];
+$area               = $_POST['area'];
+$horas_area         = $_POST['horas_area'];
 
 CheckFormParameters(array("ref_curso",
                           "ref_disciplina",
@@ -42,9 +53,4 @@ SuccessPage("Pré-Requisito incluído com sucesso!",
             "Pré-Requisito incluído com sucesso!",
             "location='../consulta_inclui_pre_requisito.phtml'");
 
-</script>
-
-</head>
-<body bgcolor="#FFFFFF">
-</body>
-</html>
+?>

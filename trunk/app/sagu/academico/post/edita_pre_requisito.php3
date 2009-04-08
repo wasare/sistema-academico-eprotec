@@ -1,7 +1,16 @@
-<? require("../../../../lib/common.php");?>
-<? require("../../lib/InvData.php3");?>
+<?php
 
-<script language="PHP">
+require("../../../../lib/common.php");
+require("../../lib/InvData.php3");
+
+
+$ref_curso = $_POST['ref_curso'];
+$ref_disciplina = $_POST['ref_disciplina'];
+$ref_disciplina_pre = $_POST['ref_disciplina_pre'];
+$ref_area = $_POST['ref_area'];
+$horas_area = $_POST['horas_area'];
+$tipo = $_POST['tipo'];
+$id = $_POST['id'];
 
 CheckFormParameters(array("id",
                           "ref_curso",
@@ -31,4 +40,5 @@ SaguAssert($ok,"Nao foi possivel de atualizar o registro!");
 
 SuccessPage("Alteração do Pré-Requisito",
             "location='../consulta_inclui_pre_requisito.phtml'");
-</script>
+
+?>

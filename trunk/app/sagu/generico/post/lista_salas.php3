@@ -69,7 +69,7 @@ CheckFormParameters(array('ref_campus'));
   {
     list ( $numero, $capacidade ) = $query->GetRowValues();
 
-    $href = "<a href=\"javascript:_select('$numero',$capacidade)\"><img src=\"../images/select.gif\" alt='Selecionar' border=0></a>";
+    $href = "<a href=\"javascript:_select('$numero',$capacidade)\"><img src=\"../../images/select.gif\" alt='Selecionar' border=0></a>";
 
     if ( $i % 2 == 0)
     {
