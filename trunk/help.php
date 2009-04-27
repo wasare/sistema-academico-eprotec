@@ -13,14 +13,33 @@ require ("lib/common.php");
 </head>
 <body>
 <div align="center" />
+<h2> Documentos </h2>
+<?php
+
+$dir = "docs/usuario/";
+
+// Abre um diretorio conhecido, e faz a leitura de seu conteudo
+if (is_dir($dir)) {
+    if ($dh = opendir($dir)) {
+        while (($file = readdir($dh)) !== false) {
+            if (is_file($dir . $file))
+               echo '<a href="'. $dir . $file .'" target="_blank">'. $file .'</a><br /><br />';
+        }
+        closedir($dh);
+    }
+}
+
+?>
+<br />
 
 <div class="pesquisa" align="center">
 <h2>Suporte e desenvolvimento</h2>
 <p>
-<a href="http://www.cefetbambui.edu.br"> Instituto Federal Minas Gerais Campus Bambu&iacute;</a><br />
-GTI - Gerencia de Tecnologia da Informa&ccedil;ao<br />
+<a href="<?=$IEurl?>"> Instituto Federal Minas Gerais - Campus Bambu&iacute;</a><br />
+GTI - Ger&ecirc;ncia de Tecnologia da Informa&ccedil;&atilde;ao<br />
 Ramal de Contato: (37) 3431-4965 / 4930</p>
-<div align="center">2008&copy;CEFET-Bambu&iacute;</div>
+<div align="center">&copy;2009 <?=$IEnome?></div>
 </div>
+
 </body>
 </html>

@@ -38,7 +38,7 @@ if (!$Result1){
         }
         -->
     </style>
-    <script src="../../SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
+    <script src="../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
     <script language="javascript" src="../../lib/prototype.js"></script>
     <script language="javascript">
         <!--

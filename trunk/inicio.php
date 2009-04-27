@@ -48,9 +48,9 @@ function iframeAutoHeight(quem){
 				<div align="right" class="texto1"><strong>Desenvolvimento: </strong></div>
 				</td>
 				<td width="200" valign="middle">&nbsp;<a
-					href="http://www.cefetbambui.edu.br" target="_blank"><img
-					src="images/ifmg.jpg" alt="CEFET-Bambu&iacute;"
-					title="CEFET-Bambu&iacute;" /></a>&nbsp;&nbsp;<a
+					href="<?=$IEurl?>" target="_blank"><img
+					src="images/ifmg.jpg" alt="IFMG - Campus Bambu&iacute;"
+					title="IFMG - Campus Bambu&iacute;" /></a>&nbsp;&nbsp;<a
 					href="http://cefetbambui.edu.br/gerencia_ti" target="_blank"><img
 					src="images/gti.jpg" alt="Ger&ecirc;ncia TI"
 					title="Ger&ecirc;ncia de TI" width="50" height="34" /></a></td>
@@ -68,6 +68,7 @@ function iframeAutoHeight(quem){
 					target="frame2">Pessoas F&iacute;sicas</a></li>
 				<li><a href="app/sagu/academico/consulta_inclui_contratos.phtml"
 					target="frame2">Contratos</a></li>
+                <li><a href="app/colacao_grau/index.php" target="frame2">Cola&ccedil;&atilde;o de grau</a></li>
 				<li><a href="app/sagu/academico/consulta_inclui_professores.phtml"
 					target="frame2">Professores</a></li>
 				<li><a href="app/sagu/academico/coordenadores.phtml" target="frame2">Coordenadores</a></li>
@@ -141,7 +142,7 @@ function iframeAutoHeight(quem){
 		</ul>
 		</td>
 		<td width="193" class="menu"><span class="texto1"> <img
-			src="images/icons/bola_verde.gif" width="10" height="10" /> <?php echo $_COOKIE["SessionUsuario"]; ?>
+			src="images/icons/bola_verde.gif" width="10" height="10" /> <?php echo $LoginUID; ?>
 		</span></td>
 	</tr>
 </table>

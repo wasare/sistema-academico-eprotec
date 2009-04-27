@@ -51,6 +51,8 @@ img {
         <img src="../../images/icons/lupa.png" />&nbsp;Boletim Escolar</a><br />    
         <a href="pesquisa_faltas_global.php" title="Relat&oacute;rio de Faltas Global por Per&iacute;odo / Curso" 
 target="_self" class="menu_link"><img src="../../images/icons/lupa.png" />&nbsp;Faltas Global</a><br />
+         <a href="pesquisa_dispensados.php" title="Relat&oacute;rio de Alunos Dispensados" 
+target="_self" class="menu_link"><img src="../../images/icons/lupa.png" />&nbsp;Alunos Dispensados</a><br />
     </p>
     </td>
   </tr>

@@ -1,7 +1,4 @@
 <?php
-# write by lucas@cneccapivari.br
-# this is a free software, you can modify follow the GNU/GPL
-
 include_once('../webdiario.conf.php');
 
 $getdisciplina = $_GET['disc'];

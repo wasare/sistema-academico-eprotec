@@ -29,9 +29,12 @@ SELECT DISTINCT
     d.descricao_disciplina || ' (' || d.id ||') ' AS \"Disciplina\",
     t.descricao AS \"Tipo\",
     o.turma AS \"Turma\",
-    p.nome AS \"Professor\",
-	s.abreviatura AS \"Curso\",
-    -- m.nome_campus AS \"Campus\",
+	
+	CASE WHEN professor_disciplina_ofer_todos(o.id) = 'sem professor' THEN '<font color=\"red\">sem professor</font>'
+         ELSE professor_disciplina_ofer_todos(o.id)
+    END AS \"Professor\",
+
+    s.abreviatura AS \"Curso\",
 
     CASE WHEN o.fl_digitada = TRUE THEN '<font color=\"red\">Finalizado</font>'
          WHEN o.fl_concluida = TRUE THEN '<font color=\"blue\">Concluído</font>'
@@ -39,23 +42,19 @@ SELECT DISTINCT
     END AS \"Situação\"
 
 FROM
-    disciplinas_ofer_prof f, 
     disciplinas_ofer o,
     disciplinas d,
-    pessoas p,
     cursos s,
     tipos_curso t,
     campus m
 
 WHERE
-    f.ref_professor = p.id AND
     o.ref_curso = s.id AND ";
 	
 if($tipo != '') 
 	$sql .= " t.id = '$tipo' AND ";
 
 $sql .= " s.ref_tipo_curso = t.id AND
-    o.id = f.ref_disciplina_ofer AND
     o.ref_periodo = '$periodo' AND
     o.is_cancelada = 0 AND
     d.id = o.ref_disciplina AND ";

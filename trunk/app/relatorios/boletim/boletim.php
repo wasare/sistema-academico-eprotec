@@ -11,9 +11,9 @@ require_once("../../../lib/properties.php");
 
 define('PDF_TMP_DIR', dirname(__FILE__) .'/boletins/pdf/');
 
-require_once(dirname(__FILE__) .'/lib/classes/fpdf153/fpdf.php');
-require_once(dirname(__FILE__) .'/lib/classes/fpdi/fpdi.php');
-require_once(dirname(__FILE__) .'/lib/classes/fpdf153/pdf.ext.php');
+require_once(dirname(__FILE__) .'/../../../lib/fpdf153/fpdf.php');
+require_once(dirname(__FILE__) .'/../../../lib/fpdi/fpdi.php');
+require_once(dirname(__FILE__) .'/../../../lib/fpdf153/pdf.ext.php');
 
 
 
@@ -55,7 +55,7 @@ class  Boletim extends PDF {
 	
 	
     	// IMAGEM COM O LOGO
-    	$this->Image('cefet-logo.png',170,16,25);
+    	$this->Image(dirname(__FILE__) .'/../../../images/if_minas_campus_bambui-logo.png',170,16,25);
     
 	    // SELECIONA FONT ARIAL BOLD 10
     	$this->SetFont('Arial','',13);
@@ -63,7 +63,7 @@ class  Boletim extends PDF {
 	    // PREPARA TITULO DO CABECALHO
     	$this->Cell(0,5,'MEC - SETEC',0,1,'L');
     
-	    $this->Cell(0,5,'IFMG - CAMPUS BAMBUÍ',0,1,'L');
+	    $this->Cell(0,5,'INSTITUTO FEDERAL MINAS GERAIS - CAMPUS BAMBUÍ',0,1,'L');
     
     	$this->Cell(0,5,'GERÊNCIA DE REGISTROS ESCOLARES',0,1,'L');
     

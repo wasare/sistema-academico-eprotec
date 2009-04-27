@@ -57,7 +57,8 @@ $IECE	      = "";
 $IEfone     = "";
 $IEfax      = "";
 $IEemail    = "webmaster@cefetbambui.edu.br";
-$IEnome     = "CEFET-BAMBU&Iacute;";
+$IEnome     = "IFMG - Campus Bambu&iacute;";
+$IEurl      = "http://www.ifmg.edu.br/bambui";
 
 
 
