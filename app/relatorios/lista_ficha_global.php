@@ -1,23 +1,21 @@
 <?php 
 
 require("../../lib/common.php");
-
 require("../sagu/lib/InvData.php3");
 require("../sagu/lib/GetPessoaNome.php3"); 
 require("../sagu/lib/StatusDisciplina.php3"); 
-
 require("../../lib/properties.php"); 
 
 
 $periodo_id = $_POST['periodo'];
-$pessoa_id =  $_POST['pessoa'];
+$pessoa =  $_POST['pessoa'];
 
 $properties->Set('periodo',$periodo_id);
-$properties->Set('pessoa',$pessoa_id);
+$properties->Set('pessoa',$pessoa);
 $properties->Save();
 
 CheckFormParameters(array ("pessoa"));
-$nome_aluno = GetPessoaNome($pessoa_id, true);
+$nome_aluno = GetPessoaNome($pessoa, true);
 
 
 $filtro_periodo1 = '';
@@ -29,7 +27,6 @@ if(!empty($periodo_id)) {
   $filtro_periodo2 = " A.ref_periodo <> '$periodo_id' AND B.ref_periodo <> '$periodo_id' AND ";
 
 }
-
 
 ?>
 <html>
@@ -74,7 +71,7 @@ function AproveitaDisciplina(ref_pessoa,ref_disciplina,ref_curso,ref_matricula,n
 
 function Mostra_Matricula() {
 
-	global $pessoa_id, $filtro_periodo1;
+	global $pessoa, $filtro_periodo1;
 
 	$conn = new Connection;
 	$conn->Open();
@@ -103,7 +100,7 @@ function Mostra_Matricula() {
 	" FROM matricula A, disciplinas_ofer B, disciplinas C" .
 	" WHERE A.ref_disciplina_ofer = B.id AND " .
 	"       A.ref_disciplina = C.id AND " .
-	"       A.ref_pessoa = '$pessoa_id' AND " .
+	"       A.ref_pessoa = '$pessoa' AND " .
     $filtro_periodo1 .
 	" ORDER BY dia_disciplina_ofer_todos(B.id) ";
 
@@ -144,23 +141,21 @@ function Mostra_Matricula() {
 			echo ("<th width=\"8%\" align=\"center\">Nota</td>");
 			//echo ("<th width=\"9%\" align=\"center\">Dia</td>");
 			echo ("<th width=\"9%\" align=\"center\">Situa&ccedil;&atilde;o</td>");
-			//echo ("<th width=\"7%\" align=\"center\">Créd.</td>");
-			//echo ("<th width=\"8%\" align=\"center\">Sala</td>");
 			echo ("<th width=\"3%\" align=\"center\">S</td>");
 			echo ("<th width=\"3%\" align=\"center\">M</td>");
 			echo ("</tr>");
 		}
 
 		if ($fl_internet == 't') {
-			$fl_internet = "<img src=\"../sagu/images/internet.gif\" alt=\"Matrícula feita pela Internet\" title=\"Matrícula feita pela Internet\">";
+			$fl_internet = "<img src=\"../../images/internet.gif\" alt=\"Matrícula feita pela Internet\" title=\"Matrícula feita pela Internet\">";
 		} else {
-			$fl_internet = "<img src=\"../sagu/images/normal.gif\" alt=\"Matrícula feita na sede\" title=\"Matrícula feita na sede\">";
+			$fl_internet = "<img src=\"../../images/normal.gif\" alt=\"Matrícula feita na sede\" title=\"Matrícula feita na sede\">";
 		}
 
 		if ($status_disciplina == 't') {
-			$status_disciplina = "<img src=\"../sagu/images/autorizado.gif\" alt=\"Matrícula com desbloqueio\" title=\"Matrícula com desbloqueio\">";
+			$status_disciplina = "<img src=\"../../images/autorizado.gif\" alt=\"Matrícula com desbloqueio\" title=\"Matrícula com desbloqueio\">";
 		} else {
-			$status_disciplina = "<img src=\"../sagu/images/liberado.gif\" alt=\"Matrícula sem desbloqueio\" title=\"Matrícula sem desbloqueio\">";
+			$status_disciplina = "<img src=\"../../images/liberado.gif\" alt=\"Matrícula sem desbloqueio\" title=\"Matrícula sem desbloqueio\">";
 		}
 
 		if ($dt_cancelamento == 't') {
@@ -203,33 +198,14 @@ function Mostra_Matricula() {
                 break;
         }
 
-/*
-		if ($obs_aproveitamento != '') {
-			echo ("<img src=\"../../sagu/images/checkapr.gif\" alt=\"Disciplina Aproveitada\" title=\"Disciplina Aproveitada\">");
-		} else {
-			$sql = "select ref_campus from contratos where ref_pessoa = $pessoa and ref_curso = $ref_curso";
-			$query22 = $conn->CreateQuery($sql);
-			$query22->MoveNext();
-			$ref_campus_aux = $query22->GetValue(1);
 
-			if ($ref_campus != $ref_campus_aux) {
-				echo ("<img src=\"../../sagu/images/checkoff.gif\" alt=\"Fora da sede\" title=\"Fora da sede\">");
-			} else {
-				echo ("<img src=\"../../sagu/images/checkon.gif\" alt=\"Na sede\" title=\"Na sede\">");
-			}
-		}
-*/
 		if (!is_null($professor)) {
 			$professor = "(<i>$professor</i>)";
 		}
 
 		echo ("$cancelada $desc_disciplina $professor</td>");
-		//echo ("<td width=\"5%\" align=\"center\">$turno</td>");
 		echo ("<td width=\"8%\" align=\"center\">$nota_final</td>");
-		//echo ("<td width=\"9%\" align=\"center\">$dia_semana&nbsp;</td>");
 		echo ("<td width=\"9%\" align=\"center\">$status</td>");
-		//echo ("<td width=\"7%\" align=\"center\">$num_creditos&nbsp;</td>");
-		//echo ("<td width=\"8%\" align=\"center\">$num_sala&nbsp;</td>");
 		echo ("<td width=\"3%\" align=\"center\">$status_disciplina</td>");
 		echo ("<td width=\"3%\" align=\"center\">$fl_internet</td>");
 		echo ("</tr>");
@@ -245,7 +221,7 @@ function Mostra_Matricula() {
 
 function Mostra_Matricula_Geral() {
 
-	global $pessoa_id, $filtro_periodo2;
+	global $pessoa, $filtro_periodo2;
 
 	$conn = new Connection;
 	$conn->Open();
@@ -275,7 +251,7 @@ function Mostra_Matricula_Geral() {
 	"       C.id = A.ref_disciplina AND " .
 	"       A.ref_contrato = D.id AND " .
 	$filtro_periodo2 .
-	"       A.ref_pessoa = '$pessoa_id' " .
+	"       A.ref_pessoa = '$pessoa' " .
 	" ORDER BY A.ref_periodo, dia_disciplina_ofer_todos(B.id) ";
 
 	$query = $conn->CreateQuery($sql);
@@ -324,25 +300,22 @@ function Mostra_Matricula_Geral() {
 			echo "<th width=\"5%\">Per&iacute;odo</td>";
 			echo "<th width=\"40%\">Disciplina/Professor</td>";
 			echo "<th width=\"9%\" align=\"center\">Nota</td>";
-			//echo "<th width=\"9%\" align=\"center\">Dia</td>";
 			echo "<th width=\"9%\" align=\"center\">Situa&ccedil;&atilde;o</td>";
-			//echo "<th width=\"7%\" align=\"center\">Créd.</td>";
-			//echo "<th width=\"8%\" align=\"center\">Sala</td>";
 			echo "<th width=\"3%\" align=\"center\">S</td>";
 			echo "<th width=\"3%\" align=\"center\">M</td>";
 			echo "</tr>";
 		}
 
 		if ($fl_internet == 't') {
-			$fl_internet = "<img src=\"../sagu/images/internet.gif\" alt=\"Matrícula feita pela Internet\" title=\"Matrícula feita pela Internet\">";
+			$fl_internet = "<img src=\"../../images/internet.gif\" alt=\"Matrícula feita pela Internet\" title=\"Matrícula feita pela Internet\">";
 		} else {
-			$fl_internet = "<img src=\"../sagu/images/normal.gif\" alt=\"Matrícula feita na sede\" title=\"Matrícula feita na sede\">";
+			$fl_internet = "<img src=\"../../images/normal.gif\" alt=\"Matrícula feita na sede\" title=\"Matrícula feita na sede\">";
 		}
 
 		if ($status_disciplina == 't') {
-			$status_disciplina = "<img src=\"../sagu/images/autorizado.gif\" alt=\"Matrícula com desbloqueio\" title=\"Matrícula com desbloqueio\">";
+			$status_disciplina = "<img src=\"../../images/autorizado.gif\" alt=\"Matrícula com desbloqueio\" title=\"Matrícula com desbloqueio\">";
 		} else {
-			$status_disciplina = "<img src=\"../sagu/images/liberado.gif\" alt=\"Matrícula sem desbloqueio\" title=\"Matrícula sem desbloqueio\">";
+			$status_disciplina = "<img src=\"../../images/liberado.gif\" alt=\"Matrícula sem desbloqueio\" title=\"Matrícula sem desbloqueio\">";
 		}
 
 		if ($dt_cancelamento == 't') {
@@ -384,32 +357,13 @@ function Mostra_Matricula_Geral() {
                 break;
         }
 
-/*
-		if ($obs_aproveitamento != '') {
-			echo ("<img src=\"../../sagu/images/checkapr.gif\" alt=\"Disciplina Aproveitada\" title=\"Disciplina Aproveitada\">");
-		} else {
-			$sql = "select ref_campus from contratos where ref_pessoa = $pessoa and ref_curso = $ref_curso";
-			$query22 = $conn->CreateQuery($sql);
-			$query22->MoveNext();
-			$ref_campus_aux = $query22->GetValue(1);
-
-			if ($ref_campus != $ref_campus_aux) {
-				echo ("<img src=\"../../sagu/images/checkoff.gif\" alt=\"Fora da sede\" title=\"Fora da sede\">");
-			} else {
-				echo ("<img src=\"../../sagu/images/checkon.gif\" alt=\"Na sede\" title=\"Na sede\">");
-			}
-		}
-*/
 		if (!is_null($professor)) {
 			$professor = "(<i>$professor</i>)";
 		}
 
 		echo ("$cancelada $desc_disciplina $professor</td>");
 		echo ("<td width=\"9%\" align=\"center\">$nota_final</td>");
-		//echo ("<td width=\"9%\" align=\"center\">$dia_semana&nbsp;</td>");
 		echo ("<td width=\"9%\" align=\"center\">$status</td>");
-		//echo ("<td width=\"7%\" align=\"center\">$num_creditos</td>");
-		//echo ("<td width=\"8%\" align=\"center\">$num_sala&nbsp;</td>");
 		echo ("<td width=\"3%\" align=\"center\">$status_disciplina</td>");
 		echo ("<td width=\"3%\" align=\"center\">$fl_internet</td>");
 		echo ("</tr>");
@@ -438,7 +392,7 @@ function Mostra_Matricula_Geral() {
 }
 
 function Mostra_Matricula_Outros() {
-	global $pessoa_id, $periodo_id;
+	global $pessoa, $periodo_id;
 
 	$conn = new Connection;
 
@@ -453,7 +407,7 @@ function Mostra_Matricula_Outros() {
 	"        A.fl_internet " .
 	" from matricula A, disciplinas B " .
 	" where A.ref_disciplina_ofer is null and " .
-	"       A.ref_pessoa = '$pessoa_id' and " .
+	"       A.ref_pessoa = '$pessoa' and " .
 	"       A.ref_disciplina = B.id " .
 	" order by A.ref_periodo;";
 
@@ -511,7 +465,6 @@ function Mostra_Matricula_Outros() {
 		echo ("<td width=\"5%\">$href</td>");
 		echo ("<td width=\"10%\">$ref_disciplina</td>");
 		echo ("<td width=\"34%\">$desc_disciplina</td>");
-		//echo ("<td width=\"10%\">$num_creditos</td>");
 		echo ("<td width=\"10%\">$nota_final</td>");
 		echo ("<td width=\"3%\" align=\"center\">$status_disciplina</td>");
 		echo ("<td width=\"3%\" align=\"center\">$fl_internet</td>");
@@ -528,7 +481,7 @@ function Mostra_Matricula_Outros() {
 
 function Mostra_Contratos() {
 
-	global $pessoa_id, $periodo_id;
+	global $pessoa, $periodo_id;
 
 	$conn = new Connection;
 
@@ -538,7 +491,7 @@ function Mostra_Contratos() {
 	"        ref_campus, " .
 	"        count(*) " .
 	" from contratos " .
-	" where ref_pessoa = '$pessoa_id' " .
+	" where ref_pessoa = '$pessoa' " .
 	" group by ref_curso, " .
 	"          ref_campus";
 
@@ -562,7 +515,7 @@ function Mostra_Contratos() {
 	"  	  ref_curso, " .
 	"        ref_campus " .
 	" from contratos" .
-	" where ref_pessoa = '$pessoa_id'" .
+	" where ref_pessoa = '$pessoa'" .
 	" order by dt_ativacao";
 
 	$query = $conn->CreateQuery($sql);
@@ -592,8 +545,6 @@ function Mostra_Contratos() {
 			echo ("<th width=\"23%\">Desativacao</td>");
 			echo ("</tr>");
 		}
-
-		//$href = "<a href=\"/academico/alterar_contrato.phtml?id=$ref_contrato\"><img src=\"../../sagu/images/select.gif\" alt='Ver Contrato' title='Ver Contrato' align='absmiddle' border=0></a>";
 
 		$url = "post/troca_contrato.php3?ref_pessoa=$ref_pessoa%26ref_contrato=$ref_contrato%26ref_curso=$ref_curso%26ref_campus=$ref_campus";
 
