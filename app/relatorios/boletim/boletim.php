@@ -16,27 +16,24 @@ require_once(dirname(__FILE__) .'/../../../lib/fpdi/fpdi.php');
 require_once(dirname(__FILE__) .'/../../../lib/fpdf153/pdf.ext.php');
 
 
-
-
 function remove_files($dir)
 {
-  if(is_dir($dir))
-  {
+	if(!is_dir($dir))
+	{
+      @mkdir("$dir",0770,true);
+	}
     if($handle = opendir($dir))
     {
       while(($file = readdir($handle)) !== false)
       {
         if($file != "." && $file != ".." && $file != "Thumbs.db"/*pesky windows, images..*/)
         {
-          //echo '<a target="_blank" href="'.$dir.$file.'">'.$file.'</a><br>'."\n";
-          //$aPDFs[] = $file;
           @unlink($dir.'/'.$file);
         }
       }
       closedir($handle);
       return $aPDFs;
     }
-  }
 }
 
 
@@ -324,7 +321,6 @@ else {
 	    $aAlunos[] = $aluno_id;
 }
 
-
 $qryBoletim = '
 SELECT 
     p.nome, m.ref_pessoa as ra_cnec, d.descricao_disciplina, m.nota_final, d.carga_horaria, m.ref_curso, m.num_faltas, s.descricao as periodo, m.ref_periodo, m.ref_disciplina_ofer as oferecida, m.ordem_chamada
@@ -405,5 +401,6 @@ $nome_arquivo = "Boletim_".$curso."_".$periodo.".pdf";
 $pdf->Output("boletins/$nome_arquivo", 'F');
 
 header("Location: boletins/$nome_arquivo");
+
 
 ?>  

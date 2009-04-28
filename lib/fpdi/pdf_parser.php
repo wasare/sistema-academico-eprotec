@@ -170,7 +170,7 @@ class pdf_parser {
         
         $pos = strlen($data) - strpos(strrev($data), strrev('startxref')); 
         $data = substr($data, $pos);
-        
+       
         if (!preg_match('/\s*(\d+).*$/s', $data, $matches)) {
             $this->error("Unable to find pointer to xref table");
     	}
