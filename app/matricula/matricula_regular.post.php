@@ -3,9 +3,9 @@
 header("Cache-Control: no-cache");
 
 //-- ARQUIVO E BIBLIOTECAS
-require("../../lib/common.php");
-require("../../configuracao.php");
-require("../../lib/adodb/adodb.inc.php");
+require_once("../../lib/common.php");
+require_once("../../configuracao.php");
+require_once("../../lib/adodb/adodb.inc.php");
 
 //-- Conectando com o PostgreSQL
 $Conexao = NewADOConnection("postgres");
@@ -13,7 +13,7 @@ $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 
 //-- PARAMETROS
-$periodo_id  = $_POST["periodo_id"];
+$sa_periodo_id  = $_POST["sa_periodo_id"];
 $curso_id    = $_POST["curso_id"];
 $aluno_id    = $_POST["aluno_id"];
 $id_contrato = $_POST["id_contrato"];
@@ -29,7 +29,7 @@ $sqlInsereDiario = "BEGIN;"; //-- Variavel com a sql de insercao dos diarios
 $sqlAtualizaContrato = "
 UPDATE contratos SET
   cod_status = null,
-  ref_last_periodo = '$periodo_id'
+  ref_last_periodo = '$sa_periodo_id'
 WHERE
   id = '$id_contrato'";
 
@@ -56,7 +56,7 @@ foreach($id_diarios as $diario){
     	matricula
   	WHERE 
     	ref_disciplina_ofer = '$diario' AND
-    	ref_periodo = '$periodo_id' AND
+    	ref_periodo = '$sa_periodo_id' AND
     	ref_pessoa  = '$aluno_id'";
 	
 	$RsMatriculado = $Conexao->Execute($sqlMatriculado);
@@ -151,7 +151,7 @@ foreach($id_diarios as $diario){
     	       '$aluno_id',
         	   '$ref_campus_ofer',
 	           '$curso_id',
-    	       '$periodo_id',
+    	       '$sa_periodo_id',
         	   '$disciplina_id',
 				'$ref_curso_subst',
 	           '$ref_disciplina_subst',
@@ -192,7 +192,15 @@ if (!$RsInsereDiario)
 $cabecalho = ">> <strong>Aluno</strong>: $aluno_id <br />";
 $cabecalho .= ">> <strong>Curso</strong>: $curso_id  - <strong>Per&iacute;odo</strong>: $periodo_id <br />";
 
+
+
 // ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO 
+//-- Conectando com o PostgreSQL
+// FIXME: migrar para conexao ADODB
+if(($conn = pg_Pconnect("host=$host user=$user password=$password dbname=$database")) == false)
+{
+   $error_msg="Não foi possível estabeler conexão com o Banco: " . $database;
+}
 require_once('atualiza_diario.php');
 
 foreach($diarios_matriculados as $matriculado){
