@@ -217,8 +217,6 @@ else{
 <form name="form1" method="post" action="grava_notas.php">
 <?php
 
-   //echo '<input type="hidden" name="grupo" id="grupo" value="' .$grupo.'">';
-   //echo '<input type="hidden" name="grupo_novo" id="grupo_novo" value="' .$grupo_novo.'">';
    echo '<input type="hidden" name="codprova" id="codprova" value="' . $getprova.'">';
    echo '<input type="hidden" name="disc" id="disc" value="' .$getdisciplina.'">';
    echo '<input type="hidden" name="ofer" id="ofer" value="' . $getofer.'">';

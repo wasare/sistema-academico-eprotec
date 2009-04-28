@@ -1,10 +1,5 @@
 <?php
 
-
-$conn = new Connection;
-$dbconnect = $conn->Open();
-
-
 function envia_erro($msg) {
 
 	// ENVIA EMAIL PARA O ADMINISTRADOR
@@ -13,16 +8,16 @@ function envia_erro($msg) {
 
 }
 
-function consulta_sql($sql_query) {
-	global $dbconnect, $error_msg;
+function sa_consulta_sql($sql_query) {
+	global $conn, $error_msg;
 
-	if (!$dbconnect) {
-		if (!($dbconnect = diario_open_db())) {
+	if (!$conn) {
+		if (!($conn = diario_open_db())) {
 			return null;
 		}
 	}
 
-	if (( $result_sql = pg_exec($dbconnect, $sql_query)) == false) {
+	if (( $result_sql = pg_exec($conn, $sql_query)) == false) {
 		$error_msg = "Error ao executar a consulta: " . $sql_query;
 		$error_msg .= '<br /> <br />Entre em contato com o respons&aacute;vel: ';
 		$error_msg .= '<a href="javascript:history.go(-1)">Voltar</a></b>';
@@ -36,7 +31,7 @@ function consulta_sql($sql_query) {
 }
 
 
-function getCurso($p,$d,$o) {
+function sa_getCurso($p,$d,$o) {
 
 
 	// VAR CONSULTA
@@ -59,7 +54,7 @@ function getCurso($p,$d,$o) {
 	//echo $sql9;
 	//exit;
 
-	$qry9 = consulta_sql($sql9);
+	$qry9 = sa_consulta_sql($sql9);
 
 	if(is_string($qry9)) {
 
@@ -76,7 +71,7 @@ function getCurso($p,$d,$o) {
 }
 
 
-function calcNotaReavaliacao($o,$nd,$ne) {
+function sa_calcNotaReavaliacao($o,$nd,$ne) {
 
 
 	// CONSULTA O NIVEL DO CURSO
@@ -88,7 +83,7 @@ function calcNotaReavaliacao($o,$nd,$ne) {
                      c.id = ref_curso AND
                      d.id = '.$o.';';
 
-	$qryCursoTipo = consulta_sql($sqlCursoTipo);
+	$qryCursoTipo = sa_consulta_sql($sqlCursoTipo);
 
 	if(is_string($qryCursoTipo))
 	{
@@ -139,7 +134,7 @@ function atualiza_matricula($aluno,$getofer){
 				 o.id = prof.ref_disciplina_ofer ;";
 
 
-	$qry1 = consulta_sql($qryDisc);
+	$qry1 = sa_consulta_sql($qryDisc);
 
 	//echo $qryDisc;
 	//die;
@@ -180,7 +175,7 @@ function atualiza_matricula($aluno,$getofer){
 	//echo $getperiodo . " - ". $getdisciplina ." - ". $getofer;
 	//die;
 
-	$getcurso = getCurso($getperiodo,$getdisciplina,$getofer);
+	$getcurso = sa_getCurso($getperiodo,$getdisciplina,$getofer);
 
 
 	// VERIFICA PENDENCIAS RELACIONADAS AO LANCAMENTO DE NOTAS
@@ -191,7 +186,7 @@ function atualiza_matricula($aluno,$getofer){
 	grupo ILIKE '$grupo_novo';";
 
 
-	$qryFormula = consulta_sql($sql1);
+	$qryFormula = sa_consulta_sql($sql1);
 
 	if(is_string($qry))
 	{
@@ -226,7 +221,7 @@ function atualiza_matricula($aluno,$getofer){
 		//echo $qryNotas;
 
 
-		$qry = consulta_sql($qryNotas);
+		$qry = sa_consulta_sql($qryNotas);
 
 		if(is_string($qry))
 		{
@@ -240,7 +235,7 @@ function atualiza_matricula($aluno,$getofer){
 
 		if ($NumReg > 0)
 		{
-			$getcurso = getCurso($getperiodo,$getdisciplina,$getofer);
+			$getcurso = sa_getCurso($getperiodo,$getdisciplina,$getofer);
 
 			while($registro = pg_fetch_array($qry))
 			{
@@ -317,7 +312,7 @@ function atualiza_matricula($aluno,$getofer){
 		WHERE
 		(num_faltas <> faltas_diario);";
 
-		$qryFaltas = consulta_sql($sqlDiarioFaltas);
+		$qryFaltas = sa_consulta_sql($sqlDiarioFaltas);
 
 
 		if(is_string($qryFaltas))
@@ -407,7 +402,7 @@ function atualiza_matricula($aluno,$getofer){
 		WHERE
 		nota_diario <> nota_final;";
 
-		$qryNotas = consulta_sql($sqlNotas);
+		$qryNotas = sa_consulta_sql($sqlNotas);
 
 		if(is_string($qryNotas))
 		{
@@ -449,7 +444,7 @@ function atualiza_matricula($aluno,$getofer){
 						// CALCULA NOTA FINAL E VERIFICA NOTA EXTRA SOMENTE COM NOTA < 60
 						// NOTA < 60 RATIFICA O LANCAMENTO DA NOTA EXTRA
 
-						$nota_final_calculada = calcNotaReavaliacao($getofer,$nota_diario,$nota_extra);
+						$nota_final_calculada = sa_calcNotaReavaliacao($getofer,$nota_diario,$nota_extra);
 
 						if($nota_final_calculada != $nota_final) {
 
@@ -483,7 +478,7 @@ function atualiza_matricula($aluno,$getofer){
 			$qryDiario .= "COMMIT;";
 
 			// GRAVA AS ALTERACOES
-			$res = consulta_sql($qryDiario);
+			$res = sa_consulta_sql($qryDiario);
                         // echo $qryDiario;
 
 			if(is_string($res)) {

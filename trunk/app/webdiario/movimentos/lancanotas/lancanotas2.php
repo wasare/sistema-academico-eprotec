@@ -1,7 +1,6 @@
 <?php
 include_once('../../webdiario.conf.php');
 
-// CONECT NO BANCO
 
 $getdisciplina = $_GET['disc'];
 $getofer = $_GET['ofer'];
@@ -9,10 +8,55 @@ $getperiodo = $_SESSION['periodo'];
 $id = $_SESSION['id'];
 $getcurso = $_GET['curso'];
 
-//$grupo = ( $id."-".$getperiodo."-".$getdisciplina);
 $grupo = ($id . "-" . $getperiodo . "-" . $getdisciplina . "-" . $getofer);
-
 $grupo_novo = ("%-" . $getperiodo . "-%-" . $getofer);
+
+
+
+// ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO
+$qryNotas = 'SELECT
+        m.ref_pessoa, id_ref_pessoas
+        FROM
+            matricula m
+        LEFT JOIN (
+                SELECT DISTINCT
+                d.id_ref_pessoas
+            FROM
+                diario_notas d
+            WHERE
+                d.d_ref_disciplina_ofer = ' . $getofer . '
+              ) tmp
+        ON ( m.ref_pessoa = id_ref_pessoas )
+        WHERE
+            m.ref_disciplina_ofer = ' . $getofer . ' AND
+        id_ref_pessoas IS NULL
+        ORDER BY
+                id_ref_pessoas;';
+
+$qry = consulta_sql($qryNotas);
+
+if(is_string($qry))
+{
+	echo $qry;
+    exit;
+}
+
+//-- Conectando com o PostgreSQL
+// FIXME: migrar para conexao ADODB
+if(($conn = pg_Pconnect("host=$host user=$dbuser password=$dbpassword dbname=$dbname")) == false)
+{
+   $error_msg="Não foi possível estabeler conexão com o Banco: " . $dbname;
+}
+
+require_once('../../../matricula/atualiza_diario.php');
+
+while($registro = pg_fetch_array($qry))
+{
+    $ref_pessoa = $registro['ref_pessoa'];
+    atualiza_matricula("$ref_pessoa","$getofer");
+}
+
+// ^ ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO ^//
 
 ?>
 
@@ -48,14 +92,6 @@ body{
 
   echo getHeaderDisc($getofer);
 
-/*
-   print ('<a href="testaformula_1.php?grupo='.$grupo.'&id='.$id.'&getcurso='.$getcurso.'&getdisciplina='.$getdisciplina.'&getperiodo='.$getperiodo.'"><font color="#0000FF" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Testar Fï¿½mula</strong></font></a>');
-*/
-//echo '<br />';
-
-
-//print_r($_GET);
-
 ?>
 
 <br>
@@ -63,12 +99,6 @@ body{
 <font size="2" face="Verdana, Arial, Helvetica, sans-serif">Voc&ecirc; tem a seguinte f&oacute;rmula cadastrada :</font>
 
 <?php
-
-	
-// CONECT NO BANCO
-//$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname");
-
-// VARS
 
 $sql1 = "SELECT DISTINCT
                 formula
@@ -131,11 +161,6 @@ if ((isset($id)) && (isset($getperiodo)) && (isset($getdisciplina)))
 		
 		echo '<tr bgcolor="'.$st.'"><td>'.$qdesc.'</td></tr>';
 		
-      /*        <!-- <td>
-	        <a href=\"apaga_prova.php?flag=$id&id=$qid&getcurso=$getcurso&getdisciplina=$getdisciplina&getperiodo=$getperiodo&grupo=$grupo\">
-               <div align=\"center\"><img src=\"../../img/erase.gif\" border=\"0\" title=\"APAGAR PROVA\"></div>
-               </td>-->
-          </tr>";*/
     }
   } 
   else 

@@ -5,8 +5,7 @@ session_start();
 $_SESSION['nivel'] = 0;
 $_SESSION['login'] = 'login';
 
-include("webdiario.conf.php");
-
+require_once("webdiario.conf.php");
 
 setcookie ("us", "0", time( )-9999);
 setcookie ("login", "0", time( )-9999);

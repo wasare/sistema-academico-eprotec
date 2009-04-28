@@ -49,7 +49,7 @@ function deselecionar_tudo()
     <?=$turma?>
     <br />
     <strong>Per&iacute;odo: </strong>
-    <?=$periodo_id?>
+    <?=$sa_periodo_id?>
     <strong>Contrato: </strong>
     <?=$id_contrato?>
     <strong>Cidade: </strong>
@@ -69,7 +69,7 @@ function deselecionar_tudo()
         <?=$MarcaDisciplina?>
       </p>
     </div>
-    <input type="hidden" name="periodo_id" value="<?=$periodo_id?>" />
+    <input type="hidden" name="sa_periodo_id" value="<?=$sa_periodo_id?>" />
     <input type="hidden" name="curso_id" value="<?=$curso_id?>" />
     <input type="hidden" name="aluno_id" value="<?=$aluno_id?>" />
     <input type="hidden" name="id_contrato" value="<?=$id_contrato?>" />
