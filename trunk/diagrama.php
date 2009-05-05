@@ -7,10 +7,10 @@ require("configuracao.php");
 require("lib/adodb/adodb.inc.php");
 
 
-//Criando a classe de conexão
+//Criando a classe de conexao
 $Conexao = NewADOConnection("postgres");
 	
-//Setando como conexão persistente
+//Setando como conexao persistente
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 //EXECUTANDO SQL COM ADODB
@@ -34,7 +34,10 @@ function abrir(){
     document.getElementById('popup').style.display = 'block';
     setTimeout ("fechar()", 36000);
 }
-
+//Abre janela de avisos
+function avisos() {
+	window.open("app/avisos/cadastrar.php",'Avisos','resizable=yes, toolbar=no,width=550,height=350,scrollbars=yes,top=0,left=0');
+}
 
 </script>
 <style type="text/css">

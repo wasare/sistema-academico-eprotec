@@ -156,7 +156,7 @@ if(is_string($qryNotaDistribuida))
    exit;
 }
 
-$nota_distribuida = pg_fetch_row($qryNotaDistribuida);
+$nota_distribuida = getNumeric2Real(pg_fetch_row($qryNotaDistribuida));
 
 ?>
 <html>

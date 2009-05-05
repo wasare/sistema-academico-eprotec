@@ -1,6 +1,8 @@
 <?php
 
-require_once('../../lib/config.php');
+$BASE_DIR_WEBDIARIO  = dirname(__FILE__) . '/';
+
+require_once($BASE_DIR_WEBDIARIO .'../../lib/config.php');
 
 @session_start();
 
@@ -10,11 +12,9 @@ date_default_timezone_set('America/Sao_Paulo');
 
 $BASE_URL = $BASE_URL .'app/webdiario/';
 
-$BASE_DIR  = dirname(__FILE__) . '/';
+require_once($BASE_DIR_WEBDIARIO .'conf/conn_diario.php');
 
-require_once($BASE_DIR.'/conn_diario.php');
-
-$CSS_DIR = $BASE_URL.'css/';
+$CSS_DIR = $BASE_URL .'css/';
 
 /*Define onde está a página de erro*/
 $erro = $BASE_URL .'erro.php';
@@ -59,7 +59,7 @@ $P['20032'] = "'07021','07022','0702'";
 
 
 // INCLUI FUNCOES 
-require_once($BASE_DIR.'../lib/functions_diario.php');
+require_once($BASE_DIR_WEBDIARIO .'lib/functions_diario.php');
 
 
 ?>
