@@ -102,7 +102,7 @@ img {
 		<td width="50%" valign="top">
 			<a href="" title="Declara&ccedil;&atilde;o de matr&iacute;cula" target="_self"
 			class="menu_link"><img src="../../images/icons/lupa.png" />&nbsp;
-			Declara&ccedil;&atilde;o de matr&iacute;cula</a>
+			Declara&ccedil;&atilde;o de matr&iacute;cula </a>
 		</td>
 	</tr>
 </table>
