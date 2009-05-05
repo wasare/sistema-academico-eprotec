@@ -314,7 +314,7 @@ $vars = "id=".$id."&getperiodo=". $getperiodo."&disc=".@$getdisciplina."&ofer=".
 
 /* INICIO GRAVAR NOTA DISTRIBUIDA*/
 
-$nota_distribuida = $_POST["valor_avaliacao"];
+$nota_distribuida = str_replace(",",".",$_POST["valor_avaliacao"]);
 
 $sqlSelecaoTotalNotas = "
 SELECT 
@@ -360,7 +360,7 @@ else{
    		else 
 		{
 			$msg_nota_distribuida = "<font color=\"green\" ><b>Nota distribuida alteradas com sucesso!</b></font><br>
-			Valor da Nota Distribuida: $nota_distribuida pontos";
+			Valor da Nota Distribuida: ". getNumeric2Real($nota_distribuida) ." pontos";
 		}
 		
 		//echo $sqlAtualizaNotaDistribuida . "<h2>Entrou!</h2>";
