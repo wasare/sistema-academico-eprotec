@@ -117,7 +117,7 @@ function deselecionar_tudo(){
 <?php 
 
 echo "<strong>Curso: </strong> ".$id_curso." - ".$RsNomeCurso->fields[0].
-     " - <strong>&Uacute;ltimo per&iacute;odo: </strong>".$RsDescPeriodo->fields[0];
+     " - <strong>Per&iacute;odo inicial: </strong>".$RsDescPeriodo->fields[0];
 
 ?>
 </h4>

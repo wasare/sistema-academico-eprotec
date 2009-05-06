@@ -100,13 +100,17 @@ a {
 </center>
 
 <map name="Map" id="Map">
-  <area shape="rect" coords="406,40,582,58" href="app/matricula/matricula_aluno.php" alt="Matr&iacute;cula individual" /><area shape="rect" coords="406,62,580,82" href="#" />
-  <area shape="rect" coords="406,85,557,102" href="app/matricula/remover_matricula/filtro.php" alt="Remover matr&iacute;cula" /><area shape="rect" coords="230,37,348,87" href="app/sagu/academico/consulta_inclui_contratos.phtml" alt="Contratos" />
-  <area shape="rect" coords="16,31,158,89" href="app/sagu/academico/consulta_inclui_pessoa.phtml" alt="Pessoa f&iacute;sica" /><area shape="rect" coords="25,149,114,185" href="app/sagu/generico/index.phtml" alt="Cadastros gen&eacute;ricos" />
+  <area shape="rect" coords="406,40,582,58" href="app/matricula/matricula_aluno.php" alt="Matr&iacute;cula individual" />
+  <area shape="rect" coords="406,85,557,102" href="app/matricula/remover_matricula/filtro.php" alt="Remover matr&iacute;cula" />
+  <area shape="rect" coords="230,37,348,87" href="app/sagu/academico/consulta_inclui_contratos.phtml" alt="Contratos" />
+  <area shape="rect" coords="16,31,158,89" href="app/sagu/academico/consulta_inclui_pessoa.phtml" alt="Pessoa f&iacute;sica" />
+  <area shape="rect" coords="25,149,114,185" href="app/sagu/generico/index.phtml" alt="Cadastros gen&eacute;ricos" />
   <area shape="rect" coords="229,212,323,246" href="app/sagu/academico/consulta_inclui_professores.phtml" alt="professores" />
   <area shape="rect" coords="412,163,567,223" href="app/sagu/academico/disciplina_ofer.phtml" alt="Disciplinas oferecidas" />
   <area shape="rect" coords="425,277,546,325" href="app/sagu/academico/consulta_inclui_cursos_disciplinas.phtml" alt="cursos / disciplinas" />
   <area shape="rect" coords="227,140,323,175" href="app/sagu/academico/coordenadores.phtml" alt="coordenadores" />
-<area shape="rect" coords="585,270,648,330" href="app/relatorios/menu.php" alt="Listar relat&oacute;rios" />
-</map></body>
+  <area shape="rect" coords="585,270,648,330" href="app/relatorios/menu.php" alt="Listar relat&oacute;rios" />
+  <area shape="rect" coords="404,61,583,82" alt="Dispensa de disciplina" href="app/dispensa_disciplina/dispensa_aluno.php" />
+</map>
+</body>
 </html>
