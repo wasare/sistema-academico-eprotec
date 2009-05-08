@@ -111,12 +111,12 @@ exit;
   </tr>
   <tr> 
     <td><img src="../img/menu_seta.gif" width="5" height="5"></td>
-    <td><b><a href="../../gs851w32.exe" target="principal"><font color="#000099" size="1">1 
+		<td><b><a href="../docs/gs851w32.exe" target="principal"><font color="#000099" size="1">1 
       - GhostScript</font></a></b></td>
   </tr>
   <tr> 
     <td><img src="../img/menu_seta.gif" width="5" height="5"></td>
-    <td><b><a href="../../gsv48w32.exe" target="principal"><font color="#000099" size="1">2 
+    <td><b><a href="../docs/gsv48w32.exe" target="principal"><font color="#000099" size="1">2 
       - GhostView</font></a></b></td>
   </tr>
   <tr> 
