@@ -1,26 +1,16 @@
 <?php
 
-/**
-* Captura dados do contrato
-* @author Santiago Silva Pereira
-* @version 1
-* @since 23-01-2009
-**/
-
-//ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
 require("../../lib/common.php");
 require("../../configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
 
-/**
- * @var string com o codigo do aluno
- */
 $id_pessoa = $_GET['codigo_pessoa'];
 
+if($id_pessoa != ''){
 
-$sql = "SELECT 
+	$sql = "SELECT
 			a.ref_curso,
 			b.descricao,
 			a.id,
@@ -34,41 +24,45 @@ $sql = "SELECT
         	a.ref_curso = b.id";
 
 
-//Criando a classe de conexão ADODB
-$Conexao = NewADOConnection("postgres");
+	$Conexao = NewADOConnection("postgres");
+	$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
-//Setando como conexão persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+	$RsContrato = $Conexao->Execute($sql);
 
-//Exibindo a descricao do curso caso setado
-$RsContrato = $Conexao->Execute($sql);
+	echo "<h4>Selecione o curso:</h4>";
 
-echo "<h4>Selecione o curso:</h4>";
+	$cont = 0;
 
-$cont = 0;
+	while(!$RsContrato->EOF){
 
-while(!$RsContrato->EOF){
+		if($cont == 0){
+			$Result1.= '<input type="radio" name="id_contrato" id="id_contrato" value="';
+			$Result1.= $RsContrato->fields[2].'" checked /> ';
+			$Result1.= $RsContrato->fields[0].' - <b>'.$RsContrato->fields[1];
+			$Result1.= '</b> - Turma: '.$RsContrato->fields[3].'<br>';
+		}
+		else{
+			$Result1.= '<input type="radio" name="id_contrato" id="id_contrato" value="';
+			$Result1.= $RsContrato->fields[2].'" /> ';
+			$Result1.= $RsContrato->fields[0].' - <b>'.$RsContrato->fields[1];
+			$Result1.= '</b> - Turma: '.$RsContrato->fields[3].'<br>';
+		}
+		$cont += 1;
 
-    if($cont == 0){
-        $Result1.= '<input type="radio" name="id_contrato" id="id_contrato" value="';
-        $Result1.= $RsContrato->fields[2].'" checked /> ';
-        $Result1.= $RsContrato->fields[0].' - <b>'.$RsContrato->fields[1];
-        $Result1.= '</b> - Turma: '.$RsContrato->fields[3].'<br>';
-    }
-    else{
-        $Result1.= '<input type="radio" name="id_contrato" id="id_contrato" value="';
-        $Result1.= $RsContrato->fields[2].'" /> ';
-        $Result1.= $RsContrato->fields[0].' - <b>'.$RsContrato->fields[1];
-        $Result1.= '</b> - Turma: '.$RsContrato->fields[3].'<br>';
-    }
-    $cont += 1;
-
-	$RsContrato->MoveNext();
-}
+		$RsContrato->MoveNext();
+	}
 
 
-$Result1 .= '<br />
+	$Result1 .= '<br />
              <input type="checkbox" name="checar_turma" id="checar_turma" value="1" /> Filtrar disciplinas por turma.';//somente para matricula regular;
+
+}
+else{
+	$Result1 = "
+	<p><font color='red'>
+	<strong>Erro: Entre com um c&oacute;digo de aluno!</strong>
+	</font></p>";
+}
 
 echo $Result1;
 

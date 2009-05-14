@@ -90,9 +90,7 @@ $respAlunos .= "</table>";
     <link href="../../Styles/formularios.css" rel="stylesheet"	type="text/css" />
     <script src="../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
     <link href="../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
-    <script language="JavaScript" src="../../lib/tigra_calendar/calendar_us.js"></script>
-    <link rel="stylesheet" href="../../lib/tigra_calendar/calendar.css" />
-
+    
 <script language="JavaScript">
 <!--
 function selecionar_tudo(){
@@ -106,9 +104,12 @@ function deselecionar_tudo(){
   		if(document.form1.elements[i].type == "checkbox")
     		document.form1.elements[i].checked=0
 }
+//Configuracao do caminho das imagens do tigra calendar
+var caminho_img_tigra = '../../lib/tigra_calendar/img/';
 -->
 </script>
-
+<script language="JavaScript" src="../../lib/tigra_calendar/calendar_br.js"></script>
+<link rel="stylesheet" href="../../lib/tigra_calendar/calendar.css" />
 </head>
 <body>
 <div align="center" style="height: 600px;">
@@ -125,7 +126,7 @@ echo "<strong>Curso: </strong> ".$id_curso." - ".$RsNomeCurso->fields[0].
 <form action="atualizar_contratos.php" name="form1" method="post">
 Data da cola&ccedil;&atilde;o: 
 <span id="sprytextfield1">
-   <input type="text" name="data" id="data" />
+   <input type="text" name="data" id="data" size="10" value="<?php echo date("d/m/Y");?>" />
    <script language="JavaScript">
 	new tcal ({
 		'formname': 'form1',
