@@ -100,7 +100,7 @@ img {
 		</p>
 		</td>
 		<td width="50%" valign="top">
-			<a href="declaracao/pesquisa_declaracao_matricula.php" title="Declara&ccedil;&atilde;o de matr&iacute;cula" target="_self"
+			<a href="declaracao_matricula/pesquisa_declaracao_matricula.php" title="Declara&ccedil;&atilde;o de matr&iacute;cula" target="_self"
 			class="menu_link"><img src="../../images/icons/lupa.png" />&nbsp;
 			Declara&ccedil;&atilde;o de matr&iacute;cula</a>
 		</td>
