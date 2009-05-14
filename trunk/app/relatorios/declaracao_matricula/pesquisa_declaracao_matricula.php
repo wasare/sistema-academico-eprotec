@@ -70,6 +70,7 @@ if (!$RsCarimbo){
 <form method="post" name="form1" target="_blank">
 <div align="center" style="height: 600px;">
 <h1>Declara&ccedil;&atilde;o de matr&iacute;cula</h1>
+<span class="comentario">ATENÇÃO: este relatório não verifica a situação acadêmica do aluno, apenas emite o documento.</span>
 <div class="box_geral">Data de emiss&atilde;o: <br />
 <input type="text" name="data" id="data" value="<?php echo date("d/m/Y");?>" size="10" />
 <script	language="JavaScript">

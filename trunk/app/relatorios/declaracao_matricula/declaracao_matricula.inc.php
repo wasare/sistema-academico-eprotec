@@ -166,7 +166,7 @@ $corpo = '        Declaro para os devidos fins que '.$RsContrato->fields[3].
 $data_nascimento[0].', natural de '.$RsContrato->fields[4].'/'.$RsContrato->fields[5].
 ', encontra-se devidamente matriculado(a) no curso '.$RsContrato->fields[2].
 ', neste estabelecimento de ensino.
-Por ser verdade e estar de acordo com nossos arquivos, assino a presente.';
+            Por ser verdade e estar de acordo com nossos arquivos, assino a presente.';
 
 $data_declaracao = $RsContrato->fields[1].', '.$data[0].' de '.$mes.' de '.$data[2];
 $carimbo_nome = $RsCarimbo->fields[1];
