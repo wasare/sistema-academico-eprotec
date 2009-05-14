@@ -31,7 +31,7 @@ $pdf->Cell(0,5,$carimbo_nome,0,1,'C',0,0,0);
 $pdf->SetFont('Times','',10);
 $pdf->Cell(44);
 $pdf->MultiCell(70,5,$carimbo_dados,0,'C');
-$pdf->SetFont('Times','',12);
+//$pdf->SetFont('Times','',12);
 $pdf->Ln(20);
 $pdf->MultiCell(0,5,$decretos,0,'J');
 $pdf->Ln(6);
