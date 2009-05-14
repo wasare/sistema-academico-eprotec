@@ -1,23 +1,17 @@
 <?php
 
 header("Cache-Control: no-cache");
-
-//INCLUSAO DE BIBLIOTECAS
 require("../../lib/common.php");
 require("../../configuracao.php");
 require("../../lib/adodb/adodb.inc.php"); 
 
 
-//Criando a classe de conexão
 $Conexao = NewADOConnection("postgres");
-
-//Setando como conexão persistente
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
-//EXECUTANDO SQL COM ADODB
+
 $Result1 = $Conexao->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
 
-//Se Result1 falhar	
 if (!$Result1){
     print $Conexao->ErrorMsg();
     die();
@@ -72,7 +66,7 @@ if (!$Result1){
                 }
             }
 
-            alert(code + ' não é um código válido!');
+            alert(code + ' nao e um codigo valido!');
 
             field.focus();
 
@@ -172,9 +166,9 @@ if (!$Result1){
                     <input type="checkbox" name="pai" id="pai" value="pai">
                     Nome do Pai
                     <input type="checkbox" name="mae" id="mae" value="mae">
-                    Nome da Mãe
+                    Nome da Mï¿½e
                     <input type="checkbox" name="endereco" id="endereco" value="endereco">
-                    Endereço
+                    Endereï¿½o
                     <input type="checkbox" name="bairro" id="bairro" value="bairro">
                     Bairro
                     <input type="checkbox" name="cidade" id="cidade" value="cidade">
@@ -197,7 +191,7 @@ if (!$Result1){
                     Turma <br />
                     &nbsp;
                 </label>
-        <span class="checkboxMinSelectionsMsg">Selecione no mínimo uma coluna.</span></span> </td>
+        <span class="checkboxMinSelectionsMsg">Selecione no mï¿½nimo uma coluna.</span></span> </td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
