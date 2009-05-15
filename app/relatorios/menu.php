@@ -82,9 +82,7 @@ img {
 		<a href="pesquisa_ficha_academica.php"
 			title="Vida acad&ecirc;mica do aluno por curso" target="_self"
 			class="menu_link"><img src="../../images/icons/lupa.png" />&nbsp;Ficha
-		Acad&ecirc;mica</a> / <a href="pesquisa_ficha_global.php"
-			title="Vida acad&ecirc;mica do aluno em todos os cursos matriculados"
-			target="_self" class="menu_link"> Situa&ccedil;&atilde;o Global</a><a
+		Acad&ecirc;mica</a> <a
 			href="pesquisa_boletim.php"
 			title="Emiss&atilde;o dos Boletins Escolares" target="_self"
 			class="menu_link"><br />

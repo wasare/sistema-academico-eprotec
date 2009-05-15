@@ -40,7 +40,7 @@ $RsCursos = $Conexao->Execute($sqlCursos);
   ob_start();
 
 ?>
-<link href="file://///192.168.0.17/desenvolvimento/Styles/style.css" rel="stylesheet" type="text/css">
+<link href="../../Styles/style.css" rel="stylesheet" type="text/css">
 <page backtop="10mm" backbottom="10mm" >
 <page_header></page_header>
 <page_footer>
