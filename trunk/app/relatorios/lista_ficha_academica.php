@@ -6,20 +6,21 @@
   require("../../configuracao.php");
   require("../../lib/adodb/adodb.inc.php");
   require("../../lib/adodb/tohtml.inc.php");
+  require("../../lib/aluno.inc.php");
   
 
   $Conexao = NewADOConnection("postgres");
   $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
-	$ras = $_GET['aluno'];
+	$aluno_id = $_GET['aluno'];
 	
-	if(isset($ras) && is_numeric($ras) && $ras != "") {
+	if(isset($aluno_id) && is_numeric($aluno_id) && $aluno_id != "") {
 		$btnOK = true;
 	}
 	
-	$cs = $_GET['cs'];
+	$curso_id = $_GET['cs'];
 	
-	if(isset($cs) && is_numeric($cs) && $cs != "") {
+	if(isset($curso_id) && is_numeric($curso_id) && $curso_id != "") {
 		$btnOK = true;
 	}
 		
@@ -32,17 +33,17 @@
 	m.num_faltas as faltas, 
 	m.nota_final as nota_final, 
 	m.nota as nota, 
-	m.ref_disciplina_ofer as oferecida
+	m.ref_disciplina_ofer as oferecida,
+    m.ref_motivo_matricula
 	FROM 
 		matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s  
 	WHERE 
 		m.ref_pessoa = p.id AND 
-		p.ra_cnec = $ras AND 
-		m.ref_curso = $cs AND 
-		m.dt_matricula >= '2004-01-01' AND
+		p.ra_cnec = $aluno_id AND 
+		m.ref_curso = $curso_id AND 
+		-- m.dt_matricula >= '2004-01-01' AND
 		m.ref_disciplina_ofer = o.id AND 
 		d.id = o.ref_disciplina AND
-
 		s.id = o.ref_periodo
 	ORDER BY 2, 3";
 	
@@ -67,10 +68,10 @@
 	MEC-SETEC<br />
 	CENTRO FEDERAL DE EDUCA&Ccedil;&Atilde;O TECNOL&Oacute;GICA DE BAMBU&Iacute;-MG<br />
     SETOR DE REGISTROS ESCOLARES
-    <br /><br /><br />
+    <br /><br />
 </div>
 <h2>Ficha Acad&ecirc;mica</h2>
-<font color="#000000" size="2"> <b>Matr&iacute;cula: </b><?php echo($ras);?> <b> Nome: </b><?php echo($_GET['nome']);?> </font><br>
+<font color="#000000" size="2"> <b>Matr&iacute;cula: </b><?php echo($aluno_id);?> <b> Nome: </b><?php echo($_GET['nome']);?> </font><br>
 <font color="#000000" size="2"> <b>Curso: </b><?php echo($_GET['curso']);?><br />
 <b>Data: </b> <?php echo date("d/m/Y"); ?> <b>Hora: </b><?php echo date("H:i"); ?> </font><br>
 <br>
@@ -81,8 +82,10 @@
     <th width="8%"><div align="center"><font color="#FFFFFF"><b>M&eacute;dia</b></font></div></th>
     <th width="8%"><div align="center"><font color="#FFFFFF"><b>Faltas</b></font></div></th>
     <th width="20%"><div align="center"><font color="#FFFFFF"><b>% Faltas</b></font></div></th>
-    <th width="15%"><div align="center"><font color="#FFFFFF"><b>CH Realizada</b></font></div></th>
-    <th width="15%"><div align="center"><font color="#FFFFFF"><b>CH Prevista</b></font></div></th>
+    <th width="12%"><div align="center"><font color="#FFFFFF"><b>CH Realizada</b></font></div></th>
+    <th width="12%"><div align="center"><font color="#FFFFFF"><b>CH Prevista</b></font></div></th>
+    <th width="5%"><div align="center"><font color="#FFFFFF"><b>Matr&iacute;cula</b></font></div></th>
+    <th width="6%"><div align="center"><font color="#FFFFFF"><b>Situa&ccedil;&atilde;o</b></font></div></th>
   </tr>
 <?php	
 
@@ -100,17 +103,45 @@ $chRealizadaAprovado = 0;
 
 while(!$Result1->EOF) {
 
-	$iddisc = $Result1->fields[0];
-    $nomemateria = $Result1->fields[2];
-	$periodo = $Result1->fields[1];
-	$faltasmateria = $Result1->fields[5];
-    $classe = $Result1->fields[4];
+	$nomemateria = $Result1->fields[0] .' - '. $Result1->fields[2];
+    $periodo = $Result1->fields[1];
+    $faltasmateria = $Result1->fields[5];
+    $ref_periodo = $Result1->fields[4];
     $aulaprev = $Result1->fields[3];
     $oferecida = $Result1->fields[8];
-    
-	
-	$notafinal = $Result1->fields[6];
-   	
+    $ref_motivo_matricula = $Result1->fields[9];
+    $notafinal = $Result1->fields[6];
+
+    // APROVEITAMENTO DE ESTUDOS 2
+    // CERTIFICACAO DE EXPERIENCIAS 3
+    // EDUCACAO FISICA 4
+    switch ($ref_motivo_matricula) {
+            case 0:
+                $matricula = 'CI';
+                break;
+            case 2:
+                $matricula = 'AE';
+                break;
+            case 3:
+                $matricula = 'CE';
+                break;
+            case 4:
+                $matricula = 'DEF';
+                break;
+    }
+
+    $situacao = '';
+    if(verificaAprovacao($aluno_id,$curso_id,$oferecida))
+		$situacao = 'A'; 
+    else
+	    $situacao = 'R';
+   
+    if(!verificaPeriodo($ref_periodo))
+        $situacao = 'M';
+
+    if(verificaEquivalencia($curso_id,$oferecida))
+        $matricula .= ' / DE';
+
 	if($notafinal == ''){
 		$notafinal = ' - ';
 	}  
@@ -120,13 +151,13 @@ while(!$Result1->EOF) {
 	}
  
  
- 	//SQL COM CARGA HORARIA REALIZADA
+ 	// SQL COM CARGA HORARIA REALIZADA
 	$sqlflag ="
 	SELECT SUM(CAST(flag AS INTEGER)) AS carga
     FROM 
     diario_seq_faltas 
     WHERE 
-    periodo = '$classe' AND 
+    periodo = '$ref_periodo' AND 
     disciplina = '$iddisc' AND 
     ref_disciplina_ofer = $oferecida; ";
   	
@@ -149,7 +180,7 @@ while(!$Result1->EOF) {
     
 	
 	//VERIFICANDO APROVACAO POR FALTAS
-    if ($pfaltas > 25 || $notafinal < 60) { 
+    if ($situacao == 'R') { 
 		$fcolor = '#FF0000';
 	}
 	else {
@@ -181,12 +212,14 @@ while(!$Result1->EOF) {
 	   
 	print ("<tr bgcolor=\"$st\">
         <td><font color=$fcolor>$periodo</font></td>
-		<td><font color=$fcolor>$iddisc - $nomemateria</font></td>
+		<td><font color=$fcolor>$nomemateria</font></td>
 		<td align=center><font color=$fcolor>$notafinal</font></td>
         <td align=center><font color=$fcolor>$faltasmateria</font></td>
         <td align=center><font color=$fcolor>$stfaltas</font></td>
         <td align=center><font color=$fcolor>$res</font></td>
         <td align=center><font color=$fcolor>$aulaprev</font></td>
+        <td align=center><font color=$fcolor>$matricula</font></td>
+        <td align=center><font color=$fcolor>$situacao</font></td>
         </tr>");
 		
 	$res = "";
@@ -212,6 +245,17 @@ $percFaltasAprovado = number_format($percFaltasAprovado,'2',',','.');
                  
 ?>
 </table>
+<div align="left">
+    <h4>Legenda</h4>
+    <strong>CI</strong> - Disciplina Cursada na Institui&ccedil;&atilde;o<br />
+    <strong>AE</strong> - Aproveitamento de Estudos <br />
+    <strong>CE</strong> - Certifica&ccedil;&atilde;o Experi&ecirc;ncia <br />
+    <strong>DEF</strong> - Dispensado de Educa&ccedil;&atilde;o f&iacute;sica<br /><br />
+    <strong>A</strong> - Aprovado<br />
+    <strong>R</strong> - Reprovado <br />
+    <strong>M</strong> - Matriculado <br /><br />
+    <strong>DE</strong> - Disciplina Equivalente<br />
+</div>
 </div>
 
 <br /><br />
@@ -235,6 +279,7 @@ $percFaltasAprovado = number_format($percFaltasAprovado,'2',',','.');
     <td align="right">&nbsp;<?php echo $chRealizadaAprovado;?></td>
   </tr>
 </table>
-
+<br />
+<br />
 </body>
 </html>

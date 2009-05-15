@@ -88,7 +88,7 @@ if ($_POST) {
 
 	if(isset($ra) && is_numeric($ra) && $ra != "") {
     
-		$sql1 .= " AND a.ra_cnec LIKE '%$ra%' ";
+		$sql1 .= " AND a.ra_cnec = '$ra' ";
 		$btnOK = true;
     }
 
