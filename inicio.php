@@ -59,9 +59,44 @@ function iframeAutoHeight(quem){
 		</td>
 	</tr>
 	<tr>
+		
+		<td width="23" class="menu">
+			<a href="inicio.php">
+				<img src="images/home_icon.gif" alt="P&aacute;gina inicial" title="P&aacute;gina inicial" />
+			</a>
+		</td>
 		<td width="526" class="menu">
+		
 		<ul id="MenuBar1" class="MenuBarHorizontal">
-			<li><a href="inicio.php">In&iacute;cio</a></li>
+			<!-- <li><a href="inicio.php">In&iacute;cio</a></li>-->
+			<li><a class="MenuBarItemSubmenu" href="#">Sistema</a>
+			<ul>
+				<li><a href="app/exportar/exportar_sistec.php" target="frame2">Exportar matr&iacute;culas para o SISTEC</a></li>
+				<li><a href="#" class="MenuBarItemSubmenu">WebDi&aacute;rio</a>
+				<ul>
+					<li><a href="<?php echo $BASE_URL . 'app/webdiario'; ?>" target="frame2">Acessar WebDi&aacute;rio</a></li>
+					<li><a href="app/acessowebdiario/index.php" target="frame2">Usu&aacute;rios do WebDi&aacute;rio</a></li>
+					
+				</ul>
+				</li>
+				<li><a href="#" class="MenuBarItemSubmenu">Configura&ccedil;&otilde;es</a>
+				<ul>
+					<li><a href="app/sagu/academico/consulta_periodos.phtml"
+						target="frame2">Per&iacute;odos</a></li>
+					<li><a
+						href="app/sagu/academico/consulta_inclui_departamentos.phtml"
+						target="frame2">Departamentos</a></li>
+					<li><a href="app/sagu/academico/areas_ensino.phtml" target="frame2">&Aacute;rea
+					de ensino</a></li>
+					<li><a href="app/sagu/academico/cadastro_salas.phtml"
+						target="frame2">Salas</a></li>
+					<li><a href="app/sagu/academico/carimbos.phtml" target="frame2">Carimbos</a></li>
+					<li><a href="app/sagu/usuarios/consulta_inclui_usuarios.phtml"
+						target="frame2">Usu&aacute;rios do sistema</a></li>
+				</ul>
+				</li>
+			</ul>
+			</li>		
 			<li><a class="MenuBarItemSubmenu" href="#">Cadastros</a>
 			<ul>
 				<li><a href="app/sagu/academico/consulta_inclui_pessoa.phtml"
@@ -84,27 +119,6 @@ function iframeAutoHeight(quem){
 					<li><a href="app/sagu/generico/campus_inclui.phtml" target="frame2">Campus</a></li>
 					<li><a href="app/sagu/generico/consulta_inclui_instituicoes.phtml"
 						target="frame2">Institui&ccedil;&otilde;es</a></li>
-				</ul>
-				</li>
-				<li><a href="#" class="MenuBarItemSubmenu">Sistema</a>
-				<ul>
-					<li><a href="app/sagu/academico/consulta_periodos.phtml"
-						target="frame2">Per&iacute;odos</a></li>
-					<li><a
-						href="app/sagu/academico/consulta_inclui_departamentos.phtml"
-						target="frame2">Departamentos</a></li>
-					<li><a href="app/sagu/academico/areas_ensino.phtml" target="frame2">&Aacute;rea
-					de ensino</a></li>
-					<li><a href="app/sagu/academico/cadastro_salas.phtml"
-						target="frame2">Salas</a></li>
-					<li><a href="app/sagu/academico/carimbos.phtml" target="frame2">Carimbos</a></li>
-					<li><a href="app/sagu/usuarios/consulta_inclui_usuarios.phtml"
-						target="frame2">Usu&aacute;rios do sistema</a></li>
-					<li><a><hr></a></li>
-					<li><a href="app/acessowebdiario/index.php" target="frame2">Acesso
-					WebDi&aacute;rio</a></li>
-					<li><a href="<?php echo $BASE_URL . 'app/webdiario'; ?>"
-						target="frame2">WebDi&aacute;rio</a></li>
 				</ul>
 				</li>
 			</ul>
