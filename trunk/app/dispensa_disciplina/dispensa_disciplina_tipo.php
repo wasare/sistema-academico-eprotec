@@ -27,8 +27,8 @@ $Conexao = NewADOConnection("postgres");
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 $sa_periodo_id = $_POST['periodo_id'];
-$first = $_POST['first'];
-$second = $_POST['second'];
+//$first = $_POST['first'];
+//$second = $_POST['second'];
 $checar_turma = $_POST['checar_turma'];
 
 $msg_erro = '';
