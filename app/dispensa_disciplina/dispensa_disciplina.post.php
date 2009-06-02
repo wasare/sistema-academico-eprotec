@@ -8,9 +8,8 @@ require("../../configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
 
-
 // PROCESSA A DISPENSA SE NAO HOUVER ERROS
-if ( $second != 1 )
+if ( $_POST['second'] != 1 )
 	die;
 
 $flag_processa = 1;
