@@ -82,45 +82,6 @@ if(is_string($qryFalta))
 
 $qryFaltas = pg_fetch_all($qryFalta);
 
-
-               
-$sql1 = "SELECT 
-  T1.nome, T1.id, T1.ra_cnec, COUNT(T2.ra_cnec) AS faltas
-FROM
-  (
-    SELECT DISTINCT
-  p.nome,
-  p.id,
-  p.ra_cnec
-FROM
-  matricula m
-  INNER JOIN pessoas p ON (m.ref_pessoa = p.id)
-WHERE
-  (m.ref_periodo = '$periodo') AND
-  (m.ref_disciplina_ofer = '$oferecida') AND
-  (m.dt_cancelamento is null)
- 
-  ) AS T1 
-  
-LEFT OUTER JOIN
-  ( 
-    SELECT
-  a.ra_cnec
-FROM  
-  diario_chamadas a
-  LEFT OUTER JOIN pessoas p ON (p.id = a.ra_cnec)
-WHERE
-  (a.ref_periodo = '$periodo') AND
-  (a.ref_disciplina_ofer = '$oferecida') AND
-  (a.data_chamada = '$data_chamada') AND
-   (p.id = a.ra_cnec) 
-  ) AS T2
-USING(ra_cnec)
-GROUP BY T1.nome, T1.id, T1.ra_cnec
-ORDER BY T1.nome; ";
-
-//$query1 = pg_exec($dbconnect, $sql1);
-
 $sql1 ="SELECT DISTINCT
   p.nome,
   p.id,
@@ -129,12 +90,13 @@ FROM
   matricula m
   INNER JOIN pessoas p ON (m.ref_pessoa = p.id)
 WHERE
-  (m.ref_periodo = '$getperiodo') AND
+  (m.ref_periodo = '$periodo') AND
   (m.ref_disciplina_ofer = '$getofer') AND
   (m.dt_cancelamento is null)
 ORDER BY
   p.nome; ";
 
+//echo $sql1; die;
 
 
 $query1 = consulta_sql($sql1);
