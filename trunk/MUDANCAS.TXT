@@ -1,4 +1,36 @@
 ------------------------------------------------------------------------
+r48 | wanderson | 2009-06-02 20:55:52 -0300 (Ter, 02 Jun 2009) | 2 lines
+
+Nova revisão de produção.
+
+------------------------------------------------------------------------
+r47 | wanderson | 2009-06-02 20:29:33 -0300 (Ter, 02 Jun 2009) | 2 lines
+
+Inclusão de pesquisa rápida a instituições e correção de tela "branca" no processo de dispensa, fecha #129
+
+------------------------------------------------------------------------
+r46 | wanderson | 2009-06-02 17:25:21 -0300 (Ter, 02 Jun 2009) | 1 line
+
+Exportação de dados para o SISTEC (santiago), fecha #127
+------------------------------------------------------------------------
+r45 | wanderson | 2009-06-02 10:08:59 -0300 (Ter, 02 Jun 2009) | 2 lines
+
+Corrigi listagem de alunos na alteração de faltas do webdiário, fecha #128
+
+------------------------------------------------------------------------
+r44 | santiago | 2009-05-29 07:40:48 -0300 (Sex, 29 Mai 2009) | 1 line
+
+Alteração do menu com a opção Sistema e com um botão de imagem para voltar para a página inicial;
+------------------------------------------------------------------------
+r43 | santiago | 2009-05-29 07:40:16 -0300 (Sex, 29 Mai 2009) | 1 line
+
+Alteração do menu com a opção Sistema e com um botão de imagem para voltar para a página inicial;
+------------------------------------------------------------------------
+r42 | wanderson | 2009-05-15 18:56:19 -0300 (Sex, 15 Mai 2009) | 2 lines
+
+Correção de links e referências quebradas, exclusão do relatório "Situação Global" e melhorias na ficha acadêmica fecha #40
+
+------------------------------------------------------------------------
 r41 | wanderson | 2009-05-14 18:23:49 -0300 (Qui, 14 Mai 2009) | 2 lines
 
 Nova versão de produção com integração parcial do webdiário e módulo do aluno.
