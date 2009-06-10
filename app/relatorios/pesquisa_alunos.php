@@ -166,9 +166,9 @@ if (!$Result1){
                     <input type="checkbox" name="pai" id="pai" value="pai">
                     Nome do Pai
                     <input type="checkbox" name="mae" id="mae" value="mae">
-                    Nome da M�e
+                    Nome da Mãe
                     <input type="checkbox" name="endereco" id="endereco" value="endereco">
-                    Endere�o
+                    Endereço
                     <input type="checkbox" name="bairro" id="bairro" value="bairro">
                     Bairro
                     <input type="checkbox" name="cidade" id="cidade" value="cidade">
