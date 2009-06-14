@@ -106,7 +106,8 @@ while($aluno = pg_fetch_array($qrynotas_parciais))
                           WHERE 
                              ref_pessoa = '$ra_cnec2' AND
                              ref_disciplina_ofer = '$getofer' AND 
-                             ref_periodo = '$getperiodo'; ";
+                             ref_periodo = '$getperiodo' AND
+                             ref_motivo_matricula = 0; ";
 
 			// AND ref_disciplina = '$getdisciplina'		 
          	$sqlUpdate .= "UPDATE 

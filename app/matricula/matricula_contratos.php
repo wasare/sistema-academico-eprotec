@@ -36,13 +36,13 @@ if($id_pessoa != ''){
 	while(!$RsContrato->EOF){
 
 		if($cont == 0){
-			$Result1.= '<input type="radio" name="id_contrato" id="id_contrato" value="';
+			$Result1.= '<input type="radio" name="contrato_id" id="contrato_id" value="';
 			$Result1.= $RsContrato->fields[2].'" checked /> ';
 			$Result1.= $RsContrato->fields[0].' - <b>'.$RsContrato->fields[1];
 			$Result1.= '</b> - Turma: '.$RsContrato->fields[3].'<br>';
 		}
 		else{
-			$Result1.= '<input type="radio" name="id_contrato" id="id_contrato" value="';
+			$Result1.= '<input type="radio" name="contrato_id" id="contrato_id" value="';
 			$Result1.= $RsContrato->fields[2].'" /> ';
 			$Result1.= $RsContrato->fields[0].' - <b>'.$RsContrato->fields[1];
 			$Result1.= '</b> - Turma: '.$RsContrato->fields[3].'<br>';

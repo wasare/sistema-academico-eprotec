@@ -13,7 +13,7 @@ require_once("../../lib/common.php");
 require_once("../../configuracao.php");
 require_once("../../lib/adodb/adodb.inc.php");
 
-require_once('matricula.inc.php');
+require_once('../../lib/aluno.inc.php');
 
 
 //Criando a classe de conexao ADODB
@@ -25,13 +25,14 @@ $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 //
 $aluno_id = $_SESSION['sa_aluno_id'];
 //
-$cod_diario = $_GET['cod_diario'];
+$diario_id = $_GET['cod_diario'];
+$contrato_id = $_GET['contrato_id'];
 //
 $msg = '';
 
 
 
-if($cod_diario == '')
+if(!is_numeric($diario_id) OR !is_numeric($contrato_id))
 {
 	
 		$msg = '<p><div align="center"><b><font color="#CC0000">'.
@@ -56,7 +57,7 @@ else
 		WHERE 
 			A.ref_disciplina = B.ref_disciplina AND
 			A.ref_periodo = '".$_SESSION['sa_periodo_id']."' AND
-			A.id = $cod_diario AND
+			A.id = $diario_id AND
 			A.is_cancelada <> '1' 
 		ORDER BY 2";
 
@@ -65,7 +66,6 @@ else
 
 		while(!$RsDiarioMatricular->EOF)
 		{
-
 
     		$ofer             = $RsDiarioMatricular->fields[0];
 		    $id               = $RsDiarioMatricular->fields[1];
@@ -98,7 +98,8 @@ else
 
 	        // -- Verifica se o aluno foi aprovado ou dispensado nesta disciplina ou em disciplina equivalente a qualquer tempo
         	$txt_cursada = '';
-        	$flag_cursada = verificaAprovacao($aluno_id,$ref_curso,$ofer);
+            //verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$diario_id)
+        	$flag_cursada = verificaAprovacaoContrato($aluno_id,$ref_curso,$contrato_id,$ofer);
         	if ($flag_cursada)
             	$txt_cursada =  ' - <font color="orange"><strong>[ CURSADA ]</strong></font>';
 

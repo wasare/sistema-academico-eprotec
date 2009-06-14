@@ -7,10 +7,8 @@ if (is_finalizado($_POST['ofer'])){
 }
 
 
-/*
-print_r($_POST);
-exit;
-*/
+//print_r($_POST); die
+
 $notas = $_POST['notas'];
 $ra_cnec = $_POST['ra_cnec'];
 //$grupo = $_POST['grupo'];
@@ -33,8 +31,8 @@ function calcula($equation)
 {
    $equation = preg_replace("/[^0-9+\-.*\/()%]/","",$equation);
    $equation = preg_replace("/([+-])([0-9]+)(%)/","*(1\$1.\$2)",$equation);
-   // vocï¿½ poderia usar o str_replace nesta linha seguinte
-   // se vocï¿½ realmente, realmente quiser um ajuste-fino ajuste esta equaï¿½ï¿½o
+   // voce poderia usar o str_replace nesta linha seguinte
+   // se voce realmente, realmente quiser um ajuste-fino ajuste esta equacao
    $equation = preg_replace("/([0-9]+)(%)/",".\$1",$equation);
    if($equation == "" ) 
    {
@@ -60,10 +58,11 @@ function calcula($equation)
 <table width="90%" height="73" border="0">
   <tr>
     <td width="471"><div align="center"><font color="#990000" size="4" face="Verdana, Arial, Helvet
-ica, sans-serif"><strong>Lan&ccedil;amento / Altera&ccedil;&atilde;o de <?php if($prova == 7) { echo 'Notas'; } else { echo 'Notas Extras';} ?></strong></font></div>
+ica, sans-serif"><strong>Lan&ccedil;amento / Altera&ccedil;&atilde;o da <?php if($prova == 7) { echo '<font color="blue"> Nota Extra</font>.'; } else { echo 'Nota <font color="blue"> P'.$prova.'</font>.';} ?></strong></font></div>
 </td>
   </tr>
 </table>
+
 <?php
 
 echo getHeaderDisc($getofer);
@@ -72,9 +71,6 @@ echo '<br />';
 
 reset($notas);
 reset($ra_cnec);
-
-//print_r($ra_cnec);
-//$i=0;
 
 $sql12 = 'SELECT * FROM (';
 $sql12 .= "SELECT   DISTINCT
@@ -90,7 +86,8 @@ $sql12 .= "SELECT   DISTINCT
                                             d.ref_diario_avaliacao <> '7')
             WHERE
                 (matricula.ref_disciplina_ofer = '$getofer') AND
-                (matricula.dt_cancelamento is null)
+                (matricula.dt_cancelamento is null) AND
+				(matricula.ref_motivo_matricula = 0)
 			GROUP BY
 					 matricula.ordem_chamada, pessoas.nome, pessoas.id, pessoas.ra_cnec
             ORDER BY pessoas.nome ";
@@ -108,7 +105,7 @@ $sql12 .= "SELECT DISTINCT
                diario_notas d ON (id_ref_pessoas = pessoas.id AND
                                  d.ra_cnec = matricula.ref_pessoa AND d.id_ref_periodos = '$getperiodo' AND d.d_ref_disciplina_ofer = '$getofer' AND d.ref_diario_avaliacao = '$prova')
             WHERE
-               (matricula.ref_disciplina_ofer = '$getofer') AND (matricula.dt_cancelamento is null)";
+               (matricula.ref_disciplina_ofer = '$getofer') AND (matricula.dt_cancelamento is null) AND (matricula.ref_motivo_matricula = 0)";
 
 
 // AND d.rel_diario_formulas_grupo = '$grupo'
@@ -124,7 +121,7 @@ $sql12 .= "SELECT DISTINCT
                diario_notas d ON (id_ref_pessoas = pessoas.id AND
                                  d.ra_cnec = matricula.ref_pessoa AND d.id_ref_periodos = '$getperiodo' AND d.d_ref_disciplina_ofer = '$getofer' AND d.ref_diario_avaliacao = '7')
             WHERE
-               (matricula.ref_disciplina_ofer = '$getofer') AND (matricula.dt_cancelamento is null)";
+               (matricula.ref_disciplina_ofer = '$getofer') AND (matricula.dt_cancelamento is null) AND (matricula.ref_motivo_matricula = 0)";
 // AND d.rel_diario_formulas_grupo = '$grupo'
 $sql12 .= ') AS T3 ON (T3.ref_pessoa = T2.ra_cnec) ORDER BY to_ascii(nome);';
 
@@ -231,7 +228,8 @@ while($aluno = pg_fetch_array($qrynotas_parciais))
                           WHERE 
                              ref_pessoa = '$ra_cnec2' AND
                              ref_disciplina_ofer = '$getofer' AND 
-                             ref_periodo = '$getperiodo'; ";
+                             ref_periodo = '$getperiodo' AND
+                             ref_motivo_matricula = 0; ";
 		// AND ref_disciplina = '$getdisciplina' 
          	$sqlUpdate .= "UPDATE 
                      diario_notas 
@@ -316,6 +314,10 @@ $vars = "id=".$id."&getperiodo=". $getperiodo."&disc=".@$getdisciplina."&ofer=".
 
 $nota_distribuida = str_replace(",",".",$_POST["valor_avaliacao"]);
 
+if (empty($nota_distribuida) OR !is_numeric($nota_distribuida))
+	$nota_distribuida = 0;
+   
+
 $sqlSelecaoTotalNotas = "
 SELECT 
 sum(nota_distribuida) as nota_distribuida 
@@ -339,32 +341,36 @@ else{
 	$total_nota_distribuida = $val1[0] + $nota_distribuida;
 	
 	//echo $total_nota_distribuida;
-	
+
+    $msg_nota_distribuida = '';	
+
    	if($total_nota_distribuida > 100)
    	{
    		$msg_nota_distribuida = '<font color="red"><b>Erro: Não foi possível gravar, resultado do somatório das notas superior a 100!</b></font>';
    	}
    	else
    	{
-		
-		$sqlAtualizaNotaDistribuida = "
-		UPDATE diario_formulas SET nota_distribuida = $nota_distribuida 
-		WHERE grupo ILIKE '%-$getofer' AND prova = '$prova' ";
-		
-		$qryAtualizaNotaDistribuida=  consulta_sql($sqlAtualizaNotaDistribuida);
-		
-		if(is_string($qrySelecaoTotalNotas)) {
-			echo $qry1;
-    		exit;
-		}
-   		else 
+        // somente grava nota distribuida para valores válidos
+		if (!empty($nota_distribuida) AND is_numeric($nota_distribuida))
 		{
-			$msg_nota_distribuida = "<font color=\"green\" ><b>Nota distribuida alteradas com sucesso!</b></font><br>
-			Valor da Nota Distribuida: ". getNumeric2Real($nota_distribuida) ." pontos";
+
+			$sqlAtualizaNotaDistribuida = "
+					UPDATE diario_formulas SET nota_distribuida = $nota_distribuida 
+					WHERE grupo ILIKE '%-$getofer' AND prova = '$prova' ";
+		
+			$qryAtualizaNotaDistribuida =  consulta_sql($sqlAtualizaNotaDistribuida);
+		
+			if(is_string($qrySelecaoTotalNotas)) {
+				echo $qry1;
+				exit;
+			}
+			else 
+			{
+				$msg_nota_distribuida = "<font color=\"green\" ><b>Nota distribuida alteradas com sucesso!</b></font><br>
+					Valor da Nota Distribuida: ". getNumeric2Real($nota_distribuida) ." pontos";
+			}
 		}
-		
-		//echo $sqlAtualizaNotaDistribuida . "<h2>Entrou!</h2>";
-		
+        //^ somente grava nota distribuida para valores válidos ^ //
 	}
 	
 	echo $msg_nota_distribuida;

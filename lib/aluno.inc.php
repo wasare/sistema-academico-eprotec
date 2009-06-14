@@ -113,6 +113,94 @@ function verificaAprovacao($aluno_id,$curso_id,$diario_id)
    // ^ Verifica se o aluno ja foi aprovado ou dispensado nesta mesma disciplina a qualquer tempo ^ //
 }
 
+function verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$diario_id)
+{
+    global $Conexao;
+      // -- Verifica se foi aprovado ou dispensado nesta disciplina ou em disciplina equivalente a qualquer tempo
+        $sqlDisciplina = "
+        SELECT DISTINCT
+            o.id AS diario
+        FROM
+                matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s, contratos c
+        WHERE
+                m.ref_pessoa = p.id AND
+                p.id = '$aluno_id' AND
+                m.ref_disciplina_ofer = o.id AND
+                m.ref_contrato = c.id AND
+                m.ref_contrato = $contrato_id AND
+                c.id = $contrato_id AND
+                d.id = o.ref_disciplina AND
+                o.is_cancelada = 0 AND
+                s.id = o.ref_periodo AND
+                ( d.id = get_disciplina_de_disciplina_of('$diario_id') OR 
+                            d.id IN ( 
+                                        select 
+                                                distinct ref_disciplina_equivalente 
+                                        from disciplinas_equivalentes 
+                                        where ref_disciplina = get_disciplina_de_disciplina_of('$diario_id') and ref_curso = '$curso_id'  
+                                    )
+                ) AND 
+                ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
+    
+        $RsDisciplina = $Conexao->Execute($sqlDisciplina);
+        $diarios_matriculados = $RsDisciplina->GetAll();
+
+        if (count($diarios_matriculados) > 0 )
+        {
+            if (verificaReprovacaoPorFaltas($aluno_id,$diarios_matriculados))
+                    return FALSE;
+            else
+                    return TRUE;
+        }
+        else
+            return FALSE;
+
+
+   // ^ Verifica se o aluno ja foi aprovado ou dispensado nesta mesma disciplina a qualquer tempo ^ //
+}
+
+
+function verificaAprovacaoContratoDisciplina($aluno_id,$curso_id,$contrato_id,$diario_id)
+{
+    global $Conexao;
+      // -- Verifica se foi aprovado na disciplina em questão
+        $sqlDisciplina = "
+        SELECT DISTINCT
+            o.id AS diario
+        FROM
+                matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s, contratos c
+        WHERE
+                m.ref_pessoa = p.id AND
+                p.id = '$aluno_id' AND
+                m.ref_disciplina_ofer = o.id AND
+                m.ref_contrato = c.id AND
+                m.ref_contrato = $contrato_id AND
+                c.ref_curso = $curso_id AND
+                c.id = $contrato_id AND
+                d.id = o.ref_disciplina AND
+                o.is_cancelada = 0 AND
+                s.id = o.ref_periodo AND
+                m.ref_disciplina_ofer = $diario_id AND
+                ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
+
+        $RsDisciplina = $Conexao->Execute($sqlDisciplina);
+        $diarios_matriculados = $RsDisciplina->GetAll();
+
+        if (count($diarios_matriculados) > 0 )
+        {
+            if (verificaReprovacaoPorFaltas($aluno_id,$diarios_matriculados))
+                    return FALSE;
+            else
+                    return TRUE;
+        }
+        else
+            return FALSE;
+
+
+   // ^ Verifica se o aluno foi aprovado na disciplina em questao ^ //
+}
+
+
 function verificaRequisitos($aluno_id,$curso_id,$diario_id)
 {
 	global $Conexao;

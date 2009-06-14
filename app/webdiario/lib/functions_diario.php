@@ -137,6 +137,8 @@ function consulta_sql($sql_query) {
            }
     }
 
+    // echo $sql_query; 
+
     if (( $result_sql = pg_exec($dbconnect, $sql_query)) == false) {
         $error_msg = "Error ao executar a consulta: " . $sql_query;
 		$error_msg .= '<br /> <br />Entre em contato com o respons&aacute;vel: ';
@@ -825,6 +827,169 @@ function is_finalizado($o) {
 	}
   }
 }
+
+function is_inicializado($periodo,$ofer) {
+
+    $grupo = ("%-" . $periodo . "-%-" . $ofer);
+
+	$sql1 = "SELECT
+         grupo
+         FROM diario_formulas
+         WHERE
+         grupo ILIKE '$grupo';";
+
+	$qry1 = consulta_sql($sql1);
+	
+	if(is_string($qry1))
+  	{
+    	echo $qry1;
+    	exit;
+  	}
+  	else 
+	{
+	
+    	$num_reg = pg_numrows($qry1);
+		if ($num_reg == 6)
+    	{
+        	return TRUE;
+    	}
+    	else
+		{
+        	return FALSE;
+    	}
+	}
+}
+
+function inicializaDiario($disc,$ofer,$periodo,$prof) {
+
+    $grupo = ($prof . "-" . $periodo . "-" . $disc . "-" . $ofer);
+    $grupo_novo = ("%-" . $periodo . "-%-" . $ofer);
+
+    $curso = getCurso($periodo,$disc,$ofer);
+
+    $ret = TRUE;
+
+    // PASSO 1
+	$numprovas = 6;
+
+	// PASSO 2
+    $formula = '';
+	for ($cont = 1; $cont <= $numprovas; $cont++) 
+	{
+	    $prova[] = 'Nota '.$cont;
+
+        if($cont == 1)
+        {
+            $formula .= 'P'.$cont;
+        }
+        else 
+        {
+            $formula .= '+P'.$cont;
+        }
+	}    
+
+	// PASSO 3
+	$sqldel = "BEGIN; DELETE FROM diario_formulas WHERE grupo ILIKE '$grupo_novo';";
+	$sqldel .= "DELETE FROM diario_notas WHERE rel_diario_formulas_grupo ILIKE '$grupo_novo'; COMMIT;";
+
+	$qrydel =  consulta_sql($sqldel);
+
+	if(is_string($qrydel))
+	{
+		//echo $qrydel;
+		//exit;
+        $ret = FALSE;
+	}
+
+	reset($prova);
+
+	$sql1 = 'BEGIN;';
+
+	while (list($index,$value) = each($prova)) 
+	{
+		$descricao_prova = $prova[$index];
+		$num_prova = ($index+1);
+		$sql1 .= "INSERT INTO diario_formulas (ref_prof, ref_periodo, ref_disciplina, prova, descricao, formula, grupo) values('$prof','$periodo','$disc','$num_prova','$descricao_prova','$formula','$grupo');";
+   
+	}
+
+	$sql1 .= 'COMMIT;';
+
+	$qry1 = consulta_sql($sql1);
+
+	if(is_string($qry1))
+	{
+		$ret = FALSE;
+	}
+
+    // PASSO 4 - PROCESSA CRIA REGISTROS DE ACORDO COM A FORMULA
+    $qryNotas = 'SELECT
+        m.ref_pessoa, id_ref_pessoas
+        FROM
+            matricula m
+        LEFT JOIN (
+                SELECT DISTINCT
+                d.id_ref_pessoas
+            FROM
+                diario_notas d
+            WHERE
+                d.d_ref_disciplina_ofer = ' . $ofer . '
+              ) tmp
+        ON ( m.ref_pessoa = id_ref_pessoas )
+        WHERE
+            m.ref_disciplina_ofer = ' . $ofer . ' AND
+            id_ref_pessoas IS NULL AND
+			(m.dt_cancelamento is null) AND
+			(m.ref_motivo_matricula = 0)
+        ORDER BY
+                id_ref_pessoas;';
+
+	$qry = consulta_sql($qryNotas);
+
+	if(is_string($qry))
+	{
+	    $ret = FALSE;
+	}
+
+
+    $qryDiario = "BEGIN;";
+
+	  while($registro = pg_fetch_array($qry))
+      {
+			$ref_pessoa = $registro['ref_pessoa'];
+
+			for($i = 1 ; $i <= $numprovas; $i++)
+			{
+				$qryDiario .= ' INSERT INTO diario_notas(ra_cnec, ';
+	            $qryDiario .= ' ref_diario_avaliacao,nota,peso,id_ref_pessoas,';
+		        $qryDiario .= ' id_ref_periodos,id_ref_curso,d_ref_disciplina_ofer,';
+			    $qryDiario .= ' rel_diario_formulas_grupo)';
+				$qryDiario .= " VALUES($ref_pessoa,'$i','0','0',$ref_pessoa,'$periodo',$curso,";
+	            $qryDiario .= " $ofer,'$grupo');";
+			}
+
+				$qryDiario .= ' INSERT INTO diario_notas(ra_cnec, ';
+		        $qryDiario .= ' ref_diario_avaliacao,nota,peso,id_ref_pessoas,';
+				$qryDiario .= ' id_ref_periodos,id_ref_curso,d_ref_disciplina_ofer,';
+				$qryDiario .= ' rel_diario_formulas_grupo)';
+				$qryDiario .= " VALUES($ref_pessoa,'7','-1','0',$ref_pessoa,'$periodo',$curso,";
+				$qryDiario .= " $ofer,'$grupo');";
+	 }
+
+
+	 $qryDiario .= "COMMIT;";
+
+     $res = consulta_sql($qryDiario);
+
+     if(is_string($res))
+     {
+         $ret = FALSE;
+     }
+
+    return $ret;
+}
+
+
 
 
 if(!isset($_SESSION['login']) && !is_string($_SESSION['login']) && !isset($_SESSION['nivel']) && !is_integer($_SESSION['nivel']) ) {

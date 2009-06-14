@@ -22,7 +22,7 @@ $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 $sa_periodo_id = $_POST['periodo_id'];
 $aluno_id = $_POST['codigo_pessoa'];
-$id_contrato = $_POST['id_contrato'];
+$contrato_id = $_POST['contrato_id'];
 $first = $_POST['first'];
 $checar_turma = $_POST['checar_turma'];
 
@@ -47,7 +47,7 @@ FROM
   contratos, cursos
 WHERE
   cursos.id = contratos.ref_curso AND
-  contratos.id = $id_contrato;";
+  contratos.id = $contrato_id;";
 
 //Exibindo a descricao do curso caso setado
 $RsCurso = $Conexao->Execute($sqlCurso);
@@ -100,7 +100,7 @@ if ($first){
         A.ref_periodo = '$sa_periodo_id' AND
         A.ref_pessoa  = $aluno_id AND
         A.ref_curso   = '$curso_id' AND
-        A.ref_contrato = '$id_contrato' AND
+        A.ref_contrato = '$contrato_id' AND
         B.id = A.ref_disciplina_ofer AND
         A.dt_cancelamento IS NULL
     ORDER BY A.id";

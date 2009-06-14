@@ -128,15 +128,6 @@ if(isset($_GET['id']) AND ( !is_numeric($diario['0']) OR !is_numeric($diario['1'
     }
 
 
-//    print ('<a href="resolve_pendencias.php?grupo='.$grupo.'&id='.$ref_prof.'&curso='.$getcurso.'&disc='.$getdisciplina.'&ofer='.$getofer.'&getperiodo='.$getperiodo.'">');
-
-    if (isset($_GET['id']) AND $_GET['acao'] === "8")
-    {
-      header("Location: ../movimentos/resolve_pendencias.php?$vars");
-    }
-
- //$vars = "id=".$_SESSION['prof']."&getperiodo=". $_SESSION['periodo']."&disc=".@$diario['0']."&ofer=".@$diario['1'];
-
 	if (isset($_GET['id']) AND $_GET['acao'] === "9")
     {
         header("Location: ../consultas/faltas_completo.php?$vars");
@@ -327,9 +318,6 @@ function enviar(id) {
 
 //  alert(vars); return false;
 
-    if(id == 8)
-        self.location = "../movimentos/resolve_pendencias.php?" + vars;
-
     if(id == 5)
         self.location = "../consultas/papeleta.php?" + vars;
 
@@ -446,7 +434,6 @@ while($row3 = pg_fetch_array($query3))
 	echo '<option value="9">Relat&oacute;rio de Faltas Completo</option>';
 	echo '<option value="6">Relat&oacute;rio com Conte&uacute;do de Aulas</option>';
 	echo '<option value="2">Caderno de Chamada</option>';
-	echo '<option value="8">Resolver pend&ecirc;ncias e problemas</option>';
 	echo '<option value="'.$codiperiodo.'">Fazer Chamada</option>';
 	echo '<option value="'.$codiperiodo.'">Fazer Chamada</option>';*/
     echo "</select></p></form>";

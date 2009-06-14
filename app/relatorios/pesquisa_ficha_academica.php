@@ -71,7 +71,7 @@ if ($_POST) {
 	$ra = trim(@$_POST['ra']);
 	$nome = trim(@$_POST['nome']);
 
-  	$sql1 = 'SELECT  DISTINCT a.nome, a.id, b.ref_curso, d.abreviatura
+  	$sql1 = 'SELECT  DISTINCT a.nome, a.id, b.ref_curso, d.abreviatura, c.id as contrato
 	  FROM pessoas a, matricula b, contratos c, cursos d
 	  WHERE
       a.id IN ( 
@@ -144,7 +144,7 @@ if ($_POST) {
 				echo ' <td>' . $Result1->fields[0] . '</td>';
                	echo ' <td>' . $Result1->fields[3] . '</td>';
 				echo ' <td align="center">
-						<a target="_blank" href="lista_ficha_academica.php?aluno=' . $q3id . '&nome=' . $Result1->fields[0] . '&curso=' . $Result1->fields[3] . '&cs='.$Result1->fields[2] . '">
+						<a target="_blank" href="lista_ficha_academica.php?aluno=' . $q3id . '&nome=' . $Result1->fields[0] . '&curso=' . $Result1->fields[3] . '&cs='.$Result1->fields[2] . '&contrato='. $Result1->fields[4] .'">
 						<img src="../../images/icons/print.jpg" width="20" height="20" title="Exibir 
 dados em 
 HTML" alt="Exibir 

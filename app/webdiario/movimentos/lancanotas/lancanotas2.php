@@ -1,5 +1,5 @@
 <?php
-include_once('../../webdiario.conf.php');
+require_once('../../webdiario.conf.php');
 
 
 $getdisciplina = $_GET['disc'];
@@ -13,7 +13,7 @@ $grupo_novo = ("%-" . $getperiodo . "-%-" . $getofer);
 
 
 
-// ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO
+// ATUALIZA NOTAS E FALTAS CASO O DIARIO TENHA SIDO INICIALIZADO
 $qryNotas = 'SELECT
         m.ref_pessoa, id_ref_pessoas
         FROM
@@ -29,7 +29,10 @@ $qryNotas = 'SELECT
         ON ( m.ref_pessoa = id_ref_pessoas )
         WHERE
             m.ref_disciplina_ofer = ' . $getofer . ' AND
-        id_ref_pessoas IS NULL
+            id_ref_pessoas IS NULL AND
+			(m.dt_cancelamento is null) AND
+			(m.ref_motivo_matricula = 0)
+
         ORDER BY
                 id_ref_pessoas;';
 
@@ -45,10 +48,10 @@ if(is_string($qry))
 // FIXME: migrar para conexao ADODB
 if(($conn = pg_Pconnect("host=$host user=$dbuser password=$dbpassword dbname=$dbname")) == false)
 {
-   $error_msg="Não foi possível estabeler conexão com o Banco: " . $dbname;
+   $error_msg = "Não foi possível estabeler conexão com o Banco: " . $dbname;
 }
 
-require_once('../../../matricula/atualiza_diario.php');
+require_once('../../../matricula/atualiza_diario_matricula.php');
 
 while($registro = pg_fetch_array($qry))
 {
@@ -56,7 +59,7 @@ while($registro = pg_fetch_array($qry))
     atualiza_matricula("$ref_pessoa","$getofer");
 }
 
-// ^ ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO ^//
+// ^ ATUALIZA NOTAS E FALTAS CASO O DIARIO TENHA SIDO INICIALIZADO ^//
 
 ?>
 
@@ -181,7 +184,7 @@ else
     <td width="31%" height="23"> 
   <tr> 
     <form name="envia" id="envia" method="post" action="inputnotas.php">
-      <td height="20" colspan="3"><div align="left">Lançamento referente à : 
+      <td height="20" colspan="3"><div align="left">Lan&ccedil;amento referente à : 
 <?php
 
 
@@ -204,20 +207,11 @@ else
          print("</select>"); 
 ?>
           
-<input type="submit" name="Submit" value="Lan&ccedil;ar !!">
+&nbsp;&nbsp;<input type="submit" name="Submit" value="Lan&ccedil;ar notas -->">
         </div></td>
     </form>
-  <tr> 
-    <td height="20" colspan="3">&nbsp;</td>
-  <tr> 
-    <td height="20" colspan="3">
-	
-   <?php print ('<a href="resolve_pendencias.php?grupo='.$grupo.'&id='.$id.'&curso='.$getcurso.'&disc='.$getdisciplina.'&ofer='.$getofer.'&getperiodo='.$getperiodo.'"><font color="#0000FF" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Verificar e Resolver Pend&ecirc;ncias de Alunos</strong></font></a><br />&nbsp; - Clique no link acima caso tenha algum aluno com problemas para registar a nota (somas erradas, valores estranhos, etc) ou tenha algum aluno inclu&iacute;do posteriormente no di&aacute;rio.<br /><br />'); ?>
-	
-	&nbsp;</td>
 </table>
 
 
-</td>
 </body>
 </html>
