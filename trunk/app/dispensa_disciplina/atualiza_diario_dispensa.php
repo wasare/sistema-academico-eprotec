@@ -126,67 +126,6 @@ function calcNotaReavaliacao($o,$nd,$ne) {
 }
 
 
-function lanca_nota($aluno,$nota_final,$getofer,$codprova=1) 
-{
-
-	// FIXME: antes de gravar a nota verificar:
-    //     - se nota não é > 100
-    //     - lançamento de nota extra, não lançar nota caso exista a extra
-	$msg = '';
-
-   	$nota = str_replace(",",".",$nota_final); 
-   
-	//$sqlUpdate = 'BEGIN;';
-
-	$sqlUpdate .= "UPDATE matricula
-                             SET 
-                            nota_final = $nota 
-                          WHERE 
-                             ref_pessoa = $aluno AND
-                             ref_disciplina_ofer = $getofer;";
-    $sqlUpdate .= "UPDATE 
-                     diario_notas 
-                  SET 
-                     nota = $nota 
-                  WHERE 
-                     d_ref_disciplina_ofer = $getofer AND
-                     ref_diario_avaliacao = $codprova AND 
-                     ra_cnec = $aluno;";
-
-   //$sqlUpdate = 'COMMIT;';
-
-	$qry1 = consulta_sql($sqlUpdate);
-
-	if(is_string($qry1)) {
-        envia_erro($qry1);
-        $msg = 'p>>> <b><font color="#FF0000">Falha ao atualizar Nota '. $codprova .' do aluno '. $aluno .' Di&aacute;rio '. $getofer .'</font></b></p>';
-    }
-
-	return $msg;
-}
-
-
-/*
- // FIXME  -- para as faltas construir a chamada a partir de uma data inicial
-function lanca_chamada($aluno,$num_faltas,$getofer,$data_inicial) 
-{
-
-	
-
-
-
-}
-
-// FIXME  -- gravar o conteúdo de aula na primeira chamada e anexar uma observação
-function lanca_conteudo($getofer,$data_inicial,$conteudo) 
-{
-
-
-
-}
-*/
-
-
 function atualiza_matricula($aluno,$getofer,$abre_diario=FALSE) {
 
 
@@ -644,6 +583,60 @@ function atualiza_matricula($aluno,$getofer,$abre_diario=FALSE) {
 	}
 
 }
+
+function lanca_nota($aluno,$nota_final,$getofer,$codprova=1)
+{
+    // FIXME: antes de gravar a nota verificar:
+    //     - se nota não é > 100
+    //     - lançamento de nota extra, não lançar nota caso exista a extra
+    $msg = '';
+
+    $nota = str_replace(",",".",$nota_final);
+
+    $sqlUpdate .= "UPDATE matricula
+                             SET 
+                            nota_final = $nota 
+                          WHERE 
+                             ref_pessoa = $aluno AND
+                             ref_disciplina_ofer = $getofer;";
+    $sqlUpdate .= "UPDATE 
+                     diario_notas 
+                  SET 
+                     nota = $nota 
+                  WHERE 
+                     d_ref_disciplina_ofer = $getofer AND
+                     ref_diario_avaliacao = $codprova AND 
+                     ra_cnec = $aluno;";
+
+    $qry1 = consulta_sql($sqlUpdate);
+
+    if(is_string($qry1)) {
+        envia_erro($qry1);
+        $msg = 'p>>> <b><font color="#FF0000">Falha ao atualizar Nota '. $codprova .' do aluno '. $aluno .' Di&aacute;rio '. $getofer .'</font></b></p>';
+    }
+
+    return $msg;
+}
+
+/*
+ // FIXME  -- para as faltas construir a chamada a partir de uma data inicial
+function lanca_chamada($aluno,$num_faltas,$getofer,$data_inicial) 
+{
+
+    
+
+
+
+}
+
+// FIXME  -- gravar o conteúdo de aula na primeira chamada e anexar uma observação
+function lanca_conteudo($getofer,$data_inicial,$conteudo) 
+{
+
+
+
+}
+*/
 
 
 //RESOLVER PENDENCIAS

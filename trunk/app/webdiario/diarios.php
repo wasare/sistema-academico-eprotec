@@ -53,7 +53,6 @@ else
 
 	$vars_b = "id=".$_SESSION['id']."&getperiodo=". $_SESSION['periodo'];
 	
-//	https://sagu.cefetbambui.edu.br/webdiario/2007N/movimentos/lancanotas/resolve_pendencias.php?grupo=3660-0701-307008-1896&id=3660&curso=307&disc=307008&ofer=1896&getperiodo=0701
 	
 	if (isset($_GET['id']) AND $_GET['acao'] === "0")
 	{
@@ -111,11 +110,6 @@ else
                   header("Location: consultas/papeleta_completa.php?$vars");
     }
 
-    if (isset($_GET['id']) AND $_GET['acao'] === "8")
-    {
-		header("Location: movimentos/resolve_pendencias.php?$vars");
-    }
-   
     if (isset($_GET['id']) AND $_GET['acao'] === "9")
     {
         header("Location: consultas/faltas_completo.php?$vars");
@@ -403,9 +397,6 @@ echo '</table> <br />';
 //	echo '<option value="1">Lan&ccedil;ar ou Alterar Notas</option>';
 //	echo '<option value="5">Papeleta</option>';
 //	echo '<option value="6">Relat&oacute;rio com Conte&uacute;do de Aulas</option>';
-	echo '<option value="8">Resolver pend&ecirc;ncias e problemas</option>';
-/*	echo '<option value="'.$codiperiodo.'">Fazer Chamada</option>';
-	echo '<option value="'.$codiperiodo.'">Fazer Chamada</option>';*/
     echo "</select>";
 	echo "</p></form>";
 

@@ -13,7 +13,7 @@ require_once("../../lib/common.php");
 require_once("../../configuracao.php");
 require_once("../../lib/adodb/adodb.inc.php");
 
-require_once('matricula.inc.php');
+require_once('../../lib/aluno.inc.php');
 
 //Criando a classe de conexao ADODB
 $Conexao = NewADOConnection("postgres");
@@ -32,7 +32,7 @@ $aluno_id = $_POST['codigo_pessoa'];
 /**
  * @var string 
  */
-$id_contrato = $_POST['id_contrato'];
+$contrato_id = $_POST['contrato_id'];
 /**
  * @var string 
  */
@@ -54,7 +54,7 @@ FROM
   contratos, cursos
 WHERE
   cursos.id = contratos.ref_curso AND
-  contratos.id = $id_contrato;";
+  contratos.id = $contrato_id;";
 
 //Exibindo a descricao do curso caso setado
 $RsCurso = $Conexao->Execute($sqlCurso);
@@ -122,7 +122,7 @@ if ($first){
         A.ref_periodo = '$sa_periodo_id' AND
         A.ref_pessoa  = $aluno_id AND
         A.ref_curso   = '$curso_id' AND
-        A.ref_contrato = '$id_contrato' AND
+        A.ref_contrato = '$contrato_id' AND
         B.id = A.ref_disciplina_ofer AND
         A.dt_cancelamento IS NULL
     ORDER BY A.id";
@@ -297,7 +297,8 @@ while(!$RsDiarioMatricular->EOF){
 
     // -- Verifica se o aluno foi aprovado ou dispensado nesta disciplina ou em disciplina equivalente a qualquer tempo
         $txt_cursada = '';
-        $flag_cursada = verificaAprovacao($aluno_id,$ref_curso,$ofer);
+        //verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$diario_id)
+        $flag_cursada = verificaAprovacaoContrato($aluno_id,$ref_curso,$contrato_id,$ofer);
         if ($flag_cursada)
             $txt_cursada =  ' - <font color="orange"><strong>[ CURSADA ]</strong></font>';
     

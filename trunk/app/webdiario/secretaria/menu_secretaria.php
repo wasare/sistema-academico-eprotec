@@ -76,12 +76,6 @@ exit;
    <td width="106"><a href="consultas/andamento_periodo.php" target="principal"><font color="#000099" size="1">Resumo no Per&iacute;odo</font></a></td>
 </tr>
 
-
-<tr>
-    <td width="5"><img src="../img/menu_seta.gif" width="5" height="5"></td>
-    <td width="106"><a href="movimentos/atualiza_diarios.php" target="principal"><font color="#000099" size="1">Atualizar Di&aacute;rios</font></a></td>
-</tr>
-
 <tr>
     <td colspan="2">&nbsp;</td>
 </tr>

@@ -128,13 +128,6 @@ else
     }
 
 
-//    print ('<a href="resolve_pendencias.php?grupo='.$grupo.'&id='.$ref_prof.'&curso='.$getcurso.'&disc='.$getdisciplina.'&ofer='.$getofer.'&getperiodo='.$getperiodo.'">');
-
-    if (isset($_GET['id']) AND $_GET['acao'] === "8")
-    {
-      header("Location: ../movimentos/resolve_pendencias.php?$vars");
-    }
-
  //$vars = "id=".$_SESSION['prof']."&getperiodo=". $_SESSION['periodo']."&disc=".@$diario['0']."&ofer=".@$diario['1'];
 
 	if (isset($_GET['id']) AND $_GET['acao'] === "9")
@@ -315,9 +308,6 @@ function enviar(id) {
 
 //  alert(vars); return false;
 
-    if(id == 8)
-        self.location = "../movimentos/resolve_pendencias.php?" + vars;
-
     if(id == 5)
         self.location = "../consultas/papeleta.php?" + vars;
 
@@ -416,7 +406,6 @@ while($row3 = pg_fetch_array($query3))
 echo '</table> <br />';
 
 	echo '<p>';
-    echo '&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<input type="button" id="pendencias" name="pendencias" value="Resolver pend&ecirc;ncias" onclick="enviar(8);" /> &nbsp; &nbsp; &nbsp;';
     echo '<input type="button" id="papaleta" name="papeleta" value="Papeleta" onclick="enviar(5);"/> &nbsp; &nbsp; &nbsp;';
     echo '<input type="button" id="conteudo" name="conteudo" value="Conte&uacute;do de Aula" onclick="enviar(6);"/> &nbsp; &nbsp; &nbsp;';
     echo '<select name="acao" id="acao" class="select" onchange="document.change_acao.submit();">
@@ -430,7 +419,6 @@ echo '</table> <br />';
 	echo '<option value="9">Relat&oacute;rio de Faltas Completo</option>';
 	//	echo '<option value="6">Relat&oacute;rio com Conte&uacute;do de Aulas</option>';
 	echo '<option value="2">Caderno de Chamada</option>';
-	//	echo '<option value="8">Resolver pend&ecirc;ncias e problemas</option>';
 	/*	echo '<option value="'.$codiperiodo.'">Fazer Chamada</option>';
 	echo '<option value="'.$codiperiodo.'">Fazer Chamada</option>';*/
     echo "</select></p></form>";

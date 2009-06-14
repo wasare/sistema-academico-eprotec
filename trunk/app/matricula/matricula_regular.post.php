@@ -16,7 +16,7 @@ $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 $sa_periodo_id  = $_POST["sa_periodo_id"];
 $curso_id    = $_POST["curso_id"];
 $aluno_id    = $_POST["aluno_id"];
-$id_contrato = $_POST["id_contrato"];
+$contrato_id = $_POST['contrato_id'];
 $ref_campus  = $_POST["ref_campus"];
 $id_diarios  = $_POST["id_diarios"]; //Array com todos os diarios a matricular
 
@@ -31,7 +31,7 @@ UPDATE contratos SET
   cod_status = null,
   ref_last_periodo = '$sa_periodo_id'
 WHERE
-  id = '$id_contrato'";
+  id = '$contrato_id'";
 
 if($Conexao->Execute($sqlAtualizaContrato) === false)
 {
@@ -147,7 +147,7 @@ foreach($id_diarios as $diario){
 	           status_disciplina
     	    )
         	VALUES (
-	           '$id_contrato',
+	           '$contrato_id',
     	       '$aluno_id',
         	   '$ref_campus_ofer',
 	           '$curso_id',
@@ -199,11 +199,11 @@ $cabecalho .= ">> <strong>Curso</strong>: $curso_id  - <strong>Per&iacute;odo</s
 // FIXME: migrar para conexao ADODB
 if(($conn = pg_Pconnect("host=$host user=$user password=$password dbname=$database")) == false)
 {
-   $error_msg="Não foi possível estabeler conexão com o Banco: " . $database;
+   $error_msg = "Não foi possível estabeler conexão com o Banco: " . $database;
 }
-require_once('atualiza_diario.php');
+require_once('atualiza_diario_matricula.php');
 
-foreach($diarios_matriculados as $matriculado){
+foreach($diarios_matriculados as $matriculado) {
 	atualiza_matricula("$aluno_id","$matriculado");
 }
 

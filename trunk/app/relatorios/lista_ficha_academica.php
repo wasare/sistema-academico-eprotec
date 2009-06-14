@@ -9,20 +9,35 @@
   require("../../lib/aluno.inc.php");
   
 
-  $Conexao = NewADOConnection("postgres");
-  $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$Conexao = NewADOConnection("postgres");
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
-	$aluno_id = $_GET['aluno'];
+$aluno_id = $_GET['aluno'];
 	
 	if(isset($aluno_id) && is_numeric($aluno_id) && $aluno_id != "") {
-		$btnOK = true;
+		$btnOK = TRUE;
 	}
+    else
+		$btnOK = FALSE;
 	
 	$curso_id = $_GET['cs'];
 	
 	if(isset($curso_id) && is_numeric($curso_id) && $curso_id != "") {
-		$btnOK = true;
+		$btnOK = TRUE;
 	}
+	else
+		$btnOK = FALSE;
+
+    $contrato_id = $_GET['contrato'];
+
+    if(isset($contrato_id) && is_numeric($contrato_id) && $contrato_id != "") {
+        $btnOK = TRUE;
+    }
+	else
+		$btnOK = FALSE;
+
+if (!$btnOK)
+     die('Erro de valida&ccedil;&atilde;o de dados!');
 		
 	$sql1 = "SELECT DISTINCT
 	d.id, 
@@ -36,18 +51,21 @@
 	m.ref_disciplina_ofer as oferecida,
     m.ref_motivo_matricula
 	FROM 
-		matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s  
+		matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s, contratos c  
 	WHERE 
 		m.ref_pessoa = p.id AND 
 		p.ra_cnec = $aluno_id AND 
 		m.ref_curso = $curso_id AND 
-		-- m.dt_matricula >= '2004-01-01' AND
+        c.id = $contrato_id AND
+        m.ref_contrato = $contrato_id AND
+        c.id = m.ref_contrato AND
+		m.ref_periodo = s.id AND
 		m.ref_disciplina_ofer = o.id AND 
 		d.id = o.ref_disciplina AND
 		s.id = o.ref_periodo
 	ORDER BY 2, 3";
-	
-	//echo $sql1;	die;
+//-- m.dt_matricula >= '2004-01-01' AND	
+//echo $sql1;	die;
 	
 	//EXECUTANDO A SQL COM ADODB
   	$Result1 = $Conexao->Execute($sql1);
@@ -131,10 +149,16 @@ while(!$Result1->EOF) {
     }
 
     $situacao = '';
-    if(verificaAprovacao($aluno_id,$curso_id,$oferecida))
+    // verifica aprovacao a qualquer tempo considerando qualquer disciplina equivalente, dispensa, etc, em relacao ao contrato
+    if(verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$oferecida))
 		$situacao = 'A'; 
     else
 	    $situacao = 'R';
+    // verifica aprovacao considerando exatamente a disciplina matriculada ou dispensada em relacao ao contrato
+    if(verificaAprovacaoContratoDisciplina($aluno_id,$curso_id,$contrato_id,$oferecida))
+        $situacao = 'A';
+    else
+        $situacao = 'R'; 
    
     if(!verificaPeriodo($ref_periodo))
         $situacao = 'M';
@@ -212,7 +236,7 @@ while(!$Result1->EOF) {
 	   
 	print ("<tr bgcolor=\"$st\">
         <td><font color=$fcolor>$periodo</font></td>
-		<td><font color=$fcolor>$nomemateria</font></td>
+		<td><span id=\"$oferecida\" title=\"Di&aacute;rio: $oferecida\"><font color=$fcolor>$nomemateria</font></span></td>
 		<td align=center><font color=$fcolor>$notafinal</font></td>
         <td align=center><font color=$fcolor>$faltasmateria</font></td>
         <td align=center><font color=$fcolor>$stfaltas</font></td>

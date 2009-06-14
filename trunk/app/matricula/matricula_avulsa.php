@@ -27,8 +27,9 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
             function BuscaDiarios(){
 
                 var cod_diario = $F('cod_diario');
+                var cod_contrato = $F('contrato_id');
                 var url  = 'matricula_avulsa_adicionar.php';
-                var pars = 'cod_diario=' + cod_diario;
+                var pars = 'cod_diario=' + cod_diario + '&contrato_id=' + cod_contrato;
 
                 var myAjax = new Ajax.Updater('DiariosMatricular',url, {method: 'get',parameters: pars});
             }
@@ -45,7 +46,7 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
                 <?=$aluno_id?> - <?=$aluno_nome?><br />
                 <strong>Curso: </strong><?=$curso_id?> - <?=$curso_nome?> <strong>Turma: </strong><?=$turma?><br />
                 <strong>Per&iacute;odo: </strong><?=$periodo_id?>
-                <strong>Contrato: </strong><?=$id_contrato?>
+                <strong>Contrato: </strong><?=$contrato_id?>
                 <strong>Cidade: </strong><?=$campus_nome?>
             </div>
             <div class="box_geral"> <strong>Di&aacute;rios matriculados</strong> (Di&aacute;rio / Disciplina / Professor) <br />
@@ -72,7 +73,7 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
                 <input type="hidden" name="periodo_id" value="<?=$periodo_id?>" />
                 <input type="hidden" name="curso_id" value="<?=$curso_id?>" />
                 <input type="hidden" name="aluno_id" value="<?=$aluno_id?>" />
-                <input type="hidden" name="id_contrato" value="<?=$id_contrato?>" />
+                <input type="hidden" name="contrato_id" value="<?=$contrato_id?>" />
                 <input type="hidden" name="ref_campus" value="<?=$ref_campus?>" />
                 <p>
                     <input type="button" name="matricular" id="matricular" onclick="confirma()" value="Matricular" />

@@ -6,8 +6,6 @@ $getofer = $_GET['ofer'];
 $getperiodo = $_SESSION['periodo'];
 $id = $_SESSION['id'];
 
-//$ref_prof = $id;
-
 if(isset($_SESSION['select_prof']) && is_numeric($_SESSION['select_prof']) ) {
 
 	    $id = $_SESSION['select_prof'];
@@ -15,6 +13,69 @@ if(isset($_SESSION['select_prof']) && is_numeric($_SESSION['select_prof']) ) {
 		
 
 $ref_prof = $id;
+
+//  INICIALIZA O DIARIO CASO NECESSARIO
+if(!is_inicializado($getperiodo,$getofer)) 
+{
+    if (!inicializaDiario($getdisciplina,$getofer,$getperiodo,$id))
+    {
+        // FIXME: informar ao administrador/desenvolvedor quando ocorrer erro
+        echo '<script type="text/javascript">  window.alert("Falha ao inicializar o diário!!!!!!!"); </script>';
+        exit; 
+    }
+} 
+
+//^  INICIALIZA O DIARIO CASO NECESSARIO ^ //
+
+// ATUALIZA NOTAS E FALTAS CASO O DIARIO TENHA SIDO INICIALIZADO
+// SERÁ NECESSARIO PRINCIPALMENTE EM CASOS DE DISPENSA, ONDE O DIARIO É INICIALIZADO SOMENTE PARA O ALUNO DISPENSADO
+$qryNotas = 'SELECT
+        m.ref_pessoa, id_ref_pessoas
+        FROM
+            matricula m
+        LEFT JOIN (
+                SELECT DISTINCT
+                d.id_ref_pessoas
+            FROM
+                diario_notas d
+            WHERE
+                d.d_ref_disciplina_ofer = ' . $getofer . '
+              ) tmp
+        ON ( m.ref_pessoa = id_ref_pessoas )
+        WHERE
+            m.ref_disciplina_ofer = ' . $getofer . ' AND
+            id_ref_pessoas IS NULL AND
+			(m.dt_cancelamento is null) AND
+			(m.ref_motivo_matricula = 0)
+
+        ORDER BY
+                id_ref_pessoas;';
+
+$qry = consulta_sql($qryNotas);
+
+if(is_string($qry))
+{
+	echo $qry;
+    exit;
+}
+
+//-- Conectando com o PostgreSQL
+// FIXME: migrar para conexao ADODB
+if(($conn = pg_Pconnect("host=$host user=$dbuser password=$dbpassword dbname=$dbname")) == false)
+{
+   $error_msg = "Não foi possível estabeler conexão com o Banco: " . $dbname;
+}
+
+require_once('../../matricula/atualiza_diario_matricula.php');
+
+while($registro = pg_fetch_array($qry))
+{
+    $ref_pessoa = $registro['ref_pessoa'];
+    atualiza_matricula("$ref_pessoa","$getofer");
+}
+
+// ^ ATUALIZA NOTAS E FALTAS CASO O DIARIO TENHA SIDO INICIALIZADO ^//
+
 
 $sql3 = "SELECT 
          b.nome, b.ra_cnec, a.ordem_chamada, a.nota_final, a.num_faltas 
@@ -28,7 +89,21 @@ $sql3 = "SELECT
          ORDER BY lower(to_ascii(nome));" ;
 
 
-		 
+$sql3 = 'SELECT 
+			b.nome, b.ra_cnec, a.ordem_chamada, a.nota_final, c.ref_diario_avaliacao, c.nota, a.num_faltas 
+		FROM 
+			matricula a, pessoas b, diario_notas c 
+		WHERE	 
+			(a.dt_cancelamento is null) AND 
+			a.ref_periodo = \''. $getperiodo .'\' AND 
+			a.ref_disciplina_ofer = '. $getofer .' AND 
+			a.ref_pessoa = b.id AND 
+			b.ra_cnec = c.ra_cnec AND 
+			c.d_ref_disciplina_ofer = a.ref_disciplina_ofer AND 
+			a.ref_motivo_matricula = 0 
+		ORDER BY 
+			lower(to_ascii(nome)), ref_diario_avaliacao;';
+
 //echo $sql3; die; // a.ref_contrato IN(SELECT id FROM contratos WHERE dt_desativacao is null) AND
 
 //a.ref_disciplina = '$getdisciplina' AND
@@ -58,6 +133,8 @@ if(is_string($qry3))
 	exit;
 }
 
+//echo $sql4;die;
+
 $qry4 = consulta_sql($sql4);
 
 if(is_string($qry4))
@@ -74,6 +151,7 @@ $sql5 = " SELECT fl_digitada, fl_concluida
                id = '$getofer';";
 
 
+//echo $sql5; die;
 $qry5 = consulta_sql($sql5);
 
 if(is_string($qry5))
@@ -131,18 +209,7 @@ else {
 <font size="2">
 
 <?php
-/*
-while($row5 = pg_fetch_array($qry5)) 
-{
-   $classe = $row5['descricao'];
-   $periodo = $row5['periodo'];
-   $ofcod = $row5['id'];
-   break;
-   print("Curso: <b>$classe</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />");
-   print("Per&iacute;odo: <b>$periodo</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-}
 
-*/
 while($row4 = pg_fetch_array($qry4)) 
 {
 	$dis = $row4['descricao_extenso'];
@@ -153,12 +220,6 @@ while($row4 = pg_fetch_array($qry4))
 	print("Professor(a): <b>$prof</b><br><br>");
 }
 
-/*
-print("Curso: <b>$classe</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />");
-print("Disciplina: <b>$dis ($ofcod)</b><br>");
-print("Per&iacute;odo: <b>$periodo</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />");
-print("Professor(a): <b>$prof</b><br><br>");
-*/
 
 echo getHeaderDisc($getofer);
 
@@ -220,6 +281,8 @@ $sqlflag ="SELECT
                   periodo = '$getperiodo' AND
                   ref_disciplina_ofer = $getofer; ";
 
+//echo $sqlflag;die;
+
 //disciplina = $getdisciplina AND
 
 $qryflag = consulta_sql($sqlflag);
@@ -245,111 +308,83 @@ $No = 1;
 $r1 = '#FFFFFF';
 $r2 = '#FFFFCC';
 
-
-while($row3=pg_fetch_array($qry3)) 
+while($row3 = pg_fetch_array($qry3))
 {
-	$nome_f = $row3["nome"];
-   	$racnec = $row3["ra_cnec"];
-   	$racnec = str_pad($racnec, 5, "0", STR_PAD_LEFT) ;
-   	$num = $row3["ordem_chamada"];
-   
-   	if ($row3["num_faltas"] > 0)
-   	{
-    	$falta = $row3["num_faltas"];
-   	}
-   	else
-   	{
-    	$falta = '0';
-   	}
-
-   	if($falta > $FaltaMax) 
+    if ($row3['ref_diario_avaliacao'] == 1)
 	{
-		$falta = "<font color=\"red\"><b>$falta</b></font>";
-	}
+		$nome_f = $row3["nome"];
+		$racnec = $row3["ra_cnec"];
+		$racnec = str_pad($racnec, 5, "0", STR_PAD_LEFT) ;
+		$num = $row3["ordem_chamada"];
    
-   	if($row3['nota_final'] != 0) 
-	{    
-		$nota = getNumeric2Real($row3["nota_final"]); 
-	}
-	else { 
-		$nota = $row3['nota_final'];
-	}
+		if ($row3["num_faltas"] > 0)
+		{
+			$falta = $row3["num_faltas"];
+		}
+		else
+		{
+			$falta = '0';
+		}
 
-	if ($nota < 60) 
-   	{
-    	$nota = "<font color=\"red\"><b>$nota</b></font>";
-   	}
+		if($falta > $FaltaMax) 
+		{
+			$falta = "<font color=\"red\"><b>$falta</b></font>";
+		}
+	
+		if($row3['nota_final'] != 0) 
+		{    
+			$nota = getNumeric2Real($row3["nota_final"]); 
+		}
+		else 
+		{ 
+			$nota = $row3['nota_final'];
+		}
+
+		if ($nota < 60) 
+		{
+			$nota = "<font color=\"red\"><b>$nota</b></font>";
+		}
    
    	//<td width=\"10%\">$num</td>\n
-   	if ( ($i % 2) == 0)
-   	{
-    	$rcolor = $r1;
-   	}
-   	else
-   	{
-    	$rcolor = $r2;
-   	}
-   	
-	print("<tr bgcolor=\"$rcolor\">\n"); 
-   	print ("<td align=\"center\">".$No++."</td>\n ");
-   	print(" <td width=\"10%\" align=\"center\">$racnec</td>\n <td width=\"40%\">$nome_f</td>\n "); 
-   
-	
-	//   -- RECUPERA AS NOTAS PARCIAIS POR ALUNO
-	$sqlnotas = 'SELECT DISTINCT 
-    b.nome, c.nota, ref_diario_avaliacao
-  	FROM 
-    matricula a, pessoas b, diario_notas c 
-  	WHERE 
-    a.ref_periodo = \''.$getperiodo.'\' AND 
-    a.ref_disciplina_ofer = \''.$getofer.'\' AND
-    b.ra_cnec = c.ra_cnec AND
-    c.d_ref_disciplina_ofer = \''.$getofer.'\' AND
-    a.ref_pessoa = b.id AND
-    b.ra_cnec = '.$racnec.'
-  	ORDER BY 3;';
-	
-	//a.ref_disciplina = \''.$getdisciplina.'\' AND
-
-	//echo $sqlnotas; die;
-	
-	$qrynotas = consulta_sql($sqlnotas);
-	
-	if(is_string($qrynotas))
-	{
-  		echo $qrynotas;
-  		exit;
-	}
-
-	
-	$total_nota_webdiario = 0;
-	
-	while($row=pg_fetch_array($qrynotas))
-	{
-   		$N = $row['nota'];
-	
-   		if($N < 0)
-   		{
-       		$N = '-';
-   		}
-   
-	   	if($N > 0) { 
-   			$N = getNumeric2Real($N); 
+		if ( ($i % 2) == 0)
+		{
+			$rcolor = $r1;
+		}
+		else
+		{
+			$rcolor = $r2;
 		}
    	
-		//somatorio nota web diario
-		$total_nota_webdiario += $N;
-		
-   		print ("<td align=\"center\">$N</td>\n ");
+		print  ("<tr bgcolor=\"$rcolor\">\n"); 
+		print ("<td align=\"center\">".$No++."</td>\n ");
+		print (" <td width=\"10%\" align=\"center\">$racnec</td>\n <td width=\"40%\">$nome_f</td>\n "); 
+
+		$total_nota_webdiario = 0;
 	}
-
-
-   	//print ("<td align=\"center\">$total_nota_webdiario</td>\n ");
-	
-	print ("<td align=\"center\">$nota</td>\n ");
-   	print ("<td align=\"center\">$falta</td>\n ");
+		
+	$N = $row3['nota'];
+    
+    if($N < 0)
+    {
+      $N = '-';
+    }
    
-   	print("</tr>\n ");
+    if($N > 0) 
+	{ 
+       $N = getNumeric2Real($N); 
+    }
+    //somatorio nota web diario^M
+    $total_nota_webdiario += $N;
+
+    print ("<td align=\"center\">$N</td>\n ");	
+		
+	if ($row3['ref_diario_avaliacao'] == 7) 
+	{
+		print ("<td align=\"center\">$nota</td>\n ");
+   		print ("<td align=\"center\">$falta</td>\n ");
+   
+   		print ("</tr>\n ");
+	}
    
    	$i++;
 

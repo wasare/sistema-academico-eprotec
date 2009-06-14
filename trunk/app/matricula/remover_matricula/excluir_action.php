@@ -13,8 +13,6 @@ require("../../../lib/adodb/adodb.inc.php");
 require("../../../lib/adodb/tohtml.inc.php");
 
 
-
-
 //BOTAO CONFIRMA
 //Param: lista id de matriculas, conexao
 function bt_confirma($listaMatriculas, $Con)

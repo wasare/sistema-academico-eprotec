@@ -226,7 +226,7 @@ else
    // ^ EXCLUI FALTAS DO DIARIO PARA EVITAR REPROVAÇÃO POR FALTAS ^ //
      
 	// ATUALIZA NOTAS E FALTAS NO DIARIO
-	require_once('atualiza_diario.php');
+	require_once('atualiza_diario_dispensa.php');
 
     atualiza_matricula($aluno_id,$diario_id,TRUE);
     if(is_numeric($nota_final) AND $nota_final >= 50 )

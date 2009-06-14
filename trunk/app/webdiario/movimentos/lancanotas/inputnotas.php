@@ -114,20 +114,20 @@ if($getprova == 7)
 */
 
 $sql1 = "SELECT DISTINCT
-  matricula.ordem_chamada,
-  pessoas.nome,
-  pessoas.id,
-  pessoas.ra_cnec
+  m.ordem_chamada,
+  p.nome,
+  p.id,
+  p.ra_cnec
 FROM
-  matricula
-  INNER JOIN pessoas ON (matricula.ref_pessoa = pessoas.id)
+  matricula m
+  INNER JOIN pessoas p ON (m.ref_pessoa = p.id)
 WHERE
-  (matricula.ref_periodo = '$getperiodo') AND
-  (matricula.ref_disciplina_ofer = '$getofer') AND
-  (matricula.dt_cancelamento isnull) AND
-  (matricula.ref_motivo_matricula = 0)
+  (m.ref_periodo = '$getperiodo') AND
+  (m.ref_disciplina_ofer = '$getofer') AND
+  (m.dt_cancelamento isnull) AND
+  (m.ref_motivo_matricula = 0)
 ORDER BY
-  matricula.ordem_chamada;";
+  m.ordem_chamada;";
 
 // (matricula.ref_disciplina = '$getdisciplina') AND
 

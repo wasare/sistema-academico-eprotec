@@ -213,9 +213,11 @@ function atualiza_matricula($aluno,$getofer){
 		      ) tmp 
 			ON ( m.ref_pessoa = id_ref_pessoas ) 
 	    	WHERE 
-		m.ref_disciplina_ofer = ' . $getofer . ' AND 
-		m.ref_pessoa = ' . $aluno . ' AND
-		  id_ref_pessoas IS NULL 
+		        m.ref_disciplina_ofer = ' . $getofer . ' AND 
+		        m.ref_pessoa = ' . $aluno . ' AND
+		        id_ref_pessoas IS NULL  AND
+			    (m.dt_cancelamento is null) AND
+			    (m.ref_motivo_matricula = 0)
 	        ORDER BY id_ref_pessoas;';
 
 		//echo $qryNotas;

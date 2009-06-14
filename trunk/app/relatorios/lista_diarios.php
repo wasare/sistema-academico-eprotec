@@ -30,7 +30,7 @@ SELECT DISTINCT
     t.descricao AS \"Tipo\",
     o.turma AS \"Turma\",
 	
-	CASE WHEN professor_disciplina_ofer_todos(o.id) = 'sem professor' THEN '<font color=\"red\">sem professor</font>'
+	CASE WHEN professor_disciplina_ofer_todos(o.id) = '' THEN '<font color=\"red\">sem professor</font>'
          ELSE professor_disciplina_ofer_todos(o.id)
     END AS \"Professor\",
 
