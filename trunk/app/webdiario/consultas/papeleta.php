@@ -41,9 +41,8 @@ $sql3 = "SELECT
          b.nome, b.id AS ra_cnec, a.ordem_chamada, a.nota_final, a.num_faltas 
          FROM matricula a, pessoas b
          WHERE 
-            
 			(a.dt_cancelamento is null) AND
-			
+            a.ref_periodo = '$periodo' AND
 			a.ref_disciplina_ofer = '$oferecida' AND
 			a.ref_pessoa = b.id AND 
             a.ref_motivo_matricula = 0

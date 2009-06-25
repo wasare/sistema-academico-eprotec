@@ -25,13 +25,12 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
             }
             //Ajax que busca os contratos e os cursos
             function BuscaDiarios(){
-
-                var cod_diario = $F('cod_diario');
+                var cod_diario = $F('diario_id');
                 var cod_contrato = $F('contrato_id');
                 var url  = 'matricula_avulsa_adicionar.php';
-                var pars = 'cod_diario=' + cod_diario + '&contrato_id=' + cod_contrato;
+                var pars = 'diario_id=' + cod_diario + '&contrato_id=' + cod_contrato;
 
-                var myAjax = new Ajax.Updater('DiariosMatricular',url, {method: 'get',parameters: pars});
+                var myAjax = new Ajax.Updater('DiariosMatricular',url, {method: 'post',parameters: pars});
             }
 
             -->
@@ -56,7 +55,7 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
 
             <form name="form1" method="post" action="matricula_regular.post.php">
                 <label>C&oacute;digo do di&aacute;rio:
-                    <input type="text" name="cod_diario" id="cod_diario" />
+                    <input type="text" name="diario_id" id="diario_id" />
                 </label>
                 <input type="button" name="adicionar" id="adicionar" onclick="BuscaDiarios();" value="Adicionar di&aacute;rio" />
                 <a href="#" onclick="window.open('matricula_avulsa_pesquisar.php','consulta_diaro','resizable=yes, toolbar=no,width=500,height=500,scrollbars=yes,top=0,left=0');">
@@ -70,11 +69,11 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
                     <div id="DiariosMatricular"></div>
                     <br /><br />
                 </div>
-                <input type="hidden" name="periodo_id" value="<?=$periodo_id?>" />
-                <input type="hidden" name="curso_id" value="<?=$curso_id?>" />
-                <input type="hidden" name="aluno_id" value="<?=$aluno_id?>" />
-                <input type="hidden" name="contrato_id" value="<?=$contrato_id?>" />
-                <input type="hidden" name="ref_campus" value="<?=$ref_campus?>" />
+                <input type="hidden" name="periodo_id" id="periodo_id" value="<?=$periodo_id?>" />
+                <input type="hidden" name="curso_id" id="curso_id" value="<?=$curso_id?>" />
+                <input type="hidden" name="aluno_id" id="aluno_id" value="<?=$aluno_id?>" />
+                <input type="hidden" name="contrato_id" id="contrato_id" value="<?=$contrato_id?>" />
+                <input type="hidden" name="ref_campus" id="ref_campus" value="<?=$ref_campus?>" />
                 <p>
                     <input type="button" name="matricular" id="matricular" onclick="confirma()" value="Matricular" />
                 </p>

@@ -75,6 +75,7 @@ exit;
 
 <?php
 
+ //print_r($_SESSION);
  if($_SESSION['cursosc'] != '' && isset($_SESSION['cursosc'])) {
    echo '<tr>
    			<td colspan="2" height="0">

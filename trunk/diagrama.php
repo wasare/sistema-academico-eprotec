@@ -25,7 +25,6 @@ $avisos[0] = $Result1->fields[0];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>SA</title>
-<script type="text/javascript" src="lib/inicio.js"></script>
 <script language="javascript" type="">
 function fechar(){
     document.getElementById('popup').style.display = 'none';
@@ -48,7 +47,7 @@ function avisos() {
 <style type="text/css">
 <!--
 .style1 {
-	font-size: 10
+	font-size: 10px;
 }
 a {
 	text-decoration:underline;
