@@ -2,7 +2,11 @@
 
 require_once('../webdiario/webdiario.conf.php');
 
-if($_POST['btnOK'] == 10 AND $_POST['nota1'] <= 100)
+
+$matriculas = array(150199,150162,150185,150194,150196,150197,151415,151416,150200,150202,150203,150204,150205,147727,147994,147995,150208,148506,148508,147778,147779,147774,147775,147776,148560,148561,148562,150212,148494,148288,148305,148105,151417,147724,147725,147726,150050,150068,147728,147731,147729,147730,147732,155298,148294,148297,148301);
+
+
+if($_POST['btnOK'] == 10 AND $_POST['nota1'] <= 100 AND in_array($_POST['registro_id'], $matriculas))
 {
 
     // grava a nota
@@ -26,7 +30,7 @@ if (is_numeric($_GET['id']))
 if (is_numeric($_POST['registro_id']))
 	$registro_id = $_POST['registro_id'];
 
-if(is_numeric($registro_id))
+if(is_numeric($registro_id) AND in_array($registro_id, $matriculas))
 {
   
 

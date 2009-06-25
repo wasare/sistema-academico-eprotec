@@ -25,8 +25,8 @@ $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 //
 $aluno_id = $_SESSION['sa_aluno_id'];
 //
-$diario_id = $_GET['cod_diario'];
-$contrato_id = $_GET['contrato_id'];
+$diario_id = $_POST['diario_id'];
+$contrato_id = $_POST['contrato_id'];
 //
 $msg = '';
 

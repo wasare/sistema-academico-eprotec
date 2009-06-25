@@ -88,7 +88,7 @@ if($_POST)
             <!--
             function send(codigo)
             {
-                window.opener.document.form1.cod_diario.value=codigo;
+                window.opener.document.form1.diario_id.value=codigo;
                 self.close();
             }
             -->

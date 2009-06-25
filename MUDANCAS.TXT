@@ -1,4 +1,17 @@
 ------------------------------------------------------------------------
+r52 | wanderson | 2009-06-14 19:20:08 -0300 (Dom, 14 Jun 2009) | 2 lines
+
+Correção de nota de dispensa zerada no webdiário, novas funções para o aluno.inc.php, inicialização do diário por função, exclui resolve pendências do webdiário, inclusão da pasta app/ferramentas, outras pequenas correções, fecha #131,#103.
+
+------------------------------------------------------------------------
+r51 | santiago | 2009-06-10 08:08:19 -0300 (Qua, 10 Jun 2009) | 1 line
+
+Alteração nos formulários e no banco de dados de empresa quanto a capacidade de caracteres; Cabeçalho de relatório buscando do banco (arquivo app/relatorios/header.php)
+------------------------------------------------------------------------
+r50 | santiago | 2009-06-10 08:04:13 -0300 (Qua, 10 Jun 2009) | 1 line
+
+Relatório de alunos egressos.
+------------------------------------------------------------------------
 r49 | santiago | 2009-06-03 07:59:59 -0300 (Qua, 03 Jun 2009) | 1 line
 
 Inclusão dos arquivos de exportação do SISTEC
