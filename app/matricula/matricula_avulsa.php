@@ -53,7 +53,7 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
                 <?=$DisciplinasMatriculadas?>
             </div>
 
-            <form name="form1" method="post" action="matricula_regular.post.php">
+            <form name="form1" method="post" action="matricula.post.php">
                 <label>C&oacute;digo do di&aacute;rio:
                     <input type="text" name="diario_id" id="diario_id" />
                 </label>

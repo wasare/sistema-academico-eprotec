@@ -59,7 +59,7 @@ function deselecionar_tudo()
     <br />
     <?=$DisciplinasMatriculadas?>
   </div>
-  <form name="form1" method="post" action="matricula_regular.post.php">
+  <form name="form1" method="post" action="matricula.post.php">
     <div class="box_geral"> <strong>Selecione os di&aacute;rios para matricular</strong> (Di&aacute;rio / Disciplina / Professor)
       <p>
         <?=$MarcaDisciplina?>
