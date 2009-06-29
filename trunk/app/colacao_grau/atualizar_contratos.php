@@ -24,7 +24,7 @@ if($contratos != ''){
 	foreach($contratos as $contrato){
 		
 		$sql = "UPDATE contratos 
-		SET dt_formatura = '$data_formatada' 
+		SET dt_formatura = '$data_formatada', dt_conclusao = '$data_formatada'
 		WHERE id = '$contrato';";
 		
 		//echo "<p>".$sql."</p>";

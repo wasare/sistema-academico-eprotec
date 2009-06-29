@@ -1,4 +1,9 @@
 ------------------------------------------------------------------------
+r54 | wanderson | 2009-06-26 16:38:16 -0300 (Sex, 26 Jun 2009) | 2 lines
+
+Corrigi erro no processo de matrícula durante a finalização, fecha #142.
+
+------------------------------------------------------------------------
 r53 | wanderson | 2009-06-25 17:21:48 -0300 (Qui, 25 Jun 2009) | 2 lines
 
 Corrigi bug no processo de matrícula avulsa, fecha #139,#140
