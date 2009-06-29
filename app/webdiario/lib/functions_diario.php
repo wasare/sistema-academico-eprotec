@@ -375,12 +375,12 @@ function falta($ref_periodo, $ra_cnec, $ref_disciplina, $ref_disciplina_ofer, $q
                WHERE
                   ref_periodo = '$ref_periodo' AND
                   ref_pessoa = '$ref_pessoa' AND
-                  ref_disciplina = '$ref_disciplina' AND
                   ref_disciplina_ofer = $ref_disciplina_ofer;";
-
+  // --ref_disciplina = '$ref_disciplina' AND
    $sqlfalta .= 'COMMIT;';
 
-   //echo $sqlfalta.'<br />';
+   //echo $sqlfalta.'<br />'; //die;
+
 
    $qryfalta = consulta_sql($sqlfalta);
 
