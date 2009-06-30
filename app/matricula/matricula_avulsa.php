@@ -27,8 +27,9 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
             function BuscaDiarios(){
                 var cod_diario = $F('diario_id');
                 var cod_contrato = $F('contrato_id');
+                var cod_curso = $F('curso_id');
                 var url  = 'matricula_avulsa_adicionar.php';
-                var pars = 'diario_id=' + cod_diario + '&contrato_id=' + cod_contrato;
+                var pars = 'diario_id=' + cod_diario + '&contrato_id=' + cod_contrato + '&curso_id=' + cod_curso;
 
                 var myAjax = new Ajax.Updater('DiariosMatricular',url, {method: 'post',parameters: pars});
             }

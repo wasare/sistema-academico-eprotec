@@ -26,7 +26,6 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios)
 	global $Conexao;
 
 	$diarios_matriculados = count($diarios);
-
     $diarios_reprovados = 0;
 
     foreach($diarios as $id)
@@ -66,8 +65,6 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios)
          return TRUE;
     else
          return FALSE;
-
-
 } 
 
 function verificaAprovacao($aluno_id,$curso_id,$diario_id)
@@ -200,20 +197,65 @@ function verificaAprovacaoContratoDisciplina($aluno_id,$curso_id,$contrato_id,$d
    // ^ Verifica se o aluno foi aprovado na disciplina em questao ^ //
 }
 
+function verificaEquivalencia($curso_id,$diario_id)
+{
+    global $Conexao;
+    // -- Verifica se a disciplina é equivalente para o curso matriculado
+    $sqlDisciplina = "
+                    SELECT 
+                          DISTINCT 
+                                ref_disciplina_equivalente, ref_disciplina, ref_curso
+                        FROM
+                                disciplinas_equivalentes 
+                        WHERE 
+                             ref_disciplina = get_disciplina_de_disciplina_of('$diario_id') AND ref_curso = '$curso_id';";
+
+    $RsDisciplina = $Conexao->Execute($sqlDisciplina);
+    $equivalentes = $RsDisciplina->GetAll();
+
+    if (count($equivalentes) > 0 )
+        return TRUE;
+    else
+        return FALSE;
+}
+
 
 function verificaRequisitos($aluno_id,$curso_id,$diario_id)
 {
 	global $Conexao;
     // -- Verifica se o aluno ja eliminou os pre-requisitos
-    // CONSIDERA SOMATORIO FINAL DE NOTA E FALTAS E DISPENSA
-  	// existe  pre-requisito?
+    // existe  pre-requisito? considera somente os pré-requisito para o curso do aluno
+
+    $disciplinas = " SELECT get_disciplina_de_disciplina_of('$diario_id') "; 
+
+    // se é uma disciplina equivalente verifica os pré-requisitos da disciplina "original" da matriz curricular
+    if (verificaEquivalencia($curso_id,$diario_id))
+    {
+      	// a disciplina é equivalente, recupera a disciplina "original" da matriz curricular
+      	$sqlEquivalente = "
+                    SELECT 
+                          DISTINCT 
+                                ref_disciplina
+                        FROM
+                                disciplinas_equivalentes 
+                        WHERE 
+                             ref_disciplina_equivalente = get_disciplina_de_disciplina_of('$diario_id') AND 
+                             ref_curso = '$curso_id';";
+
+    	$RsEquivalente = $Conexao->Execute($sqlEquivalente);
+    	$equivalentes = $RsEquivalente->GetAll(); 
+
+      	if (count($equivalentes) > 0)
+            $disciplinas =  $sqlEquivalente;
+    } 
+
     $sqlPreRequisito = "
-    SELECT DISTINCT
-          ref_disciplina_pre
-    FROM
-          pre_requisitos 
-    WHERE
-          ref_disciplina IN ( select get_disciplina_de_disciplina_of('$diario_id') ); ";
+            SELECT DISTINCT
+                ref_disciplina_pre
+            FROM
+                pre_requisitos 
+            WHERE
+                ref_disciplina IN ( $disciplinas ) AND ref_curso = $curso_id;";
 
     $RsPreRequisito = $Conexao->Execute($sqlPreRequisito);
     $pre_requisitos = $RsPreRequisito->GetAll();
@@ -226,6 +268,7 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
 		{
 			$disc_req = $req['ref_disciplina_pre'];
         	// foi aprovado ou dispensado do pre-requisito? considera disciplina equivalente também
+			// CONSIDERA SOMATORIO FINAL DE NOTA E DISPENSA
         	$sqlPreRequisito1 = "
         			SELECT DISTINCT
         				o.id AS diario
@@ -247,42 +290,27 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
 						//$requisitos_matriculados = $RsPreRequisito1->GetAll();
 		 }
     }
-    
+   
+    $ret = FALSE; 
 	if (count($requisitos_matriculados) > 0)
     {
+        // VERIFICA SE HOUVE REPROVAÇÃO POR FALTAS EM ALGUM PRÉ-REQUISITO
     	if (verificaReprovacaoPorFaltas($aluno_id,$requisitos_matriculados))
-            return TRUE;
+            $ret = TRUE;
       	else
-            return FALSE;
-    }
-    else
+            $ret = FALSE;
+
+        // VERIFICA SE A QUANTIDADE DE REQUISITOS MATRICULADOS APROVADOS É MAIOR OU IGUAL 
+        // AOS REQUISITOS  EXIGIDOS PELA DISCIPLINA, NESTE CASO OS REQUISITOS FORAM SATISFEITOS
 	    if (count($requisitos_matriculados) >= $total_requisitos)
-			return FALSE;
+			$ret = FALSE;
 		else
-			return TRUE;
+			$ret = TRUE;
+    }
+    
+    return $ret;
 }
 
-function verificaEquivalencia($curso_id,$diario_id)
-{
-    global $Conexao;
-    // -- Verifica se a disciplina é equivalente para o curso matriculado
-    $sqlDisciplina = "
-					SELECT 
-                          DISTINCT 
-								ref_disciplina_equivalente 
-                        FROM
-							    disciplinas_equivalentes 
-                        WHERE 
-                             ref_disciplina = get_disciplina_de_disciplina_of('$diario_id') AND ref_curso = '$curso_id';";
-                                    
-    $RsDisciplina = $Conexao->Execute($sqlDisciplina);
-    $equivalentes = $RsDisciplina->GetAll();
-
-    if (count($equivalentes) > 0 )
-		return TRUE;
-    else
-        return FALSE;
-}
 
 function verificaPeriodo($periodo_id)
 {

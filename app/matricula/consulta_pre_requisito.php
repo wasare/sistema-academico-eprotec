@@ -3,6 +3,8 @@ require("../../lib/common.php");
 require_once("../../configuracao.php");
 require_once("../../lib/adodb/adodb.inc.php");
 
+require_once('../../lib/aluno.inc.php');
+
 //Criando a classe de conexao ADODB
 $Conexao = NewADOConnection("postgres");
 
@@ -12,23 +14,46 @@ $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 function ListaPreRequisitos( $diario_id, $curso_id )
 {
-    global $Conexao;
-   
-   $sql = " select id, " .
-          "        ref_curso, " .
-          "        curso_desc(curso_disciplina_ofer($diario_id)), " .
-          "        ref_disciplina, " .
-          "        descricao_disciplina(ref_disciplina), " .
-          "        ref_disciplina_pre, " .
-          "        descricao_disciplina(ref_disciplina_pre) " .
-	      " from pre_requisitos ";
+	global $Conexao;
+  
+    $disciplinas = " SELECT get_disciplina_de_disciplina_of('$diario_id') ";
+
+    // se é uma disciplina equivalente pesquisa os pré-requisitos da disciplina "original" da matriz curricular
+    if (verificaEquivalencia($curso_id,$diario_id))
+    {
+        // a disciplina é equivalente, recupera a disciplina "original" da matriz curricular
+        $sqlEquivalente = "
+                    SELECT 
+                          DISTINCT 
+                                ref_disciplina
+                        FROM
+                                disciplinas_equivalentes 
+                        WHERE 
+                             ref_disciplina_equivalente = get_disciplina_de_disciplina_of('$diario_id') AND 
+                             ref_curso = '$curso_id';";
+
+        $RsEquivalente = $Conexao->Execute($sqlEquivalente);
+        $equivalentes = $RsEquivalente->GetAll();
+
+        if (count($equivalentes) > 0)
+            $disciplinas =  $sqlEquivalente;
+    }
+ 
+	$sql = " SELECT id, " .
+		   "        ref_curso, " .
+		   "        curso_desc(curso_disciplina_ofer($diario_id)), " .
+           "        ref_disciplina, " .
+           "        descricao_disciplina(ref_disciplina), " .
+           "        ref_disciplina_pre, " .
+           "        descricao_disciplina(ref_disciplina_pre) " .
+	       " FROM pre_requisitos ";
           
    if ( is_numeric($diario_id) AND is_numeric($curso_id) ) 
    {
-      $sql .= " where ref_disciplina IN ( select get_disciplina_de_disciplina_of($diario_id) ) AND ref_curso = $curso_id ";
+      $sql .= " WHERE ref_disciplina IN ( $disciplinas ) AND ref_curso = $curso_id ";
    }
           
-   $sql .= " order by ref_curso ;";
+   $sql .= " ORDER BY ref_curso ;";
 
    $query = $Conexao->Execute($sql);
 

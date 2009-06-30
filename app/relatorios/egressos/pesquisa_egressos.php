@@ -151,8 +151,8 @@ if (!$Result1){
 </form>
 <script type="text/javascript">
 <!--
-    var sprytextPeriodo = new Spry.Widget.ValidationTextField("sprytextPeriodo");
-    var sprytextPessoa = new Spry.Widget.ValidationTextField("sprytextPessoa");
+    var sprytextPeriodo = new Spry.Widget.ValidationTextField("sprytextfield1");
+    var sprytextPessoa = new Spry.Widget.ValidationTextField("sprytextfield2");
 //-->
 </script>
 </body>
