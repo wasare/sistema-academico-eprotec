@@ -20,7 +20,6 @@ $contrato_id = $_POST['contrato_id'];
 $ref_campus  = $_POST["ref_campus"];
 $id_diarios  = $_POST["id_diarios"]; //Array com todos os diarios a matricular
 
-
 // SOMENTE PROCESSA OS DADOS SE EXISTIR PELO MENOS UMA MATRICULA A SER FEITA
 if (count($id_diarios) > 0)
 {
@@ -158,6 +157,7 @@ if (count($id_diarios) > 0)
 // SOMENTE EFETUA A MATRICULA SE EXISTIR PELO MENOS UM DISCIPLINA A SER MATRICULADA
 if ( is_numeric(count($diarios_matriculados)) AND count($diarios_matriculados) > 0)
 {
+    //echo $sqlInsereDiario; die;
 	//-- Inserindo a matricula
 	$RsInsereDiario = $Conexao->Execute($sqlInsereDiario);
 

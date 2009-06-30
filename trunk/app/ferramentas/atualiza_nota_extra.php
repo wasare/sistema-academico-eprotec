@@ -1,7 +1,7 @@
 <?php
 // ATUALIZA DIARIOS ANTIGOS PARA REGISTRAR A NOTA EXTRA
 
-require_once('../webdiario/webdiario.conf.php');
+//require_once('../webdiario/webdiario.conf.php');
 
 
 /*
@@ -15,6 +15,7 @@ FROM diario_notas GROUP BY d_ref_disciplina_ofer,ra_cnec,rel_diario_formulas_gru
 avaliacao_maior = 6;
 
 */
+/*
 $Geral = file(dirname(__FILE__).'/notas_extra.csv');
 
 $sqlNotaExtra = 'BEGIN;';
@@ -49,6 +50,33 @@ echo "<br /> $sqlNotaExtra</br />";
 
 
 //^ ATUALIZA DIARIOS ANTIGOS PARA REGISTRAR A NOTA EXTRA ^ //
+*/
+
+
+$geral = file(dirname(__FILE__).'/egressos.csv');
+
+
+
+$sql = 'BEGIN;<br/>';
+
+foreach($geral as $linha){
+	
+	$campo = explode(';', $linha);
+		
+	$sql .= "UPDATE contratos 
+	SET dt_formatura = '$campo[2]', dt_conclusao = '$campo[2]'
+	WHERE id = '$campo[1]';";
+	
+	$sql .= "<br/>";
+
+}		
+
+$sql .= 'COMMIT;';
+
+
+
+
+echo "<p>".$sql."</p>";
 
 
 ?>

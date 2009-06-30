@@ -69,11 +69,11 @@ function deselecionar_tudo()
         <?=$MarcaDisciplina?>
       </p>
     </div>
-    <input type="hidden" name="sa_periodo_id" value="<?=$sa_periodo_id?>" />
-    <input type="hidden" name="curso_id" value="<?=$curso_id?>" />
-    <input type="hidden" name="aluno_id" value="<?=$aluno_id?>" />
-    <input type="hidden" name="contrato_id" value="<?=$contrato_id?>" />
-    <input type="hidden" name="ref_campus" value="<?=$ref_campus?>" />
+    <input type="hidden" name="periodo_id" id="periodo_id" value="<?=$sa_periodo_id?>" />
+    <input type="hidden" name="curso_id" id="curso_id" value="<?=$curso_id?>" />
+    <input type="hidden" name="aluno_id" id="aluno_id" value="<?=$aluno_id?>" />
+    <input type="hidden" name="contrato_id" id="contrato_id" value="<?=$contrato_id?>" />
+    <input type="hidden" name="ref_campus" id="ref_campus" value="<?=$ref_campus?>" />
     <p>
       <input type="button" name="matricular" id="matricular" onclick="confirma()" value="Matricular" />
     </p>

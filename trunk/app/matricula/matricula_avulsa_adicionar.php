@@ -27,6 +27,7 @@ $aluno_id = $_SESSION['sa_aluno_id'];
 //
 $diario_id = $_POST['diario_id'];
 $contrato_id = $_POST['contrato_id'];
+$curso_id = $_POST['curso_id'];
 //
 $msg = '';
 
@@ -50,8 +51,7 @@ else
 			descricao_disciplina(A.ref_disciplina),
 			professor_disciplina_ofer_todos(A.id),
 			get_campus(A.ref_campus),
-			get_num_matriculados(A.id),
-            A.ref_curso
+			get_num_matriculados(A.id)
 		FROM 
 			disciplinas_ofer A, cursos_disciplinas B
 		WHERE 
@@ -61,6 +61,7 @@ else
 			A.is_cancelada <> '1' 
 		ORDER BY 2";
 
+        //echo '<br />'. $sqlDiarioMatricular;
 		$RsDiarioMatricular = $Conexao->Execute($sqlDiarioMatricular);
 
 
@@ -73,8 +74,6 @@ else
 		    $prof             = $RsDiarioMatricular->fields[3];
 		    $campus           = $RsDiarioMatricular->fields[4];
 		    $num_matriculados = $RsDiarioMatricular->fields[5];
-            $ref_curso	      = $RsDiarioMatricular->fields[6];		
-	
 
     		// CONFERE SE JA ESTA MATRICULADO
 		    $sqlConfereDiario = "
@@ -99,15 +98,15 @@ else
 	        // -- Verifica se o aluno foi aprovado ou dispensado nesta disciplina ou em disciplina equivalente a qualquer tempo
         	$txt_cursada = '';
             //verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$diario_id)
-        	$flag_cursada = verificaAprovacaoContrato($aluno_id,$ref_curso,$contrato_id,$ofer);
+        	$flag_cursada = verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$ofer);
         	if ($flag_cursada)
             	$txt_cursada =  ' - <font color="orange"><strong>[ CURSADA ]</strong></font>';
 
     		// -- Verifica se o aluno ja eliminou os pre-requisitos
-        	$flag_pre_requisito = verificaRequisitos($aluno_id,$ref_curso,$ofer);
+        	$flag_pre_requisito = verificaRequisitos($aluno_id,$curso_id,$ofer);
         	$txt_pre_requisito = '';
         	if ($flag_pre_requisito)
-            	$txt_pre_requisito =  ' - <a href="consulta_pre_requisito.php?o='.$ofer.'&c='. $ref_curso .'" target="_blank" title="Consultar pr&eacute;-requisito" >[ FALTA PR&Eacute;-REQUISITO ]</a>';
+            	$txt_pre_requisito =  ' - <a href="consulta_pre_requisito.php?o='.$ofer.'&c='. $curso_id .'" target="_blank" title="Consultar pr&eacute;-requisito" >[ FALTA PR&Eacute;-REQUISITO ]</a>';
 
 
 		    if($ConfereDiario == 'f') 
