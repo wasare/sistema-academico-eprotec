@@ -25,6 +25,7 @@ $qryNotas = 'SELECT
       a.ref_disciplina = c.id AND
       a.ref_pessoa = b.id AND
 	  a.ref_disciplina_ofer = d.id AND
+	  d.is_cancelada = 0 AND
       a.ref_curso = %s AND
       a.ref_pessoa = %s
       ORDER BY
