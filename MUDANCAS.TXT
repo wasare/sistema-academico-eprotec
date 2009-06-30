@@ -1,4 +1,9 @@
 ------------------------------------------------------------------------
+r55 | wanderson | 2009-06-29 18:06:38 -0300 (Seg, 29 Jun 2009) | 2 lines
+
+Correção de somatório de faltas no webdiario e ajuste na data da conclusão no processo de colação de grau (santiago), fecha #130,#143
+
+------------------------------------------------------------------------
 r54 | wanderson | 2009-06-26 16:38:16 -0300 (Sex, 26 Jun 2009) | 2 lines
 
 Corrigi erro no processo de matrícula durante a finalização, fecha #142.
