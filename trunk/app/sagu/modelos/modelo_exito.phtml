@@ -1,5 +1,6 @@
-<?
-CheckFormParameters(array('exito_titulo'));
+<?php
+
+CheckFormParameters(array("exito_titulo"));
 
 if ( !$exito_goto )
     $exito_goto = 'history.go(-1)';
@@ -15,7 +16,7 @@ if ( !$exito_goto )
     <tr> 
       <td bgcolor="#000099" height="32" colspan="2"> 
         <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b> 
-          <? echo($exito_titulo?$exito_titulo:"Informação"); ?> </b></font></div>
+          <?php echo($exito_titulo?$exito_titulo:"Informação"); ?> </b></font></div>
       </td>
     </tr>
     <tr> 

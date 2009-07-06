@@ -462,17 +462,17 @@ function CheckInputValue($name,$cond,$hint=""){
 function CheckFormParameters($list,$href=""){
 	
     $n = count($list);
-
+    //print_r($list);
     for ( $i=0; $i<$n; $i++ )
     {
         $name  = $list[$i];
 
         if ( !$name )
-        continue;
+          continue;
+        
+		$value = $GLOBALS["$name"];
 
-        $value = $GLOBALS[$name];
-
-        if ($value == '')
+        if (empty($value))
         {
             $msg = "Campo obrigatório [<b><i>$name</i></b>] não informado!";
 
