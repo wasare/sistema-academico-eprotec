@@ -1,6 +1,6 @@
 <?php
 
-require("../../../lib/common.php");
+require_once("../../../lib/common.php");
 
 $nome = $_POST['nome'];
 $nome_completo = $_POST['nome_completo'];
@@ -131,7 +131,7 @@ function _init()
 
 function Confirma_Exclui(arg1)
 {
-  url = 'post/perfil_exclui.php3?nome=' + arg1;
+  url = 'perfil_exclui.php?nome=' + arg1;
 
   if (confirm("Você tem certeza que deseja EXCLUIR o usuário: "+arg1+" ?"))
     location=(url)

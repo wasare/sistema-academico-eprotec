@@ -1,7 +1,7 @@
 <?php
 
-require("../../../lib/common.php");
-require("../lib/SQLCombo.php3");
+require_once("../../../lib/common.php");
+require_once("../lib/SQLCombo.php3");
 
 
 $nome = $_GET['nome'];
@@ -89,7 +89,7 @@ function ChangeCode(fld_name,op_name)
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20"
 	onload="_init()">
-<FORM action="post/perfil_edita.php3" method=post name=myform>
+<FORM action="perfil_edita.post.php" method="post" name=myform>
 <TABLE align=center cols=2 width=500>
 	<tr>
 		<td bgcolor="#000099" colspan="2" height="28"><font size="3"
@@ -138,6 +138,7 @@ function ChangeCode(fld_name,op_name)
 				<option value="<?echo($grupo)?>" selected><?echo($grupos[$grupo]); ?></option>
 				<option value="access">Acesso</option>
 				<option value="admin">Administração</option>
+                <option value="admin_matriz">Administração da Matriz Curricular</option>
 			</select></td>
 		</tr>
 
