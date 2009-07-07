@@ -65,12 +65,10 @@ img {
 			<img src="../../images/icons/lupa.png" />
 			&nbsp;Alunos Matriculados
 		</a><br />
-		<!--
 		<a href="pesquisa_todos_alunos_periodo.php"	title="Todos os alunos matriculado no per&iacute;odo" target="_self" class="menu_link">
 			<img src="../../images/icons/lupa.png" alt="" />
 			&nbsp;Alunos Matriculados (Todos)
-		</a><br />
-		-->
+		</a><br />		
 		<a href="pesquisa_matriculados_por_cidade.php" title="Alunos matriculados por cidade de origem" target="_self" class="menu_link">
 			<img src="../../images/icons/lupa.png" alt="" />
 			&nbsp;Alunos Matriculados por curso e cidade
