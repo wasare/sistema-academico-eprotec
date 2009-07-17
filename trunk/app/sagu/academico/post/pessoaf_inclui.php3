@@ -51,6 +51,8 @@ $deficiencia           = $_POST['deficiencia'];
 $cod_externo            = $_POST['cod_externo'];
 $fl_cartao              = $_POST['fl_cartao'];
 
+print_r($_POST);
+
 CheckFormParameters(array(
                               "nome",
                               "rua",
