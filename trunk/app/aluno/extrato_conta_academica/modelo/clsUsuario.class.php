@@ -17,10 +17,9 @@ class clsUsuario
 		$this->datanasc = "";
 		$this->saldo = "";
 		$this->imagem = "";
-		
-		require_once("../config.class.php");
+
 		$config = new clsConfig();
-		$this->imagem = file_get_contents('imagens/' . $config->GetImagemSemFoto());
+		$this->imagem = @file_get_contents('imagens/' . $config->GetImagemSemFoto());
 	}
 	
 	//PROPRIEDADES
@@ -85,7 +84,7 @@ class clsUsuario
 		$SQL = 'SELECT id, nome FROM public.pessoas WHERE id='.$codigo.';'; 
 		
 		$con = new gtiConexao();
-		$con->gtiConecta();	
+        $con->gtiConecta();
 		$tbl = $con->gtiPreencheTabela($SQL);		
 
 		if ($tbl->RecordCount()>0)

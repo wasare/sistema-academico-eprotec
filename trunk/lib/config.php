@@ -4,6 +4,8 @@
 
 set_time_limit(120);
 
+require_once(dirname(__FILE__) .'/../configuracao.php');
+
 /**
  * Caminho para a pasta images
  */
@@ -19,8 +21,8 @@ $SAGU_PATH   = dirname(__FILE__) . '/../app/sagu';
 /**
  * BANCO DE DADOS E CAMINHOS
  */
-$LoginHost   = 'dados.cefetbambui.edu.br';
-$LoginDB     = 'sagu';
+$LoginHost   = $host; //  nome do host ;
+$LoginDB     = $database; // nome do banco;
 $LoginUID    = "";
 $LoginPWD    = "";
 $LoginURL    = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico/index.php';

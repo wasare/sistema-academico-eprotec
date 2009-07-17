@@ -46,9 +46,9 @@ if(is_string($qry))
 
 //-- Conectando com o PostgreSQL
 // FIXME: migrar para conexao ADODB
-if(($conn = pg_Pconnect("host=$host user=$dbuser password=$dbpassword dbname=$dbname")) == false)
+if(($conn = pg_Pconnect("host=$host user=$user password=$password dbname=$database")) == false)
 {
-   $error_msg = "Não foi possível estabeler conexão com o Banco: " . $dbname;
+   $error_msg = "Não foi possível estabeler conexão com o Banco: " . $database;
 }
 
 require_once('../../../matricula/atualiza_diario_matricula.php');

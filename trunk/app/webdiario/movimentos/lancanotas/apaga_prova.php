@@ -1,11 +1,10 @@
 <?php
-include ('../../webdiario.conf.php');
+require_once('../../webdiario.conf.php');
                                print '<script language=javascript>
                                if(window.confirm("ATENÇÃO !! Este processo apaga a formula e as notas referentes , pressione (OK) para continuar  ou (CANCELAR) para voltar !")){
                                window.alert(" ATENÇÃO !!!   ESTE PROCESSO ESCLUIRÁ A FORMULA E TODAS AS NOTAS REFERENTES !!!");
                                } else { javascript:window.history.back(1); }
                                </script>';
-                               ////////////////////////////$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname");
                                $sqldel = "delete from diario_formulas where grupo='$grupo'";
                                $querydel =  pg_exec($dbconnect, $sqldel);
                                $sqldel1 = "delete from diario_notas where rel_diario_formulas_grupo ='$grupo'";

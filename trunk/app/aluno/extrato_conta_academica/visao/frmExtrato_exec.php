@@ -67,7 +67,7 @@ $usu->PegaUsuario($codusuario);
   
   <tr>
     <td><span class="style4">Usu&aacute;rio:</span></td>
-    <td><span class="style2"><?php echo $usu->GetNome(); ?></span></td>
+    <td><span class="style2"><?php echo utf8_encode($usu->GetNome()); ?></span></td>
   </tr>
   <tr>
     <td class="style4">Per&iacute;odo:</td>
@@ -111,7 +111,7 @@ $usu->PegaUsuario($codusuario);
     <td colspan="2">-------------------------------------------------</td>
   </tr>
   <tr>
-    <td colspan="2"><div align="center"><strong>Conta Acad&ecirc;mica - CEFET Bambu&iacute;</strong></div></td>
+    <td colspan="2"><div align="center"><strong>Conta Acad&ecirc;mica - IFMG Campus Bambu&iacute;</strong></div></td>
   </tr>
   <tr>
     <td colspan="2"><div align="center">

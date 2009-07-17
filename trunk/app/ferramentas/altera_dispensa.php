@@ -12,6 +12,7 @@ if($_POST['btnOK'] == 10 AND $_POST['nota1'] <= 100 AND in_array($_POST['registr
     // grava a nota
     $nota1 = str_replace(",",".",$_POST['nota1']);
     $sqlup = 'UPDATE matricula SET nota_final = '. $nota1 .' WHERE id = '. $_POST['registro_id'] .';';
+    //$sqlup .=
     $qryup = consulta_sql($sqlup);
 
     if(is_string($qryup))
