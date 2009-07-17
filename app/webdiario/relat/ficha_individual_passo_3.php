@@ -1,18 +1,4 @@
 <?php
-//////////include ('../webdiario.conf.php');
-/*
-$dbuser='root';
-$dbpassword='1wcvah12';
-$dbname='sagu';
-*/
-
-/*
-$dbuser='root';
-$dbpassword='';
-$dbname='sagu';
-
-$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname") or die ("Não foi possivel conectar à fonte de dados");
-*/
 
 require_once('../conf/conn_diario.php');
 
@@ -50,7 +36,6 @@ $numeropaginas=1;
         $ra_cnec = $array_cell['value'];
 
                  //Seleciona o nome dos alunos curo e descrição
-                 $dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname") or die ("Não foi possivel conectar à fonte de dados");
                  $sql1 = "SELECT DISTINCT
                  	  a.nome,
                  	  a.ra_cnec,

@@ -1,4 +1,14 @@
 ------------------------------------------------------------------------
+r59 | wanderson | 2009-07-07 14:36:25 -0300 (Ter, 07 Jul 2009) | 2 lines
+
+Melhoria na exibição do relatório de egressos (#148 - incompleto), retorno do relatório de alunos matriculados (todos) e inclusão de processo para ajuste de notas de faltas, fecha #149
+
+------------------------------------------------------------------------
+r58 | wanderson | 2009-07-06 13:30:22 -0300 (Seg, 06 Jul 2009) | 2 lines
+
+Corrigi processo de inclusão e alteração de usuários do sistema, fecha #146
+
+------------------------------------------------------------------------
 r57 | wanderson | 2009-06-30 17:44:13 -0300 (Ter, 30 Jun 2009) | 2 lines
 
 Correção de erro no processo de matrícula regular e melhorias nos filtro de verificação dos pré-requisitos, fecha #100,#144,#145

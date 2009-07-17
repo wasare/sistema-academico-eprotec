@@ -19,10 +19,10 @@ CEFET-BAMBUI - www.cefetbambui.edu.br
 
 function diario_open_db() {
     global $dbconnect, $error_msg;
-    global $host, $dbname, $dbuser, $dbpassword;
+    global $host, $database, $user, $password;
 
-    if (($dbconnect = pg_Pconnect("host=$host user=$dbuser password=$dbpassword dbname=$dbname")) == false) {
-              $error_msg="Não foi possível estabeler conexão com o Banco: " . $dbname;
+    if (($dbconnect = pg_Pconnect("host=$host user=$user password=$password dbname=$database")) == false) {
+              $error_msg="Não foi possível estabeler conexão com o Banco: " . $database;
               }
     return $dbconnect;
 }
@@ -287,7 +287,7 @@ function media($media)
 function falta($ref_periodo, $ra_cnec, $ref_disciplina, $ref_disciplina_ofer, $qtde, $par1, $qry='BEGIN;')
 {
    global $dbconnect, $error_msg;
-   global $host, $dbname, $dbuser, $dbpassword;
+   global $host, $database, $user, $password;
 
     // abrir tabela de matricula e selecionar as faltas
   /*

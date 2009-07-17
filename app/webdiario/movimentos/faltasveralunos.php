@@ -1,9 +1,6 @@
 <?php
 
-include_once('../webdiario.conf.php');
-
-// CONECT NO BANCO
-////////////////////////$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname");
+require_once('../webdiario.conf.php');
 
 // VARS
 

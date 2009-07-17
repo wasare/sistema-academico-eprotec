@@ -49,7 +49,8 @@ if (!$btnOK)
 	m.nota_final as nota_final, 
 	m.nota as nota, 
 	m.ref_disciplina_ofer as oferecida,
-    m.ref_motivo_matricula
+    m.ref_motivo_matricula,
+    professor_disciplina_ofer_todos(o.id)
 	FROM 
 		matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s, contratos c  
 	WHERE 
@@ -129,6 +130,7 @@ while(!$Result1->EOF) {
     $oferecida = $Result1->fields[8];
     $ref_motivo_matricula = $Result1->fields[9];
     $notafinal = $Result1->fields[6];
+    $professor = $Result1->fields[10];
 
     // APROVEITAMENTO DE ESTUDOS 2
     // CERTIFICACAO DE EXPERIENCIAS 3
@@ -236,7 +238,7 @@ while(!$Result1->EOF) {
 	   
 	print ("<tr bgcolor=\"$st\">
         <td><font color=$fcolor>$periodo</font></td>
-		<td><span id=\"$oferecida\" title=\"Di&aacute;rio: $oferecida\"><font color=$fcolor>$nomemateria</font></span></td>
+		<td><span id=\"$oferecida\" title=\"Di&aacute;rio: $oferecida Professor(es): $professor\"><font color=$fcolor>$nomemateria</font></span></td>
 		<td align=center><font color=$fcolor>$notafinal</font></td>
         <td align=center><font color=$fcolor>$faltasmateria</font></td>
         <td align=center><font color=$fcolor>$stfaltas</font></td>

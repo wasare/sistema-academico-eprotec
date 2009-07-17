@@ -1,5 +1,5 @@
 <?php
-include ('../webdiario.conf.php');
+require_once('../webdiario.conf.php');
 require("pslib.class");
 
 function Desconverte($data){
@@ -92,7 +92,6 @@ $numeropaginas=1;
         $ra_cnec = $array_cell['value'];
 
                  //Seleciona o nome dos alunos curo e descrição
-                 $dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname") or die ("Não foi possivel conectar à fonte de dados");
                  $sql1 = "SELECT
                  a.id,
                  a.nome,

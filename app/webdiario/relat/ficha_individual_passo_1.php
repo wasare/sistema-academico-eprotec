@@ -1,13 +1,4 @@
 <?php
-//////include ('../webdiario.conf.php');
-// CONECTA BD
-/*
-$dbuser='root';
-$dbpassword='';
-$dbname='sagu';
-
-$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname") or die ("Não foi possivel conectar à fonte de dados");
-*/
 
 require_once('../conf/conn_diario.php');
 

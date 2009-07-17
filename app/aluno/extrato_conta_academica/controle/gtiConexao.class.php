@@ -28,11 +28,13 @@ class gtiConexao
 	private $m_conexao;
 
 	//construtor
-	function __Construct()
+	function __construct()
     {
     	$this->gtiDefineConexao();
     	$m_conexao = false;
     }
+
+ 
 
 	/**
 	* -------------------------------------------------------------------------------
@@ -109,6 +111,18 @@ class gtiConexao
 		$this->m_conexao->PConnect($this->m_host, $this->m_usuario, $this->m_senha, $this->m_esquema);
 	}
 
+     /**
+    * -------------------------------------------------------------------------------
+    * M�todo que liga ou desliga o debug da conexão com o banco.
+    *---------------------------------------------------------------------------------
+    *PAR�METROS TRUE / FALSE
+    */
+/*
+    public function gtiDebug($debug)
+	{
+		$this->m_conexao->debug = $debug;
+	}
+*/
 	/**
 	* -------------------------------------------------------------------------------
 	* M�todo que desconecta do banco de dados utilizado.

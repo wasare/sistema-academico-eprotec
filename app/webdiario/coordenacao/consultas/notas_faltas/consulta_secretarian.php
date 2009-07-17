@@ -1,7 +1,5 @@
 <?php
-include ('../../webdiario.conf.php');
-// CONECTA BD
-//////////$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname") or die ("Não foi possivel conectar à fonte de dados");
+require_once('../../webdiario.conf.php');
 
 /* Seleciona o Período */
 $sql1 = "SELECT DISTINCT
