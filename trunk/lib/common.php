@@ -470,9 +470,9 @@ function CheckFormParameters($list,$href=""){
         if ( !$name )
           continue;
         
-		$value = $GLOBALS["$name"];
+		$value = trim($GLOBALS["$name"]);
 
-        if (empty($value))
+        if (!is_numeric($value) AND empty($value))
         {
             $msg = "Campo obrigatório [<b><i>$name</i></b>] não informado!";
 
