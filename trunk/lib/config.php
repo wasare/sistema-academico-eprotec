@@ -42,7 +42,7 @@ $SQL_LogFile = "$SAGU_PATH/logs/sql.log";
 date_default_timezone_set('America/Sao_Paulo');
 
 error_reporting(E_ALL & ~E_NOTICE);
-$versao = @file_get_contents ('VERSAO.TXT') / 10; 
+$versao = @file_get_contents ('VERSAO.TXT'); 
 
 $inicio    = "inicio.php";      //Módulo inicial do SAGU
 $SAGU_HOST = $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico';
