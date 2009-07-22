@@ -299,14 +299,14 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
             $ret = TRUE;
       	else
             $ret = FALSE;
-
-        // VERIFICA SE A QUANTIDADE DE REQUISITOS MATRICULADOS APROVADOS É MAIOR OU IGUAL 
-        // AOS REQUISITOS  EXIGIDOS PELA DISCIPLINA, NESTE CASO OS REQUISITOS FORAM SATISFEITOS
-	    if (count($requisitos_matriculados) >= $total_requisitos)
-			$ret = FALSE;
-		else
-			$ret = TRUE;
     }
+    
+	// VERIFICA SE A QUANTIDADE DE REQUISITOS MATRICULADOS APROVADOS É MAIOR OU IGUAL 
+    // AOS REQUISITOS  EXIGIDOS PELA DISCIPLINA, NESTE CASO OS REQUISITOS FORAM SATISFEITOS
+    if (count($requisitos_matriculados) >= $total_requisitos)
+    	$ret = FALSE;
+    else
+        $ret = TRUE;	
     
     return $ret;
 }

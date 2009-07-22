@@ -1,13 +1,11 @@
 <?php
-
 require("../../../lib/common.php");
 require("../../../configuracao.php");
 require("../../../lib/adodb/adodb.inc.php");
-
+require("../../../lib/carimbo.php");
 
 $Conexao = NewADOConnection("postgres");
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
-
 
 $Result1 = $Conexao->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
 
@@ -16,8 +14,9 @@ if (!$Result1){
     die();
 }	
 
-?>
+$carimbo = new carimbo($host,$user,$password,$database);
 
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -131,23 +130,15 @@ if (!$Result1){
         <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span></span></td>
     </tr>
     <tr>
-        <td colspan="2" style="background-color:#CCCCCC"><strong>Assinatura (opcional):</strong></td>
-    </tr>
-    <tr>
-        <td style="background-color:#CCCCCC">Resp. Nome:</td>
-        <td style="background-color:#CCCCCC"><input name="resp_nome" type="text" id="resp_nome" size="60" />
-        </td>
-    </tr>
-    <tr>
-        <td style="background-color:#CCCCCC">Resp. Cargo:</td>
-        <td style="background-color:#CCCCCC"><input name="resp_cargo" type="text" id="resp_cargo" size="60" />
-        </td>
+        <td style="background-color:#CCCCCC"><strong>Assinatura (opcional):</strong></td>
+        <td style="background-color:#CCCCCC"><?php echo $carimbo->listar();?></td>
     </tr>
     <tr>
         <td style="background-color:#CCCCCC"></td>
         <td style="background-color:#CCCCCC"></td>
     </tr>
 </table>
+
 </form>
 <script type="text/javascript">
 <!--

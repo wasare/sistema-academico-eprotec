@@ -1,24 +1,18 @@
 <?php 
-
 require("../../../lib/common.php");
 require("../../../configuracao.php");
 require("../../../lib/adodb/adodb.inc.php");
-
+require("../../../lib/carimbo.php");
 
 $Conexao = NewADOConnection("postgres");
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
-
-
 $contrato = $_POST["id_contrato"];
 $data = $_POST["data"];
-$carimbo = $_POST['carimbo'];
-
+$carimbo_id = $_POST['carimbo'];
 
 
 function mes($mes_num){
-
-
 	switch ($mes_num) {
 		case 1:
 			$mes = "janeiro";
@@ -60,9 +54,7 @@ function mes($mes_num){
 	return $mes;
 }
 
-
 /* Formatando a data */
-
 if($data == ''){
 	$data = date("d/m/Y");
 }
@@ -70,28 +62,7 @@ if($data == ''){
 $data = explode("/",$data,3);
 $mes = mes($data[1]);
 
-
-
-/* Dados de Assinatura/Carimbo */
-
-$sqlCarimbo = "
-SELECT 
-	id, nome, texto, ref_setor
-FROM 
-	carimbos 
-WHERE	id = $carimbo;";
-
-$RsCarimbo = $Conexao->Execute($sqlCarimbo);
-
-if (!$RsCarimbo){
-	print $Conexao->ErrorMsg();
-	die();
-}
-
-
-
 /* Dados da Empresa */
-
 $sqlEmpresa = "
 SELECT 
 	c.razao_social, 
@@ -119,10 +90,7 @@ if (!$RsEmpresa){
 	die();
 }
 
-
-
 /* Dados do aluno e curso */
-
 $sqlContrato = "
 SELECT 
 	a.id, 
@@ -152,13 +120,11 @@ if (!$RsContrato){
 }
 
 /* Formatando a data de nascimento */
-
 if($RsContrato->fields[6] != ''){
 	
 	$data_nascimento = explode("-",$RsContrato->fields[6],3);
 	$mes_nascimento = mes($data_nascimento[1]);
 }
-
 
 $corpo = '        Declaro para os devidos fins que '.$RsContrato->fields[3].
 ', filho(a) de '.$RsContrato->fields[7].' e '.$RsContrato->fields[8].
@@ -169,8 +135,10 @@ $data_nascimento[0].', natural de '.$RsContrato->fields[4].'/'.$RsContrato->fiel
             Por ser verdade e estar de acordo com nossos arquivos, assino a presente.';
 
 $data_declaracao = $RsContrato->fields[1].', '.$data[0].' de '.$mes.' de '.$data[2];
-$carimbo_nome = $RsCarimbo->fields[1];
-$carimbo_dados = $RsCarimbo->fields[2];
+
+$carimbo = new carimbo($host,$user,$password,$database);
+$carimbo_nome = $carimbo->get_nome($carimbo_id);
+$carimbo_dados = $carimbo->get_funcao($carimbo_id);
 
 $decretos = 'Obs.:
 Decreto Nº 3.864/A de 24/01/61 - Criação da Escola
@@ -185,6 +153,5 @@ Lei nº 11.892, de 29/12/2008, publicada no DOU de 30/12/2008,Seção I, págs.1-3, 
 $empresa = $RsEmpresa->fields[3].' - '.$RsEmpresa->fields[4].'
 '.$RsEmpresa->fields[5].' - '.$RsEmpresa->fields[6].' - '.
 $RsEmpresa->fields[9].'-'.$RsEmpresa->fields[11];
-
 
 ?>
