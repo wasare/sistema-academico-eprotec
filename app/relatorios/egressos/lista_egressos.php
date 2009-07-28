@@ -12,8 +12,6 @@ $carimbo = new carimbo($host,$user,$password,$database);
 
 $periodo = $_POST['periodo1'];
 $curso_id = $_POST['codigo_curso'];
-$resp_nome = $_POST['resp_nome'];
-$resp_cargo = $_POST['resp_cargo'];
 
 $sql = "
 SELECT 
@@ -56,6 +54,10 @@ if (!$RsEgressos){
     die();
 }
 
+if ($RsEgressos->RecordCount()< 1){
+    echo "<script>alert('Nenhum registro foi retornado!'); window.close();</script>";
+}
+
 $ano_conclusao = $RsEgressos->fields[0];
 $curso = $RsEgressos->fields[8];
 
@@ -76,60 +78,56 @@ $curso = $RsEgressos->fields[8];
         <div align="center">
             <h2>RELAT&Oacute;RIO DE EGRESSOS</h2>
             <p>
-				<strong>Curso:</strong> <?php echo $curso; ?> 
-				<strong>Ano de conclus&atilde;o:</strong> <?php echo $ano_conclusao;?>
-			</p>
-			<table width="90%" class="tabela_relatorio" cellspacing="0" border="1" cellpadding="0">
-			<tr>
-				<td><strong>NOME COMPLETO</strong></td>
-				<td><strong>CPF</strong></td>
-				<td><strong>DATA NASCIMENTO</strong></td>
-				<td><strong>SEXO</strong></td>
-				<td><strong>TELEFONE FIXO</strong></td>
-				<td><strong>TELEFONE CELULAR</strong></td>
-				<td><strong>E-MAIL</strong></td>
-				<td><strong>ENDEREÇO (Rua/Avenida/Pra&ccedil;a)</strong></td>
-                <td><strong>BAIRRO</strong></td>
-                <td><strong>CIDADE / UF</strong></td>
-                <td><strong>CEP</strong></td>
-			</tr>
-			<?php 
-
-			while(!$RsEgressos->EOF){
- 
+		<strong>Curso:</strong> <?php echo $curso; ?> 
+		<strong>Ano de conclus&atilde;o:</strong> <?php echo $ano_conclusao;?>
+	    </p>
+	    <table width="90%" class="tabela_relatorio" cellspacing="0" border="1" cellpadding="0">
+		<tr>
+		    <td><strong>NOME COMPLETO</strong></td>
+    		    <td><strong>CPF</strong></td>
+		    <td><strong>DATA NASCIMENTO</strong></td>
+		    <td><strong>SEXO</strong></td>
+		    <td><strong>TELEFONE FIXO</strong></td>
+		    <td><strong>TELEFONE CELULAR</strong></td>
+		    <td><strong>E-MAIL</strong></td>
+		    <td><strong>ENDEREÇO (Rua/Avenida/Pra&ccedil;a)</strong></td>
+		    <td><strong>BAIRRO</strong></td>
+		    <td><strong>CIDADE / UF</strong></td>
+                    <td><strong>CEP</strong></td>
+		</tr>
+		<?php 
+		    while(!$RsEgressos->EOF){
+		        echo '<tr>';
+		        echo '<td>'.$RsEgressos->fields[1].'&nbsp;</td>';
+		        echo '<td>'.$RsEgressos->fields[2].'&nbsp;</td>';
+		        echo '<td>'.$RsEgressos->fields[3].'&nbsp;</td>';
+		        echo '<td>'.$RsEgressos->fields[4].'&nbsp;</td>';
+		        echo '<td>'.$RsEgressos->fields[5].'&nbsp;</td>';
+		        echo '<td>'.$RsEgressos->fields[6].'&nbsp;</td>';
+		        echo '<td>'.$RsEgressos->fields[7].'&nbsp;</td>';
+		        echo '<td>'.$RsEgressos->fields[9].'&nbsp;</td>';
+		        echo '<td>'.$RsEgressos->fields[10].'&nbsp;</td>';
+			echo '<td>'.$RsEgressos->fields[11].'&nbsp;</td>';
+	                echo '<td>'.$RsEgressos->fields[12].'&nbsp;</td>';
+			echo '</tr>';
+				
+			$RsEgressos->MoveNext();
+		    }
 			
-				echo '<tr>';
-				echo '<td>'.$RsEgressos->fields[1].'&nbsp;</td>';
-				echo '<td>'.$RsEgressos->fields[2].'&nbsp;</td>';
-				echo '<td>'.$RsEgressos->fields[3].'&nbsp;</td>';
-				echo '<td>'.$RsEgressos->fields[4].'&nbsp;</td>';
-				echo '<td>'.$RsEgressos->fields[5].'&nbsp;</td>';
-				echo '<td>'.$RsEgressos->fields[6].'&nbsp;</td>';
-				echo '<td>'.$RsEgressos->fields[7].'&nbsp;</td>';
-				echo '<td>'.$RsEgressos->fields[9].'&nbsp;</td>';
-                echo '<td>'.$RsEgressos->fields[10].'&nbsp;</td>';
-                echo '<td>'.$RsEgressos->fields[11].'&nbsp;</td>';
-                echo '<td>'.$RsEgressos->fields[12].'&nbsp;</td>';
-                
-				echo '</tr>';
-	
-				$RsEgressos->MoveNext();
-			}
-			
-			?>
-			</table>
+		?>
+	    </table>
             <p>&nbsp;</p>
             <div class="carimbo_box">
             	_______________________________<br>
-				<span class="carimbo_nome">
-					<?php echo $carimbo->get_nome($_POST['carimbo']);?>
-				</span><br />
-				<span class="carimbo_funcao">
-					<?php echo $carimbo->get_funcao($_POST['carimbo']);?>
-				</span>
-			</div>
-			<br>
-		</div>
+		<span class="carimbo_nome">
+		    <?php echo $carimbo->get_nome($_POST['carimbo']);?>
+		</span><br />
+		<span class="carimbo_funcao">
+		    <?php echo $carimbo->get_funcao($_POST['carimbo']);?>
+		</span>
+	    </div>
+	    <br>
 	</div>
+    </div>
 </body>
 </html>

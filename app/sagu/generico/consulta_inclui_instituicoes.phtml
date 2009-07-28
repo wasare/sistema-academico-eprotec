@@ -73,8 +73,8 @@ function Lista_Instituicoes() {
 		echo("<table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
 
 		echo("  <tr bgcolor=\"$bg0\">\n");
-		echo("    <td width=\"20%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Código</font></b></td>\n");
-		echo("    <td width=\"70%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Nome da Instituição</font></b></td>\n");
+		echo("    <td width=\"20%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Cï¿½digo</font></b></td>\n");
+		echo("    <td width=\"70%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Nome da Instituiï¿½ï¿½o</font></b></td>\n");
 		echo("    <td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">&nbsp;</font></b></td>\n");
 		echo("    <td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">&nbsp;</font></b></td>\n");
 		echo("  </tr>\n");
@@ -101,7 +101,7 @@ function Lista_Instituicoes() {
 
 			$registro = $query->GetValue(1);
 			$href  = "<a href=\"instituicao_altera.phtml?id=$id\"><img src=\"../images/update.gif\" title='Alterar Cadastro' align='absmiddle' border=0></a>";
-			$href1 = "<a href=\"javascript:Confirma_Exclui($registro)\"><img src=\"../images/delete.gif\" title='Excluir Instituição' align='absmiddle' border=0></a>";
+			$href1 = "<a href=\"javascript:Confirma_Exclui($registro)\"><img src=\"../images/delete.gif\" title='Excluir Instituiï¿½ï¿½o' align='absmiddle' border=0></a>";
 
 
 			echo("  <tr bgcolor=\"$bg\">\n");
@@ -132,7 +132,7 @@ function Lista_Instituicoes() {
 
 <html>
 <head>
-<title>Instituições</title>
+<title>Instituiï¿½ï¿½es</title>
 <script language="JavaScript">
 function _init()
 {
@@ -143,13 +143,13 @@ function Confirma_Exclui(arg1)
 {
   url = 'post/instituicao_exclui.php3?id=' + arg1;
 
-  if (confirm("Você tem certeza que deseja excluir a Instituição: "+arg1))
+  if (confirm("Vocï¿½ tem certeza que deseja excluir a Instituiï¿½ï¿½o: "+arg1))
     location=(url)
   else
-    alert("Exclusão Cancelada.");
+    alert("Exclusï¿½o Cancelada.");
 }
 </script>
-<link href="../estilo.css" rel="stylesheet" type="text/css" /
+<link href="../estilo.css" rel="stylesheet" type="text/css" />
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20"
 	onload="_init()">
@@ -203,7 +203,7 @@ N&Atilde;O DUPLICAR CADASTROS !</font></b></font></p>
 			color="#FF0000"> </font><font
 			face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font
 			color="#FF0000"><?php  if ( $hasmore )
-			echo("<BR>Se o nome da Instituição não estiver listado, seja mais específico."); ?></font></b></font></font><font
+			echo("<BR>Se o nome da Instituiï¿½ï¿½o nï¿½o estiver listado, seja mais especï¿½fico."); ?></font></b></font></font><font
 			color="#FF0000"> </font></b></font></font></td>
 	</tr>
 	<tr align="center">

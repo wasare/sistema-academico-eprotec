@@ -61,7 +61,7 @@ function ver_pendencia($soma_notas_diario, $total_nota_matricula)
 
 //RECUPERA AS NOTAS PARCIAIS POR ALUNO
 //param: codigo do aluno, periodo, diario
-function ver_nota_aluno_webdiario($racnec, $getperiodo, getofer)
+function ver_nota_aluno_webdiario($racnec, $getperiodo, $getofer)
 {
 	
 	include_once('../webdiario.conf.php');
