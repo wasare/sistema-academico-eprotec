@@ -12,7 +12,7 @@ $sql = "SELECT
 		nome_completo, login, nivel, id_nome, ativo
 		FROM public.diario_usuarios
 		WHERE 
-		lower(to_ascii(\"nome_completo\")) like lower(to_ascii('%".$_POST['nome']."%')) 
+		lower(to_ascii(\"nome_completo\")) like lower(to_ascii('%".$_POST['curso']."%')) 
 		ORDER BY \"nome_completo\" LIMIT 15";
 
 //$sql = iconv("utf-8", "iso-8859-1", $sql);

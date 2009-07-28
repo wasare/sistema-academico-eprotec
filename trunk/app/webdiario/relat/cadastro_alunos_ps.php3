@@ -33,10 +33,10 @@ var NOVAWIN = window.open("/aguarde.html", "NOVAWIN", "status=no,toolbar=no,loca
    //========================= INICIA A PRIMEIRA PAGINA
    PS_begin_page($myfile_ps, $nr_pag);
     
-   //========================= Rotate (Para usar a página em LANDSCAPE)
+   //========================= Rotate (Para usar a pï¿½gina em LANDSCAPE)
    PS_rotate($myfile_ps, 90);
   
-   PS_show_xy_font($myfile_ps, 'Códigos dos Cursos', 45, -30, 'Arial-Bold', 15);
+   PS_show_xy_font($myfile_ps, 'Cï¿½digos dos Cursos', 45, -30, 'Arial-Bold', 15);
    PS_show_xy_font($myfile_ps, "$data", 225, -30, 'Arial-Bold', 10);
 
    $sql = " SELECT id, " .
@@ -50,7 +50,7 @@ var NOVAWIN = window.open("/aguarde.html", "NOVAWIN", "status=no,toolbar=no,loca
    $conn->Open();
    $query = $conn->CreateQuery($sql);
    
-   SaguAssert($query,"Não foi possível executar a consulta SQL!");
+   SaguAssert($query,"Nï¿½o foi possï¿½vel executar a consulta SQL!");
     
    $lin = -60;
    $controle = 1;
@@ -64,7 +64,7 @@ var NOVAWIN = window.open("/aguarde.html", "NOVAWIN", "status=no,toolbar=no,loca
 	 
     if ($controle == 1) 
     {
-       PS_show_xy_font($myfile_ps, 'Código', 50, $lin, 'Arial-Bold', 10);
+       PS_show_xy_font($myfile_ps, 'Cï¿½digo', 50, $lin, 'Arial-Bold', 10);
        PS_rect($myfile_ps, 45, -45, 90, -65, 0.3);
        PS_show_xy_font($myfile_ps, 'Descricao', 95, $lin, 'Arial-Bold', 10);
        PS_rect($myfile_ps, 90, -45, 805, -65, 0.3);
@@ -125,7 +125,7 @@ var NOVAWIN = window.open("/aguarde.html", "NOVAWIN", "status=no,toolbar=no,loca
    
    $query = $conn->CreateQuery($sql);
    
-   SaguAssert($query,"Não foi possível executar a consulta SQL!");
+   SaguAssert($query,"Nï¿½o foi possï¿½vel executar a consulta SQL!");
     
    $lin = -60;
    $controle = 1;
@@ -174,11 +174,11 @@ var NOVAWIN = window.open("/aguarde.html", "NOVAWIN", "status=no,toolbar=no,loca
    
     if ($controle == 1) 
     {
-       PS_show_xy_font($myfile_ps, 'Código', 55, $lin, 'Arial-Bold', 10);
+       PS_show_xy_font($myfile_ps, 'Cï¿½digo', 55, $lin, 'Arial-Bold', 10);
        PS_rect($myfile_ps, 45, -45, 95, -65, 0.3);
        PS_show_xy_font($myfile_ps, 'Nome', 100, $lin, 'Arial-Bold', 10);
        PS_rect($myfile_ps, 95, -45, 255, -65, 0.3);
-       PS_show_xy_font($myfile_ps, 'Endereço', 260, $lin, 'Arial-Bold', 10);
+       PS_show_xy_font($myfile_ps, 'Endereï¿½o', 260, $lin, 'Arial-Bold', 10);
        PS_rect($myfile_ps, 255, -45, 445, -65, 0.3);
        PS_show_xy_font($myfile_ps, 'Cidade', 450, $lin, 'Arial-Bold', 10);
        PS_rect($myfile_ps, 445, -45, 545, -65, 0.3);
@@ -227,13 +227,13 @@ var NOVAWIN = window.open("/aguarde.html", "NOVAWIN", "status=no,toolbar=no,loca
     $contador = 1;
    }
 }
-//========================= FECHA A PÁGINA 
+//========================= FECHA A Pï¿½GINA 
     PS_end_page($myfile_ps);
 
     //========================= FECHA O ARQUIVO PS DESTINO
     PS_close($myfile_ps);
 
-    //========================= CANCELA CONEXÃO
+    //========================= CANCELA CONEXï¿½O
     @$query->Close();
     @$conn->Close();
 
@@ -247,7 +247,7 @@ var NOVAWIN = window.open("/aguarde.html", "NOVAWIN", "status=no,toolbar=no,loca
  <form name="myform" action="" >
    <p align="center">
      <input type="button" name="botao" value="&lt;&lt; Retornar" onclick="history.go(-1)">
-     <input type="button" name="botao2" value="Imprimir Novamente" onclick="location='<?php echo($nome_arq_ps)  ?>'"
+     <input type="button" name="botao2" value="Imprimir Novamente" onclick="location='<?php echo($nome_arq_ps)  ?>'" />
    </p>
 
 </body>

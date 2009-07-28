@@ -7,7 +7,7 @@ DESENVOLVIDO SOBRE LEIS DA GNU/GPL
 E-CNEC : ti@cneccapviari.br
 
 CNEC CAPVIARI - www.cneccapivari.br
-Rua Barão do Rio Branco, 347, Centro - Capivari/SP
+Rua Barï¿½o do Rio Branco, 347, Centro - Capivari/SP
 Tel.: (19)3492-1869
 */
 
@@ -160,7 +160,7 @@ if(is_string($qry3))
     <tr bgcolor="#CCCCCC">
       <td width="50"><b>Matr&iacute;cula</b></td>
       <td width="560"><b>Nome</b></td>
-      <td width="40"><b>Ações</b></td>
+      <td width="40"><b>Aï¿½ï¿½es</b></td>
     </tr>
 <?php
    while($row3 = pg_fetch_array($qry3)) 
@@ -179,7 +179,7 @@ if(is_string($qry3))
       print ("<tr bgcolor=\"$st\"> <td>$q3ra</td> 		<td>$q3nome</td> <td> <a href=\"faltas_alunos.php?ras=$q3ra&nome=$q3nome\"> 		<img src=\"../../img/edit.gif\" border=\"0\" title=\"Ver faltas\"></a>&nbsp; <a href=\"cadastro_alunos.php?ras=$q3id\"> 	<img src=\"../../img/compose.gif\" border=\"0\" title=\"Ver Cadastro\"></a>&nbsp;</td> </tr>");
     }
     } else {
-    print ("Não foi encontrado nenhum aluno");
+    print ("Nï¿½o foi encontrado nenhum aluno");
     }
 //    pg_close($dbconnect);
     unset($_GET['nomes']);
@@ -194,7 +194,7 @@ if(is_string($qry3))
       <tr bgcolor="#CCCCCC">
         <td width="50"><b>RA</b></td>
         <td width="380"><b>Nome</b></td>
-        <td width="20"<b>Ações</b></td>
+        <td width="20"<b>Aï¿½ï¿½es</b></td>
 		</tr>-->
 <?php
 /*	
@@ -217,7 +217,7 @@ while($row1 = pg_fetch_array($qry1))
 } 
 else 
 {
-   print ("Não foi encontrado nenhum aluno");
+   print ("N&atilde;o foi encontrado nenhum aluno");
 }
 //   pg_close($dbconnect);
 }
@@ -232,7 +232,7 @@ if(isset($nomes) && ($nomes != ""))
         <tr bgcolor="#CCCCCC">
           <td width="50"><b>Matr&iacute;cula</b></td>
           <td width="380"><b>Nome</b></td>
-          <td width="20"<b>Ações</b></td>
+          <td width="20"><b>A&ccedil;&otilde;es</b></td>
         </tr>
 <?php
 while($row2 = pg_fetch_array($qry2)) 
@@ -254,7 +254,7 @@ print("</table>");
 } 
 else 
 {
-   print ("Não foi encontrado nenhum aluno");
+   print ("Nï¿½o foi encontrado nenhum aluno");
 }
 //pg_close($dbconnect);
 }

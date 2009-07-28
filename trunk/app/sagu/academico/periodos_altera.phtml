@@ -25,7 +25,7 @@ function _init()
 
 function buscaOrig()
 {
-  var title = 'Seleção Origens';
+  var title = 'Seleï¿½ï¿½o Origens';
   
   var sql = " select id as Codigo, " +
             "        descricao as Origem " + 
@@ -106,7 +106,7 @@ function ChangeCode(fld_name,op_name)
     }
   }
 
-  alert(code + ' não é um código válido!');
+  alert(code + ' nï¿½o ï¿½ um cï¿½digo vï¿½lido!');
 
   field.focus();
 
@@ -149,7 +149,7 @@ $sql = " select id," .
 
 $query = $conn->CreateQuery($sql);
 
-SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+SaguAssert($query && $query->MoveNext(),"Registro nï¿½o encontrado!");
 
 list ($id,
       $ref_anterior,
@@ -191,7 +191,7 @@ $origem = GetOrigem($ref_origem, true);
 <form method="post" action="post/periodos_altera.php3" name="myform">
   <table width="90%" align="center">
     <tr>
-      <td bgcolor="#000099" colspan="2" height="35" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Alteração de Período</b></font></td>
+      <td bgcolor="#000099" colspan="2" height="35" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Alteraï¿½ï¿½o de Perï¿½odo</b></font></td>
     </tr>
     <tr>
       <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo&nbsp;</font></td>
@@ -260,7 +260,7 @@ $origem = GetOrigem($ref_origem, true);
     <tr>
       <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Inicial<br>&nbsp;(dd/mm/aaaa)</font></td>
       <td>
-        <input name="dt_inicial" type=text value="<?echo($dt_inicial);?>" size="12" maxlength="10"
+        <input name="dt_inicial" type=text value="<?echo($dt_inicial);?>" size="12" maxlength="10" />
       </td>
     </tr>
     <tr>
@@ -270,21 +270,21 @@ $origem = GetOrigem($ref_origem, true);
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Média Aprovação sem Exame</font>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Mï¿½dia Aprovaï¿½ï¿½o sem Exame</font>
       </td>
       <td>
         <input name="media" type=text size="5" maxlength="5" value="<?echo($media);?>">
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Média Final Aprovação</font>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Mï¿½dia Final Aprovaï¿½ï¿½o</font>
       </td>
       <td>
         <input name="media_final" type=text size="5" maxlength="5" value="<?echo($media_final);?>">
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Início Aulas (Caderno de Chamadas)<br>&nbsp;(dd-mm-aaaa)</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Inï¿½cio Aulas (Caderno de Chamadas)<br>&nbsp;(dd-mm-aaaa)</font></td>
       <td>
         <input name="dt_inicio_aula" type=text value="<?echo($dt_inicio_aula);?>" size="10" maxlength="10">
       </td>
@@ -299,13 +299,13 @@ $origem = GetOrigem($ref_origem, true);
     <tr>
       <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa DCE Normal&nbsp;</font></td>
       <td>
-        <input name="tx_dce_normal" type=text value="<?echo($tx_dce_normal);?>" size="5"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C">% - Percentual referente ao valor do crédito base do curso para Veteranos</font>
+        <input name="tx_dce_normal" type=text value="<?echo($tx_dce_normal);?>" size="5"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C">% - Percentual referente ao valor do crï¿½dito base do curso para Veteranos</font>
       </td>
     </tr>
     <tr>
       <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa DCE Vestibular&nbsp;</font></td>
       <td>
-        <input name="tx_dce_vest" type=text value="<?echo($tx_dce_vest);?>" size="5"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C">% - Percentual referente ao valor do crédito base do curso para Calouros</font>
+        <input name="tx_dce_vest" type=text value="<?echo($tx_dce_vest);?>" size="5"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C">% - Percentual referente ao valor do crï¿½dito base do curso para Calouros</font>
       </td>
     </tr>
 -->
@@ -322,14 +322,14 @@ $origem = GetOrigem($ref_origem, true);
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Histórico Taxa </font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Histï¿½rico Taxa </font></td>
       <td>
         <input name="ref_historico_taxa" type=text onChange="ChangeCode('ref_historico_taxa','op7')" value="<?echo($ref_historico_taxa);?>" size="12">
         <?PHP ComboArray("op7",$op2_options,"$ref_historico_taxa","ChangeOp7()") ?> </td>
     </tr>
 
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Histórico Cancelamento </font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Histï¿½rico Cancelamento </font></td>
       <td>
         <input name="ref_historico_cancel" type=text onChange="ChangeCode('ref_historico_cancel','op8')" value="<?echo($ref_historico_cancel);?>" size="12">
         <?PHP ComboArray("op8",$op2_options,"$ref_historico_cancel","ChangeOp8()") ?> </td>
@@ -348,19 +348,19 @@ $origem = GetOrigem($ref_origem, true);
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Status do Livro Matrícula</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Status do Livro Matrï¿½cula</font></td>
       <td> <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
 
 <?
   if ($fl_livro_matricula=='1')
   {
     echo("<input type=\"radio\" name=\"fl_livro_matricula\" value=\"yes\" checked> Sim ");
-    echo("<input type=\"radio\" name=\"fl_livro_matricula\" value=\"no\"> Não ");
+    echo("<input type=\"radio\" name=\"fl_livro_matricula\" value=\"no\"> Nï¿½o ");
   }
   else
   {
     echo("<input type=\"radio\" name=\"fl_livro_matricula\" value=\"yes\"> Sim ");
-    echo("<input type=\"radio\" name=\"fl_livro_matricula\" value=\"no\" checked> Não ");
+    echo("<input type=\"radio\" name=\"fl_livro_matricula\" value=\"no\" checked> Nï¿½o ");
   }
 
 ?>

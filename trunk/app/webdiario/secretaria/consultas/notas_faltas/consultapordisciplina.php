@@ -67,7 +67,7 @@ function MM_openBrWindow(theUrl,winName,features) { //2.1
 <?php
 }
 ?>
-
+>
 <link rel="stylesheet" href="../../css/gerals.css" type="text/css">
 <div align="center">
 <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>CEFET-BAMBU&Iacute;<br>
@@ -90,8 +90,8 @@ print(" <b>LEGENDA</b>
 <br>
 <table width=95%>
 <tr bgcolor=\"#336699\">
-<td align=center><b><font color=\"#FFFFFF\">Descrição Abreviada</td>
-<td align=center><b><font color=\"#FFFFFF\">Descrição</td>
+<td align=center><b><font color=\"#FFFFFF\">Descriï¿½ï¿½o Abreviada</td>
+<td align=center><b><font color=\"#FFFFFF\">Descriï¿½ï¿½o</td>
 <td align=\"center\"><b><font color=\"#FFFFFF\">Carga Horaria Prevista</td>
 <td align=\"center\"><b><font color=\"#FFFFFF\">Carga Horaria Realizada</td></font></b></tr>
 <tr>");
@@ -212,7 +212,7 @@ while($row2 = pg_fetch_array($query2))
       $sqlbusca = "select nota_final, num_faltas from matricula where ref_periodo = '$getperiodo' and ref_pessoa = '$refpessoa' and ref_disciplina = '$getdisciplina'";
       
       
-     // -- RECUPERA TODAS AS NOTAS E FALTAS PARA TODAS AS DISCIPLINAS DE DETERMINADO PERÍODO POR ALUNO
+     // -- RECUPERA TODAS AS NOTAS E FALTAS PARA TODAS AS DISCIPLINAS DE DETERMINADO PERï¿½ODO POR ALUNO
       $sqlbusca = "
       SELECT 
       DISTINCT 
