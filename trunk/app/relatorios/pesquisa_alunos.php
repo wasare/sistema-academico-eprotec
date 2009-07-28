@@ -166,9 +166,9 @@ if (!$Result1){
                     <input type="checkbox" name="pai" id="pai" value="pai">
                     Nome do Pai
                     <input type="checkbox" name="mae" id="mae" value="mae">
-                    Nome da Mãe
+                    Nome da M&atilde;e
                     <input type="checkbox" name="endereco" id="endereco" value="endereco">
-                    Endereço
+                    Endere&ccedil;o
                     <input type="checkbox" name="bairro" id="bairro" value="bairro">
                     Bairro
                     <input type="checkbox" name="cidade" id="cidade" value="cidade">
@@ -191,7 +191,7 @@ if (!$Result1){
                     Turma <br />
                     &nbsp;
                 </label>
-        <span class="checkboxMinSelectionsMsg">Selecione no m�nimo uma coluna.</span></span> </td>
+                <span class="checkboxMinSelectionsMsg">Selecione no m&iacute;nimo uma coluna.</span></span> </td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
