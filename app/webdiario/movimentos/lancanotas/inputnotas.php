@@ -142,7 +142,7 @@ if(is_string($qry1))
 /* PROCESSO DE NOTA DISTRIBUIDA */
 
 $sqlNotaDistribuida = "
-	SELECT * 
+	SELECT nota_distribuida 
 	FROM diario_formulas 
 	WHERE 
 	grupo ILIKE '%-" . $getofer . "' AND 
@@ -156,7 +156,8 @@ if(is_string($qryNotaDistribuida))
    exit;
 }
 
-$nota_distribuida = getNumeric2Real(pg_fetch_row($qryNotaDistribuida));
+$nota_distribuida = pg_fetch_row($qryNotaDistribuida);
+$nota_distribuida = getNumeric2Real($nota_distribuida[0]);
 
 ?>
 <html>
@@ -226,7 +227,7 @@ else{
 
 ?>
 <p><strong>Nota distribu&iacute;da:</strong>
-  <input name="valor_avaliacao" type="text" id="valor_avaliacao" size="8" value="<?php echo $nota_distribuida[8];?>">
+  <input name="valor_avaliacao" type="text" id="valor_avaliacao" size="8" value="<?=$nota_distribuida?>">
 </p>
 <table width="92%" border="0">
   <tr bgcolor="#666666">
