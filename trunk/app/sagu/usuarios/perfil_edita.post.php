@@ -10,6 +10,7 @@ $nome_completo = $_POST['nome_completo'];
 $email = $_POST['email'];
 $ref_setor = $_POST['ref_setor'];
 $obs = $_POST['obs'];
+$grupo = $_POST['grupo'];
 
 
 CheckFormParameters(array("nome","nome_completo","password1","password2","grupo","ref_setor"));
@@ -55,7 +56,7 @@ SaguAssert($ok2,"Erro ao alterar o usuário!");
 
 SuccessPage("$mensagem",
             "",
-            "O login do usuário é <b>$nome</b>.<br> Efetue o login novamente clicando <A href=\"../index.php3\" target=\"_top\"><font color=\"#0000CC\"><b>aqui</b></font></a>");
+            "O login do usuário é <b>$nome</b>.<br> Efetue o login novamente clicando <A href=\"../../../index.php\" target=\"_top\"><font color=\"#0000CC\"><b>aqui</b></font></a>");
 
 ?>
 </HEAD>
