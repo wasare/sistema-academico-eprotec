@@ -3,7 +3,7 @@
   //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
   header ("Cache-Control: no-cache");
   require("../../lib/common.php");
-  require("../../configuracao.php");
+  require("../../configs/configuracao.php");
   require("../../lib/adodb/adodb.inc.php");
   require("../../lib/adodb/tohtml.inc.php");
   
@@ -89,7 +89,7 @@
 <head>
 <title>Lista de Alunos</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="../../Styles/style.css" rel="stylesheet" type="text/css">
+<link href="../../public/styles/style.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
 <form method="post" name="FrmImprimir" id="FrmImprimir" action="">

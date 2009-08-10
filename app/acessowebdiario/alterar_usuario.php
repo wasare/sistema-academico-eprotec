@@ -3,7 +3,7 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
 
@@ -30,7 +30,7 @@ $Result1 = $Conexao->Execute($sql);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>SA</title>
-<link href="../../css/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -41,10 +41,10 @@ $Result1 = $Conexao->Execute($sql);
     <tr>
       <td width="60"><div align="center">
         <label class="bar_menu_texto">
-        <input name="save" type="image" src="../../images/icons/save.png" />
+        <input name="save" type="image" src="../../public/images/icons/save.png" />
         <br />
         Salvar</label></td>
-      <td width="60"><div align="center"><a href="javascript:history.back(-1);" class="bar_menu_texto"><img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+      <td width="60"><div align="center"><a href="javascript:history.back(-1);" class="bar_menu_texto"><img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
           Voltar</a></div></td>
     </tr>
   </table>

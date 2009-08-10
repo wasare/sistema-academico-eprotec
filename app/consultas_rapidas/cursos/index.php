@@ -3,8 +3,8 @@
 <head>
 <title>Pesquisa de Pessoas</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link href="../../../Styles/formularios.css" rel="stylesheet" type="text/css">
-<link href="../../../Styles/style.css" rel="stylesheet" type="text/css">
+<link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css">
+<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="../../../lib/prototype.js"></script>
 <script language="javascript" src="index.js"></script>
 <script language="JavaScript">
@@ -23,7 +23,7 @@ function send(id,descricao){
 <h2>Pesquisa de Curso </h2>
 <table border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td width="60"><div align="center"><a href="javascript:window.close();" class="bar_menu_texto"><img src="../../../images/icons/close.png" alt="Voltar" width="24" height="24" /><br />
+    <td width="60"><div align="center"><a href="javascript:window.close();" class="bar_menu_texto"><img src="../../../public/images/icons/close.png" alt="Voltar" width="24" height="24" /><br />
       Fechar</a></div></td>
   </tr>
 </table>

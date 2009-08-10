@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>SA</title>
-<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
 <script language="JavaScript">
 <!--
 function confirma()

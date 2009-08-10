@@ -2,7 +2,7 @@
 
 header("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 require("../../lib/excel.inc.php");
 

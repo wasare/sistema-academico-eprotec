@@ -9,7 +9,7 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>SA</title>
-        <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+        <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
         <script language="javascript" src="../../lib/prototype.js"></script>
         <script language="javascript">
             <!--
@@ -60,7 +60,7 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
                 </label>
                 <input type="button" name="adicionar" id="adicionar" onclick="BuscaDiarios();" value="Adicionar di&aacute;rio" />
                 <a href="#" onclick="window.open('matricula_avulsa_pesquisar.php','consulta_diaro','resizable=yes, toolbar=no,width=500,height=500,scrollbars=yes,top=0,left=0');">
-                    <img src="../../images/icons/lupa.png" alt="" /> Buscar di&aacute;rio
+                    <img src="../../public/images/icons/lupa.png" alt="" /> Buscar di&aacute;rio
                 </a>
 
                 <div class="box_geral">

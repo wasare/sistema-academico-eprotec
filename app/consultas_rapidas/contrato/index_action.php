@@ -3,7 +3,7 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
 require("../../../lib/common.php");
-require("../../../configuracao.php");
+require("../../../configs/configuracao.php");
 require("../../../lib/adodb/adodb.inc.php");
 		
 		
@@ -52,7 +52,7 @@ while(!$RsNome->EOF){
 	$tabela.= "   <td align=\"left\">" . $cod_contrato . "</td>";
 	$tabela.= "   <td align=\"left\">" . $aluno . "</td>";
 	$tabela.= "   <td align=\"left\">" . $curso . "</td>";
-    $tabela.= "   <td align=\"left\"><a href=\"javascript:send(" .$cod_contrato. ", '". $aluno . "', '". $curso . "')\"><img src=\"../../images/icons/bar_menu/apply.png\" alt=\"Enviar\" /></a></td>";
+    $tabela.= "   <td align=\"left\"><a href=\"javascript:send(" .$cod_contrato. ", '". $aluno . "', '". $curso . "')\"><img src=\"../../public/images/icons/bar_menu/apply.png\" alt=\"Enviar\" /></a></td>";
 	$tabela.= "</tr>";
 	$RsNome->MoveNext();
 }

@@ -3,7 +3,7 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 require("../../lib/adodb/tohtml.inc.php");
 
@@ -66,7 +66,7 @@ ob_start();
 
 ?>
 <link
-	href="../../desenvolvimento/Styles/style.css"
+	href="../../public/styles/style.css"
 	rel="stylesheet" type="text/css">
 <page backtop="10mm"
 	backbottom="10mm">
@@ -81,7 +81,7 @@ ob_start();
 </table>
 </page_footer>
 <span style="text-align: center; font-size: 12px;"> <img
-	src="../../images/armasbra.jpg" width="57" height="60"><br />
+	src="../../public/images/armasbra.jpg" width="57" height="60"><br />
 MEC-SETEC<br />
 CENTRO FEDERAL DE EDUCAÇÃO TECNOLÓGICA DE BAMBUÍ-MG<br />
 SETOR DE REGISTROS ESCOLARES <br />

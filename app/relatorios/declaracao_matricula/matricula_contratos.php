@@ -1,7 +1,7 @@
 <?php
 
 require("../../../lib/common.php");
-require("../../../configuracao.php");
+require("../../../configs/configuracao.php");
 require("../../../lib/adodb/adodb.inc.php");
 
 

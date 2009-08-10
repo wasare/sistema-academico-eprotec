@@ -4,7 +4,7 @@ header("Cache-Control: no-cache");
 
 //-- ARQUIVO E BIBLIOTECAS
 require_once("../../lib/common.php");
-require_once("../../configuracao.php");
+require_once("../../configs/configuracao.php");
 require_once("../../lib/adodb/adodb.inc.php");
 
 //-- Conectando com o PostgreSQL
@@ -56,7 +56,7 @@ if ($_POST['btnOK'] == 10)
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>SA</title>
-<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div align="center">

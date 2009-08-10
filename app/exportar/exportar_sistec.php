@@ -1,18 +1,11 @@
 <?php
 
 require("../../lib/common.php");
-require("../../configuracao.php");
-require("../../lib/adodb/adodb.inc.php");
+require("../../configs/configuracao.php");
 
-$Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$conn = new connection_factory($param_conn);
 
-$Result1 = $Conexao->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
-
-if (!$Result1){
-    print $Conexao->ErrorMsg();
-    die();
-}
+$Result1 = $conn->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -21,7 +14,7 @@ if (!$Result1){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <script language="javascript">
 </script>
-<link href="../../Styles/formularios.css" rel="stylesheet"	type="text/css" />
+<link href="../../public/styles/formularios.css" rel="stylesheet"	type="text/css" />
 <title>SA</title>
     <script src="../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
     <link href="../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
@@ -80,7 +73,7 @@ if (!$Result1){
 <span id="sprytextfield2">
    <input name="codigo_curso" type="text" id="codigo_curso" size="10" />
    <input name="descricao_curso" disabled="disabled" id="descricao_curso" value="" size="40" />
-   <a href="javascript:abre_consulta_rapida('../consultas_rapidas/cursos/index.php')"><img src="../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" /></a>
+   <a href="javascript:abre_consulta_rapida('../consultas_rapidas/cursos/index.php')"><img src="../../public/images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" /></a>
    <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
 </span>
 </td>

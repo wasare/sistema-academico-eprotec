@@ -1,9 +1,5 @@
 <?php
 
-//	require("/var/www/sagu/html/conf/config.php3"); 
-//	require("/var/www/sagu/html/conf/common.php3"); 
-
-//include_once ('../webdiario.conf.php');
 
 // just so we know it is broken
 //error_reporting(E_ALL);

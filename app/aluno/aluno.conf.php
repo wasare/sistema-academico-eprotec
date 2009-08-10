@@ -8,7 +8,7 @@ ini_set('display_errors', '0');
 
 //PATH ONDE SE ENCONTRA A CLASSE ADODB
 require_once('../../lib/adodb/adodb.inc.php');
-require_once('../../configuracao.php');
+require_once('../../configs/configuracao.php');
 
 //EFETUA A CONEXÃO
 $conn = NewADOConnection('postgres');

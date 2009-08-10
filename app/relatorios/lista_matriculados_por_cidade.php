@@ -3,7 +3,7 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 require("../../lib/adodb/tohtml.inc.php");
 
@@ -46,13 +46,13 @@ $RsCursos = $Conexao->Execute($sqlCursos);
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
         <title>Untitled Document</title>
-        <link href="../../Styles/style.css" rel="stylesheet" type="text/css">
+        <link href="../../public/styles/style.css" rel="stylesheet" type="text/css">
     </head>
 
     <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
         <div style="width: 760px; padding:6px;">
             <div align="center" style="text-align:center; font-size:12px;">
-                <img src="../../images/armasbra.jpg" width="57" height="60"><br />
+                <img src="../../public/images/armasbra.jpg" width="57" height="60"><br />
                 MEC-SETEC<br />
                 CENTRO FEDERAL DE EDUCAÇÃO TECNOLÓGICA DE BAMBUÍ-MG<br />
                 SETOR DE REGISTROS ESCOLARES

@@ -4,7 +4,7 @@ header("Cache-Control: no-cache");
 
 //INCLUSAO DE BIBLIOTECAS
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
 
@@ -30,7 +30,7 @@ if (!$Result1){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Relat&oacute;rio de Alunos Aprovados/Reprovados</title>
-<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="../../lib/prototype.js"></script>
 <style type="text/css">
 <!--
@@ -107,20 +107,20 @@ function submit_opt(arq){
     <tr>
       <td width="68"><div align="center">
           <label class="bar_menu_texto">
-          <input name="" type="image" src="../../images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_alunos_nao_aprovados.php');"/>
+          <input name="" type="image" src="../../public/images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_alunos_nao_aprovados.php');"/>
           <br />
           Exibir</label>
         </div></td>
       <td width="73"><div align="center">
           <label class="bar_menu_texto"> </label>
           <label>
-          <input type="image" name="imageField" id="imageField" src="../../images/icons/pdf_icon.jpg" onclick="submit_opt('pdf_alunos_nao_aprovados.php');" />
+          <input type="image" name="imageField" id="imageField" src="../../public/images/icons/pdf_icon.jpg" onclick="submit_opt('pdf_alunos_nao_aprovados.php');" />
           </label>
           <label class="bar_menu_texto"><a href="javascript:abrir_rel_submit('lista_alunos_nao_aprovados.php?opt=pdf');" class="bar_menu_texto"><br />
           Gerar PDF</a> </label>
         </div></td>
       <td width="63"><div align="center">
-          <label class="bar_menu_texto"> <a href="#" onclick="history.back(-1)" class="bar_menu_texto"> <img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+          <label class="bar_menu_texto"> <a href="#" onclick="history.back(-1)" class="bar_menu_texto"> <img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
           Voltar</a> </label>
         </div></td>
     </tr>
@@ -143,7 +143,7 @@ function submit_opt(arq){
         <td><span id="sprytextfield1">
           <input name="codigo_curso" type="text" id="codigo_curso" size="10" />
           <input name="descricao_curso" disabled="disabled" id="descricao_curso" value="" size="40" />
-          <a href="javascript:abre_consulta_rapida('../consultas_rapidas/cursos/index.php')" ><img src="../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" /></a> <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio.</span> </span></td>
+          <a href="javascript:abre_consulta_rapida('../consultas_rapidas/cursos/index.php')" ><img src="../../public/images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" /></a> <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio.</span> </span></td>
       </tr>
       <tr>
         <td>C&oacute;digo do Aluno:</td>

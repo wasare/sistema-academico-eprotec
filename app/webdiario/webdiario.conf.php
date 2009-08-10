@@ -2,7 +2,7 @@
 
 $BASE_DIR_WEBDIARIO  = dirname(__FILE__) . '/';
 
-require_once($BASE_DIR_WEBDIARIO .'../../lib/config.php');
+require_once($BASE_DIR_WEBDIARIO .'../../configs/config.php');
 
 @session_start();
 

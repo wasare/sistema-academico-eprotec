@@ -4,7 +4,7 @@ header("Cache-Control: no-cache");
 
 //INCLUSAO DE BIBLIOTECAS
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php"); 
 
 //Criando a classe de conexão
@@ -42,7 +42,7 @@ if (!$Result3){
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>Lista de di&aacute;rios</title>
-    <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+    <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         <!--
         .style1 {
@@ -104,12 +104,12 @@ if (!$Result3){
 <tr>
 <td width="68" align="center">
     <label class="bar_menu_texto">
-        <input name="input" type="image" src="../../images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_diarios.php');"/>
+        <input name="input" type="image" src="../../public/images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_diarios.php');"/>
         <br />
     Exibir</label>
 </td>
 <td width="63" align="center">
-    <label class="bar_menu_texto"> <a href="#" class="bar_menu_texto" onclick="history.back(-1)"> <img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+    <label class="bar_menu_texto"> <a href="#" class="bar_menu_texto" onclick="history.back(-1)"> <img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
     Voltar</a> </label>
 </td>
 </tr>
