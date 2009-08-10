@@ -4,7 +4,7 @@ header("Cache-Control: no-cache");
 
 //INCLUSAO DE BIBLIOTECAS
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php"); 
 
 
@@ -29,7 +29,7 @@ if (!$Result1){
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>Lista alunos matriculados</title>
-    <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+    <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         <!--
         .style1 {
@@ -110,18 +110,18 @@ if (!$Result1){
 <tr>
 <td width="68" align="center">
     <label class="bar_menu_texto">
-        <input name="input" type="image" src="../../images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_alunos_novatos.php');"/>
+        <input name="input" type="image" src="../../public/images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_alunos_novatos.php');"/>
         <br />
     Exibir</label>
 </td>
 <td width="73" align="center">
     <label class="bar_menu_texto">
-        <input type="image" name="imageField" id="imageField" src="../../images/icons/pdf_icon.jpg" onclick="submit_opt('pdf_alunos_novatos.php');" />
+        <input type="image" name="imageField" id="imageField" src="../../public/images/icons/pdf_icon.jpg" onclick="submit_opt('pdf_alunos_novatos.php');" />
         <br />
     Gerar PDF</label>
 </td>
 <td width="63" align="center">
-    <label class="bar_menu_texto"> <a href="#" class="bar_menu_texto" onclick="history.back(-1)"> <img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+    <label class="bar_menu_texto"> <a href="#" class="bar_menu_texto" onclick="history.back(-1)"> <img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
     Voltar</a> </label>
 </td>
 </tr>
@@ -144,7 +144,7 @@ if (!$Result1){
                 <label>
                     <input name="codigo_curso" type="text" id="codigo_curso" size="10" />
                     <input name="descricao_curso" disabled="disabled" id="descricao_curso" value="" size="40" />
-                <a href="javascript:abre_consulta_rapida('../consultas_rapidas/cursos/index.php')"><img src="../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" /></a> </label>
+                <a href="javascript:abre_consulta_rapida('../consultas_rapidas/cursos/index.php')"><img src="../../public/images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" /></a> </label>
         <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span></span></td>
     </tr>
     <tr>

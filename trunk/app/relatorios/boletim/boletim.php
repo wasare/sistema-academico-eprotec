@@ -52,7 +52,7 @@ class  Boletim extends PDF {
 	
 	
     	// IMAGEM COM O LOGO
-    	$this->Image(dirname(__FILE__) .'/../../../images/if_minas_campus_bambui-logo.png',170,16,25);
+    	$this->Image(dirname(__FILE__) .'/../../../public/images/if_minas_campus_bambui-logo.png',170,16,25);
     
 	    // SELECIONA FONT ARIAL BOLD 10
     	$this->SetFont('Arial','',13);

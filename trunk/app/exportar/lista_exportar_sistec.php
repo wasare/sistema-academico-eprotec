@@ -1,34 +1,35 @@
 <?php
 
 require("../../lib/common.php");
-require("../../configuracao.php");
-require("../../lib/adodb/adodb.inc.php");
+require("../../configs/configuracao.php");
 
-$periodo = $_POST['periodo1'];
-$curso  = $_POST['codigo_curso'];
 
-$Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$conn = new connection_factory($param_conn);
 
 $sql = "
 SELECT DISTINCT
-p.id as \"Código\",
-p.nome as \"Nome\" ,
-p.cod_cpf_cgc as \"CPF\"
+	p.id, p.nome, p.cod_cpf_cgc, fone_particular,
+	fone_profissional, fone_celular, fone_recado, email
 FROM
-pessoas p , matricula c
+	pessoas p , matricula c
 WHERE
-c.ref_periodo = '$periodo' AND
-c.ref_curso = '$curso' AND
-c.ref_pessoa = p.id
-ORDER BY 2;";
+	c.ref_periodo = '".$_POST['periodo1']."' AND
+	c.ref_curso = '".$_POST['codigo_curso']."' AND
+	c.ref_pessoa = p.id
+ORDER BY 2; ";
 
-$Result1 = $Conexao->Execute($sql);
+$Result1 = $conn->Execute($sql);
 
-if (!$Result1){
-    print $Conexao->ErrorMsg();
-    die();
+$total = $Result1->RecordCount();
+
+if($total < 1){
+    echo "<script>alert('Nenhum registro foi retornado!');history.back(-1);</script>";
 }
+
+
+$sqlCurso = "SELECT id, descricao FROM cursos WHERE id = ".$_POST['codigo_curso']."; ";
+
+$RsCurso = $conn->Execute($sqlCurso);
 
 $resp_erro_cpf .= "
 <table>
@@ -36,6 +37,11 @@ $resp_erro_cpf .= "
     <td><strong>CPF</strong></td>
     <td><strong>C&oacute;digo</strong></td>
     <td><strong>Nome</strong></td>
+    <td><strong>Tel. Particular</strong></td>
+    <td><strong>Tel. Profissional</strong></td>
+    <td><strong>Tel. Celular</strong></td>
+    <td><strong>Tel. Recado</strong></td>
+    <td><strong>E-mail</strong></td>
 </tr>";
 
 while(!$Result1->EOF){
@@ -44,18 +50,18 @@ while(!$Result1->EOF){
         $resp_erro_cpf .= "<tr>";
         $resp_erro_cpf .= "<td>".$Result1->fields[2]."</td>";
         $resp_erro_cpf .= "<td>".$Result1->fields[0]."</td>";
-        $resp_erro_cpf .= "<td>".$Result1->fields[1]."</td></tr>";
+        $resp_erro_cpf .= "<td>".$Result1->fields[1]."</td>";
+        $resp_erro_cpf .= "<td>".$Result1->fields[3]."</td>";
+        $resp_erro_cpf .= "<td>".$Result1->fields[4]."</td>";
+        $resp_erro_cpf .= "<td>".$Result1->fields[5]."</td>";
+        $resp_erro_cpf .= "<td>".$Result1->fields[6]."</td>";
+        $resp_erro_cpf .= "<td>".$Result1->fields[7]."</td></tr>";
         $resp_erro_cpf .= "</tr>";
         
     }else{
         $resp_ok .= $Result1->fields[2].";";
     }
 
-    /*
-    if(strlen($Result1->fields[2]) == 10){
-        echo $Result1->fields[0].", ";
-    }
-    */
     $Result1->MoveNext();
 }
 $resp_erro_cpf .= "</table>";
@@ -66,18 +72,19 @@ $resp_erro_cpf .= "</table>";
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>SA</title>
-<link href="../../Styles/formularios.css" rel="stylesheet"	type="text/css" />
+<link href="../../public/styles/formularios.css" rel="stylesheet"	type="text/css" />
 </head>
 <body>
 <div align="center" style="height: 600px;">
-<h1>Exportar alunos matriculados para o SISTEC</h1>
+<h2>Exportar alunos matriculados para o SISTEC</h2>
+<h3><?php echo $RsCurso->fields[0]." - ".$RsCurso->fields[1]." - Per&iacute;odo da matr&iacute;cula: ".$_POST['periodo1']; ?> </h3>
 <div class="box_geral">
-    Copie o texto do formul&aacute;rio abaixo e cole no respectivo campo do SISTEC.<br>
+    Copie o texto do formul&aacute;rio abaixo e cole no respectivo campo do SISTEC.<br />
     Para facilitar dê um clique na caixa de texto do formul&aacute;rio e utilize os 
     atalhos de teclado "Ctrl + A" para selecionar o texto, "Ctrl + C" para copiar e 
     "Ctrl + V" para colar na caixa de texto do SISTEC.
     <textarea name="" cols="100" rows="5"><?=$resp_ok?></textarea>
-    <h4>Alunos sem CPF cadastrado ou com n&uacute;mero de caracteres diferente de 11</h4>
+    <h4><font color="red">Alunos sem CPF cadastrado ou com n&uacute;mero de caracteres diferente de 11</font></h4>
     <?=$resp_erro_cpf?>
 </div>
 </div>

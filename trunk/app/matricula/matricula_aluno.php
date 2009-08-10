@@ -11,7 +11,7 @@ header("Cache-Control: no-cache");
 
 //INCLUSAO DE BIBLIOTECAS
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php"); 
 
 
@@ -101,7 +101,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
             -->
         </script>
 
-        <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+        <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
         <link href="../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
 
         <title>SA</title>
@@ -132,7 +132,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
                     <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span></span>
 
                     <a href="javascript:abre_consulta_rapida('../consultas_rapidas/pessoas/index.php')">
-                        <img src="../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
+                        <img src="../../public/images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
                     </a>
                     <br /><br />
                     <input type="button" name="teste" id="teste" value="Exibir cursos" onclick="Exibe('regular');Exibe('avulsa');ConsultaCursos();" />

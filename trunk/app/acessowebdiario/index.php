@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>SA</title>
-<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
-<link href="../../Styles/style.css" rel="stylesheet" type="text/css">
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css">
+<link href="../../public/styles/style.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="../../lib/prototype.js"></script>
 <script language="javascript" src="index.js"></script>
 </head>
@@ -12,9 +12,9 @@
 <h2>Acesso ao Web Di&aacute;rio</h2>
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td width="60"><div align="center"><a href="cadastrar.php" class="bar_menu_texto"><img src="../../images/icons/new.png" alt="Novo" width="20" height="20" /><br />
+    <td width="60"><div align="center"><a href="cadastrar.php" class="bar_menu_texto"><img src="../../public/images/icons/new.png" alt="Novo" width="20" height="20" /><br />
         Novo</a></div></td>
-    <td width="60"><div align="center"><a href="javascript:history.back();" class="bar_menu_texto"><img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+    <td width="60"><div align="center"><a href="javascript:history.back();" class="bar_menu_texto"><img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
         Voltar</a></div></td>
   </tr>
 </table>

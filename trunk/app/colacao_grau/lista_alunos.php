@@ -1,7 +1,7 @@
 <?php
 
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php"); 
 
 
@@ -87,7 +87,7 @@ $respAlunos .= "</table>";
 <head>
     <title>SA</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <link href="../../Styles/formularios.css" rel="stylesheet"	type="text/css" />
+    <link href="../../public/styles/formularios.css" rel="stylesheet"	type="text/css" />
     <script src="../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
     <link href="../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
     

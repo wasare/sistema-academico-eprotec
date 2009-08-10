@@ -1,6 +1,6 @@
 <?php
 require_once '../../../lib/common.php';
-require_once '../../../configuracao.php';
+require_once '../../../configs/configuracao.php';
 require_once '../../../lib/adodb/adodb.inc.php';
 
 $Conexao = NewADOConnection("postgres");

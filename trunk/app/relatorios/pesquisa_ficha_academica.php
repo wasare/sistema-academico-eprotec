@@ -3,7 +3,7 @@
   //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
   header ("Cache-Control: no-cache");
   require("../../lib/common.php");
-  require("../../configuracao.php");
+  require("../../configs/configuracao.php");
   require("../../lib/adodb/adodb.inc.php");
   require("../../lib/adodb/tohtml.inc.php");
   
@@ -22,7 +22,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Pesquisa ficha academica</title>
-<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 <!--
 .style1 {
@@ -38,7 +38,7 @@
   <table border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="60"><div align="center">
-          <label class="bar_menu_texto"> <a href="#" onclick="history.back(-1)" class="bar_menu_texto"> <img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+          <label class="bar_menu_texto"> <a href="#" onclick="history.back(-1)" class="bar_menu_texto"> <img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
           Voltar</a> </label>
         </div></td>
     </tr>
@@ -145,13 +145,13 @@ if ($_POST) {
                	echo ' <td>' . $Result1->fields[3] . '</td>';
 				echo ' <td align="center">
 						<a target="_blank" href="lista_ficha_academica.php?aluno=' . $q3id . '&nome=' . $Result1->fields[0] . '&curso=' . $Result1->fields[3] . '&cs='.$Result1->fields[2] . '&contrato='. $Result1->fields[4] .'">
-						<img src="../../images/icons/print.jpg" width="20" height="20" title="Exibir 
+						<img src="../../public/images/icons/print.jpg" width="20" height="20" title="Exibir 
 dados em 
 HTML" alt="Exibir 
 dados 
 em HTML" /></a>
 						<a target="_blank" href="pdf_ficha_academica.php?aluno=' . $q3id . '&nome=' . $Result1->fields[0] . '&curso=' . $Result1->fields[3] . '&cs='.$Result1->fields[2] . '">
-						<img src="../../images/icons/pdf_icon.jpg" width="20" height="20" target="_blank" 
+						<img src="../../public/images/icons/pdf_icon.jpg" width="20" height="20" target="_blank" 
 title="Exibir dados em PDF"  
 alt="Exibir dados em PDF" /></a></td>';
 				echo '</tr>';

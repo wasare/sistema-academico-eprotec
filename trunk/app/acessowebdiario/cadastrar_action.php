@@ -3,7 +3,7 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
 
@@ -77,7 +77,7 @@ else {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Untitled Document</title>
-<link href="../../css/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 <!--
 .style2 {
@@ -101,7 +101,7 @@ else {
 <?php echo $msg; ?>
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td width="60"><div align="center"><a href="javascript:history.back();" class="bar_menu_texto"><img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+    <td width="60"><div align="center"><a href="javascript:history.back();" class="bar_menu_texto"><img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
       Voltar</a></div></td>
   </tr>
 </table>

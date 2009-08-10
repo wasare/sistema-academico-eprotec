@@ -3,7 +3,7 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 require("../../lib/adodb/tohtml.inc.php");
 
@@ -56,8 +56,7 @@ while(!$RsNome->EOF){
 	if($RsNome->fields[2] == 2) $tabela.= "<td align=\"left\">Secretaria</td>";
 	
 	$tabela.= "<td align=\"center\">";
-	$tabela.= "<a href=\"alterar.php?id_pessoa=".$RsNome->fields[3]."\"><img src=\"../../images/icons/edit.png\" alt=\"Editar\" /></a>";
-	//$tabela.= "		<a href=\"excluir_action.php?id_pessoa=".$RsNome->fields[3]."\"><img src=\"../images/icons/bar_menu/cancel.png\" alt=\"Editar\" /></a>";
+	$tabela.= "<a href=\"alterar.php?id_pessoa=".$RsNome->fields[3]."\"><img src=\"../../public/images/icons/edit.png\" alt=\"Editar\" /></a>";
 	$tabela.= "</td>";
 	$tabela.= "</tr>";
 	

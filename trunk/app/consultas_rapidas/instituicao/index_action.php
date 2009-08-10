@@ -3,7 +3,7 @@
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
 require_once("../../../lib/common.php");
-require_once("../../../configuracao.php");
+require_once("../../../configs/configuracao.php");
 require_once("../../../lib/adodb/adodb.inc.php");
 //require("../../lib/adodb/tohtml.inc.php");
 
@@ -38,10 +38,10 @@ while(!$RsInstituicao->EOF){
     $tabela.= "   <td align=\"left\">" . $RsInstituicao->fields[0] . "</td>";
     //$tabela.= "   <td align=\"left\">" . iconv("iso-8859-1", "utf-8", $RsInstituicao->fields[1]) . "</td>";
     //$tabela.= "   <td align=\"left\"><a href=\"javascript:send('" . $RsInstituicao->fields[0] . "','". 
-iconv("iso-8859-1", "utf-8", $RsInstituicao->fields[1]) ."'); \"><img src=\"../../../images/icons/apply.png\" alt=\"Enviar\" /></a></td>";
+iconv("iso-8859-1", "utf-8", $RsInstituicao->fields[1]) ."'); \"><img src=\"../../../public/images/icons/apply.png\" alt=\"Enviar\" /></a></td>";
     $tabela.= "   <td align=\"left\">" . $RsInstituicao->fields[1] . "</td>";
     $tabela.= "   <td align=\"left\"><a href=\"javascript:send('" . $RsInstituicao->fields[0] . "','".
- $RsInstituicao->fields[1] ."'); \"><img src=\"../../../images/icons/apply.png\" alt=\"Enviar\" 
+ $RsInstituicao->fields[1] ."'); \"><img src=\"../../../public/images/icons/apply.png\" alt=\"Enviar\" 
 /></a></td>";
         $tabela.= "</tr>";
 

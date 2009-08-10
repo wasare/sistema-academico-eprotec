@@ -9,7 +9,7 @@
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
 
@@ -77,7 +77,7 @@ if($_POST)
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <title>SA</title>
-        <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+        <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
         <style>
         .tabela td{
             font-family:verdana;

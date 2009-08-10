@@ -100,5 +100,4 @@ include_once('../../conf/webdiario.conf.php');
 
         ?>
     </body>
-    </head>
 </html>

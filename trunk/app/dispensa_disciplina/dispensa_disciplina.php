@@ -10,7 +10,7 @@
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
 
@@ -221,7 +221,7 @@ if ( $count == 0 ) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>SA</title>
-<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="../../lib/prototype.js"></script>
 <script language="JavaScript" src="dispensa.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />

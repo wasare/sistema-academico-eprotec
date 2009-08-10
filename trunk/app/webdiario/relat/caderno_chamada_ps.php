@@ -1,18 +1,11 @@
 <?php 
-  // error_reporting(E_ALL);
+// error_reporting(E_ALL);
   
-   require_once('../webdiario.conf.php');
-   //require("/var/www/sagu/html/conf/common.php3"); 
-   //require("/var/www/sagu/html/conf/GetPessoaNome.php3"); 
-   // require("/var/www/sagu/html/conf/GetField.php3");
+require_once('../webdiario.conf.php');
 
-   ini_set('display_errors', 0);
+ini_set('display_errors', 0);
 
-   require_once("pslib.php"); 
-   //require("/var/www/sagu/html/conf/academico/histlib.php"); 
-   //require("/var/www/sagu/html/conf/InvData.php3"); 
-   //require("/var/www/sagu/html/conf/config.php3"); 
-   //require_once("pslib.class");
+require_once("pslib.php"); 
 
 $getdisciplina = $_GET['disc'];
 $getofer = $_GET['ofer'];
@@ -31,14 +24,6 @@ function GetValue($col)
     return pg_result($res,$row,$col-1);
 }
 
-/*
-http://sagu.cefetbambui.edu.br/diario/relat/caderno_chamada_ps.php3?id_disc=573&data_em=06/04/2006&dia=-1&turno=0&ref_periodo=501&curso_id=1&campus_id=undefined
-
-http://sagu.cefetbambui.edu.br/relat/caderno_chamada_ps.php3?id_disc=608&data_em=06/04/2006&dia=-1&turno=0&ref_periodo=502&curso_id=1&campus_id=undefined
-
- */
-
-
 $id_disc = $getofer;
 $data_em = date("d/m/Y");
 $dia = -1;
@@ -46,21 +31,6 @@ $turno = 0;
 $ref_periodo = $getperiodo;
 $curso_id = 1;
 $campus_id = 'undefined';
-
-/*
-$var = explode(":",$_POST[getdisciplina]);
-$getdisciplina = $var[0];
-$getofer = $var[1];
-
-$id_disc = 573;
-$data_em = '06/04/2006';
-$dia = -1;
-$turno = 0;
-$ref_periodo = 501;
-$curso_id = 1;
-$campus_id = 'undefined';
-*/
-
 
 ?>
 <html>

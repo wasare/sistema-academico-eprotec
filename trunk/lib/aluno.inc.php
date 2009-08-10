@@ -10,7 +10,7 @@
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
 require_once( dirname(__FILE__) .'/common.php');
-require_once(dirname(__FILE__) .'/../configuracao.php');
+require_once(dirname(__FILE__) .'/../configs/configuracao.php');
 require_once(dirname(__FILE__) .'/adodb/adodb.inc.php');
 
 

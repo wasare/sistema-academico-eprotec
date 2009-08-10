@@ -1,8 +1,8 @@
 <?php 
 require("../../../lib/common.php");
-require("../../../configuracao.php");
+require("../../../configs/configuracao.php");
 require("../../../lib/adodb/adodb.inc.php");
-require("../../../lib/carimbo.php");
+require("../../../core/reports/carimbo.php");
 
 $Conexao = NewADOConnection("postgres");
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");

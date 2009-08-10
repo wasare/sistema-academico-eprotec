@@ -47,7 +47,7 @@ Institui&ccedil;&atilde;o:
   <input type="text" name="instituicao_nome" id="instituicao_nome" size="35" >
 
     <a href="javascript:abre_consulta_rapida('../consultas_rapidas/instituicao/index.php')">
-          <img src="../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
+          <img src="../../public/images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
    </a>
 
 <br /> <br />

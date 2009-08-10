@@ -1,7 +1,5 @@
 <?php
 
-//require_once(dirname(__FILE__) .'/../../../configuracao.php');
-
 require_once(dirname(__FILE__) .'/../webdiario.conf.php');
 
 

@@ -4,7 +4,7 @@ header("Cache-Control: no-cache");
 
 //-- ARQUIVO E BIBLIOTECAS
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
 
@@ -244,7 +244,7 @@ $cabecalho .= ">> <strong>Curso</strong>: $curso_id  - <strong>Per&iacute;odo</s
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>SA</title>
-<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="matricula.js"></script>
 </head>
 <body>

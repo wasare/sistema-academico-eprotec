@@ -4,7 +4,7 @@ header("Cache-Control: no-cache");
 
 //INCLUSAO DE BIBLIOTECAS
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php"); 
 
 
@@ -39,7 +39,7 @@ if (!$RsCidades){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Lista alunos matriculados</title>
-<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
         <!--
         .style1 {
@@ -92,10 +92,10 @@ function ChangeCode(fld_name,op_name){
   <table border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="68" align="center"><label class="bar_menu_texto">
-        <input name="input" type="image" src="../../images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_alunos.php');"/>
+        <input name="input" type="image" src="../../public/images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_alunos.php');"/>
         <br />
         Exibir</label>      </td>
-      <td width="63" align="center"><label class="bar_menu_texto"> <a href="#" onclick="history.back(-1)" class="bar_menu_texto"> <img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+      <td width="63" align="center"><label class="bar_menu_texto"> <a href="#" onclick="history.back(-1)" class="bar_menu_texto"> <img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
         Voltar</a> </label>      </td>
     </tr>
   </table>

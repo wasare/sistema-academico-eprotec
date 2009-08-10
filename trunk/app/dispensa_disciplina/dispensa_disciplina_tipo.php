@@ -10,7 +10,7 @@
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php");
 
 
@@ -110,7 +110,7 @@ $periodo_id = $RsDisciplina->fields[1];
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>SA</title>
-<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="../../lib/prototype.js"></script>
 <script language="javascript" src="../../lib/functions.js"></script>
 

@@ -1,119 +1,97 @@
 <?php
 
-/**
- * Chamada do arquivo de configuracao do SAGU
- */
-
-require_once(dirname(__FILE__) . '/config.php');
+require_once(dirname(__FILE__) . '/../configs/config.php');
+require_once(dirname(__FILE__) . '/../core/login/check_login.php');
 
 
-/** 
- * Verificacao de autenticacao de usuario 
- */
-
-$SessionAuth = $_SESSION['SessionAuth'];
-CheckLogin();
-list($LoginUID, $LoginPWD) = split(":",$SessionAuth,2);
-
-function CheckLogin(){
-
-    global $SessionAuth,$LoginURL;
-
-    if ( empty($SessionAuth) )
-    {
-        Header("Location: $LoginURL");
-        exit;
-    }
-}
-
-
+list($LoginUID, $LoginPWD) = split(":",$_SESSION['SessionAuth'],2);
 /**
  * Classe de abstracao de dados do SAGU
  */
 
 class Query {
 
-    var $conn;     // the connection id
-    var $sql;      // the SQL command string
-    var $result;   // the SQL command result set
-    var $row;      // the current row index
+	var $conn;     // the connection id
+	var $sql;      // the SQL command string
+	var $result;   // the SQL command result set
+	var $row;      // the current row index
 
-    function Open() {
+	function Open() {
 
-        LogSQL($this->sql);
+		LogSQL($this->sql);
 
-        $this->result = pg_exec($this->conn->id,$this->sql);
-        $this->row    = -1;
+		$this->result = pg_exec($this->conn->id,$this->sql);
+		$this->row    = -1;
 
-        return $this->result != null;
-    }
+		return $this->result != null;
+	}
 
-    function Close(){
+	function Close(){
 
-        if ( $this->result != null ){
-            pg_freeresult($this->result);
-            $this->result = null;
-        }
-    }
+		if ( $this->result != null ){
+			pg_freeresult($this->result);
+			$this->result = null;
+		}
+	}
 
-    function MovePrev()
-    {
-        if ( $this->row >= 0 )
-        {
-            $this->row--;
+	function MovePrev()
+	{
+		if ( $this->row >= 0 )
+		{
+			$this->row--;
 
-            return true;
-        }
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    function MoveNext()
-    {
-        if ( $this->row + 1 < $this->GetRowCount() )
-        {
-            $this->row++;
+	function MoveNext()
+	{
+		if ( $this->row + 1 < $this->GetRowCount() )
+		{
+			$this->row++;
 
-            return true;
-        }
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    function GetRowCount()
-    {
-        return pg_numrows($this->result);
-    }
+	function GetRowCount()
+	{
+		return pg_numrows($this->result);
+	}
 
-    function GetColumnCount()
-    {
-        return pg_numfields($this->result);
-    }
+	function GetColumnCount()
+	{
+		return pg_numfields($this->result);
+	}
 
-    function GetColumnName($col)
-    {
-        return pg_fieldname($this->result,$col-1);
-    }
+	function GetColumnName($col)
+	{
+		return pg_fieldname($this->result,$col-1);
+	}
 
-    function GetValue($col)
-    {
-        return pg_result($this->result,$this->row,$col-1);
-    }
+	function GetValue($col)
+	{
+		return pg_result($this->result,$this->row,$col-1);
+	}
 
-    function GetRowValues()
-    {
-        return pg_fetch_row($this->result,$this->row);
-    }
+	function GetRowValues()
+	{
+		return pg_fetch_row($this->result,$this->row);
+	}
 
-    function GetAllValues()
-    {
-        return pg_fetch_all($this->result);
-    }
+	function GetAllValues()
+	{
+		return pg_fetch_all($this->result);
+	}
 
-    function SetConnection($c)
-    {
-        $this->conn = $c;
-    }
+	function SetConnection($c)
+	{
+		$this->conn = $c;
+	}
 }
 
 
@@ -124,170 +102,170 @@ class Query {
 class Connection {
 
 
-    var $id;         // the connection identifier
-    var $traceback;  // a list of transaction errors
-    var $level;      // a counter for the transaction level
+	var $id;         // the connection identifier
+	var $traceback;  // a list of transaction errors
+	var $level;      // a counter for the transaction level
 
 
-    // opens a connection to the specified data source
-    function Open($no_SaguAssert=false)
-    {
-        global $LoginUID,$LoginPWD,$LoginDB,$LoginHost;
+	// opens a connection to the specified data source
+	function Open($no_SaguAssert=false)
+	{
+		global $LoginUID,$LoginPWD,$LoginDB,$LoginHost;
 
-        $SessionAuth = $_COOKIE['SessionAuth'];
+		$SessionAuth = $_COOKIE['SessionAuth'];
 
-        if ( ! empty($SessionAuth) ){
-            list ( $LoginUID, $LoginPWD ) = split(":",$SessionAuth,2);
+		if ( ! empty($SessionAuth) ){
+			list ( $LoginUID, $LoginPWD ) = split(":",$SessionAuth,2);
 
-        }
+		}
 
-        $arg = "host=$LoginHost dbname=$LoginDB port=5432 user=$LoginUID password=$LoginPWD";
-        $this->id = @pg_Connect($arg);
-        $this->level = 0;
+		$arg = "host=$LoginHost dbname=$LoginDB port=5432 user=$LoginUID password=$LoginPWD";
+		$this->id = @pg_Connect($arg);
+		$this->level = 0;
 
-        if ( empty($no_SaguAssert) || !$no_SaguAssert )
-        {
-            $err = @$this->GetError();
+		if ( empty($no_SaguAssert) || !$no_SaguAssert )
+		{
+			$err = @$this->GetError();
 
-            SaguAssert($this->id,"Connection : Open(\"user=$LoginUID\") : Connection refused!<br><br>$err");
-        }
+			SaguAssert($this->id,"Connection : Open(\"user=$LoginUID\") : Connection refused!<br><br>$err");
+		}
 
-        return empty($this->id) ? 0 : $this->id;
-    }
+		return empty($this->id) ? 0 : $this->id;
+	}
 
-    // closes a previously opened connection
-    function Close(){
-    	
-        if ( $this->id )
-        {
-            SaguAssert($this->level==0,"Transactions not finished!");
+	// closes a previously opened connection
+	function Close(){
+		 
+		if ( $this->id )
+		{
+			SaguAssert($this->level==0,"Transactions not finished!");
 
-            pg_close($this->id);
+			pg_close($this->id);
 
-            $this->id = 0;
-        }
-    }
+			$this->id = 0;
+		}
+	}
 
-    function Begin()
-    {
-        $this->Execute("begin transaction");
+	function Begin()
+	{
+		$this->Execute("begin transaction");
 
-        $this->level++;
-    }
+		$this->level++;
+	}
 
-    function Finish()
-    {
-        SaguAssert($this->level>0,"Transaction level underrun!");
+	function Finish()
+	{
+		SaguAssert($this->level>0,"Transaction level underrun!");
 
-        $success = $this->GetErrorCount() == 0;
+		$success = $this->GetErrorCount() == 0;
 
-        if ( $success )
-        $this->Execute("commit");
-        else
-        $this->Execute("rollback");
+		if ( $success )
+		$this->Execute("commit");
+		else
+		$this->Execute("rollback");
 
-        $this->level--;
+		$this->level--;
 
-        return $success;
-    }
+		return $success;
+	}
 
-    function GetError()
-    {
-        return pg_errormessage($this->id);
-    }
+	function GetError()
+	{
+		return pg_errormessage($this->id);
+	}
 
-    function GetErrorCount()
-    {
-        return empty($this->traceback) ? 0 : count($this->traceback);
-    }
+	function GetErrorCount()
+	{
+		return empty($this->traceback) ? 0 : count($this->traceback);
+	}
 
-    function CheckError()
-    {
-        if ( empty($this->traceback) )
-        return;
+	function CheckError()
+	{
+		if ( empty($this->traceback) )
+		return;
 
-        $n = count($this->traceback);
+		$n = count($this->traceback);
 
-        if ( $n > 0 )
-        {
-            $msg = "";
+		if ( $n > 0 )
+		{
+			$msg = "";
 
-            for ( $i=0; $i<$n; $i++ )
-            $msg .= $this->traceback[$i] . "<br>";
+			for ( $i=0; $i<$n; $i++ )
+			$msg .= $this->traceback[$i] . "<br>";
 
-            FatalExit("Transaction Error",$msg);
-        }
-    }
+			FatalExit("Transaction Error",$msg);
+		}
+	}
 
-    function Execute($sql)
-    {
+	function Execute($sql)
+	{
 
-        $sql = str_replace("''",'NULL',$sql);
+		$sql = str_replace("''",'NULL',$sql);
 
-        LogSQL($sql);
+		LogSQL($sql);
 
-        $rs = pg_exec($this->id,$sql);
+		$rs = pg_exec($this->id,$sql);
 
-        $success = false;
+		$success = false;
 
-        if ( $rs )
-        {
-            $success = true;
-            pg_freeresult($rs);
-        }
+		if ( $rs )
+		{
+			$success = true;
+			pg_freeresult($rs);
+		}
 
-        else
-        $this->traceback[] = $this->GetError();
+		else
+		$this->traceback[] = $this->GetError();
 
-        return $success;
-    }
+		return $success;
+	}
 
-    function CreateQuery($sql="")
-    {
-        SaguAssert($this->id,"Connection: CreateQuery: Connection ID");
+	function CreateQuery($sql="")
+	{
+		SaguAssert($this->id,"Connection: CreateQuery: Connection ID");
 
-        $q = new Query;
+		$q = new Query;
 
-        $q->conn   = $this;
-        $q->sql    = $sql;
-        $q->result = 0;
-        $q->row    = -1;
+		$q->conn   = $this;
+		$q->sql    = $sql;
+		$q->result = 0;
+		$q->row    = -1;
 
-        if ( $sql != "" )
-        $q->Open();
+		if ( $sql != "" )
+		$q->Open();
 
-        return $q;
-    }
+		return $q;
+	}
 
 }
 
 
 /**
- * Use esta função para pré-visualizar um comando sql
+ * Use esta função para pré-visualizar um comando sq
  */
 
 function LogSQL($sql,$force=false){
-	
-    global $SQL_Debug, $SQL_LogFile, $REMOTE_ADDR, $LoginUID;
 
-    if ( ! $SQL_Debug )
-    return;
+	global $SQL_Debug, $SQL_LogFile, $REMOTE_ADDR, $LoginUID;
 
-    $sql = ereg_replace("\n+ *"," ",$sql);
-    $sql = ereg_replace(" +"," ",$sql);
-    $sql = ereg_replace("^ +| +$","",$sql);
-    $sql = ereg_replace("\"","\"\"",$sql);
-    $dts = date("Y/m/d:H:i:s");
+	if ( ! $SQL_Debug )
+	return;
 
-    $cmd = "^\*\*\*|" .                                            
+	$sql = ereg_replace("\n+ *"," ",$sql);
+	$sql = ereg_replace(" +"," ",$sql);
+	$sql = ereg_replace("^ +| +$","",$sql);
+	$sql = ereg_replace("\"","\"\"",$sql);
+	$dts = date("Y/m/d:H:i:s");
+
+	$cmd = "^\*\*\*|" .
          "^ *INSERT|^ *DELETE|^ *UPDATE|^ *ALTER|^ *CREATE|" . 
          "^ *BEGIN|^ *COMMIT|^ *ROLLBACK|^ *GRANT|^ *REVOKE";
 
-    $ip  = sprintf("%15s",$REMOTE_ADDR);
-    $uid = sprintf("%-10s",$LoginUID);
+	$ip  = sprintf("%15s",$REMOTE_ADDR);
+	$uid = sprintf("%-10s",$LoginUID);
 
-    if ( $force || eregi($cmd,$sql) )
-    error_log("$ip - $uid - [$dts] \"$sql\"\n",3,$SQL_LogFile);
+	if ( $force || eregi($cmd,$sql) )
+	error_log("$ip - $uid - [$dts] \"$sql\"\n",3,$SQL_LogFile);
 
 }
 
@@ -300,80 +278,80 @@ function LogSQL($sql,$force=false){
 
 function FatalExit($msg="",$info="",$href=""){
 
-    global $ErrorURL;
+	global $ErrorURL;
 
-    if ( $msg == "" )
-    $msg = "Erro inesperado ou acesso proibido";
+	if ( $msg == "" )
+	$msg = "Erro inesperado ou acesso proibido";
 
-    if ( $info == "" )
-    $info = "Causa desconhecida";
+	if ( $info == "" )
+	$info = "Causa desconhecida";
 
-    if ( $href == "" )
-    $href = "javascript:history.go(-1)";
+	if ( $href == "" )
+	$href = "javascript:history.go(-1)";
 
-    if ( $ErrorURL )
-    {
-        include($ErrorURL);
-        die;
-    }
+	if ( $ErrorURL )
+	{
+		include($ErrorURL);
+		die;
+	}
 
-    echo("<html>");
-    echo("<head>");
-    echo("<title>Untitled Document</title>");
-    echo("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">");
-    echo("</head>");
-    echo("");
-    echo("<body bgcolor=\"#FFFFFF\">");
-    echo("<table width=\"80%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" height=\"90%\">");
-    echo("  <tr> ");
-    echo("    <td width=\"33%\"> ");
-    echo("      <div align=\"center\"><img src=\"../images/univates.gif\" width=\"104\" height=\"94\" align=\"middle\"></div>");
-    echo("    </td>");
-    echo("    <td width=\"67%\">");
-    echo("      <div align=\"center\"><b><font color=\"#000000\" size=\"4\" face=\"Verdana, Arial, Helvetica, sans-serif\">Aten&ccedil;&atilde;o</font></b></div>");
-    echo("    </td>");
-    echo("  </tr>");
-    echo("  <tr> ");
-    echo("    <td colspan=\"2\"> ");
-    echo("      <div align=\"center\">");
-    echo("        <p><b><font size=\"5\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FF0000\">$msg");
-    echo("</font></b><br><br><font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#000000\">Causa: $info</font></p>");
-    echo("        <p>&nbsp;</p>");
-    echo("      </div>");
-    echo("    </td>");
-    echo("  </tr>");
-    echo("  <tr> ");
-    echo("    <td colspan=\"2\"> ");
-    echo("      <div align=\"center\"><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\"><a href=\"$href\"><b>Voltar</b></a></font></div>");
-    echo("    </td>");
-    echo("  </tr>");
-    echo("</table>");
-    echo("</body>");
-    echo("</html>");
+	echo("<html>");
+	echo("<head>");
+	echo("<title>Untitled Document</title>");
+	echo("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">");
+	echo("</head>");
+	echo("");
+	echo("<body bgcolor=\"#FFFFFF\">");
+	echo("<table width=\"80%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" height=\"90%\">");
+	echo("  <tr> ");
+	echo("    <td width=\"33%\"> ");
+	echo("      <div align=\"center\"><img src=\"../images/univates.gif\" width=\"104\" height=\"94\" align=\"middle\"></div>");
+	echo("    </td>");
+	echo("    <td width=\"67%\">");
+	echo("      <div align=\"center\"><b><font color=\"#000000\" size=\"4\" face=\"Verdana, Arial, Helvetica, sans-serif\">Aten&ccedil;&atilde;o</font></b></div>");
+	echo("    </td>");
+	echo("  </tr>");
+	echo("  <tr> ");
+	echo("    <td colspan=\"2\"> ");
+	echo("      <div align=\"center\">");
+	echo("        <p><b><font size=\"5\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#FF0000\">$msg");
+	echo("</font></b><br><br><font size=\"3\" face=\"Verdana, Arial, Helvetica, sans-serif\" color=\"#000000\">Causa: $info</font></p>");
+	echo("        <p>&nbsp;</p>");
+	echo("      </div>");
+	echo("    </td>");
+	echo("  </tr>");
+	echo("  <tr> ");
+	echo("    <td colspan=\"2\"> ");
+	echo("      <div align=\"center\"><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\"><a href=\"$href\"><b>Voltar</b></a></font></div>");
+	echo("    </td>");
+	echo("  </tr>");
+	echo("</table>");
+	echo("</body>");
+	echo("</html>");
 
-    die();
+	die();
 }
 
 
 /**
  * Purpose: Calls page with information about successful completion
- */ 
+ */
 
 function SuccessPage($titulo,$goto="history.go(-1)",$info="",$button=""){
-	
-    global $SuccessURL, $exito_titulo, $exito_goto, $exito_info, $exito_button;
 
-    $exito_titulo = $titulo;
-    $exito_goto   = $goto;
-    $exito_info   = $info;
-    $exito_button = $button;
+	global $SuccessURL, $exito_titulo, $exito_goto, $exito_info, $exito_button;
 
-    if ( substr($exito_goto,0,8) != "history." && substr($exito_goto,0,9) != "location=" )
-    $exito_goto = "location='" . $exito_goto . "'";
+	$exito_titulo = $titulo;
+	$exito_goto   = $goto;
+	$exito_info   = $info;
+	$exito_button = $button;
 
-    LogSQL("\$exito_goto = $exito_goto");
+	if ( substr($exito_goto,0,8) != "history." && substr($exito_goto,0,9) != "location=" )
+	$exito_goto = "location='" . $exito_goto . "'";
 
-    include($SuccessURL);
+	LogSQL("\$exito_goto = $exito_goto");
+
+	include($SuccessURL);
 }
 
 
@@ -382,9 +360,9 @@ function SuccessPage($titulo,$goto="history.go(-1)",$info="",$button=""){
  */
 
 function SaguAssert($cond,$msg=""){
-	
-    if ( $cond == false )
-    FatalExit("Erro inesperado ou acesso proibido!",$msg);
+
+	if ( $cond == false )
+	FatalExit("Erro inesperado ou acesso proibido!",$msg);
 }
 
 
@@ -393,37 +371,37 @@ function SaguAssert($cond,$msg=""){
  * argument passed, is expected to be an associative
  * array, whose key is the field name and the value
  * contains the input field's value.
- * 
+ *
  * When consistent manner of error handling. This function
  * does not return from execution.
- */ 
+ */
 
 function CheckInputFields($fields,$stop=true,$rname=null){
-	
-    reset($fields);
 
-    $n = count($fields);
+	reset($fields);
 
-    for ($i=0; $i<$n; $i++ )
-    {
-        list($key,$val) = each($fields);
+	$n = count($fields);
 
-        $val = trim($val);
+	for ($i=0; $i<$n; $i++ )
+	{
+		list($key,$val) = each($fields);
 
-        if ( $val == "" )
-        {
-            if ( $stop )
-            FatalExit("Input Error","Missing value for field (" . ($i + 1) . ") <i>" . $key . "</i>");
+		$val = trim($val);
 
-            else
-            {
-                if ( $rname != null )
-                $rname = $key;
+		if ( $val == "" )
+		{
+			if ( $stop )
+			FatalExit("Input Error","Missing value for field (" . ($i + 1) . ") <i>" . $key . "</i>");
 
-                return false;
-            }
-        }
-    }
+			else
+			{
+				if ( $rname != null )
+				$rname = $key;
+
+				return false;
+			}
+		}
+	}
 }
 
 
@@ -438,14 +416,14 @@ function CheckInputFields($fields,$stop=true,$rname=null){
 function CheckInputValue($name,$cond,$hint=""){
 
 	if ( !$cond )
-    {
-        $msg = "Valor informado para o campo <b><i>$name</b></i> é inválido.";
+	{
+		$msg = "Valor informado para o campo <b><i>$name</b></i> é inválido.";
 
-        if ( $hint != "" )
-        $msg .= "<br><br><b>Restrição:</b> " . $hint;
+		if ( $hint != "" )
+		$msg .= "<br><br><b>Restrição:</b> " . $hint;
 
-        FatalExit("Erro de Digitação!",$msg);
-    }
+		FatalExit("Erro de Digitação!",$msg);
+	}
 }
 
 
@@ -454,31 +432,31 @@ function CheckInputValue($name,$cond,$hint=""){
  * function is mainly for convenience in order to
  * generate a standardized message for an invalid
  * field input.
- * 
+ *
  * When $cond is false, the function generates an
  * error message and does not return from execution.
  */
 
 function CheckFormParameters($list,$href=""){
-	
-    $n = count($list);
-    //print_r($list);
-    for ( $i=0; $i<$n; $i++ )
-    {
-        $name  = $list[$i];
 
-        if ( !$name )
-          continue;
-        
+	$n = count($list);
+	//print_r($list);
+	for ( $i=0; $i<$n; $i++ )
+	{
+		$name  = $list[$i];
+
+		if ( !$name )
+		continue;
+
 		$value = trim($GLOBALS["$name"]);
 
-        if (!is_numeric($value) AND empty($value))
-        {
-            $msg = "Campo obrigatório [<b><i>$name</i></b>] não informado!";
+		if (!is_numeric($value) AND empty($value))
+		{
+			$msg = "Campo obrigatório [<b><i>$name</i></b>] não informado!";
 
-            FatalExit("Erro de Digitação!",$msg,$href);
-        }
-    }
+			FatalExit("Erro de Digitação!",$msg,$href);
+		}
+	}
 }
 
 
@@ -489,35 +467,35 @@ function CheckFormParameters($list,$href=""){
  */
 
 function CheckKeyword($name,$kword,$values) {
-	
-    if ( empty($kword) || $kword == "" )
-    FatalExit("Parameter Error","Required keyword <b>$name</b> is not specified!");
 
-    else
-    {
-        $n = count($values);
+	if ( empty($kword) || $kword == "" )
+	FatalExit("Parameter Error","Required keyword <b>$name</b> is not specified!");
 
-        for ( $i=0; $i<$n; $i++ )
-        {
-            if ( $kword == $values[$i] )
-            return;
-        }
+	else
+	{
+		$n = count($values);
 
-        $msg = "Keyword [<b>$name</b>] contains the unupported value [<b>$kword</b>]!<br><br>" .
+		for ( $i=0; $i<$n; $i++ )
+		{
+			if ( $kword == $values[$i] )
+			return;
+		}
+
+		$msg = "Keyword [<b>$name</b>] contains the unupported value [<b>$kword</b>]!<br><br>" .
            "Supported values are: [";
 
-        for ( $i=0; $i<$n; $i++ )
-        {
-            if ( $i > 0 )
-            $msg .= ", ";
+		for ( $i=0; $i<$n; $i++ )
+		{
+			if ( $i > 0 )
+			$msg .= ", ";
 
-            $msg .= "<i>" . $values[$i] . "</i>";
-        }
+			$msg .= "<i>" . $values[$i] . "</i>";
+		}
 
-        $msg .= "].";
+		$msg .= "].";
 
-        FatalExit("Parameter Error",$msg);
-    }
+		FatalExit("Parameter Error",$msg);
+	}
 }
 
 
@@ -526,8 +504,8 @@ function CheckKeyword($name,$kword,$values) {
  */
 
 function debug($msg){
-	
-    echo("<pre>$msg</pre>");
+
+	echo("<pre>$msg</pre>");
 }
 
 
@@ -536,16 +514,16 @@ function debug($msg){
  */
 
 function Today() {
-	
-    $dt = getdate();
-    return sprintf("%0.2d/%0.2d/%0.4d",$dt["mday"],$dt["mon"],$dt["year"]);
+
+	$dt = getdate();
+	return sprintf("%0.2d/%0.2d/%0.4d",$dt["mday"],$dt["mon"],$dt["year"]);
 }
 
 
 function Today_usa(){
-	
-    $dt = getdate();
-    return sprintf("%0.4d/%0.2d/%0.2d",$dt["year"], $dt["mon"],$dt["mday"]);    
+
+	$dt = getdate();
+	return sprintf("%0.4d/%0.2d/%0.2d",$dt["year"], $dt["mon"],$dt["mday"]);
 }
 
 
@@ -554,20 +532,20 @@ function Today_usa(){
  */
 
 function DMA_To_AMD($dt){
-    
+
 	list ( $d, $m, $a ) = split("/",$dt,3);
-    return sprintf("%0.4d/%0.2d/%0.2d",$a,$m,$d);
+	return sprintf("%0.4d/%0.2d/%0.2d",$a,$m,$d);
 }
 
 
 /**
  * Purpose: Converte a data de formato M/D/A para D/M/A
- */ 
+ */
 
 function MDA_To_DMA($dt){
-	
-    list ( $d, $m, $a ) = split("-",$dt,3);
-    return sprintf("%0.2d/%0.2d/%0.2d",$m,$d,$a);
+
+	list ( $d, $m, $a ) = split("-",$dt,3);
+	return sprintf("%0.2d/%0.2d/%0.2d",$m,$d,$a);
 }
 
 
@@ -576,150 +554,150 @@ function MDA_To_DMA($dt){
  */
 
 function GetIdentity($seq,$SaguAssert=true,$msg=""){
-	
-    $conn = new Connection;
-    $conn->Open();
-    $sql = "select nextval('$seq')";
-    $query = @$conn->CreateQuery($sql);
 
-    $success = false;
+	$conn = new Connection;
+	$conn->Open();
+	$sql = "select nextval('$seq')";
+	$query = @$conn->CreateQuery($sql);
 
-    if ( @$query->MoveNext() )
-    {
-        $id = $query->GetValue(1);
+	$success = false;
 
-        $success = true;
-    }
+	if ( @$query->MoveNext() )
+	{
+		$id = $query->GetValue(1);
 
-    $err = $conn->GetError();
-    $query->Close();
-    SaguAssert(!$SaguAssert || $success,$msg ? $msg : "Nao foi possivel obter um código de '$seq'<br><br>$err!");
+		$success = true;
+	}
 
-    return $id;
+	$err = $conn->GetError();
+	$query->Close();
+	SaguAssert(!$SaguAssert || $success,$msg ? $msg : "Nao foi possivel obter um código de '$seq'<br><br>$err!");
+
+	return $id;
 }
 
 
 /**
  * userid : allowed | denied : url1,url2,
- */ 
+ */
 
 function CheckAccess($user,$path){
 
-    global $LoginACL;
+	global $LoginACL;
 
-    $file = @fopen($LoginACL,"r");
+	$file = @fopen($LoginACL,"r");
 
-    if ( $file )
-    {
-        $ok = false;
+	if ( $file )
+	{
+		$ok = false;
 
-        $done = false;
+		$done = false;
 
-        while ( $ln = fgets($file,4096) )
-        {
-            // ignore comment or empty lines
-            if ( ereg("^ *#|^ *$",$ln) )
-            continue;
+		while ( $ln = fgets($file,4096) )
+		{
+			// ignore comment or empty lines
+			if ( ereg("^ *#|^ *$",$ln) )
+			continue;
 
-            // userid: url,url,...
-            list ( $uid, $action, $url_list ) = split(":",$ln,3);
+			// userid: url,url,...
+			list ( $uid, $action, $url_list ) = split(":",$ln,3);
 
-            $uid      = trim($uid);
-            $action   = strtoupper(trim($action));
-            $url_list = trim($url_list);
+			$uid      = trim($uid);
+			$action   = strtoupper(trim($action));
+			$url_list = trim($url_list);
 
-            if ( $uid == $user || $uid == "*" )
-            {
-                $a = split(",",$url_list);
+			if ( $uid == $user || $uid == "*" )
+			{
+				$a = split(",",$url_list);
 
-                for ( $i=0; $i < count($a); $i++ )
-                {
-                    $ok = false;
+				for ( $i=0; $i < count($a); $i++ )
+				{
+					$ok = false;
 
-                    $s = trim($a[$i]);
+					$s = trim($a[$i]);
 
-                    if ( $action == "ALLOW" )
-                    {
-                        $ok = $path == "*" || ereg("^$s",$path);
+					if ( $action == "ALLOW" )
+					{
+						$ok = $path == "*" || ereg("^$s",$path);
 
-                        if ( $ok )
-                        {
-                            $done = true;
-                            break;
-                        }
-                    }
+						if ( $ok )
+						{
+							$done = true;
+							break;
+						}
+					}
 
-                    else if ( $action == "DENY" )
-                    {
-                        $ok = $path != "*" && ! ereg("^$s",$path);
+					else if ( $action == "DENY" )
+					{
+						$ok = $path != "*" && ! ereg("^$s",$path);
 
-                        if ( ! $ok )
-                        {
-                            $done = true;
-                            break;
-                        }
-                    }
+						if ( ! $ok )
+						{
+							$done = true;
+							break;
+						}
+					}
 
-                    else
-                    ASSERT(1,"ERROR: Invalid ACCESS CONTROL option!");
-                }
-            }
+					else
+					ASSERT(1,"ERROR: Invalid ACCESS CONTROL option!");
+				}
+			}
 
-            if ( $done )
-            break;
-        }
+			if ( $done )
+			break;
+		}
 
-        fclose($file);
+		fclose($file);
 
-        if ( ! $ok )
-        {
-            LogSQL("*** ACL ACCESS DENIED (uid=$user,path=$path) ***");
+		if ( ! $ok )
+		{
+			LogSQL("*** ACL ACCESS DENIED (uid=$user,path=$path) ***");
 
-            SaguAssert($ok,"ACCESS DENIED");
-        }
-    }
+			SaguAssert($ok,"ACCESS DENIED");
+		}
+	}
 }
 
 
 /**
  * converte real para inteiro
- */ 
+ */
 
 function real_to_int($valor){
-	
-    $valor_string = "$valor";
-    $valor_novo = "";
-    $n = 0;
-    while (($n<strlen($valor_string)) && ($valor_string[$n] != "."))
-    {
-        $valor_novo = "$valor_novo$valor_string[$n]";
-        $n ++;
-    }
-    return($valor_novo);
+
+	$valor_string = "$valor";
+	$valor_novo = "";
+	$n = 0;
+	while (($n<strlen($valor_string)) && ($valor_string[$n] != "."))
+	{
+		$valor_novo = "$valor_novo$valor_string[$n]";
+		$n ++;
+	}
+	return($valor_novo);
 }
 
 
 function GetEmpresa($id,$SaguAssert){
-	
-    $sql = "select id,razao_social from configuracao_empresa where id=$id";
 
-    $conn = new Connection;
+	$sql = "select id,razao_social from configuracao_empresa where id=$id";
 
-    $conn->Open();
+	$conn = new Connection;
 
-    $query = $conn->CreateQuery($sql);
+	$conn->Open();
 
-    if ( $query->MoveNext() )
-    $obj = $query->GetValue(2);
+	$query = $conn->CreateQuery($sql);
 
-    $query->Close();
+	if ( $query->MoveNext() )
+	$obj = $query->GetValue(2);
 
-    $conn->Close();
+	$query->Close();
 
-    if ( $SaguAssert )
-    SaguAssert(!empty($obj),"Empresa [$id] nao definido!");
+	$conn->Close();
 
-    return $obj;
+	if ( $SaguAssert )
+	SaguAssert(!empty($obj),"Empresa [$id] nao definido!");
+
+	return $obj;
 }
 
 ?>

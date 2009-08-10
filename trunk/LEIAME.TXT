@@ -29,7 +29,7 @@ Configurações necessárias:
 Arquivos a serem alterados:
 
 - configuracao.php (dados de conexão)
-- lib/config.php
+- configs/config.php
 - app/sagu/fatalerror.phtml  * caminho da imagem
 - app/wediario/conf/wediario.conf.php
 

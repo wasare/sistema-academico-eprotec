@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>SA</title>
-<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
 <script src="../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
 <link href="../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
 <script language="JavaScript">
@@ -22,10 +22,10 @@ function consulta_pessoa() {
     <tr>
       <td width="60"><div align="center">
         <label class="bar_menu_texto">
-        <input name="save" type="image" src="../../images/icons/save.png" />
+        <input name="save" type="image" src="../../public/images/icons/save.png" />
         <br />
         Salvar</label></td>
-      <td width="60"><div align="center"><a href="javascript:history.back();" class="bar_menu_texto"><img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+      <td width="60"><div align="center"><a href="javascript:history.back();" class="bar_menu_texto"><img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
           Voltar</a></div></td>
     </tr>
   </table>
@@ -69,7 +69,7 @@ function consulta_pessoa() {
         <label>
         <input name="codigo_pessoa" type="text" id="codigo_pessoa" size="20" />
         </label>
-        <a href="javascript:consulta_pessoa()"><img src="../../images/icons/lupa.png" alt="Pesquisar usuário" width="20" height="20" /></a> <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span><span class="textfieldInvalidFormatMsg">Formato inv&aacute;lido.</span></span></td>
+        <a href="javascript:consulta_pessoa()"><img src="../../public/images/icons/lupa.png" alt="Pesquisar usuário" width="20" height="20" /></a> <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span><span class="textfieldInvalidFormatMsg">Formato inv&aacute;lido.</span></span></td>
     </tr>
     <tr>
       <td>Nome Completo:</td>

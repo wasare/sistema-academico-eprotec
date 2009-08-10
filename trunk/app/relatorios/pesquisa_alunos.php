@@ -2,7 +2,7 @@
 
 header("Cache-Control: no-cache");
 require("../../lib/common.php");
-require("../../configuracao.php");
+require("../../configs/configuracao.php");
 require("../../lib/adodb/adodb.inc.php"); 
 
 
@@ -23,7 +23,7 @@ if (!$Result1){
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>Lista alunos matriculados</title>
-    <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
+    <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         <!--
         .style1 {
@@ -101,24 +101,24 @@ if (!$Result1){
 <tr>
 <td width="68" align="center">
     <label class="bar_menu_texto">
-        <input name="input" type="image" src="../../images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_alunos.php');"/>
+        <input name="input" type="image" src="../../public/images/icons/print.jpg" alt="Exibir" onclick="submit_opt('lista_alunos.php');"/>
         <br />
     Exibir</label>
 </td>
 <td width="73" align="center">
     <label class="bar_menu_texto">
-        <input type="image" name="imageField" id="imageField" src="../../images/icons/pdf_icon.jpg" onclick="submit_opt('pdf_alunos.php');" />
+        <input type="image" name="imageField" id="imageField" src="../../public/images/icons/pdf_icon.jpg" onclick="submit_opt('pdf_alunos.php');" />
         <br />
     Gerar PDF</label>
 </td>
 <td width="73" align="center">
     <label class="bar_menu_texto">
-        <input type="image" name="imageField" id="imageField" src="../../images/icons/excel.jpg" onclick="submit_opt('xls_alunos.php');" />
+        <input type="image" name="imageField" id="imageField" src="../../public/images/icons/excel.jpg" onclick="submit_opt('xls_alunos.php');" />
         <br />
     Gerar XLS</label>
 </td>
 <td width="63" align="center">
-    <label class="bar_menu_texto"> <a href="#" class="bar_menu_texto" onclick="history.back(-1)"> <img src="../../images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+    <label class="bar_menu_texto"> <a href="#" class="bar_menu_texto" onclick="history.back(-1)"> <img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
     Voltar</a> </label>
 </td>
 </tr>
@@ -141,12 +141,13 @@ if (!$Result1){
                 <label>
                     <input name="codigo_curso" type="text" id="codigo_curso" size="10" />
                     <input name="descricao_curso" disabled="disabled" id="descricao_curso" value="" size="40" />
-                <a href="javascript:abre_consulta_rapida('../consultas_rapidas/cursos/index.php')"><img src="../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" /></a> </label>
+                <a href="javascript:abre_consulta_rapida('../consultas_rapidas/cursos/index.php')"><img src="../../public/images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" /></a> </label>
         <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span></span></td>
     </tr>
     <tr>
         <td>C&oacute;digo do Aluno:</td>
-        <td><input name="aluno" type="text" id="aluno" size="10">
+        <td>
+        <input name="aluno" type="text" id="aluno" size="10" />
         <span class="style1">Caso n&atilde;o preenchido exibir&aacute; todos.</span></td>
     </tr>
     <tr>
@@ -158,39 +159,36 @@ if (!$Result1){
         <td colspan="2">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="2" style="background-color:#CCCCCC"><strong>Exibir colunas:</strong><br>
+        <td colspan="2" style="background-color:#CCCCCC">
+        	<strong>Exibir colunas:</strong><br />
             <span id="sprycheckbox1">
-                <label>
-                    <input type="checkbox" name="nome" id="nome" value="nome">
-                    Nome
-                    <input type="checkbox" name="pai" id="pai" value="pai">
-                    Nome do Pai
-                    <input type="checkbox" name="mae" id="mae" value="mae">
-                    Nome da M&atilde;e
-                    <input type="checkbox" name="endereco" id="endereco" value="endereco">
-                    Endere&ccedil;o
-                    <input type="checkbox" name="bairro" id="bairro" value="bairro">
-                    Bairro
-                    <input type="checkbox" name="cidade" id="cidade" value="cidade">
-                    Cidade
-                    <input type="checkbox" name="cep" id="cep" value="cep">
-                    CEP<br>
-                    <input type="checkbox" name="telefone" id="telefone" value="telefone" />
-                    Telefone(s)
-                    <input type="checkbox" name="rg" id="rg" value="rg">
-                    RG
-                    <input type="checkbox" name="cpf" id="cpf" value="cpf">
-                    CPF
-                    <input type="checkbox" name="sexo" id="sexo" value="sexo">
-                    Sexo
-                    <input type="checkbox" name="data_nascimento" id="data_nascimento" value="data_nascimento">
-                    Data de Nascimento
-                    <label>
-                        <input type="checkbox" name="turma2" id="turma2" value="turma2" />
-                    </label>
-                    Turma <br />
-                    &nbsp;
-                </label>
+                <input type="checkbox" name="nome" id="nome" value="nome" />
+                Nome
+                <input type="checkbox" name="pai" id="pai" value="pai" />
+                Nome do Pai
+                <input type="checkbox" name="mae" id="mae" value="mae" />
+                Nome da M&atilde;e
+                <input type="checkbox" name="endereco" id="endereco" value="endereco" />
+                Endere&ccedil;o
+                <input type="checkbox" name="bairro" id="bairro" value="bairro" />
+                Bairro
+                <input type="checkbox" name="cidade" id="cidade" value="cidade" />
+                Cidade
+                <input type="checkbox" name="cep" id="cep" value="cep" />
+                CEP<br />
+                <input type="checkbox" name="telefone" id="telefone" value="telefone" />
+                Telefone(s)
+                <input type="checkbox" name="rg" id="rg" value="rg" />
+                RG
+                <input type="checkbox" name="cpf" id="cpf" value="cpf" />
+                CPF
+                <input type="checkbox" name="sexo" id="sexo" value="sexo" />
+                Sexo
+                <input type="checkbox" name="data_nascimento" id="data_nascimento" value="data_nascimento" />
+                Data de Nascimento
+                <input type="checkbox" name="turma2" id="turma2" value="turma2" />
+                Turma <br/>
+                &nbsp;
                 <span class="checkboxMinSelectionsMsg">Selecione no m&iacute;nimo uma coluna.</span></span> </td>
     </tr>
     <tr>
