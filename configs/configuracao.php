@@ -9,11 +9,10 @@ if(!$_SESSION['SessionAuth']){
 //$host = '192.168.0.234';
 //$user = 'usrsagu';
 //$password = 'x6S8YzrJBs';
-list($user, $password) = split(":",$_SESSION['SessionAuth'],2);
-
 $host = 'dados.cefetbambui.edu.br';
 $database = 'sagu';
 $port = '';
+list($user, $password) = split(":",$_SESSION['SessionAuth'],2);
 
 $param_conn['host']     = $host;
 $param_conn['database'] = $database;
@@ -32,5 +31,10 @@ $aluno_port = '';
 require_once(dirname(__FILE__).'/../core/data/connection_factory.php');
 
 $path_images = "https://dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/public/images/";
+
+date_default_timezone_set('America/Sao_Paulo');
+
+$versao = @file_get_contents ('../VERSAO.TXT');
+
 
 ?>

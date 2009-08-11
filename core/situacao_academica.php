@@ -3,27 +3,20 @@
 /**
 * Funcoes que verificam a situacao do aluno
 * @author Wanderson S. Reis
-* @version 1
+* @version 2
 * @since 15-05-2009
 **/
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require_once( dirname(__FILE__) .'/common.php');
+require_once(dirname(__FILE__) .'/login/check_login.php');
 require_once(dirname(__FILE__) .'/../configs/configuracao.php');
-require_once(dirname(__FILE__) .'/adodb/adodb.inc.php');
 
-
-//Criando a classe de conexao ADODB
-$Conexao = NewADOConnection("postgres");
-
-//Setando como conexao persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
-
+$conn = new connection_factory($param_conn);
 
 function verificaReprovacaoPorFaltas($aluno_id,$diarios)
 {
-	global $Conexao;
+	global $conn;
 
 	$diarios_matriculados = count($diarios);
     $diarios_reprovados = 0;
@@ -57,7 +50,7 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios)
 				) AND
 				o.id = $diario_id; ";
 
-		$RsDisciplina = $Conexao->Execute($sqlDisciplina);
+		$RsDisciplina = $conn->Execute($sqlDisciplina);
 		$diarios_reprovados += $RsDisciplina->fields[0];
 	}
 
@@ -69,7 +62,7 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios)
 
 function verificaAprovacao($aluno_id,$curso_id,$diario_id)
 {
-    global $Conexao;
+    global $conn;
       // -- Verifica se foi aprovado ou dispensado nesta disciplina ou em disciplina equivalente a qualquer tempo
         $sqlDisciplina = "
         SELECT DISTINCT
@@ -93,8 +86,7 @@ function verificaAprovacao($aluno_id,$curso_id,$diario_id)
                 ) AND
                 ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
 
-        $RsDisciplina = $Conexao->Execute($sqlDisciplina);
-        $diarios_matriculados = $RsDisciplina->GetAll();
+        $diarios_matriculados = $conn->adodb->getAll($sqlDisciplina);
 
         if (count($diarios_matriculados) > 0 )
         {
@@ -112,7 +104,7 @@ function verificaAprovacao($aluno_id,$curso_id,$diario_id)
 
 function verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$diario_id)
 {
-    global $Conexao;
+    global $conn;
       // -- Verifica se foi aprovado ou dispensado nesta disciplina ou em disciplina equivalente a qualquer tempo
         $sqlDisciplina = "
         SELECT DISTINCT
@@ -139,8 +131,7 @@ function verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$diario_id)
                 ) AND 
                 ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
     
-        $RsDisciplina = $Conexao->Execute($sqlDisciplina);
-        $diarios_matriculados = $RsDisciplina->GetAll();
+        $diarios_matriculados = $conn->adodb->getAll($sqlDisciplina);
 
         if (count($diarios_matriculados) > 0 )
         {
@@ -159,7 +150,7 @@ function verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$diario_id)
 
 function verificaAprovacaoContratoDisciplina($aluno_id,$curso_id,$contrato_id,$diario_id)
 {
-    global $Conexao;
+    global $conn;
       // -- Verifica se foi aprovado na disciplina em questão
         $sqlDisciplina = "
         SELECT DISTINCT
@@ -180,8 +171,7 @@ function verificaAprovacaoContratoDisciplina($aluno_id,$curso_id,$contrato_id,$d
                 m.ref_disciplina_ofer = $diario_id AND
                 ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
 
-        $RsDisciplina = $Conexao->Execute($sqlDisciplina);
-        $diarios_matriculados = $RsDisciplina->GetAll();
+        $diarios_matriculados = $conn->adodb->getAll($sqlDisciplina);
 
         if (count($diarios_matriculados) > 0 )
         {
@@ -199,7 +189,7 @@ function verificaAprovacaoContratoDisciplina($aluno_id,$curso_id,$contrato_id,$d
 
 function verificaEquivalencia($curso_id,$diario_id)
 {
-    global $Conexao;
+    global $conn;
     // -- Verifica se a disciplina é equivalente para o curso matriculado
     $sqlDisciplina = "
                     SELECT 
@@ -210,8 +200,7 @@ function verificaEquivalencia($curso_id,$diario_id)
                         WHERE 
                              ref_disciplina = get_disciplina_de_disciplina_of('$diario_id') AND ref_curso = '$curso_id';";
 
-    $RsDisciplina = $Conexao->Execute($sqlDisciplina);
-    $equivalentes = $RsDisciplina->GetAll();
+    $equivalentes = $conn->adodb->getAll($sqlDisciplina);
 
     if (count($equivalentes) > 0 )
         return TRUE;
@@ -222,7 +211,7 @@ function verificaEquivalencia($curso_id,$diario_id)
 
 function verificaRequisitos($aluno_id,$curso_id,$diario_id)
 {
-	global $Conexao;
+	global $conn;
     // -- Verifica se o aluno ja eliminou os pre-requisitos
     // existe  pre-requisito? considera somente os pré-requisito para o curso do aluno
 
@@ -242,8 +231,7 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
                              ref_disciplina_equivalente = get_disciplina_de_disciplina_of('$diario_id') AND 
                              ref_curso = '$curso_id';";
 
-    	$RsEquivalente = $Conexao->Execute($sqlEquivalente);
-    	$equivalentes = $RsEquivalente->GetAll(); 
+    	$equivalentes = $conn->adodb->getAll($sqlEquivalente);
 
       	if (count($equivalentes) > 0)
             $disciplinas =  $sqlEquivalente;
@@ -257,8 +245,7 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
             WHERE
                 ref_disciplina IN ( $disciplinas ) AND ref_curso = $curso_id;";
 
-    $RsPreRequisito = $Conexao->Execute($sqlPreRequisito);
-    $pre_requisitos = $RsPreRequisito->GetAll();
+    $pre_requisitos = $conn->adodb->getAll($sqlPreRequisito);
 
     $total_requisitos = count($pre_requisitos);
     $requisitos_matriculados = array();
@@ -285,8 +272,8 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
 															from disciplinas_equivalentes 
 														where ref_disciplina = '$disc_req' and ref_curso = '$curso_id'  ) ) AND 
         	       		( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
-        				$RsPreRequisito1 = $Conexao->Execute($sqlPreRequisito1);
-        				$requisitos_matriculados = array_merge($requisitos_matriculados,$RsPreRequisito1->GetAll());
+        				//$requisitos_matriculados = $conn->adodb->getAll($sqlPreRequisito1);
+        				$requisitos_matriculados = array_merge($requisitos_matriculados,$conn->adodb->getAll($sqlPreRequisito1));
 						//$requisitos_matriculados = $RsPreRequisito1->GetAll();
 		 }
     }
@@ -314,7 +301,7 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
 
 function verificaPeriodo($periodo_id)
 {
-    global $Conexao;
+    global $conn;
     // -- Verifica é um periodo em andamento
     $sqlPeriodo = "
                     SELECT 
@@ -324,7 +311,7 @@ function verificaPeriodo($periodo_id)
                         WHERE 
                              id = '$periodo_id';";
 
-    $data_final_periodo = strtotime($Conexao->GetOne($sqlPeriodo));
+    $data_final_periodo = strtotime($conn->adodb->getOne($sqlPeriodo));
     $data_atual = strtotime(date('Y-m-d'));
 
     if ( $data_atual > $data_final_periodo )
