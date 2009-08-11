@@ -1,58 +1,16 @@
 <?php 
 require("../../../lib/common.php");
 require("../../../configs/configuracao.php");
-require("../../../lib/adodb/adodb.inc.php");
 require("../../../core/reports/carimbo.php");
+require("../../../core/date.php");
 
-$Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$conn = new connection_factory($param_conn);
+$date = new date();
 
-$contrato = $_POST["id_contrato"];
-$data = $_POST["data"];
+$contrato 	= $_POST["id_contrato"];
+$data 		= $_POST["data"];
 $carimbo_id = $_POST['carimbo'];
 
-
-function mes($mes_num){
-	switch ($mes_num) {
-		case 1:
-			$mes = "janeiro";
-			break;
-		case 2:
-			$mes = "fevereiro";
-			break;
-		case 3:
-			$mes = "mar&ccedil;o";
-			break;
-		case 4:
-			$mes = "abril";
-			break;
-		case 5:
-			$mes = "maio";
-			break;
-		case 6:
-			$mes = "junho";
-			break;
-		case 7:
-			$mes = "julho";
-			break;
-		case 8:
-			$mes = "agosto";
-			break;
-		case 9:
-			$mes = "setembro";
-			break;
-		case 10:
-			$mes = "outubro";
-			break;
-		case 11:
-			$mes = "novembro";
-			break;
-		case 12:
-			$mes = "dezembro";
-			break;
-	}
-	return $mes;
-}
 
 /* Formatando a data */
 if($data == ''){
@@ -60,7 +18,7 @@ if($data == ''){
 }
 
 $data = explode("/",$data,3);
-$mes = mes($data[1]);
+$mes  = $date->mes($data[1]);
 
 /* Dados da Empresa */
 $sqlEmpresa = "
@@ -83,12 +41,7 @@ WHERE
 	c.id = 1 AND
 	a.id = c.ref_cidade;";
 
-$RsEmpresa = $Conexao->Execute($sqlEmpresa);
-
-if (!$RsEmpresa){
-	print $Conexao->ErrorMsg();
-	die();
-}
+$RsEmpresa = $conn->Execute($sqlEmpresa);
 
 /* Dados do aluno e curso */
 $sqlContrato = "
@@ -112,18 +65,13 @@ WHERE
 	ref_naturalidade = e.id AND
 	d.ref_filiacao = f.id;";
 
-$RsContrato = $Conexao->Execute($sqlContrato);
-
-if (!$RsContrato){
-	print $Conexao->ErrorMsg();
-	die();
-}
+$RsContrato = $conn->Execute($sqlContrato);
 
 /* Formatando a data de nascimento */
 if($RsContrato->fields[6] != ''){
 	
 	$data_nascimento = explode("-",$RsContrato->fields[6],3);
-	$mes_nascimento = mes($data_nascimento[1]);
+	$mes_nascimento = $date->mes($data_nascimento[1]);
 }
 
 $corpo = '        Declaro para os devidos fins que '.$RsContrato->fields[3].
@@ -136,7 +84,7 @@ $data_nascimento[0].', natural de '.$RsContrato->fields[4].'/'.$RsContrato->fiel
 
 $data_declaracao = $RsContrato->fields[1].', '.$data[0].' de '.$mes.' de '.$data[2];
 
-$carimbo = new carimbo($host,$user,$password,$database);
+$carimbo = new carimbo($param_conn);
 $carimbo_nome = $carimbo->get_nome($carimbo_id);
 $carimbo_dados = $carimbo->get_funcao($carimbo_id);
 
