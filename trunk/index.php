@@ -19,7 +19,7 @@ session_destroy();
 <div align="center">
 <div id="caixa_login">
 <div id="caixa_login2">
-<form method="post" action="core/login/login.php" name="myform">
+<form method="post" action="core/login/check_login.php" name="myform">
 <table border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td valign="top">

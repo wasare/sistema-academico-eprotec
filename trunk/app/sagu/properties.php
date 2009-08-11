@@ -3,7 +3,7 @@
   // in a file based on client IP addresses. The properties are maintained
   // only for registered IP addresses.
   //
-  // The file requires common.php3
+  // The file requires common.php
 
   class Properties
   {

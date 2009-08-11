@@ -1,7 +1,7 @@
 <?php
 
 header("Cache-Control: no-cache");
-require_once ("../lib/common.php");
+require_once ('../core/login/check_login.php');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -207,7 +207,7 @@ function iframeAutoHeight(quem){
 		</td>
 		<td width="193" class="menu">
 			<span class="texto1"> 
-        		<img src="../public/images/icons/bola_verde.gif" width="10" height="10" /> <?php echo $LoginUID; ?> 
+        		<img src="../public/images/icons/bola_verde.gif" width="10" height="10" /> <?php echo $user; ?> 
         	</span>
 		</td>
 	</tr>

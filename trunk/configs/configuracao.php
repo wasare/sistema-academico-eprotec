@@ -36,5 +36,11 @@ date_default_timezone_set('America/Sao_Paulo');
 
 $versao = @file_get_contents ('../VERSAO.TXT');
 
+$BASE_URL  = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico/';
+$BASE_DIR  = dirname(__FILE__) . '/../';
+
+$LoginURL    = $BASE_URL .'index.php';
+
+$login_log_file = $BASE_DIR .'app/sagu/logs/login.log';
 
 ?>
