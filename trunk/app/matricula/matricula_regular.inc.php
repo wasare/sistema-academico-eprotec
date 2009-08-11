@@ -13,7 +13,7 @@ require_once("../../lib/common.php");
 require_once("../../configs/configuracao.php");
 require_once("../../lib/adodb/adodb.inc.php");
 
-require_once('../../lib/aluno.inc.php');
+require_once('../../core/situacao_academica.php');
 
 //Criando a classe de conexao ADODB
 $Conexao = NewADOConnection("postgres");

@@ -6,7 +6,7 @@
   require("../../configs/configuracao.php");
   require("../../lib/adodb/adodb.inc.php");
   require("../../lib/adodb/tohtml.inc.php");
-  require("../../lib/aluno.inc.php");
+  require_once('../../core/situacao_academica.php');
   
 
 $Conexao = NewADOConnection("postgres");
