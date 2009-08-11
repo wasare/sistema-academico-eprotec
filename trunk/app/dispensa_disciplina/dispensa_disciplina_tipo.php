@@ -9,9 +9,7 @@
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require("../../lib/common.php");
-require("../../configs/configuracao.php");
-require("../../lib/adodb/adodb.inc.php");
+require_once('../../configs/configuracao.php');
 
 
 $diario_id = $_POST['id_diario'];

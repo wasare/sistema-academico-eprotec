@@ -2,10 +2,8 @@
 
 header("Cache-Control: no-cache");
 
-//-- ARQUIVO E BIBLIOTECAS
-require("../../lib/common.php");
-require("../../configs/configuracao.php");
-require("../../lib/adodb/adodb.inc.php");
+//-- ARQUIVO CONFIGURACAO E BIBLIOTECAS
+require_once('../../configs/configuracao.php');
 
 
 // PROCESSA A DISPENSA SE NAO HOUVER ERROS

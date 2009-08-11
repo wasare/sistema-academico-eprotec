@@ -24,7 +24,7 @@ require_once(dirname(__FILE__).'/../configs/configuracao.php');
       <h3 class="style5">Aten&ccedil;&atilde;o!</h3>
           Nome e/ou Senha incorretos.<br />
           Verifique se voc&ecirc; tem permiss&atilde;o para acessar o sistema com a Ger&ecirc;ncia de Tecnologia da Informa&ccedil;&atilde;o.
-          <p align="center"><a href="<?=$LoginURL?>">Voltar para a tela de login</a></p>
+          <p align="center"><a href="<?=$LOGIN_URL?>">Voltar para a tela de login</a></p>
       <br/>
     </div>
   </div>

@@ -9,10 +9,7 @@
 
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
-require("../../lib/common.php");
-require("../../configs/configuracao.php");
-require("../../lib/adodb/adodb.inc.php");
-
+require_once('../../configs/configuracao.php');
 
 /**
  * @var string com o codigo do aluno
