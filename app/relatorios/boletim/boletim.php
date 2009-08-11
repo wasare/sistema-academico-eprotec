@@ -1,15 +1,12 @@
 <?php
 
-
 //INICIALIZA A SESSÃO
 @session_start();
 
+require_once(dirname(__FILE__) .'/../../../configs/configuracao.php');
+require_once(dirname(__FILE__) .'/../../../core/login/check_login.php');
 
-require_once("../../../lib/common.php");
-require_once("../../../lib/properties.php");
-
-
-define('PDF_TMP_DIR', dirname(__FILE__) .'/boletins/pdf/');
+define('PDF_TMP_DIR', dirname(__FILE__) .'/boletins/pdf_tmp/');
 
 require_once(dirname(__FILE__) .'/../../../lib/fpdf153/fpdf.php');
 require_once(dirname(__FILE__) .'/../../../lib/fpdi/fpdi.php');
@@ -22,18 +19,17 @@ function remove_files($dir)
 	{
       @mkdir("$dir",0770,true);
 	}
-    if($handle = opendir($dir))
-    {
-      while(($file = readdir($handle)) !== false)
-      {
-        if($file != "." && $file != ".." && $file != "Thumbs.db"/*pesky windows, images..*/)
-        {
-          @unlink($dir.'/'.$file);
-        }
-      }
-      closedir($handle);
-      return $aPDFs;
-    }
+	
+	if(is_dir($dir))
+	{
+		$files = glob("" . $dir . "*.pdf");
+	}
+
+	foreach($files as $f)
+	{
+		echo $image;
+		@unlink($f);
+	}
 }
 
 
@@ -42,16 +38,12 @@ remove_files(PDF_TMP_DIR);
 
 class  Boletim extends PDF {
 
-
-   	//var $NPeriodo;
    	var $NCurso;
-  	// var $NSigla;
-	
 	
 	function Header() {
 	
 	
-    	// IMAGEM COM O LOGO
+    	// IMAGEM COM A LOGO
     	$this->Image(dirname(__FILE__) .'/../../../public/images/if_minas_campus_bambui-logo.png',170,16,25);
     
 	    // SELECIONA FONT ARIAL BOLD 10
@@ -199,25 +191,19 @@ class  Boletim extends PDF {
             $c_distribuida_sql = 'SELECT COUNT(*) FROM diario_formulas ';
             $c_distribuida_sql .= " WHERE grupo ILIKE '%-". $Dados[$j][9] . "';";
 
-            $qry = $con->CreateQuery($c_distribuida_sql);
-            $c_distribuida = $qry->GetRowValues();
-            $qry->Close();
-            //print_r($c_distribuida);
+            $c_distribuida = $con->adodb->getOne($c_distribuida_sql);//qry->GetRowValues();
             
 			$n_distribuida_sql = 'SELECT sum(nota_distribuida) as nota_distribuida FROM diario_formulas ';
 		    $n_distribuida_sql .= " WHERE grupo ILIKE '%-". $Dados[$j][9] . "';";
            
-			$qry = $con->CreateQuery($n_distribuida_sql);
-			$nota_distribuida = $qry->GetRowValues();
-			$qry->Close(); 
+			$nota_distribuida = $con->adodb->getOne($n_distribuida_sql);
 
-
-			if ( $c_distribuida[0] == 6 ) {
+			if ( $c_distribuida == 6 ) {
 
 			    $nota_final = str_replace('.', ',', $Dados[$j][3]);
 			}
 			else {
-				$nota_distribuida[0] = '-';
+				$nota_distribuida = '-';
 			    $nota_final = '-';
 			}
      
@@ -227,13 +213,9 @@ class  Boletim extends PDF {
         	$this->Cell($w[1],5.7,'      '.$Dados[$j][4],'LR');
         
         	$this->Cell($w[2],5.7,'       '.$nota_final,'LR');
-			$this->Cell($w[3],5.7,'            ' . $nota_distribuida[0],'LR');
+			$this->Cell($w[3],5.7,'            ' . $nota_distribuida,'LR');
         
         	$this->Cell($w[4],5.7,'     '.$Dados[$j][6],'LR');
-        
-        	//$this->Cell($w[4],5.7,'     '.$Dados[$j][Carga],'LR');
-        
-        	//$this->Cell($w[5],5.7,'    '.$Dados[$j][Resultado],'LR');
         
         	// QUEBRA DE LINHA                   
         	$this->Ln();
@@ -261,7 +243,7 @@ class concat_pdf extends FPDI {
     }
 
     function concat() {
-        foreach($this->files AS $file) {
+        foreach($this->files as $file) {
             $pagecount = $this->setSourceFile($file);
             for ($i = 1; $i <= $pagecount; $i++) {
                  $tplidx = $this->ImportPage($i);
@@ -283,13 +265,9 @@ $qryCurso = " SELECT abreviatura FROM cursos WHERE id = ".$curso.";";
 $Registro = $Mat;
 
 // RECUPERA DESCRICAO DO CURSO
-$conn = new Connection;
-$conn->Open();
+$conn = new connection_factory($param_conn);
 
-$query = $conn->CreateQuery($qryCurso);
-$NCurso = $query->GetRowValues();
-$query->Close();
-
+$NCurso = $conn->adodb->getOne($qryCurso);
 
 
 // RECUPERA ALUNO(S)
@@ -305,21 +283,9 @@ if ( !IsSet($aluno_id)  && !is_numeric($aluno_id) ) {
                         ref_curso = $curso
                      ORDER BY A.ref_pessoa;";
 
-    $query = $conn->CreateQuery($qryAlunos);	
-    $aAlunos = array();
-
-    while ( $query->MoveNext() )
-    {
-       // list ( $campus, $id, $desc, $id_contrato, $semestre, $turma, $ref_periodo_turma ) = $query->GetRowValues();
-       $aAlunos = array_merge($aAlunos, $query->GetRowValues());
-	} // while
-
-	$query->Close();
-	
+	$aAlunos = $conn->adodb->getAll($qryAlunos);
 }
-else {
-	    $aAlunos[] = $aluno_id;
-}
+
 
 $qryBoletim = '
 SELECT 
@@ -343,18 +309,9 @@ SELECT
 
 foreach ($aAlunos as $aluno) {
 
-	$query = $conn->CreateQuery(sprintf($qryBoletim,$periodo,$aluno,$curso));
-    $Boletim = array();
-
-    while ( $query->MoveNext() )
-    {
-       // list ( $campus, $id, $desc, $id_contrato, $semestre, $turma, $ref_periodo_turma ) = $query->GetRowValues();
-	   $Boletim[] = $query->GetRowValues();
-    } // while
-
-    $query->Close();
-
-    // GERA PDF DA LISTA DE PRESENCA DOS CANDIDATOS^M
+    $Boletim = $conn->adodb->getAll(sprintf($qryBoletim,$periodo,$aluno['ref_pessoa'],$curso));
+    
+	// GERA PDF DA LISTA DE PRESENCA DOS CANDIDATOS^M
     $bo_pdf = new Boletim('P','mm','A4');
               
     $bo_pdf->SetFont('Arial','B',13);
@@ -364,10 +321,11 @@ foreach ($aAlunos as $aluno) {
     // PREPARA O CABELHO  DA TABELA
     $TableHeader = array('Componente Modular', 'CH', 'Nota', 'Nota Distribuída', 'Faltas');
                
-    $NArquivo = "Boletim_".$curso."_".$aluno.".pdf"; 
+    $NArquivo = "Boletim_".$curso."_".$aluno['ref_pessoa'].".pdf"; 
+
           
     // EXECUTA A GERACAO DO RELATORIO     
-    $bo_pdf->GeraBoletins($Boletim,$NArquivo,$TableHeader,$NCurso[0],PDF_TMP_DIR,$conn);
+    $bo_pdf->GeraBoletins($Boletim,$NArquivo,$TableHeader,$NCurso,PDF_TMP_DIR,$conn);
 
 }
 
@@ -375,19 +333,7 @@ function list_files($dir)
 {
   if(is_dir($dir))
   {
-    if($handle = opendir($dir))
-    {
-      while(($file = readdir($handle)) !== false)
-      {
-        if($file != "." && $file != ".." && $file != "Thumbs.db"/*pesky windows, images..*/)
-        {
-          //echo '<a target="_blank" href="'.$dir.$file.'">'.$file.'</a><br>'."\n";
-		  $aPDFs[] = $dir.$file;
-        }
-      }
-      closedir($handle);
-	  return $aPDFs;
-    }
+	return glob("" . $dir . "*.pdf");
   }
 }
 

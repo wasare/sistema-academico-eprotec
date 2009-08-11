@@ -919,20 +919,6 @@ ComboArray("op",$op_opcoes, $ref_nacionalidade ,"ChangeOp()");
 		<hr size="1">
 		</td>
 	</tr>
-	<td colspan="2" align="center"><?
-	if (date("m") >= '7')
-	{ $periodo = date("Y") . 'B'; }
-	else
-	{ $periodo = date("Y") . 'A'; }
-	?> <input type="button" name="Button1" value=" Consultas Diversas "
-		onClick="Pede_Periodo('<? echo($id); ?>','<? echo($periodo); ?>')"></td>
-	<tr>
-	</tr>
-	<tr>
-		<td colspan="2">
-		<hr size="1">
-		</td>
-	</tr>
 	<tr>
 		<td colspan="2">
 		<div align="center"><input type="submit" name="Submit"

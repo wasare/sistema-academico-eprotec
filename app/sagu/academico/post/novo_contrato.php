@@ -2,7 +2,7 @@
 
 require("../../../../lib/common.php");
 require("../../lib/CheckUnique.php3");
-require("../../../../lib/properties.php");
+require("../../properties.php");
 require("../../lib/GetField.php3");
 require("../../lib/InvData.php3");
 
