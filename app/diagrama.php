@@ -1,12 +1,12 @@
 <?php
 
 header("Cache-Control: no-cache");
-require ("../lib/common.php");
+require_once('../core/login/check_login.php');
 require("../configs/configuracao.php");
 
 $conn = new connection_factory($param_conn);
 
-$sql = "SELECT descricao, data FROM avisos WHERE id = 1";
+$sql = 'SELECT descricao, data FROM avisos WHERE id = 1;';
 $Result1 = $conn->Execute($sql);
 
 $avisos = array();
