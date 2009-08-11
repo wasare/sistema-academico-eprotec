@@ -1,10 +1,26 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../configs/config.php');
-require_once(dirname(__FILE__) . '/../core/login/check_login.php');
+require_once(dirname(__FILE__) . '/../configs/configuracao.php')
 
-
+$LoginHost   = $host; //  nome do host ;
+$LoginDB     = $database; // nome do banco;
 list($LoginUID, $LoginPWD) = split(":",$_SESSION['SessionAuth'],2);
+
+
+$ErrorURL    = $BASE_DIR . 'app/sagu/fatalerror.php';
+$SuccessURL  = $BASE_DIR . 'app/sagu/modelos/modelo_exito.phtml';
+$PATH_SAGU_IMAGES = $BASE_URL .'app/sagu/images/';
+
+$LoginACL    = $BASE_DIR .'app/sagu/users.acl';
+$SQL_LogFile = $BASE_DIR .'app/sagu/logs/sql.log';
+
+/**
+ * LOG DO SISTEMA
+ * 1 para gravar os comandos SQL no arquivo $SLQLogFile, 0 para n¿o fazer
+ */
+$SQL_Debug   = 1;
+
+
 /**
  * Classe de abstracao de dados do SAGU
  */

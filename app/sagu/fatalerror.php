@@ -1,5 +1,7 @@
 <?php
-	$PATH_IMAGES = 'https://dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/app/sagu/images/attention.gif';
+
+	require_once(dirname(__FILE__) .'/common.php');
+
 ?>
 
 <html>
@@ -11,18 +13,18 @@
         <table border="0" cellspacing="0" cellpadding="8" align="center" width="500">
             <tr bgcolor="#FFCC00" align="center">
                 <td colspan="3">
-                <b><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#FF0000"><?echo($msg)?></font></b></td>
+                <b><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#FF0000"><?=$msg?></font></b></td>
             </tr>
             <tr>
                 <td align=center rowspan="3" width="104">
-                <img src="<? echo $PATH_IMAGES;?>" width="50" height="50"></td>
+                <img src="<?=$PATH_SAGU_IMAGES.'attention.gif'?>" width="50" height="50"></td>
                 <td colspan="2" align=center>&nbsp;</td>
             </tr>
             <tr>
                 <td valign="top">
                     <div align="center"> <font size="2"><b><font face="Verdana, Arial, Helvetica, sans-serif" color="#000000">Causa:</font></b></font></div>
                 </td>
-                <td valign="top" width="100%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?echo($info)?>&nbsp;</font></td>
+                <td valign="top" width="100%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?=$info?>&nbsp;</font></td>
             </tr>
             <tr>
                 <td colspan="2" align=center>&nbsp;</td>

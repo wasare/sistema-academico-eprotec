@@ -24,7 +24,7 @@ if(!empty($_SESSION['SessionAuth']))
 	{
 		// grava log de falha de acesso 
 		$log_msg .= $param_conn['user'] .' - *** FALHA AO VERIFICAR LOGIN (host='. $param_conn['host'] .',db='. $param_conn['database'] .',uid='. $param_conn['user'] .',pwd=) ***'."\n";
-		error_log( $log_msg,3,$login_log_file);
+		error_log( $log_msg,3,$LOGIN_LOG_FILE);
 		require_once($BASE_DIR . 'public/login_erro.php');
 		exit;
 	}
@@ -44,7 +44,7 @@ else
 	{
 		// grava log de acesso
 		$log_msg .= $uid .' - *** LOGIN ACEITO (host='. $param_conn['host'] .',db='. $param_conn['database'] .',uid='. $uid .',pwd=) ***'."\n";
-		error_log($log_msg,3,$login_log_file);
+		error_log($log_msg,3,$LOGIN_LOG_FILE);
 
 		// registra variavel de acesso na sessão
 		$_SESSION['SessionAuth'] = "$uid:$pwd";
@@ -59,7 +59,7 @@ else
 	{
 		// grava log de acesso
 		$log_msg .=  $uid .' - *** LOGIN RECUSADO (host='. $param_conn['host'] .',db='. $param_conn['database'] .',uid='. $uid .',pwd=) ***'."\n";
-		error_log($log_msg,3,$login_log_file);
+		error_log($log_msg,3,$LOGIN_LOG_FILE);
 		require_once($BASE_DIR .'public/login_erro.php');
 		exit;
 	}

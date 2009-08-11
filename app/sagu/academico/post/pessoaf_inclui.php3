@@ -1,7 +1,7 @@
-<? 
+<?php 
+require_once(dirname(__FILE__) .'/../../common.php'); 
+require_once('../../lib/InvData.php3'); 
 
-require("../../../../lib/common.php"); 
-require("../../lib/InvData.php3"); 
 
 $nome                   = $_POST['nome'];
 $rua                    = $_POST['rua'];

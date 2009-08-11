@@ -4,51 +4,11 @@
 
 set_time_limit(120);
 
-require_once(dirname(__FILE__) .'/configuracao.php');
 
-/**
- * Caminho para a pasta images
- */
-$PATH_IMAGES = 'https://dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/app/sagu/images';
-/**
- * VARIAVEIS PARA O SAGU
- */
-$sagu_cookie = '.'. $_SERVER['SERVER_NAME'];
-/**
- * onde colocar variaveis de ambiente
- */
-$SAGU_PATH   = dirname(__FILE__) . '/../app/sagu';
-/**
- * BANCO DE DADOS E CAMINHOS
- */
-$LoginHost   = $host; //  nome do host ;
-$LoginDB     = $database; // nome do banco;
-$LoginUID    = "";
-$LoginPWD    = "";
-$LoginURL    = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico/index.php';
-$LoginACL    = "$SAGU_PATH/users.acl";
-$ErrorURL    = dirname(__FILE__) . '/../app/sagu/fatalerror.phtml';
-$SuccessURL  = dirname(__FILE__) . '/../app/sagu/modelos/modelo_exito.phtml';
-/**
- * LOG DO SISTEMA
- * 1 para gravar os comandos SQL no arquivo $SLQLogFile, 0 para n¿o fazer
- */
-$SQL_Debug   = 1;
-/**
- * nome do arquivo para gravar os comandos SQL
- */
-$SQL_LogFile = "$SAGU_PATH/logs/sql.log"; 
+/*
+	PARAMETROS DO SISTEMA ACADEMICO
 
-date_default_timezone_set('America/Sao_Paulo');
-
-error_reporting(E_ALL & ~E_NOTICE);
-$versao = @file_get_contents ('VERSAO.TXT'); 
-
-$inicio    = "inicio.php";      //Módulo inicial do SAGU
-$SAGU_HOST = $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico';
-
-$BASE_URL  = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico/';
-$BASE_DIR  = dirname(__FILE__) . '/';
+*/
 
 //Dados da Instituição
 $IEendereco = "";
@@ -61,8 +21,6 @@ $IEfax      = "";
 $IEemail    = "webmaster@cefetbambui.edu.br";
 $IEnome     = "IFMG - Campus Bambu&iacute;";
 $IEurl      = "http://www.ifmg.edu.br/bambui";
-
-
 
 $frequencia_creditos = '16';
 
