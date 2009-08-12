@@ -7,12 +7,11 @@ $LoginDB     = $database; // nome do banco;
 list($LoginUID, $LoginPWD) = split(":",$_SESSION['SessionAuth'],2);
 
 
-$ErrorURL    = $BASE_DIR . 'app/sagu/fatalerror.php';
-$SuccessURL  = $BASE_DIR . 'app/sagu/modelos/modelo_exito.phtml';
+$ErrorURL   	  = $BASE_DIR . 'app/sagu/fatalerror.php';
+$SuccessURL 	  = $BASE_DIR . 'app/sagu/modelos/modelo_exito.phtml';
 $PATH_SAGU_IMAGES = $BASE_URL .'app/sagu/images/';
-
-$LoginACL    = $BASE_DIR .'app/sagu/users.acl';
-$SQL_LogFile = $BASE_DIR .'app/sagu/logs/sql.log';
+$LoginACL  		  = $BASE_DIR .'app/sagu/users.acl';
+$SQL_LogFile 	  = $BASE_DIR .'app/sagu/logs/sql.log';
 
 /**
  * LOG DO SISTEMA

@@ -22,7 +22,7 @@ class carimbo{
 
         $RsCarimbo = $conn->Execute($sql);
 
-	$resp = '<select size="5" name="carimbo">
+		$resp = '<select size="5" name="carimbo">
                	<option value="" selected> Sem carimbo </option>';
 
         while(!$RsCarimbo->EOF){
@@ -43,7 +43,7 @@ class carimbo{
         
         if($id == null){
             return null;
-	}else{
+		}else{
             $conn = new connection_factory($this->param_conn);
             $sqlCarimbo = "
                 SELECT
@@ -57,7 +57,7 @@ class carimbo{
             $conn->Close();
 
             return $resp;
-	}
+		}
     }
 
     /**
@@ -67,9 +67,9 @@ class carimbo{
      */
     function get_funcao($id){
 
-	if($id == null){
-		return null;
-	}else{
+		if($id == null){
+			return null;
+		}else{
             $conn = new connection_factory($this->param_conn);
             $sqlCarimbo = "
             SELECT

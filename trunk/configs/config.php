@@ -1,13 +1,6 @@
 <?php
-
-@session_start();
-
-set_time_limit(120);
-
-
 /*
 	PARAMETROS DO SISTEMA ACADEMICO
-
 */
 
 //Dados da Instituição

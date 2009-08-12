@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../configs/configuracao.php')
+require_once(dirname(__FILE__) . '/../configs/configuracao.php');
 
 $LoginHost   = $host; //  nome do host ;
 $LoginDB     = $database; // nome do banco;

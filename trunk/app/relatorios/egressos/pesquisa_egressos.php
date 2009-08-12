@@ -1,6 +1,5 @@
 <?php
 
-require_once("../../../lib/common.php");
 require_once("../../../configs/configuracao.php");
 require_once("../../../core/reports/carimbo.php");
 require_once("../../../core/search.php");
@@ -38,8 +37,17 @@ $busca = new search('search','codigo_curso','searchlist', 'form1', 'curso_lista.
 
 	<form method="post" action="lista_egressos.php" name="form1" target="_blank">
 	
-	<input type="image" name="input" src="../../../public/images/icons/print.jpg" alt="Exibir relat&oacute;rio" title="Exibir relat&oacute;rio" class="botao" />
-	<input type="image" name="voltar" src="../../../public/images/icons/back.png" alt="" title="" onclick="history.back(-1);return false;" class="botao" />
+	<input type="image" name="input" 
+		src="../../../public/images/icons/print.jpg" 
+		alt="Exibir relat&oacute;rio" 
+		title="Exibir relat&oacute;rio" 
+		class="botao" />
+	<input type="image" name="voltar" 
+		src="../../../public/images/icons/back.png" 
+		alt="Voltar" 
+		title="Voltar" 
+		onclick="history.back(-1);return false;" 
+		class="botao" />
 			
 	<div class="box_geral">
 		Cola&ccedil;&atilde;o de grau:<br />
