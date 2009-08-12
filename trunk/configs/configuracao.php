@@ -42,8 +42,8 @@ $aluno_port     = '';
 /**
  * Variaveis do sistema
  */
-$BASE_URL       = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico/';
-$BASE_DIR       = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/';
+$BASE_URL       = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/santiago/sistema_academico/';
+$BASE_DIR       = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/santiago/sistema_academico/';
 $LOGIN_URL      = $BASE_URL .'index.php';
 $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';
 $PATH_IMAGES    = $BASE_URL."public/images/";
