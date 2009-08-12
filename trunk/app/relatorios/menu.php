@@ -1,7 +1,6 @@
 <?php
 
-header("Cache-Control: no-cache");
-require ("../../lib/common.php");
+require("../../configs/configuracao.php");
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -53,7 +52,7 @@ img {
 	<tr>
 		<td width="50%" valign="top">
 		<p>
-		<a href="alunos_nao_aprovados/pesquisa_alunos_nao_aprovados.php" title="Alunos aprovados / reprovados" target="_self" class="menu_link">
+		<a href="aprovados_reprovados/pesquisa_aprovados_reprovados.php" title="Alunos aprovados / reprovados" target="_self" class="menu_link">
 			<img src="../../public/images/icons/lupa.png" alt="" />
 			&nbsp;Alunos Aprovados/Reprovados
 		</a><br />
