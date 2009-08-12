@@ -1,0 +1,90 @@
+<?php
+
+require_once("../../../configs/configuracao.php");
+require_once("../../../core/reports/carimbo.php");
+
+$conn = new connection_factory($param_conn);
+
+$Result1 = $conn->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
+
+$carimbo = new carimbo($param_conn);
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title>Relat&oacute;rio de Alunos Aprovados/Reprovados</title>
+	<script language="javascript" src="../../../lib/prototype.js"></script>
+	<script language="javascript" src="pesquisa_alunos_aprovados_reprovados.js"></script>
+	
+	<script src="../../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
+	<link href="../../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
+	<link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body bgcolor="#FFFFFF">
+<h2>Relatório de Alunos Aprovados/Reprovados</h2>
+<form action="lista_alunos_aprovados_reprovados.php" method="post" name="form1" target="_blank">
+
+	<input type="image" name="input" 
+		src="../../../public/images/icons/print.jpg" 
+		alt="Exibir relat&oacute;rio" 
+		title="Exibir relat&oacute;rio" 
+		class="botao" 
+		onclick="document.form1.action = 'lista_alunos_aprovados_reprovados.php'" />
+	<input type="image" name="input" 
+		src="../../../public/images/icons/pdf_icon.jpg" 
+		alt="Exibir relat&oacute;rio PDF" 
+		title="Exibir relat&oacute;rio PDF" 
+		class="botao" 
+		onclick="document.form1.action = 'pdf_alunos_aprovados_reprovados.php'" />
+	<input type="image" name="voltar" 
+		src="../../../public/images/icons/back.png" 
+		alt="Voltar" 
+		title="Voltar" 
+		onclick="history.back(-1);return false;" class="botao" />
+	
+	<div class="box_geral">
+		Per&iacute;odo:<br />
+	    <span id="sprytextfield2">
+    		<input name="periodo1" type="text" id="periodo1" size="10" onchange="ChangeCode('periodo1','periodo'); setPeriodo();" />
+        	<?php  print $Result1->GetMenu('periodo',null,true,false,0,'onchange="ChangeOp();setPeriodo();"'); ?>
+	        <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
+    	</span>
+	    <br />
+    	C&oacute;digo do Curso:<br />
+	    <span id="sprytextfield1">
+    		<input name="codigo_curso" type="text" id="codigo_curso" size="10" />
+        	<input name="descricao_curso" disabled="disabled" id="descricao_curso" value="" size="40" />
+	        <a href="javascript:abre_consulta_rapida('../../consultas_rapidas/cursos/index.php')" >
+    	    	<img src="../../../public/images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
+        	</a>
+        	<span class="textfieldRequiredMsg">Valor obrigat&oacute;rio.</span>
+    	</span>
+	    <br />
+		C&oacute;digo do Aluno:<br />
+	    <input name="aluno" type="text" id="aluno" size="10" />
+    	<span class="dica">Caso n&atilde;o preenchido exibir&aacute; todos os alunos.</span>
+    	<br />
+    	Turma:<br />
+    	<input name="turma" type="text" id="turma" size="10" />
+   		<span class="dica">Caso n&atilde;o preenchido exibir&aacute; todas as turmas.</span>
+    	<br />
+    	Situa&ccedil;&atilde;o:<br />
+    	<input type="radio" name="aprovacao" id="aprovacao" value="1" /> Aprovado 
+    	<input type="radio" name="aprovacao" id="aprovacao" value="2" checked="checked" /> Reprovado 
+    	<input type="radio" name="aprovacao" id="aprovacao" value="3" /> Aprovado e Reprovado
+    	<br />
+		Assinatura:<br />
+		<?php echo $carimbo->listar();?>
+	</div>
+</form>
+<script type="text/javascript">
+<!--
+var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1");
+var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
+//-->
+</script>
+</body>
+</html>
