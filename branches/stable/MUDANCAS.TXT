@@ -1,0 +1,255 @@
+------------------------------------------------------------------------
+r57 | wanderson | 2009-06-30 17:44:13 -0300 (Ter, 30 Jun 2009) | 2 lines
+
+Correção de erro no processo de matrícula regular e melhorias nos filtro de verificação dos pré-requisitos, fecha #100,#144,#145
+
+------------------------------------------------------------------------
+r56 | santiago | 2009-06-30 08:47:34 -0300 (Ter, 30 Jun 2009) | 1 line
+
+Correção na área do aluno quando listava os diários listava também os diários cancelados.
+------------------------------------------------------------------------
+r55 | wanderson | 2009-06-29 18:06:38 -0300 (Seg, 29 Jun 2009) | 2 lines
+
+Correção de somatório de faltas no webdiario e ajuste na data da conclusão no processo de colação de grau (santiago), fecha #130,#143
+
+------------------------------------------------------------------------
+r54 | wanderson | 2009-06-26 16:38:16 -0300 (Sex, 26 Jun 2009) | 2 lines
+
+Corrigi erro no processo de matrícula durante a finalização, fecha #142.
+
+------------------------------------------------------------------------
+r53 | wanderson | 2009-06-25 17:21:48 -0300 (Qui, 25 Jun 2009) | 2 lines
+
+Corrigi bug no processo de matrícula avulsa, fecha #139,#140
+
+------------------------------------------------------------------------
+r52 | wanderson | 2009-06-14 19:20:08 -0300 (Dom, 14 Jun 2009) | 2 lines
+
+Correção de nota de dispensa zerada no webdiário, novas funções para o aluno.inc.php, inicialização do diário por função, exclui resolve pendências do webdiário, inclusão da pasta app/ferramentas, outras pequenas correções, fecha #131,#103.
+
+------------------------------------------------------------------------
+r51 | santiago | 2009-06-10 08:08:19 -0300 (Qua, 10 Jun 2009) | 1 line
+
+Alteração nos formulários e no banco de dados de empresa quanto a capacidade de caracteres; Cabeçalho de relatório buscando do banco (arquivo app/relatorios/header.php)
+------------------------------------------------------------------------
+r50 | santiago | 2009-06-10 08:04:13 -0300 (Qua, 10 Jun 2009) | 1 line
+
+Relatório de alunos egressos.
+------------------------------------------------------------------------
+r49 | santiago | 2009-06-03 07:59:59 -0300 (Qua, 03 Jun 2009) | 1 line
+
+Inclusão dos arquivos de exportação do SISTEC
+------------------------------------------------------------------------
+r48 | wanderson | 2009-06-02 20:55:52 -0300 (Ter, 02 Jun 2009) | 2 lines
+
+Nova revisão de produção.
+
+------------------------------------------------------------------------
+r47 | wanderson | 2009-06-02 20:29:33 -0300 (Ter, 02 Jun 2009) | 2 lines
+
+Inclusão de pesquisa rápida a instituições e correção de tela "branca" no processo de dispensa, fecha #129
+
+------------------------------------------------------------------------
+r46 | wanderson | 2009-06-02 17:25:21 -0300 (Ter, 02 Jun 2009) | 1 line
+
+Exportação de dados para o SISTEC (santiago), fecha #127
+------------------------------------------------------------------------
+r45 | wanderson | 2009-06-02 10:08:59 -0300 (Ter, 02 Jun 2009) | 2 lines
+
+Corrigi listagem de alunos na alteração de faltas do webdiário, fecha #128
+
+------------------------------------------------------------------------
+r44 | santiago | 2009-05-29 07:40:48 -0300 (Sex, 29 Mai 2009) | 1 line
+
+Alteração do menu com a opção Sistema e com um botão de imagem para voltar para a página inicial;
+------------------------------------------------------------------------
+r43 | santiago | 2009-05-29 07:40:16 -0300 (Sex, 29 Mai 2009) | 1 line
+
+Alteração do menu com a opção Sistema e com um botão de imagem para voltar para a página inicial;
+------------------------------------------------------------------------
+r42 | wanderson | 2009-05-15 18:56:19 -0300 (Sex, 15 Mai 2009) | 2 lines
+
+Correção de links e referências quebradas, exclusão do relatório "Situação Global" e melhorias na ficha acadêmica fecha #40
+
+------------------------------------------------------------------------
+r41 | wanderson | 2009-05-14 18:23:49 -0300 (Qui, 14 Mai 2009) | 2 lines
+
+Nova versão de produção com integração parcial do webdiário e módulo do aluno.
+
+------------------------------------------------------------------------
+r40 | santiago | 2009-05-14 15:22:15 -0300 (Qui, 14 Mai 2009) | 1 line
+
+Alterações na declaração de matricula.
+------------------------------------------------------------------------
+r39 | santiago | 2009-05-14 11:09:16 -0300 (Qui, 14 Mai 2009) | 1 line
+
+Link declaração de matrícula em relatórios
+------------------------------------------------------------------------
+r38 | wanderson | 2009-05-14 11:07:21 -0300 (Qui, 14 Mai 2009) | 2 lines
+
+Inclusão dos arquivos da declaração de matrícula, fecha #31
+
+------------------------------------------------------------------------
+r37 | santiago | 2009-05-14 10:12:31 -0300 (Qui, 14 Mai 2009) | 1 line
+
+Melhora do lib tigra_calendar; implementação da Declaração de matrícula. fecha #31
+------------------------------------------------------------------------
+r36 | santiago | 2009-05-11 09:09:13 -0300 (Seg, 11 Mai 2009) | 1 line
+
+Implementado funcionalidade no relatório Ficha Academica. fecha #71
+------------------------------------------------------------------------
+r35 | wanderson | 2009-05-08 18:18:42 -0300 (Sex, 08 Mai 2009) | 2 lines
+
+Correção de links quebrados no webdiário, fecha #105.
+
+------------------------------------------------------------------------
+r34 | santiago | 2009-05-06 09:39:57 -0300 (Qua, 06 Mai 2009) | 1 line
+
+Mapear dispensa de disciplina no diagrama fecha #98
+------------------------------------------------------------------------
+r33 | santiago | 2009-05-05 16:26:57 -0300 (Ter, 05 Mai 2009) | 1 line
+
+Alteração no tamanho do campo de descrição breve e dica de tamanho no cadastro de disciplina e tamanho do campo de descrição do curso no cadastro de curso.
+------------------------------------------------------------------------
+r32 | santiago | 2009-05-05 13:56:52 -0300 (Ter, 05 Mai 2009) | 1 line
+
+Teste commit Eclipse
+------------------------------------------------------------------------
+r31 | wanderson | 2009-05-05 13:50:48 -0300 (Ter, 05 Mai 2009) | 2 lines
+
+Adicionada pasta colação de grau, resolvendo problemas de lock.
+
+------------------------------------------------------------------------
+r30 | santiago | 2009-05-05 10:04:31 -0300 (Ter, 05 Mai 2009) | 1 line
+
+Modulo de egresso, link quebrado do quadro de avisos.
+------------------------------------------------------------------------
+r29 | wanderson | 2009-04-28 15:58:41 -0300 (Ter, 28 Abr 2009) | 2 lines
+
+Correção da emissão do boletim escolar. fecha #78, #102
+
+------------------------------------------------------------------------
+r28 | wanderson | 2009-04-28 12:04:10 -0300 (Ter, 28 Abr 2009) | 2 lines
+
+Adicionados módulo de consulta dos alunos e relatório de alunos dispensados. Agora exibe informações do aluno no módulo de consulta de notas. Webiário agora inicializa o lançamento de notas para novas matrículas. fecha #75,#94,#95 e #102.
+
+------------------------------------------------------------------------
+r27 | wanderson | 2009-04-27 13:41:37 -0300 (Seg, 27 Abr 2009) | 2 lines
+
+Alterações diversas e inclusão de documentação, fecha #93, #96.
+
+------------------------------------------------------------------------
+r26 | santiago | 2009-04-08 16:21:40 -0300 (Qua, 08 Abr 2009) | 1 line
+
+Retirar as chamadas lib/config.php (Fecha #77).
+------------------------------------------------------------------------
+r25 | santiago | 2009-04-08 14:21:59 -0300 (Qua, 08 Abr 2009) | 1 line
+
+Eliminação do Register global on no legado do SAGU nos modulos restantes e implementação dos títulos nos arquivos principais (Fecha #23, #68).
+------------------------------------------------------------------------
+r24 | wanderson | 2009-04-07 17:50:21 -0300 (Ter, 07 Abr 2009) | 2 lines
+
+Não exibe os alunos dispensados no lançamento de notas e faltas no módulo do webiário (fecha #53).
+
+------------------------------------------------------------------------
+r23 | wanderson | 2009-04-03 16:28:16 -0300 (Sex, 03 Abr 2009) | 2 lines
+
+Nova forma de verificar aprovação em disciplinas, disciplinas equivalentes e pré-requisitos no processo de matrícula (fecha #74)
+
+------------------------------------------------------------------------
+r22 | santiago | 2009-04-01 08:17:59 -0300 (Qua, 01 Abr 2009) | 1 line
+
+Implementação da classe de exportação para XLS; relatório alunos matriculados com opção de exportar XLS.
+------------------------------------------------------------------------
+r21 | santiago | 2009-03-31 17:11:37 -0300 (Ter, 31 Mar 2009) | 1 line
+
+Register global off nos modulos: departamentos, areas de ensino, salas, carimbos, usuários do sistema, cursos, disciplinas e cursos/disciplinas.
+------------------------------------------------------------------------
+r20 | santiago | 2009-03-24 16:49:26 -0300 (Ter, 24 Mar 2009) | 1 line
+
+Tratar processos para ativar register global off em professores, coordenadores, país e estado; Inserir arquivos que não constavam no controle de estado(alterar e excluir).
+------------------------------------------------------------------------
+r19 | santiago | 2009-03-23 16:20:00 -0300 (Seg, 23 Mar 2009) | 1 line
+
+Inserção dos arquivos do cadastro de fotos; alteração dos arquivos para register global off do controle de pessoas e controle de contratos.
+------------------------------------------------------------------------
+r18 | wanderson | 2009-03-20 17:41:05 -0300 (Sex, 20 Mar 2009) | 2 lines
+
+Prepara a integração do webdiário ao Sistema Acadêmico (tiquete #37).
+
+------------------------------------------------------------------------
+r17 | wanderson | 2009-03-20 10:54:16 -0300 (Sex, 20 Mar 2009) | 2 lines
+
+ Melhorias no relatório "consultas diversas" e migração deste para o novo relatório "Ficha Global do Aluno"
+
+------------------------------------------------------------------------
+r16 | wanderson | 2009-03-20 10:52:02 -0300 (Sex, 20 Mar 2009) | 2 lines
+
+Novas imagens para a "Ficha Global do Aluno"
+
+------------------------------------------------------------------------
+r15 | wanderson | 2009-03-19 17:47:38 -0300 (Qui, 19 Mar 2009) | 2 lines
+
+Exclui possíveis faltas do aluno quando o mesmo é dispensado (closes #59).
+
+------------------------------------------------------------------------
+r14 | wanderson | 2009-03-19 10:35:23 -0300 (Qui, 19 Mar 2009) | 3 lines
+
+Indicação das dispensas nas papeletas (closes #52)
+
+
+------------------------------------------------------------------------
+r13 | santiago | 2009-03-16 16:22:32 -0300 (Seg, 16 Mar 2009) | 1 line
+
+Tratamento do register_global no processo de login
+------------------------------------------------------------------------
+r12 | santiago | 2009-03-09 14:18:29 -0300 (Seg, 09 Mar 2009) | 1 line
+
+Apagar as pastas fotos-bmp, fotos-tmp e matricula da pasta app/sagu/academico
+------------------------------------------------------------------------
+r11 | santiago | 2009-03-04 17:26:45 -0300 (Qua, 04 Mar 2009) | 1 line
+
+Exclusão dos arquivos não utilizados do SAGU dentro do SA.
+------------------------------------------------------------------------
+r10 | santiago | 2009-03-04 16:46:50 -0300 (Qua, 04 Mar 2009) | 1 line
+
+Exclusão da pasta do SAGU.
+------------------------------------------------------------------------
+r9 | wanderson | 2009-03-02 07:43:38 -0300 (Seg, 02 Mar 2009) | 1 line
+
+processo de dispensas (closes #38)
+------------------------------------------------------------------------
+r8 | wanderson | 2009-02-20 18:44:27 -0300 (Sex, 20 Fev 2009) | 1 line
+
+refs #38
+------------------------------------------------------------------------
+r7 | wanderson | 2009-02-18 00:06:19 -0300 (Qua, 18 Fev 2009) | 2 lines
+
+Organização de arquivos de configuração e correção da nova consulta de aluno
+
+------------------------------------------------------------------------
+r6 | wanderson | 2009-02-17 22:42:31 -0300 (Ter, 17 Fev 2009) | 2 lines
+
+Exibição da versão em produção
+
+------------------------------------------------------------------------
+r5 | santiago | 2009-02-17 10:41:49 -0300 (Ter, 17 Fev 2009) | 1 line
+
+Remoção de arquivos de teste e bibliotecas não utilizadas.
+------------------------------------------------------------------------
+r4 | santiago | 2009-02-17 08:39:00 -0300 (Ter, 17 Fev 2009) | 1 line
+
+atualização do diagrama e novo relatório de aluno.
+------------------------------------------------------------------------
+r3 | wanderson | 2009-02-13 13:04:34 -0200 (Sex, 13 Fev 2009) | 1 line
+
+inclusão do módulo do webdiário 
+------------------------------------------------------------------------
+r2 | wanderson | 2009-02-11 18:51:30 -0200 (Qua, 11 Fev 2009) | 1 line
+
+versão de produção em 11/02/2009
+------------------------------------------------------------------------
+r1 | root | 2009-02-11 18:45:54 -0200 (Qua, 11 Fev 2009) | 1 line
+
+Esquema Inicial
+------------------------------------------------------------------------

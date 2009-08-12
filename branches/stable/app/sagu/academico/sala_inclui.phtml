@@ -1,0 +1,95 @@
+<? require("../../../lib/common.php"); ?>
+<? require("../lib/SQLCombo.php3"); ?>
+
+<?
+   $op1_opcoes = SQLArray("select nome_campus, id from campus order by nome_campus");
+?>
+
+<script language="JavaScript">
+  
+function ChangeOption(opt,fld)
+{
+  var i = opt.selectedIndex;
+
+  if ( i != -1 )
+    fld.value = opt.options[i].value;
+  else
+    fld.value = '';
+}
+
+function ChangeOp()
+{
+  ChangeOption(document.myform.op,document.myform.campus);
+}
+
+function ChangeCode(fld_name,op_name)
+{ 
+  var field = eval('document.myform.' + fld_name);
+  var combo = eval('document.myform.' + op_name);
+  var code  = field.value;
+  var n     = combo.options.length;
+  for ( var i=0; i<n; i++ )
+  {
+    if ( combo.options[i].value == code )
+    {
+      combo.selectedIndex = i;
+      return;
+    }
+  }
+
+  alert(code + ' não é um código válido!');
+
+  field.focus();
+
+  return true;
+}
+</script>
+
+<html>
+<head>
+</head>
+
+<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<form method="post" action="post/confirm_sala_inclui.phtml" name="myform">
+  <table width="90%" align="center">
+    <tr bgcolor="#000099"> 
+      <td colspan="3" height="28">
+        <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Cadastro de Salas</b></font></div>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sala</font></td>
+      <td> 
+        <input name="sala" type=text size="25" maxlength="10">
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#CCCCFF" width="85"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font>
+      </td>
+      <td>
+         <input name="campus" onChange="ChangeCode('campus','op')" type=text size="7" value="1">
+         <font color="#000000"><? ComboArray("op",$op1_opcoes,"0","ChangeOp()"); ?></font>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Capacidade</font></td>
+      <td> 
+        <input name="capacidade" type=text size="25" maxlength="10">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2"> 
+        <hr size="1">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" align="center"> 
+        <input type="submit" name="submit" value=" Salvar ">
+        <input type="reset"  name="Reset"  value=" Limpar ">
+        <input type="button" name="Button" value=" Voltar " onClick="location='cadastro_salas.phtml'">
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

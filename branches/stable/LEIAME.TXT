@@ -1,0 +1,44 @@
+Bem-vindo
+
+------------------------------------------------------------
+Arquivo LEIAME do SA - Sistema Acadêmico
+------------------------------------------------------------
+
+Este arquivo contém informações importantes sobre este programa.
+Leia com atenção as informações antes de começar a instalação.
+
+O SA-Sistema Acadêmico é desenvolvido pelo GTI do CEFET-Bambuí
+baseado no sistema de controle acadêmico SAGU versão1.
+
+------------------------------------------------------------
+Notas sobre a instalação
+------------------------------------------------------------
+
+Requisitos de Sistema:
+
+- Apache versão:
+- PostgreSQL versão:
+- PHP5
+
+Configurações necessárias:
+
+- Apache:
+- PHP5: 
+
+
+Arquivos a serem alterados:
+
+- configuracao.php
+- lib/config.php
+- app/sagu/fatalerror.phtml  * caminho da imagem
+- app/wediario/conf/wediario.conf.php
+
+------------------------------------------------------------
+Desenvolvedores
+------------------------------------------------------------
+Santiago Silva Pereira - santiago@cefetbambui.edu.br
+Wanderson Santiago dos Reis - wanderson@cefetbambui.edu.br
+
+------------------------------------------------------------
+Copyright 2009 - CEFET-Bambuí
+Todos os direitos reservados

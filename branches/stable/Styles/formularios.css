@@ -1,0 +1,73 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	padding: 8px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	
+}
+img {
+	border: 0px;
+}
+h2 {
+	font-size:20px;
+}
+.bar_menu_texto {
+	text-decoration:none;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color:#333333;
+}
+td {
+	padding: 4px;
+}
+
+.box_geral {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000066;
+	width: 778px;
+	text-decoration: none;
+	background-color: #EFEFEF;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: outset;
+	border-right-style: outset;
+	border-bottom-style: outset;
+	border-left-style: outset;
+	text-align: left;
+	padding: 15px;
+	margin: 10px;
+	height: auto;
+	position: relative;
+	display: block;
+}
+.box_geral a{
+	text-decoration:underline;
+	color:#0000CC;
+}
+.tabela_geral {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+	padding:4px;
+	/*border: 2px ridge #333333;*/
+}
+.tabela_geral a{
+	text-decoration:underline;
+	color:#0000CC;
+}
+.titulo {
+	font-size: 20px;
+	font-weight:bold;
+}
+.style2 {
+	color: #FF0000;
+}
+.comentario {
+    color: #0099FF;
+    font-style: italic;
+}

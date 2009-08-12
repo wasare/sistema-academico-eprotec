@@ -1,0 +1,316 @@
+/* Cabeçalho*/
+body {
+    font-family: verdana, Arial, Helvetica, sans-serif;
+	margin: 0px;
+	scrollbar-arrow-color:#FFFFFF;
+    scrollbar-3dlight-color:#036;
+    scrollbar-highlight-color:#666666;
+    scrollbar-face-color:#dbe3f0;
+    scrollbar-shadow-color:#036;
+    scrollbar-darkshadow-color:#036;
+    scrollbar-track-color:#FFFFFF;
+}
+
+font {
+FONT-WEIGHT: normal;
+font-family: Geneva, Arial, Helvetica, sans-serif; /* define o tipo de fonte */
+font-size:11px; /* define o tamanho da fonte */
+color:#000000; /* define a cor da fonte */
+}
+
+.topx {
+	font-family: verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	background-color: #FFCC00;
+}
+
+
+form { margin: 0px }
+
+.azul {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #FFFFFF;
+	background-color: #9AA4F5;
+}
+
+
+
+.amarelo {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #000000;
+	background-color: #98A5D1;
+	
+}
+
+.link0 {
+	color: #000000;
+	text-decoration: none;
+}
+.link1 {
+	color: #000000;
+	text-decoration: none;
+}
+.link1:hover {
+	font-weight:bold;
+	text-decoration: underline;
+}
+.link2 {
+	color: #000000;
+	text-decoration: none;
+}
+.link2:hover {
+	font-weight:bold;
+	text-decoration: underline;
+}
+
+.linkimg { filter: Gray; }
+.link3 {
+	color: #333333;
+	text-decoration: none;
+}
+.link3:hover {
+	text-decoration: underline;
+}
+.link4 {
+	color: #666666;
+	text-decoration: none;
+}
+
+.boxe_pesquisar {
+font-family: Verdana, Arial, Helvetica, sans-serif; 
+font-size: 8pt; color: #000000; 
+text-decoration: none; 
+background-color: #FFFFFF; 
+border: #000000; 
+border-style: solid; 
+border-top-width: 1px; 
+border-right-width: 1px;
+border-bottom-width: 1px; 
+border-left-width: 1px
+}
+
+#preamble {
+	clear: right; 
+	padding: 50px 30px 0px 230px;
+	}
+p { 
+	font: 9pt/17pt verdana; 
+	margin-top: 0px; 
+	text-align: justify;
+	color:#000000;
+	}
+	
+#confont {
+	font-family:arial, verdana,sans-serif;
+	font-size:10px;
+	color:#0E356E;
+	text-align: center;
+	position:relative;
+	right:0px;
+	top:10em;
+	width: 775px;
+	height: 172px;
+	z-index:1;
+	left: 1px;
+    background-color:#ffffff;
+	BORDER-top: 1px dashed #000000  ; 
+	
+}
+
+.menuStyle {
+font-size:10px;
+font-family: Verdana, Arial, Helvetica, Geneva, sans-serif; 
+color:#FFFFFF;
+border: solid 0px #000000; 
+background-color: #9AA4F5;
+text-align: left;	
+padding: 0px 0px 0px 0px;	
+margin-right: 0px;	
+position:relative;
+right:0px;
+top:0px;
+left: 0px;
+width: 780px;
+height: 20px;
+}
+
+/*#menuHead {
+background-color: #98A5D1;
+position: absolute;
+z-index:50;
+top:166px;
+}*/
+
+#menuHead {
+background-color: #98A5D1;
+position: relative;
+z-index:50;
+top:0px;
+}
+
+#menuHead1, #menuHead2, #menuHead3 {
+position: relative;
+}
+
+#menu1, #menu2, #menu3 {
+position: absolute;
+z-index:100; 
+visibility: hidden;
+width:180px;
+height: 60px;
+}
+
+a.menulink:link {
+color:#FFFFFF;
+text-decoration: none;
+font-family: Arial, verdana, Helvetica, Geneva, sans-serif;
+FONT-WEIGHT: bold;
+
+
+}
+
+a.menulink:visited {
+color:#FFFFFF;
+font-family: Arial, verdana, Helvetica, Geneva, sans-serif;
+text-decoration: none;
+FONT-WEIGHT: bold;
+
+}
+
+a.menulink:active {
+color:#000000;
+font-family: Arial, verdana, Helvetica, Geneva, sans-serif;
+FONT-WEIGHT: bold;
+text-decoration:none;
+}
+
+a.menulink:hover {
+color:#000000;
+FONT-WEIGHT: bold;
+font-family: Arial, verdana, Helvetica, Geneva, sans-serif;
+text-decoration: none; 
+}
+
+#direita{
+width:131px;
+float:left;
+padding:0px 0px 0px 0px;
+margin:0px 0px 0px 0px;
+position:absolute;
+}
+
+#galeria{
+padding-top:20px;
+padding-left:0px;
+padding-bottom:4px;
+margin-bottom:0px;
+margin-left:0px;
+text-align:center;
+left:0px;
+height:225px
+}
+
+#rodape2{
+padding-top:16px;
+clear:both;
+background:#FFFFFF;
+color:#696D75;
+font:9px Arial,Helvetica,sans-serif;
+text-align:center;
+height:20px
+}
+
+/* Menu */
+#pomenu {
+position:absolute;
+top:310px;
+}
+
+#select {
+font-weight:bold;
+font-family: Geneva, Arial, Helvetica, sans-serif; /* define o tipo de fonte */
+font-size:11px; /* define o tamanho da fonte */
+color:#05053F; /* define a cor da fonte */
+padding:0;
+margin:0;
+width:190px;
+border:1px solid #7E889A; /* uma borda em volta do menu */
+background-color: #d2d8e2; /* cor do fundo */
+border-bottom:1px solid #7E889A; /* coloca uma borda azul entre links */
+}
+
+ul#menu {
+margin: 0; /* retira o recuo para alguns browsers */ 
+padding:0; /* retira o recuo para outros browsers */ 
+list-style-type: none; /* retira o marcador de listas*/
+width:190px;
+background-color: #ffffff; /* cor do fundo */
+border:1px solid #7E889A; /* uma borda em volta do menu */
+}
+
+ul#menu li a:link, ul#menu li a:visited {
+/*border-left:10px solid #798898; /* uma barrinha a esquerda dos links */*/
+padding-left:5px; /* espaçamento entre a barrinha e o texto do link */
+text-decoration: none; /* retira o sublinhado dos links */
+FONT-WEIGHT: bold;
+font-family: Geneva, Arial, Helvetica, sans-serif; /* define o tipo de fonte */
+font-size:11px; /* define o tamanho da fonte */
+color:#000000; /* define a cor da fonte */
+
+}
+
+ul#menu li a:hover {
+/*border-left:10px solid #0E356E; /* uma barrinha a esquerda dos links */*/
+padding-left:8px; /* espaçamento entre a barrinha e o texto do link*/
+color: #08486A; /* cor do fundo*/
+}
+
+
+ul#menu li {
+border-bottom:1px solid #7E889A; /* coloca uma borda azul entre links */
+}
+
+.dottecolor {
+	background-color:#dbe3f0;
+	width:270;
+	border-top: 1px dotted #B2C2D1;
+	border-right: 1px none #B2C2D1;
+	border-bottom: 1px none #B2C2D1;
+	border-left: 1px none #B2C2D1;
+
+}
+.dotte {
+	width:270;
+	border-top: 1px dotted #B2C2D1;
+	border-right: 1px none #B2C2D1;
+	border-bottom: 1px none #B2C2D1;
+	border-left: 1px none #B2C2D1;
+
+}
+
+ul#mena {
+margin: 0; /* retira o recuo para alguns browsers */ 
+padding:0; /* retira o recuo para outros browsers */ 
+list-style-type: none; /* retira o marcador de listas*/
+width:190px;
+background-color: #ffffff; /* cor do fundo */
+
+}
+
+ul#mena li a:link, ul#mena li a:visited {
+padding-left:5px; /* espaçamento entre a barrinha e o texto do link */
+text-decoration: none; /* retira o sublinhado dos links */
+FONT-WEIGHT: normal;
+font-family: Georgia, Arial, Helvetica, sans-serif; /* define o tipo de fonte */
+font-size:11px; /* define o tamanho da fonte */
+color:#036; /* define a cor da fonte */
+
+}
+
+ul#mena li a:hover {
+padding-left:8px; /* espaçamento entre a barrinha e o texto do link*/
+color: #08486A; /* cor do fundo*/
+}
+
