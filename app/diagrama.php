@@ -1,8 +1,6 @@
 <?php
 
-header("Cache-Control: no-cache");
-require_once('../core/login/check_login.php');
-require("../configs/configuracao.php");
+require_once("../configs/configuracao.php");
 
 $conn = new connection_factory($param_conn);
 
@@ -19,7 +17,8 @@ $avisos[0] = $Result1->fields[0];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>SA</title>
-<script language="javascript" type="">
+<script language="javascript">
+<!--
     function fechar(){
         document.getElementById('popup').style.display = 'none';
     }
@@ -32,33 +31,32 @@ $avisos[0] = $Result1->fields[0];
     function avisos() {
         window.open("avisos/cadastrar.php",'Avisos','resizable=yes, toolbar=no,width=550,height=350,scrollbars=yes,top=0,left=0');
     }
+-->
 </script>
 <link href="../public/styles/style.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
-<!--
-.style1 {
-	font-size: 10px;
-}
-a {
-	text-decoration:underline;
-	color:#0033CC;
-}
-#popup {
-	position: absolute;
-	top: 10%;
-	left: 1px;
-	width: 160px;
-	padding: 10px 10px 10px 10px;
-	border-width: 2px;
-	border-style: solid;
-	background: #ffffa0;
-	display: none;
-}
--->
+	.style1 {
+		font-size: 10px;
+	}
+	a {
+		text-decoration:underline;
+		color:#0033CC;
+	}
+	#popup {
+		position: absolute;
+		top: 10%;
+		left: 1px;
+		width: 160px;
+		padding: 10px 10px 10px 10px;
+		border-width: 2px;
+		border-style: solid;
+		background: #ffffa0;
+		display: none;
+	}
 </style>
 </head>
-<body onload="javascript: abrir()">
 
+<body onload="javascript: abrir()">
 <div id="popup">
   <strong>Avisos:</strong><br />
   <br />
@@ -81,7 +79,7 @@ a {
     <tr>
       <td align="center"><br />
         <p><a href="../index.php"> Sair do Sistema</a> - <a href="javascript: abrir();">Avisos</a> - <a href="../public/help.php">Ajuda e Documenta&ccedil;&atilde;o</a> </p>
-        <p class="texto1 style1"><strong>Sistema Acad&ecirc;mico - revis&atilde;o <?=$versao?></strong><br />
+        <p class="texto1 style1"><strong>Sistema Acad&ecirc;mico - revis&atilde;o <?=$REVISAO?></strong><br />
           &copy;2008-2009  <?=$IEnome?><br />
       </p></td>
     </tr>

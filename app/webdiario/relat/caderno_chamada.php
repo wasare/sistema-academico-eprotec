@@ -1,7 +1,4 @@
 <?php
-/*
-http://sagu.cefetbambui.edu.br/diario/relat/caderno_chamada_ps.php3?id=2491&getperiodo=0601&getdisciplina=604029%3A45
-*/
 
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
@@ -191,14 +188,11 @@ if($_GET["getperiodo"] != "")
 */
 
 // <input type=\"hidden\" name=\"getcurso\" value=\"$curso\">
-/*
-http://sagu.cefetbambui.edu.br/diario/relat/caderno_chamada_ps.php3?id_disc=573&data_em=06/04/2006&dia=-1&turno=0&ref_periodo=501&curso_id=1&campus_id=undefined
-*/
 
 	 if ($_GET["getperiodo"]  != "")  {
         $periodo = $_GET["getperiodo"];
         // $curso = $_GET["getcurso"];
-       	print("<form name=\"envia\" enctype=\"multipart/form-data\" action=\"caderno_chamada_ps.php3\" method=\"post\">
+       	print("<form name=\"envia\" enctype=\"multipart/form-data\" action=\"caderno_chamada_ps.php\" method=\"post\">
 	    <input type=\"hidden\" name=\"id\" value=\"$id\">
             <input type=\"hidden\" name=\"getperiodo\" value=\"$periodo\">
       	<p>Selecione a disciplina:</p>

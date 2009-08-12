@@ -78,7 +78,7 @@ if($total < 1){
 	<div style="width: 760px;">
        
     	<div align="center" style="text-align:center; font-size:12px;">
-        	<?php echo $header->get_empresa($path_images); ?>
+        	<?php echo $header->get_empresa($PATH_IMAGES); ?>
             <br /><br />
         </div>    
         <div align="center">

@@ -2,7 +2,7 @@
 
 $BASE_DIR_WEBDIARIO  = dirname(__FILE__) . '/';
 
-require_once($BASE_DIR_WEBDIARIO .'../../configs/config.php');
+require_once($BASE_DIR_WEBDIARIO .'../../configs/configuracao.php');
 
 @session_start();
 
@@ -33,7 +33,7 @@ $L['20052'] = array('1406','4487');
 // ACOES QUE MODIFICAM OS DIARIOS
 $Movimento = array('0','1','3','4','8','10');
 
-// PERIODOS ATUALMENTE LIBERADOS PARA TODOS OS PROFESSORES
+// PERIODOS ATUALMENTE LIBERADOS PARA OS PROFESSORES
 $Autorizado = array('20031','20032','20041','20042','20051','20052','20061','20062','','20071','20072','20081','20082','20091');
 
 

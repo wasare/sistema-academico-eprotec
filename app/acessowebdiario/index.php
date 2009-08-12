@@ -8,6 +8,7 @@
 <script language="javascript" src="../../lib/prototype.js"></script>
 <script language="javascript" src="index.js"></script>
 </head>
+
 <body onLoad="pesquisar();">
 <h2>Acesso ao Web Di&aacute;rio</h2>
 <table border="0" cellspacing="0" cellpadding="0">

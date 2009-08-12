@@ -550,9 +550,6 @@ PS_line($myfile_ps, 45, $lin, 814, $lin, 2);
 // Begin Program Principal
 
 $quebra_pagina = 25;
-//$conn = new Connection;
-//$conn->Open();
-//$query = $conn->CreateQuery($sql);
 
 //echo $sql;
 //exit;

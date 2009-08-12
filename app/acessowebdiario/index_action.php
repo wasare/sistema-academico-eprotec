@@ -4,28 +4,18 @@
 header ("Cache-Control: no-cache");
 require("../../lib/common.php");
 require("../../configs/configuracao.php");
-require("../../lib/adodb/adodb.inc.php");
-require("../../lib/adodb/tohtml.inc.php");
 
+$conn = new connection_factory($param_conn);
 
 $sql = "SELECT 
 		nome_completo, login, nivel, id_nome, ativo
 		FROM public.diario_usuarios
 		WHERE 
-		lower(to_ascii(\"nome_completo\")) like lower(to_ascii('%".$_POST['curso']."%')) 
+		lower(to_ascii(\"nome_completo\")) like lower(to_ascii('%".$_POST['nome']."%')) 
 		ORDER BY \"nome_completo\" LIMIT 15";
+$sql = iconv("utf-8","iso-8859-1",$sql);
 
-//$sql = iconv("utf-8", "iso-8859-1", $sql);
-
-
-//Criando a classe de conexão ADODB
-$Conexao = NewADOConnection("postgres");
-
-//Setando como conexão persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
-
-//Exibindo a descricao do curso caso setado
-$RsNome = $Conexao->Execute($sql);
+$RsNome = $conn->Execute($sql);
 
 //inicio da tabela
 $tabela = '<table width="90%" border="0">';
@@ -48,7 +38,7 @@ while(!$RsNome->EOF){
 		$situacao = " (Desativado)";
 	}
     $tabela.= "<tr bgcolor=\"$cor_linha\" >";
-	$tabela.= "<td align=\"left\">" . iconv("iso-8859-1", "utf-8", $RsNome->fields[0]) . $situacao . "</td>";
+	$tabela.= "<td align=\"left\">" . $RsNome->fields[0] . $situacao . "</td>";
     $tabela.= "<td align=\"left\">" . $RsNome->fields[1]."</td>";
 	
 	if($RsNome->fields[2] == 1) $tabela.= "<td align=\"left\">Professor</td>";
@@ -66,8 +56,5 @@ while(!$RsNome->EOF){
 $tabela.= "</table>";
 
 echo $tabela;
-
-
-//rs2html($RsNome, 'width="90%" cellspacing="0" border="0" class="tabela_relatorio" cellpadding="0"');
 
 ?>

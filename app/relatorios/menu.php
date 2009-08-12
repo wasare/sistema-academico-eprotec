@@ -53,7 +53,7 @@ img {
 	<tr>
 		<td width="50%" valign="top">
 		<p>
-		<a href="pesquisa_alunos_nao_aprovados.php" title="Alunos aprovados / reprovados" target="_self" class="menu_link">
+		<a href="alunos_nao_aprovados/pesquisa_alunos_nao_aprovados.php" title="Alunos aprovados / reprovados" target="_self" class="menu_link">
 			<img src="../../public/images/icons/lupa.png" alt="" />
 			&nbsp;Alunos Aprovados/Reprovados
 		</a><br />
