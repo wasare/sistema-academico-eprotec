@@ -1,17 +1,20 @@
-@charset "utf-8";
-/* CSS Document */
-
 body {
 	padding: 8px;
 	font-family:Verdana, Arial, Helvetica, sans-serif;
 	font-size: 12px;
 }
 
-img {border: 0px;}
+img {
+	border: 0px;
+}
 
-h2 {font-size:20px;}
+h2 {
+	font-size:20px;
+}
 
-td {padding: 4px;}
+td {
+	padding: 4px;
+}
 
 .bar_menu_texto {
 	text-decoration:none;
@@ -54,7 +57,6 @@ td {padding: 4px;}
 	font-size: 12px;
 	text-decoration: none;
 	padding:4px;
-	/*border: 2px ridge #333333;*/
 }
 
 .tabela_geral a{
@@ -67,21 +69,36 @@ td {padding: 4px;}
 	font-weight:bold;
 }
 
-.style2 {
-	color: #FF0000;
-}
-
 .comentario {
     color: #0099FF;
     font-style: italic;
 }
 
-.dica {
-     color: #0099FF;
-     font-style: italic;
-}
-
 .botao {
 	padding: 10px;
 	cursor: hand;
+}
+
+.menu_relatorio {
+	text-decoration: none;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #333333;
+}
+
+.menu_relatorio:hover {
+	text-decoration: underline;
+}
+
+.msg_erro {
+	color: #FF0000;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+
+.msg_sucesso {
+	color: #006633;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
 }
