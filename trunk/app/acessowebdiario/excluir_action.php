@@ -25,11 +25,11 @@ $Result1 = $Conexao->Execute($sql);
 	
 if ($Result1) {
 	
-	$msg = "<p class=\"style3\">Exclusão realizada com sucesso!</p>";
+	$msg = "<p class=\"msg_erro\">Exclusão realizada com sucesso!</p>";
 }
 else {
 	
-	$msg = "<p class=\"style2\">Erro ao realizar exclusão!</p>";
+	$msg = "<p class=\"msg_sucesso\">Erro ao realizar exclusão!</p>";
 }
 
 ?>
@@ -37,25 +37,9 @@ else {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Untitled Document</title>
 <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-<!--
-.style2 {
-	color: #FF0000;
-	font-family:Verdana, Arial, Helvetica, sans-serif;
-	font-size:12px;
-	}
-
-.style3 {
-	color: #006633;
-	font-family:Verdana, Arial, Helvetica, sans-serif;
-	font-size:12px;
-	}
-
--->
-</style>
 </head>
 
 <body>
@@ -67,7 +51,5 @@ else {
       Voltar</a></div></td>
   </tr>
 </table>
-<p class="style2">&nbsp;</p>
 </body>
-
 </html>

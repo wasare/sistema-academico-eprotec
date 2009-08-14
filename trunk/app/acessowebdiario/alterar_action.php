@@ -56,11 +56,11 @@ $Result1 = $Conexao->Execute($sql);
 //Se executado com sucesso
 if ($Result1) {
 	
-	$msg = "<p class=\"style3\">Alteração realizada com sucesso!</p>";
+	$msg = "<p class=\"msg_sucesso\">Alteração realizada com sucesso!</p>";
 }
 else {
 	
-	$msg = "<p class=\"style2\">Erro ao realizar alteração!</p>";
+	$msg = "<p class=\"msg_erro\">Erro ao realizar alteração!</p>";
 }
 
 ?>
@@ -71,20 +71,6 @@ else {
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	<title>SA</title>
 	<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
-	<style type="text/css">
-	<!--
-	.style2 {
-		color: #FF0000;
-		font-family:Verdana, Arial, Helvetica, sans-serif;
-		font-size:12px;
-	}
-	.style3 {
-		color: #006633;
-		font-family:Verdana, Arial, Helvetica, sans-serif;
-		font-size:12px;
-	}
-	-->
-	</style>
 </head>
 
 <body>
@@ -92,11 +78,16 @@ else {
 <?php echo $msg; ?>
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td width="60"><div align="center"><a href="index.php" class="bar_menu_texto"><img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
-      Voltar</a></div></td>
+    <td width="60">
+    	<div align="center">
+    		<a href="index.php" class="bar_menu_texto">
+    			<img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" />
+    			<br />
+      			Voltar
+      		</a>
+     	</div>
+    </td>
   </tr>
 </table>
-<p class="style2">&nbsp;</p>
 </body>
-
 </html>

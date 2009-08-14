@@ -30,18 +30,11 @@ else{
 $sql = "INSERT INTO  public.diario_usuarios(login,senha,nome_completo,nivel,id_nome,ativo) 
 VALUES('$login',md5('$senha'),'$nome_completo','$nivel','$codigo_pessoa','$ativo')";
 
-//echo $sql;
-//die();
-
-
-
 //Criando a classe de conexão ADODB
 $Conexao = NewADOConnection("postgres");
 
 //Setando como conexão persistente
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
-
-
 
 //Confere se o registro existe
 $sql2 = "SELECT id_nome FROM public.diario_usuarios WHERE id_nome = $codigo_pessoa";
@@ -51,10 +44,9 @@ $RsConfPessoa = $Conexao->Execute($sql2);
 $NumPessoa = $RsConfPessoa->RecordCount();
 
 
-
 if($NumPessoa > 0){
 	
-	$msg = "<p class=\"style2\">Erro: não foi possível cadastrar.<br>Usuário já cadastrado!</p>";
+	$msg = "<p class=\"msg_erro\">Erro: não foi possível cadastrar.<br>Usuário já cadastrado!</p>";
 }
 else {
 	
@@ -63,11 +55,11 @@ else {
 	
 	if ($Result1) {
 	
-		$msg = "<p class=\"style3\">Cadastro realizado com sucesso!</p>";
+		$msg = "<p class=\"msg_sucesso\">Cadastro realizado com sucesso!</p>";
 	}
 	else {
 	
-		$msg = "<p class=\"style2\">Erro ao realizar cadastro!</p>";
+		$msg = "<p class=\"msg_erro\">Erro ao realizar cadastro!</p>";
 	}
 }
 ?>
@@ -75,25 +67,9 @@ else {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Untitled Document</title>
 <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-<!--
-.style2 {
-	color: #FF0000;
-	font-family:Verdana, Arial, Helvetica, sans-serif;
-	font-size:12px;
-	}
-
-.style3 {
-	color: #006633;
-	font-family:Verdana, Arial, Helvetica, sans-serif;
-	font-size:12px;
-	}
-
--->
-</style>
 </head>
 
 <body>
@@ -105,7 +81,5 @@ else {
       Voltar</a></div></td>
   </tr>
 </table>
-<p class="style2">&nbsp;</p>
 </body>
-
 </html>
