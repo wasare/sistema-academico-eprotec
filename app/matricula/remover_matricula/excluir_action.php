@@ -183,7 +183,7 @@ else
     <?=$periodo?>
   </div>
   <p>
-  <font color="red" class="style2">
+  <font color="red" class="msg_erro">
      <strong>Tem certeza que deseja excluir a(s) matr&iacute;cula(s) na(s) disciplina(s) listada(s)?</strong>
   </font>
   </p>

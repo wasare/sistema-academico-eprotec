@@ -1,7 +1,5 @@
 <?php
 
-//include_once('manutencao.php');
-	
 session_start();
 setcookie ("us", "0", time( )-9999);
 setcookie ("login", "0", time( )-9999);

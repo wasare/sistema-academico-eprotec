@@ -33,14 +33,6 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
 <title>Relat&oacute;rio de Alunos Aprovados/Reprovados</title>
 <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="../../lib/prototype.js"></script>
-<style type="text/css">
-<!--
-.style2 {
-	color: #0099FF;
-	font-style: italic;
-}
--->
-</style>
 <script language="javascript">
 <!--
 
@@ -141,30 +133,12 @@ function submit_opt(arq){
       <tr>
         <td>C&oacute;digo do Aluno:</td>
         <td><input name="aluno" type="text" id="aluno" size="10">
-          <span class="style2">Caso n&atilde;o preenchido exibir&aacute; todos os alunos.</span> </td>
+          <span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todos os alunos.</span> </td>
       </tr>
-      <!--<tr>
-        <td>Turma:</td>
-        <td><input name="turma" type="text" id="turma" size="10" />
-          <span class="style2">Caso n&atilde;o preenchido exibir&aacute; todas as turmas.</span></td>
-      </tr>-->
       <tr>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
       </tr>
-      <!--<tr>
-        <td colspan="2" style="background-color:#CCCCCC"><strong>Situa&ccedil;&atilde;o:</strong><br />
-          <input type="radio" name="aprovacao" id="aprovacao" value="1" />
-          Aprovado
-          <input type="radio" name="aprovacao" id="aprovacao" value="2" checked="checked" />
-          Reprovado
-          <input type="radio" name="aprovacao" id="aprovacao" value="3" />
-          Aprovado e Reprovado </td>
-      </tr>-->
-      <!--<tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>-->
       <tr>
         <td colspan="2" style="background-color:#CCCCCC"><strong>Assinatura (opcional):</strong> </td>
       </tr>

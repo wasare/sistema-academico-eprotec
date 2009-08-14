@@ -86,7 +86,7 @@ while(!$RsDiarios->EOF) {
 		
 }
   $exibe_diarios .= "</table>";
-  $exibe_botao = '<p class="style2"><strong>Aten&ccedil;&atilde;o! Esta a&ccedil;&atilde;o n&atilde;o pode ser retomada! 
+  $exibe_botao = '<p class="msg_erro"><strong>Aten&ccedil;&atilde;o! Esta a&ccedil;&atilde;o n&atilde;o pode ser retomada! 
 </strong></p>';
   $exibe_botao .= '<input type="submit" value="Excluir a matr&iacute;cula nas disciplinas selecionadas" />';
    

@@ -130,13 +130,13 @@ if($total < 1){
             <p>&nbsp;</p>
             <div class="carimbo_box">
             	_______________________________<br>
-		<span class="carimbo_nome">
-		    <?php echo $carimbo->get_nome($_POST['carimbo']);?>
-		</span><br />
-		<span class="carimbo_funcao">
-		    <?php echo $carimbo->get_funcao($_POST['carimbo']);?>
-		</span>
-	    </div>
+				<span class="carimbo_nome">
+		    		<?php echo $carimbo->get_nome($_POST['carimbo']);?>
+				</span><br />
+				<span class="carimbo_funcao">
+		    		<?php echo $carimbo->get_funcao($_POST['carimbo']);?>
+				</span>
+	    	</div>
 	    <br>
 	</div>
     </div>
