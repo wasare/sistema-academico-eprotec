@@ -25,25 +25,32 @@ $carimbo = new carimbo($param_conn);
 
 <body bgcolor="#FFFFFF">
 <h2>Relatório de Alunos Aprovados/Reprovados</h2>
-<form method="post" name="form1" target="_blank">
+<form method="post" name="form1" id="form1" target="_blank">
 
 	<input type="image" name="input" 
 		src="../../../public/images/icons/print.jpg" 
 		alt="Exibir relat&oacute;rio" 
-		title="Exibir relat&oacute;rio" 
+		title="Exibir relat&oacute;rio"
+		id="bt_exibir" 
+		name="bt_exibir"  
 		class="botao" 
 		onclick="document.form1.action = 'lista_aprovados_reprovados.php'" />
 	<input type="image" name="input" 
 		src="../../../public/images/icons/pdf_icon.jpg" 
 		alt="Exibir relat&oacute;rio PDF" 
-		title="Exibir relat&oacute;rio PDF" 
+		title="Exibir relat&oacute;rio PDF"
+		id="bt_pdf" 
+		name="bt_pdf"  
 		class="botao" 
 		onclick="document.form1.action = 'pdf_aprovados_reprovados.php'" />
 	<input type="image" name="voltar" 
 		src="../../../public/images/icons/back.png" 
 		alt="Voltar" 
 		title="Voltar" 
-		onclick="history.back(-1);return false;" class="botao" />
+		id="bt_voltar" 
+		name="bt_voltar" 
+		class="botao"
+		onclick="history.back(-1);return false;" />
 	
 	<div class="box_geral">
 		Per&iacute;odo:<br />

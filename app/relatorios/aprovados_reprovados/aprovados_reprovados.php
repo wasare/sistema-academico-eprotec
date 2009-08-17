@@ -51,6 +51,7 @@
   $sql = 'SELECT * FROM ('. $sql .') AS T1 ORDER BY lower(to_ascii("Nome (Cód)"));';	
   
   $RsCurso = $conn->Execute("SELECT descricao ||' (' || id || ') ' as \"Curso\" FROM cursos WHERE id = $curso;");
+  
   $info = "<h4>".$RsCurso->fields[0]."</h4>";	
 
   $RsPeriodo = $conn->Execute("SELECT descricao FROM periodos WHERE id = '$periodo';");
@@ -58,11 +59,14 @@
   
   $Result1 = $conn->Execute($sql);
     
-  $num_result = $Result1->RecordCount();
-  
+  $total = $Result1->RecordCount();
+    
+  if($total < 1){
+    echo "<script>alert('Nenhum registro foi retornado!'); window.close();</script>";
+  }
   
   $info .= "<strong>Data: </strong>" . date("d/m/Y") . "&nbsp;&nbsp;-&nbsp;&nbsp;";
   $info .= "<strong>Hora: </strong>" . date("H:i:s") . "&nbsp;&nbsp;-&nbsp;&nbsp;";
-  $info .= "<strong>Total de Registros: </strong>" . $num_result . "&nbsp;&nbsp;-&nbsp;&nbsp;";
+  $info .= "<strong>Total de Registros: </strong>" . $total . "&nbsp;&nbsp;-&nbsp;&nbsp;";
   $info .= "<strong>Período: </strong> <span>$DescricaoPeriodo</span> <br><br>";
   

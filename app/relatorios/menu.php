@@ -24,7 +24,7 @@ require("../../configs/configuracao.php");
 	<a href="aprovados_reprovados/pesquisa_aprovados_reprovados.php" title="Alunos aprovados / reprovados" target="_self" class="menu_relatorio">
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Alunos Aprovados/Reprovados
 	</a><br />
-	<a href="pesquisa_dispensados.php" title="Relat&oacute;rio de Alunos Dispensados" target="_self" class="menu_relatorio">
+	<a href="dispensados/pesquisa_dispensados.php" title="Relat&oacute;rio de Alunos Dispensados" target="_self" class="menu_relatorio">
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Alunos Dispensados
 	</a><br />
 	<a href="pesquisa_alunos.php" title="Alunos matriculados" target="_self" class="menu_relatorio">
