@@ -990,11 +990,9 @@ function inicializaDiario($disc,$ofer,$periodo,$prof) {
 }
 
 
+if(!isset($_SESSION['login']) && !is_string($_SESSION['login']) && !isset($_SESSION['nivel']) && !is_integer($_SESSION['nivel']) && !isset($_SESSION['web_diario_login']) && !is_integer($_SESSION['web_diario_login'])) {
 
-
-if(!isset($_SESSION['login']) && !is_string($_SESSION['login']) && !isset($_SESSION['nivel']) && !is_integer($_SESSION['nivel']) ) {
-
-   header("Location: $BASE_URL".'index.php');
+   header('Location: '. $BASE_URL .'index.php');
    exit;
 
 }

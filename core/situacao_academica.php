@@ -54,7 +54,7 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios)
 		$diarios_reprovados += $RsDisciplina->fields[0];
 	}
 
-    if ($diarios_reprovados > $diarios_matriculados )
+    if ($diarios_reprovados >= $diarios_matriculados )
          return TRUE;
     else
          return FALSE;

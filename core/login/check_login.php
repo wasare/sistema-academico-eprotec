@@ -52,7 +52,7 @@ else
 		// desconecta do banco
 		pg_close($conexao);
 
-		header("Location: $BASE_URL/app/inicio.php?login_id=$uid");
+		header('Location: '. $BASE_URL .'app/inicio.php?login_id='. $uid);
 		exit;
 	}
 	else

@@ -17,7 +17,7 @@ require_once($BASE_DIR_WEBDIARIO .'conf/conn_diario.php');
 $CSS_DIR = $BASE_URL .'css/';
 
 /*Define onde está a página de erro*/
-$erro = $BASE_URL .'erro.php';
+$ERRO_URL = $BASE_URL .'erro.php';
 
 $speriodo = $_SESSION['lst_periodo'];
 
@@ -34,9 +34,9 @@ $L['20052'] = array('1406','4487');
 $Movimento = array('0','1','3','4','8','10');
 
 // PERIODOS ATUALMENTE LIBERADOS PARA OS PROFESSORES
-$Autorizado = array('20031','20032','20041','20042','20051','20052','20061','20062','','20071','20072','20081','20082','20091');
+$Autorizado = array('20031','20032','20041','20042','20051','20052','20061','20062','','20071','20072','20081','20082','20091','20092');
 
-
+$P['20092'] = "'09','0902','09021','09022'";
 $P['20091'] = "'09','0901','09011','09012'";
 
 $P['20082'] = "'08','0802','08021','08022'";
@@ -57,9 +57,7 @@ $P['20042'] = "'07021','07022','0702'";
 $P['20031'] = "'07','07011','07011.F','07011.I','07012','07012.F','07012.I','0701','0701A','0701.F','0701.I','0701.EJA'";
 $P['20032'] = "'07021','07022','0702'";
 
-
 // INCLUI FUNCOES 
 require_once($BASE_DIR_WEBDIARIO .'lib/functions_diario.php');
-
 
 ?>

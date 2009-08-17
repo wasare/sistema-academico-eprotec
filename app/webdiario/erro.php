@@ -19,10 +19,9 @@ session_destroy();
 </style>
 </head>
 
-<body background="img/bar1.jpg" text="#000000" onLoad="document.form1.user.focus()">
+<body background="img/bar1.jpg" text="#000000">
 
 <div align="center">
-  <form name="form1" method="post" action="principal.php">
     <table border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td width="770" height="60" background="img/top2.jpg">&nbsp;</td>
@@ -48,7 +47,6 @@ session_destroy();
         <td height="50" valign="middle"><div align="center"><img src="img/postgres.gif"> <img src="img/php.png"> <img src="img/linux.png"> <img src="img/gti.gif"></div></td>
       </tr>
     </table>
-  </form>
 </div>
 </body>
 </html>

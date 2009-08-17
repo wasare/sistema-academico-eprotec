@@ -2,10 +2,12 @@
 
 require_once(dirname(__FILE__) .'/../webdiario.conf.php');
 
+$host     = $webdiario_host;
+$database = $webdiario_database;
+$user     = $webdiario_user;
+$password = $webdiario_password;
+$port     = $webdiario_port;
 
-
-$options="";
-$tty="";
 $error_msg = "";
 
 
