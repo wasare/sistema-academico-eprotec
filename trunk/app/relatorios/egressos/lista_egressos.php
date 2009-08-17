@@ -1,5 +1,5 @@
 <?php
-require_once("../../../lib/common.php");
+
 require_once("../../../configs/configuracao.php");
 require_once("../../../core/reports/header.php");
 require_once("../../../core/reports/carimbo.php");
