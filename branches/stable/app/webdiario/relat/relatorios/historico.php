@@ -1,9 +1,5 @@
 <?php
-include ('../webdiario.conf.php');
-//////////////////////////$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname") or dir ("Erro 1");
-
-// make select
-
+require_once('../webdiario.conf.php');
 
 
 $sql1="select a.descricao_extenso, b.descricao from disciplinas a, periodos b where a.id='$getdisciplina' and b.id='$getperiodo'";

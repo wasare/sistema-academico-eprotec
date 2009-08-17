@@ -12,8 +12,7 @@
           Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-include ('../webdiario.conf.php');
-/////////////////////$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname");
+require_once('../webdiario.conf.php');
 ?>
 <html>
 <head>

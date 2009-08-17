@@ -1,4 +1,5 @@
 <?php
+
 	class clsConfig
 	{
 		
@@ -18,7 +19,7 @@
 		private $m_esquema;
 		private $m_driver;
 	
-		function clsConfig()
+		function __construct()
 		{
 			$this->app_raiz = "conta_academica/";
 			$this->app_biblioteca = "conta_academica/biblioteca/";
@@ -28,13 +29,15 @@
 			$this->app_visao = "conta_academica/visao/";
 			$this->app_imagens = "conta_academica/visao/imagens/";
 			$this->app_estilos = "conta_academica/visao/estilo/";
-			
+
+            require('../../../../configuracao.php');
+
 			//dados do banco
 			$this->m_driver = 'postgres';
-			$this->m_esquema = 'sagu';
-			$this->m_host = 'dados.cefetbambui.edu.br';
-			$this->m_senha = '@1srv27';
-			$this->m_usuario = 'aluno';
+			$this->m_esquema = $aluno_database;
+			$this->m_host = "$aluno_host";
+			$this->m_senha = "$aluno_password";
+			$this->m_usuario = "$aluno_user";
 
 		}
 		

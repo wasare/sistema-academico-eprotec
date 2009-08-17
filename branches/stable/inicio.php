@@ -47,13 +47,18 @@ function iframeAutoHeight(quem){
 				<td valign="top">
 				<div align="right" class="texto1"><strong>Desenvolvimento: </strong></div>
 				</td>
-				<td width="200" valign="middle">&nbsp;<a
+				<td valign="middle">&nbsp;<a
 					href="<?=$IEurl?>" target="_blank"><img
 					src="images/ifmg.jpg" alt="IFMG - Campus Bambu&iacute;"
 					title="IFMG - Campus Bambu&iacute;" /></a>&nbsp;&nbsp;<a
 					href="http://cefetbambui.edu.br/gerencia_ti" target="_blank"><img
 					src="images/gti.jpg" alt="Ger&ecirc;ncia TI"
 					title="Ger&ecirc;ncia de TI" width="50" height="34" /></a></td>
+                   <?php
+                         if ($_SERVER['HTTP_HOST'] == 'dev.cefetbambui.edu.br' || $host != 'dados.cefetbambui.edu.br')
+                                        echo '&nbsp;&nbsp;&nbsp;&nbsp;<strong>Servidor de BD: </strong>'. $host;
+                    ?>
+
 			</tr>
 		</table>
 		</td>
@@ -155,9 +160,9 @@ function iframeAutoHeight(quem){
 			<li><a href="index.php">Sair</a></li>
 		</ul>
 		</td>
-		<td width="193" class="menu"><span class="texto1"> <img
-			src="images/icons/bola_verde.gif" width="10" height="10" /> <?php echo $LoginUID; ?>
-		</span></td>
+		<td width="193" class="menu"><span class="texto1"> 
+          <img src="images/icons/bola_verde.gif" width="10" height="10" /> <?php echo $LoginUID; ?> </span>
+		</td>
 	</tr>
 </table>
 

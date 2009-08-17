@@ -91,8 +91,8 @@ a {
     <tr>
       <td align="center"><br />
         <p><a href="index.php"> Sair do Sistema</a> - <!--<a href="mapa_do_sistema.php">Mapa do Sistema</a> --> <a href="javascript: abrir();">Avisos</a> - <a href="help.php">Ajuda e Documenta&ccedil;&atilde;o</a> </p>
-        <p class="texto1 style1"><strong>Sistema Acad&ecirc;mico - revis&atilde;o <?=$versao?></strong><br />
-          &copy;2009  <?=$IEnome?><br />
+        <p class="texto1 style1"><strong>Sistema Acad&ecirc;mico - revis&atilde;o <?=$revisao?></strong><br />
+       &copy;2008-2009  <?=$IEnome?><br />
       </p></td>
     </tr>
   </table>

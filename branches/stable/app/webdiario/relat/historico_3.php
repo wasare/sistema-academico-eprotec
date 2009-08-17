@@ -1,5 +1,5 @@
 <?php
-include ('../webdiario.conf.php');
+require_once('../webdiario.conf.php');
 require("pslib.class");
 
 function Desconverte($data){

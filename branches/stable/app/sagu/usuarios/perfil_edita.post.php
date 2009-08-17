@@ -10,6 +10,7 @@ $nome_completo = $_POST['nome_completo'];
 $email = $_POST['email'];
 $ref_setor = $_POST['ref_setor'];
 $obs = $_POST['obs'];
+$grupo = $_POST['grupo'];
 
 
 CheckFormParameters(array("nome","nome_completo","password1","password2","grupo","ref_setor"));

@@ -46,7 +46,8 @@ session_destroy();
             <tr>
               <td height="6"><span class="login">Per&iacute;odo:</span></td>
               <td height="6"><select id="speriodo" name="speriodo">
-                <option value="20091" selected="selected">2009 / 1&ordm; Semestre</option>
+				<option value="20092" selected="selected">2009 / 2&ordm; Semestre</option>
+                <option value="20091" >2009 / 1&ordm; Semestre</option>
                 <option value="20082" >2008 / 2&ordm; Semestre</option>
                 <option value="20081" >2008 / 1&ordm; Semestre</option>
                 <option value="20072" >2007 / 2&ordm; Semestre</option>
@@ -60,7 +61,7 @@ session_destroy();
 			  <p> <br>
 			    <input type="submit" name="submit" target="_parent" value="Entrar">
 			    </p>
-				<p align="center"><a href="senha/">Esqueceu sua senha?<br>Primeiro acesso?</a> <br />  <br /> <a href="../docs/manual_webdiario_professor.pdf">Manual do Webdi&aacute;rio (M&oacute;dulo Professor)</a></p></td>
+				<p align="center"><a href="senha/">Esqueceu sua senha?<br>Primeiro acesso?</a> <br />  <br /> <a href="../../docs/usuario/manual_webdiario_professor.pdf">Manual do Webdi&aacute;rio (M&oacute;dulo Professor)</a></p></td>
             </tr>
           </table>
 	    </td>

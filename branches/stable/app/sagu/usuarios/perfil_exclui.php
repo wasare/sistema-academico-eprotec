@@ -17,7 +17,7 @@ $mensagem = "Exclusão de Usuário...";
 
 $ok = $conn->Execute($sql);  
 
-// Insere usuário na tabela SAGU_USUARIOS no banco de dados sagu.
+// exclui usuário na tabela SAGU_USUARIOS no banco de dados sagu.
 $sql2 = " DELETE FROM sagu_usuarios " .
         " WHERE nome = '$nome';";
 

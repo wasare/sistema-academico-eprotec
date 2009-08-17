@@ -11,10 +11,9 @@ Rua Barão do Rio Branco, 347, Centro - Capivari/SP
 Tel.: (19)3492-1869
 */
 $st = '#F3F3F3';
-include_once('../../webdiario.conf.php');
+require_once('../../webdiario.conf.php');
 
 
-//https://sagu.cefetbambui.edu.br/diario2/secretaria/consultas/faltas_alunos.php?ras=1306&nome=Jovelino%20Jos%E9%20%20Alves%20da%20Silva
 
 $nomes = $_GET['nomes'];
 $ras = $_GET['ras'];

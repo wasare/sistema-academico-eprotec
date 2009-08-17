@@ -1,12 +1,9 @@
 <?php
-include ('../../webdiario.conf.php');
+require_once('../../webdiario.conf.php');
 
 $nomes = $_GET['nomes'];
 $ras = $_GET['ras'];
 
-
-// CONECTA BD
-///////////$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname") or die ("Não foi possivel conectar à fonte de dados");
 
  //Seleciona o Período
 $sql1 = "SELECT

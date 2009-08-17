@@ -11,10 +11,7 @@ Rua Barão do Rio Branco, 347, Centro - Capivari/SP
 Tel.: (19)3492-1869
 */
 $st='#F3F3F3';
-include ('../../webdiario.conf.php');
-
-// CONECT NO BANCO
-///////$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname");
+require_once('../../webdiario.conf.php');
 
 $Data = date("Y-m-d");
 

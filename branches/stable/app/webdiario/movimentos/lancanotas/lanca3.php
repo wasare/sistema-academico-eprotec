@@ -1,7 +1,7 @@
 <?php
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
-include_once('../../webdiario.conf.php');
+require_once('../../webdiario.conf.php');
 
 // CONECT NO BANCO
 
@@ -129,7 +129,8 @@ pg_close($dbconnect);
 
 <?php
 // CONECT NO BANCO
-$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname");
+$dbconnect = pg_Pconnect("host=$host user=$user password=$password dbname=$database");
+
 
 // VARS
 

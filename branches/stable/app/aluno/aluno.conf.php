@@ -8,10 +8,13 @@ ini_set('display_errors', '0');
 
 //PATH ONDE SE ENCONTRA A CLASSE ADODB
 require_once('../../lib/adodb/adodb.inc.php');
+require_once('../../configuracao.php');
+
+
 
 //EFETUA A CONEXÃO
 $conn = NewADOConnection('postgres');
-$conn->Connect('dados.cefetbambui.edu.br', 'aluno', '@1srv27', 'sagu');
+$conn->Connect("'$aluno_host'", "'$aluno_user'", "'$aluno_password'", "'$aluno_database'");
 
 
 date_default_timezone_set('America/Sao_Paulo');

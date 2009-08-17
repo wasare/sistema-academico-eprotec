@@ -11,16 +11,19 @@ Rua Barão do Rio Branco, 347, Centro - Capivari/SP
 Tel.: (19)3492-1869
 */
 $st=#F3F3F3;
-include ('../webdiario.conf.php');
+require_once('../webdiario.conf.php');
 
 // CONECT NO BANCO
-///////////////$dbconnect = pg_Pconnect("user=$dbuser password=$dbpassword dbname=$dbname");
+$dbconnect = pg_Pconnect("host=$host user=$user password=$password dbname=$database");
 
-$Data = date("Y-m-d");
+$Data = date("d/m/Y");
 
+$usuario = $_SESSION['login'];
 // VARS
-$sql1 = "select usuario, data, hora from diario_log where usuario = '$us' AND data <= '$Data' AND status= 'LOGIN ACEITO' order by data DESC, hora DESC LIMIT 10;";
+$sql1 = "select usuario, data, hora from diario_log where usuario = '$usuario' AND data <= '$Data' AND status= 'LOGIN ACEITO' order by data DESC, hora DESC LIMIT 20;";
 $query1 = pg_exec($dbconnect, $sql1);
+
+
 
 ?>
 <html>
@@ -30,7 +33,7 @@ $query1 = pg_exec($dbconnect, $sql1);
   </head>
   
 <p align="center"><b><font size="3" face="Verdana, Arial, Helvetica, sans-serif">ACESSO 
-  AO WEB DIARIO <font size="1">(Ultimos 10 acessos)</font></font></b></p>
+  AO WEB DIARIO <font size="1">(&Uacute;ltimos 20 acessos)</font></font></b></p>
   <?PHP
 if (pg_numrows($query1) > 0) { ?><table width="650">
 <tr bgcolor="#CCCCCC">
@@ -50,7 +53,7 @@ if (pg_numrows($query1) > 0) { ?><table width="650">
 			</tr>");
     }
     } else {
-    print ("Não foi encontrado nenhum aluno");
+    print ("Não foi encontrado nenhum registro");
     }
     pg_close($dbconnect);
       ?>

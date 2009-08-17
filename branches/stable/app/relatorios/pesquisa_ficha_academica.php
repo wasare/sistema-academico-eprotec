@@ -149,11 +149,7 @@ if ($_POST) {
 dados em 
 HTML" alt="Exibir 
 dados 
-em HTML" /></a>
-						<a target="_blank" href="pdf_ficha_academica.php?aluno=' . $q3id . '&nome=' . $Result1->fields[0] . '&curso=' . $Result1->fields[3] . '&cs='.$Result1->fields[2] . '">
-						<img src="../../images/icons/pdf_icon.jpg" width="20" height="20" target="_blank" 
-title="Exibir dados em PDF"  
-alt="Exibir dados em PDF" /></a></td>';
+em HTML" /></a></td>';
 				echo '</tr>';
 					
            		$Result1->MoveNext();

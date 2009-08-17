@@ -20,7 +20,7 @@ class clsUsuario
 		
 		require_once("../config.class.php");
 		$config = new clsConfig();
-		$this->imagem = file_get_contents('imagens/' . $config->GetImagemSemFoto());
+		$this->imagem = @file_get_contents('imagens/' . $config->GetImagemSemFoto());
 	}
 	
 	//PROPRIEDADES

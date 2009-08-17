@@ -4,10 +4,12 @@
 
 set_time_limit(120);
 
+require_once(dirname(__FILE__) . '/../configuracao.php');
+
 /**
  * Caminho para a pasta images
  */
-$PATH_IMAGES = 'https://dev.cefetbambui.edu.br/desenvolvimento/sistema_academico/app/sagu/images';
+$PATH_IMAGES = 'https://dev.cefetbambui.edu.br/desenvolvimento/wanderson/producao/sa/app/sagu/images';
 /**
  * VARIAVEIS PARA O SAGU
  */
@@ -19,11 +21,11 @@ $SAGU_PATH   = dirname(__FILE__) . '/../app/sagu';
 /**
  * BANCO DE DADOS E CAMINHOS
  */
-$LoginHost   = 'dados.cefetbambui.edu.br';
-$LoginDB     = 'sagu';
+$LoginHost   = $host;
+$LoginDB     = $database;
 $LoginUID    = "";
 $LoginPWD    = "";
-$LoginURL    = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico/index.php';
+$LoginURL    = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/wanderson/producao/sa/index.php';
 $LoginACL    = "$SAGU_PATH/users.acl";
 $ErrorURL    = dirname(__FILE__) . '/../app/sagu/fatalerror.phtml';
 $SuccessURL  = dirname(__FILE__) . '/../app/sagu/modelos/modelo_exito.phtml';
@@ -40,12 +42,13 @@ $SQL_LogFile = "$SAGU_PATH/logs/sql.log";
 date_default_timezone_set('America/Sao_Paulo');
 
 error_reporting(E_ALL & ~E_NOTICE);
-$versao = @file_get_contents ('VERSAO.TXT') / 10; 
+// caminho no repositório: https://dev.cefetbambui.edu.br/sistema-academico/branches/stable
+$revisao = @file_get_contents ('VERSAO.TXT'); 
 
 $inicio    = "inicio.php";      //Módulo inicial do SAGU
-$SAGU_HOST = $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico';
+$SAGU_HOST = $_SERVER['SERVER_NAME'] .'/desenvolvimento/wanderson/producao/sa';
 
-$BASE_URL  = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/sistema_academico/';
+$BASE_URL  = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/wanderson/producao/sa/';
 $BASE_DIR  = dirname(__FILE__) . '/';
 
 //Dados da Instituição

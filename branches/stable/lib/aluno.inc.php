@@ -9,7 +9,7 @@
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require_once( dirname(__FILE__) .'/common.php');
+//require_once(dirname(__FILE__) .'/common.php');
 require_once(dirname(__FILE__) .'/../configuracao.php');
 require_once(dirname(__FILE__) .'/adodb/adodb.inc.php');
 
@@ -61,7 +61,7 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios)
 		$diarios_reprovados += $RsDisciplina->fields[0];
 	}
 
-    if ($diarios_reprovados > $diarios_matriculados )
+    if ($diarios_reprovados >= $diarios_matriculados)
          return TRUE;
     else
          return FALSE;
