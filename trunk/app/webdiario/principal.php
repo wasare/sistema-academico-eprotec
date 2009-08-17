@@ -1,34 +1,33 @@
 <?php
 
+
 session_start();
 
-$_SESSION['nivel'] = 0;
-$_SESSION['login'] = 'login';
-
-require_once("webdiario.conf.php");
-
-setcookie ("us", "0", time( )-9999);
-setcookie ("login", "0", time( )-9999);
+setcookie("us", "0", time( )-9999);
+setcookie("login", "0", time( )-9999);
 
 $_SESSION = array();
-
 session_destroy();
+@session_start();
 
-$user = $_POST['user'];
+$usuario = $_POST['usuario'];
 $senha = md5($_POST['senha']);
 $speriodo = trim($_POST['speriodo']);
 
-//$sql_query = "SELECT id_nome, login, senha, nivel from diario_usuarios where login = '$user' and senha = '$senha'";
+// CONTROLE DE SESSAO DE LOGIN NO WEBDIARIO
+$_SESSION['web_diario_login'] = $_POST['web_diario_login'];
+$_SESSION['nivel'] = 0;
+$_SESSION['login'] = 'login';
 
-$result = diario_sql($user, $senha,$speriodo);
+require_once('webdiario.conf.php');
+
+$result = diario_sql($usuario, $senha,$speriodo);
 
 $coordena = '';
-
 
 if ($result['nivel'] == 1) {
 	$coordena = coordena_sql($result['id_nome']);
 }
-
 
 if($result['diario'] == 'semdiario' && $coordena == 0) { // || !is_numeric($speriodo) ) {
 
@@ -45,7 +44,7 @@ if($result['diario'] == 'invalido') {
     $ip = $_SERVER["REMOTE_ADDR"];
     $pagina = $_SERVER["PHP_SELF"];
     $status = "LOGIN RECUSADO";
-	$usuario = trim($user);
+	$usuario = trim($usuario);
 	$sql_store = htmlspecialchars("$usuario");
 	$Data = date("Y-m-d");
 	$Hora = date("H:i:s");
@@ -55,7 +54,7 @@ if($result['diario'] == 'invalido') {
 	print '<html>
                 <body>
                 <SCRIPT LANGUAGE="JavaScript">
-              	self.location.href = "erro.php"
+              	self.location.href = "'. $ERRO_URL .'"
              	</script>
                 </body>
                 </html>';
@@ -65,13 +64,12 @@ if($result['diario'] == 'invalido') {
 
     setcookie ("us", "0", time( )-9999);
     setcookie ("login", "0", time( )-9999);
-    setcookie ("us", $_POST['user'], 0);
-    setcookie('login', $_POST['user'], 0);
+    setcookie ("us", $usuario, 0);
+    setcookie('login', $usuario, 0);
 
     $ip = $_SERVER["REMOTE_ADDR"];
     $pagina = $_SERVER["PHP_SELF"];
     $status = "LOGIN ACEITO";
-	$usuario = trim($user);
 	$sql_store = htmlspecialchars("$usuario");
 	$Data = date("Y-m-d");
 	$Hora = date("H:i:s");
@@ -79,7 +77,7 @@ if($result['diario'] == 'invalido') {
 
 	$query1 =  pg_exec($dbconnect, $sqllog);
 
-	session_start();
+	@session_start();
 
     $_SESSION['nivel'] = $result['nivel'];
     $_SESSION['login'] = $result['login'];
@@ -93,35 +91,6 @@ if($result['diario'] == 'invalido') {
 	}
 
 
-    /*
-				$sql2 = "SELECT id_nome, login, nivel from diario_usuarios where login = '$user';";
-
-                $res = consulta_sql($sql2);
-
-				if(!is_string($res))
-				{
-					session_start();
-
-    				while($linha = pg_fetch_array($res))
-    				{
-						$_SESSION['nivel'] = $linha['nivel'];
-        		        $_SESSION['login'] = $linha['login'];
-		                $_SESSION['id'] = $linha['id_nome'];
-    				}
-
-					//print_r($P);die;
-
-					$_SESSION['lst_periodo'] = $P["$speriodo"];
-
-					//print_r($_SESSION); die;
-
-				}
-				else
-				{
-    				echo $res;
-    				exit;
-				}
-	*/
                 if ($_SESSION['nivel'] == 2) {
 
 			   print '<html>
@@ -141,53 +110,6 @@ if($result['diario'] == 'invalido') {
 				}
                 else {
 
-/*
-					if ($_SESSION['nivel'] == 3) {
-
-						// VERIFICA SE EXISTE ALGUMA COORDENACAO ATUALMENTE
-						$sql1 = 'SELECT DISTINCT ref_professor
-									FROM coordenadores
-                        WHERE ref_professor = \''.$_SESSION['id'].'\';';
-
-						$qry1 = consulta_sql($sql1);
-
-						if(is_string($qry1)) {
-							echo $qry1;
-							$ret = false;
-							exit;
-						}
-						else {
-							if(pg_numrows($qry1) == 0) {
-
-								    print '<script language=javascript>
-               window.alert("Atualmente você não possui nenhuma coordenação de curso!");                javascript:window.history.back(1);
-               </script>';
-    							die;
-							}
-							else {
-
-
-								print '<html>
-                    <head>
-                    <title>Diario Net</title>
-                    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-                    </head>
-                    <frameset rows="15,*" cols="135,*" frameborder="NO" border="0" framespacing="0">                    <frame name="top" scrolling="NO" noresize src="top.php" frameborder="NO" >
-                    <frame name="logo" scrolling="NO" noresize src="logo.php" frameborder="NO" >
-                    <frame name="menu" scrolling="AUTO" src="coordenacao/menu_coordenacao.php" frameborder="NO" >
-                    <frame name="principal" src="prin.php" scrolling="AUTO" frameborder="NO">
-                    </frameset>
-                    <noframes>
-                    <body bgcolor="#FFFFFF" text="#000000">
-                    </body>
-                    </noframes>
-                    </html>';
-							}
-						}
-					}
-					else {
-
-*/
 				print '<html>
    					<head>
    					<title>Diario Net</title>
@@ -204,6 +126,5 @@ if($result['diario'] == 'invalido') {
 					</html>';
 
 			}
- //           }
  }
 ?>

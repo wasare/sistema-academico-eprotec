@@ -13,52 +13,66 @@ $Conexao = NewADOConnection("postgres");
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 $aluno_id = $_GET['aluno'];
-	
-	if(isset($aluno_id) && is_numeric($aluno_id) && $aluno_id != "") {
-		$btnOK = TRUE;
-	}
-    else
-		$btnOK = FALSE;
-	
-	$curso_id = $_GET['cs'];
-	
-	if(isset($curso_id) && is_numeric($curso_id) && $curso_id != "") {
-		$btnOK = TRUE;
-	}
-	else
-		$btnOK = FALSE;
+$curso_id = $_GET['cs'];
+$contrato_id = $_GET['contrato'];
 
-    $contrato_id = $_GET['contrato'];
+$btnOK = TRUE;	
 
-    if(isset($contrato_id) && is_numeric($contrato_id) && $contrato_id != "") {
-        $btnOK = TRUE;
-    }
-	else
-		$btnOK = FALSE;
+if(!isset($aluno_id) OR !is_numeric($aluno_id) OR empty($aluno_id)) 
+	$btnOK = FALSE;
+	
+	
+if(!isset($curso_id) OR !is_numeric($curso_id) OR empty($curso_id))
+	$btnOK = FALSE;
+
+if(!isset($contrato_id) OR !is_numeric($contrato_id) OR empty($contrato_id))
+	$btnOK = FALSE;
+
 
 if (!$btnOK)
      die('Erro de valida&ccedil;&atilde;o de dados!');
-		
+
 	$sql1 = "SELECT DISTINCT
 	d.id, 
 	s.descricao as periodo, 
 	d.descricao_disciplina as descricao, 
 	d.carga_horaria, 
 	m.ref_periodo, 
-	m.num_faltas as faltas, 
-	m.nota_final as nota_final, 
+	CAST(m.num_faltas AS INTEGER) as faltas, 
+	CAST(m.nota_final AS FLOAT) as nota_final, 
 	m.nota as nota, 
 	m.ref_disciplina_ofer as oferecida,
     m.ref_motivo_matricula,
-    professor_disciplina_ofer_todos(o.id)
+	professor_disciplina_ofer_todos(o.id),
+    chr.carga as carga_horaria_realizada
 	FROM 
-		matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s, contratos c  
+		matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s, contratos c, (
+
+						SELECT SUM(CAST(flag AS INTEGER)) AS carga, 
+								ref_disciplina_ofer 
+							FROM 
+								diario_seq_faltas 
+							WHERE 
+								ref_disciplina_ofer IN (
+															SELECT 
+																	o.id 
+																FROM 
+																	matricula m, pessoas p, disciplinas_ofer o, periodos s, contratos c 
+																WHERE 
+																	m.ref_pessoa = p.id AND 
+																	p.ra_cnec = $aluno_id AND 
+																	m.ref_curso = $curso_id AND 
+																	c.id = $contrato_id AND 
+																	m.ref_contrato = $contrato_id AND 
+																	m.ref_disciplina_ofer = o.id) group by ref_disciplina_ofer 
+						) AS chr 
 	WHERE 
 		m.ref_pessoa = p.id AND 
 		p.ra_cnec = $aluno_id AND 
 		m.ref_curso = $curso_id AND 
         c.id = $contrato_id AND
         m.ref_contrato = $contrato_id AND
+        chr.ref_disciplina_ofer = o.id AND
         c.id = m.ref_contrato AND
 		m.ref_periodo = s.id AND
 		m.ref_disciplina_ofer = o.id AND 
@@ -66,13 +80,18 @@ if (!$btnOK)
 		s.id = o.ref_periodo
 	ORDER BY 2, 3";
 //-- m.dt_matricula >= '2004-01-01' AND	
-//echo $sql1;	die;
+//echo '<pre>'.$sql1.'</pre>';	die;
 	
 	//EXECUTANDO A SQL COM ADODB
-  	$Result1 = $Conexao->Execute($sql1);
+  	$ficha_academica = $Conexao->getAll($sql1);
 	
-	//CONTANTO O NUMERO DE RESULTADOS
-  	$num_result = $Result1->RecordCount();
+	//CONTA O NUMERO DE RESULTADOS = DISCIPLINAS MATRICULADAS
+	$contMatriculada = count($ficha_academica);
+
+	if ($contMatriculada == 0)
+		die('Nenhum dado encontrado para o aluno informado!');
+
+	
 
 ?>
 <html>
@@ -85,9 +104,9 @@ if (!$btnOK)
 <div align="center" style="text-align:center; font-size:12px;">
 	<img src="../../public/images/armasbra.jpg" width="57" height="60"><br />
 	MEC-SETEC<br />
-	CENTRO FEDERAL DE EDUCA&Ccedil;&Atilde;O TECNOL&Oacute;GICA DE BAMBU&Iacute;-MG<br />
+	INSTITUTO FEDERAL MINAS GERAIS<br />
     SETOR DE REGISTROS ESCOLARES
-    <br /><br />
+    <br />
 </div>
 <h2>Ficha Acad&ecirc;mica</h2>
 <font color="#000000" size="2"> <b>Matr&iacute;cula: </b><?php echo($aluno_id);?> <b> Nome: </b><?php echo($_GET['nome']);?> </font><br>
@@ -119,18 +138,26 @@ $percFaltasAprovado = 0;
 //carga horaria realizada
 $chRealizadaAprovado = 0;
   
+//nota total matriculada
+$notaMatriculada = 0;
+//percentual de faltas
+$percFaltasMatriculada = 0;
+//carga horaria realizada
+$chRealizadaMatriculada = 0;
 
-while(!$Result1->EOF) {
 
-	$nomemateria = $Result1->fields[0] .' - '. $Result1->fields[2];
-    $periodo = $Result1->fields[1];
-    $faltasmateria = $Result1->fields[5];
-    $ref_periodo = $Result1->fields[4];
-    $aulaprev = $Result1->fields[3];
-    $oferecida = $Result1->fields[8];
-    $ref_motivo_matricula = $Result1->fields[9];
-    $notafinal = $Result1->fields[6];
-    $professor = $Result1->fields[10];
+foreach ($ficha_academica as $disc) {
+// id	periodo	descricao	carga_horaria	ref_periodo	faltas	nota_final	nota	oferecida	ref_motivo_matricula	professor_disciplina_ofer_todos	carga_horaria_realizada
+	$nome_materia = $disc['id'] .' - '. $disc['descricao'];
+    $periodo = $disc['periodo'];
+    $faltas_materia = $disc['faltas'];
+    $ref_periodo = $disc['ref_periodo'];
+    $carga_prevista = $disc['carga_horaria'];
+    $carga_realizada = $disc['carga_horaria_realizada'];
+    $oferecida = $disc['oferecida'];
+    $ref_motivo_matricula = $disc['ref_motivo_matricula'];
+    $nota_final = $disc['nota_final'];
+	$professor = $disc['professor_disciplina_ofer_todos'];
 
     // APROVEITAMENTO DE ESTUDOS 2
     // CERTIFICACAO DE EXPERIENCIAS 3
@@ -156,6 +183,7 @@ while(!$Result1->EOF) {
 		$situacao = 'A'; 
     else
 	    $situacao = 'R';
+
     // verifica aprovacao considerando exatamente a disciplina matriculada ou dispensada em relacao ao contrato
     if(verificaAprovacaoContratoDisciplina($aluno_id,$curso_id,$contrato_id,$oferecida))
         $situacao = 'A';
@@ -168,65 +196,48 @@ while(!$Result1->EOF) {
     if(verificaEquivalencia($curso_id,$oferecida))
         $matricula .= ' / DE';
 
-	if($notafinal == ''){
-		$notafinal = ' - ';
+	if($nota_final == ''){
+		$nota_final = ' - ';
 	}  
-               
-    if ($faltasmateria == 0) { 
-		$faltasmateria='-';
-	}
- 
- 
- 	// SQL COM CARGA HORARIA REALIZADA
-	$sqlflag ="
-	SELECT SUM(CAST(flag AS INTEGER)) AS carga
-    FROM 
-    diario_seq_faltas 
-    WHERE 
-    periodo = '$ref_periodo' AND 
-    disciplina = '$iddisc' AND 
-    ref_disciplina_ofer = $oferecida; ";
-  	
-	//EXECUTANDO A SQL COM ADODB
-  	$Result2 = $Conexao->Execute($sqlflag);
-	
-    $res = $Result2->fields[0];
-
-	
-    if ($res <> "") {
-    	$perfaltas = ($faltasmateria * 100) / $res;
+    
+	if (!empty($carga_realizada)) {
+    	$perfaltas = ($faltas_materia * 100) / $carga_realizada;
         $pfaltas = substr($perfaltas,0,5);
 		
 		$stfaltas = $pfaltas;
         //$stfaltas = getNumeric2Real($pfaltas) . ' %';
     }
     else {
-		$pfaltas = '-'; $stfaltas=$pfaltas;
+		//$pfaltas = '-'; 
+		$stfaltas = $pfaltas;
+		$carga_realizada = 0;
 	}
     
 	
-	//VERIFICANDO APROVACAO POR FALTAS
     if ($situacao == 'R') { 
 		$fcolor = '#FF0000';
 	}
-	else {
-		
+   
+    //  DADOS PARA CONTABILIZAR MEDIAS
+    if ($situacao == 'A') 
+	{
 		$contAprovado++;
 		//total notas aprovado
-		$notaAprovado += $notafinal;
+		$notaAprovado += $nota_final;
 		//total percentual de faltas
 		$percFaltasAprovado += $stfaltas;
 		//Total carga horaria realizada
-		$chRealizadaAprovado += $res;
+		$chRealizadaAprovado += $carga_realizada;
 		
 		$fcolor = '#000000';
 	}
-	
-	
-	//VERIFICA SE A CARGA HORARIA REALIZADA ESTA NULA
-	if ($res == "") { 
-		$res = 0;
-	}
+
+     //total notas matriculada
+     $notaMatriculada += $nota_final;
+     //total percentual de faltas
+     $percFaltasMatriculada += $stfaltas;
+     //Total carga horaria realizada
+     $chRealizadaMatriculada += $carga_realizada;
 	
 	if ($st == '#F3F3F3') {
    		$st = '#E3E3E3';
@@ -234,40 +245,49 @@ while(!$Result1->EOF) {
 	else {
 		$st ='#F3F3F3';
 	}
+
+	if (strstr($stfaltas,'.'))
+		$stfaltas = number_format($stfaltas,'2',',','.');	
+    
+	if (strstr($nota_final,'.'))
+        $nota_final = number_format($nota_final,'1',',','.');
 	
-	   
-	print ("<tr bgcolor=\"$st\">
+    echo 
+	"<tr bgcolor=\"$st\">
         <td><font color=$fcolor>$periodo</font></td>
-		<td><span id=\"$oferecida\" title=\"Di&aacute;rio: $oferecida Professor(es): $professor\"><font color=$fcolor>$nomemateria</font></span></td>
-		<td align=center><font color=$fcolor>$notafinal</font></td>
-        <td align=center><font color=$fcolor>$faltasmateria</font></td>
+		<td><span id=\"$oferecida\" title=\"Di&aacute;rio: $oferecida Professor(es): $professor\"><font color=$fcolor>$nome_materia</font></span></td>
+		<td align=center><font color=$fcolor>$nota_final</font></td>
+        <td align=center><font color=$fcolor>$faltas_materia</font></td>
         <td align=center><font color=$fcolor>$stfaltas</font></td>
-        <td align=center><font color=$fcolor>$res</font></td>
-        <td align=center><font color=$fcolor>$aulaprev</font></td>
+        <td align=center><font color=$fcolor>$carga_realizada</font></td>
+        <td align=center><font color=$fcolor>$carga_prevista</font></td>
         <td align=center><font color=$fcolor>$matricula</font></td>
         <td align=center><font color=$fcolor>$situacao</font></td>
-        </tr>");
-		
-	$res = "";
+        </tr>";
+}//FIM FOREACH
 
-	$Result1->MoveNext();
-	
-}//FIM WHILE
 
 
 //INFORMACOES --
 
 //Media nas disciplinas aprovadas
-$notaMediaAprovado = $notaAprovado / $contAprovado;
-
-//Convertendo para o padrao decimal - Media nas disciplinas aprovadas
-$notaMediaAprovado = number_format($notaMediaAprovado,'2',',','.');
+$notaMediaAprovado = number_format($notaAprovado / $contAprovado,'2',',','.');
 
 //Media percentual de faltas das disciplinas aprovadas
 $percFaltasAprovado = $percFaltasAprovado / $contAprovado;
 
 //Convertendo para o padrao decimal - Media percentual de faltas das disciplinas aprovadas
 $percFaltasAprovado = number_format($percFaltasAprovado,'2',',','.');
+
+
+//Media nas disciplinas matriculadas
+$notaMediaMatriculada = number_format($notaMatriculada / $contMatriculada,'2',',','.');
+
+//Media percentual de faltas das disciplinas matriculadas
+$percFaltasMatriculada = $percFaltasMatriculada / $contMatriculada;
+
+//Convertendo para o padrao decimal - Media percentual de faltas das disciplinas matriculada
+$percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
                  
 ?>
 </table>
@@ -286,15 +306,15 @@ $percFaltasAprovado = number_format($percFaltasAprovado,'2',',','.');
 
 <br /><br />
 
-<table width="379" border="0" cellspacing="0" cellpadding="0" class="tabela_relatorio">
+<table width="420" border="0" cellspacing="0" cellpadding="0" class="tabela_relatorio">
   <tr bgcolor="666666">
     <th height="24" colspan="2">
     	<b>Informa&ccedil;&otilde;es:</b><br>    
     </th>
   </tr>
   <tr>
-    <td width="321">M&eacute;dia da nota nas disciplinas aprovadas:</td>
-    <td width="58" align="right">&nbsp;<?php echo $notaMediaAprovado; ?></td>
+    <td>M&eacute;dia da nota nas disciplinas aprovadas:</td>
+    <td align="right">&nbsp;<?php echo $notaMediaAprovado; ?></td>
   </tr>
   <tr>
     <td>M&eacute;dia percentual de faltas das disciplinas aprovadas: </td>
@@ -303,6 +323,18 @@ $percFaltasAprovado = number_format($percFaltasAprovado,'2',',','.');
   <tr>
     <td>Total carga hor&aacute;ria realizada nas disciplinas aprovadas: </td>
     <td align="right">&nbsp;<?php echo $chRealizadaAprovado;?></td>
+  </tr>
+  <tr>
+    <td>M&eacute;dia da nota nas disciplinas matriculadas:</td>
+    <td align="right">&nbsp;<?php echo $notaMediaMatriculada; ?></td>
+  </tr>
+  <tr>
+    <td>M&eacute;dia percentual de faltas das disciplinas matriculadas: </td>
+    <td align="right">&nbsp;<?php echo $percFaltasMatriculada . ' %'; ?></td>
+  </tr>
+  <tr>
+    <td>Total carga hor&aacute;ria realizada nas disciplinas matriculadas: </td>
+    <td align="right">&nbsp;<?php echo $chRealizadaMatriculada;?></td>
   </tr>
 </table>
 <br />

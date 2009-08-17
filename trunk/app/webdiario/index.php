@@ -16,10 +16,10 @@ session_destroy();
 <link rel="stylesheet" href="css/geral.css" type="text/css">
 </head>
 
-<body background="img/bar1.jpg" text="#000000" onLoad="document.form1.user.focus()">
+<body background="img/bar1.jpg" text="#000000" onLoad="document.form1.usuario.focus()">
 
 <div align="center">
-  <form name="form1" method="post" action="principal.php">
+  <form name="form1" id="form1" method="post" action="principal.php">
     <table border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td width="770" height="60" background="img/top2.jpg">&nbsp;</td>
@@ -37,16 +37,17 @@ session_destroy();
             </tr>
             <tr>
               <td width="60" height="16"><span class="login">Login:</span></td>
-              <td width="147" height="16"><input type="text" name="user"></td>
+              <td width="147" height="16"><input type="text" name="usuario" id="usuario" /></td>
             </tr>
             <tr>
               <td height="6"><span class="login">Senha:</span></td>
-              <td height="6"><span class="login"><input type="password" name="senha"></span></td>
+              <td height="6"><span class="login"><input type="password" name="senha" id="senha" /></span></td>
             </tr>
             <tr>
               <td height="6"><span class="login">Per&iacute;odo:</span></td>
               <td height="6"><select id="speriodo" name="speriodo">
-                <option value="20091" selected="selected">2009 / 1&ordm; Semestre</option>
+				<option value="20092" selected="selected">2009 / 2&ordm; Semestre</option>
+                <option value="20091" >2009 / 1&ordm; Semestre</option>
                 <option value="20082" >2008 / 2&ordm; Semestre</option>
                 <option value="20081" >2008 / 1&ordm; Semestre</option>
                 <option value="20072" >2007 / 2&ordm; Semestre</option>
@@ -59,8 +60,9 @@ session_destroy();
               <td colspan="2" height="41" align="center">
 			  <p> <br>
 			    <input type="submit" name="submit" target="_parent" value="Entrar">
+				<input type="hidden" id="web_diario_login" name="web_diario_login" value="1" />
 			    </p>
-				<p align="center"><a href="senha/">Esqueceu sua senha?<br>Primeiro acesso?</a> <br />  <br /> <a href="../docs/manual_webdiario_professor.pdf">Manual do Webdi&aacute;rio (M&oacute;dulo Professor)</a></p></td>
+				<p align="center"><a href="senha/">Esqueceu sua senha?<br>Primeiro acesso?</a> <br />  <br /> <a href="../../public/docs/usuario/manual_webdiario_professor.pdf">Manual do Webdi&aacute;rio (M&oacute;dulo Professor)</a></p></td>
             </tr>
           </table>
 	    </td>
