@@ -16,7 +16,7 @@ $carimbo = new carimbo($param_conn);
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<title>Relat&oacute;rio de Alunos Aprovados/Reprovados</title>
 	<script language="javascript" src="../../../lib/prototype.js"></script>
-	<script language="javascript" src="pesquisa_alunos_aprovados_reprovados.js"></script>
+	<script language="javascript" src="pesquisa_aprovados_reprovados.js"></script>
 	
 	<script src="../../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
 	<link href="../../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
@@ -25,20 +25,20 @@ $carimbo = new carimbo($param_conn);
 
 <body bgcolor="#FFFFFF">
 <h2>Relatório de Alunos Aprovados/Reprovados</h2>
-<form action="lista_alunos_aprovados_reprovados.php" method="post" name="form1" target="_blank">
+<form method="post" name="form1" target="_blank">
 
 	<input type="image" name="input" 
 		src="../../../public/images/icons/print.jpg" 
 		alt="Exibir relat&oacute;rio" 
 		title="Exibir relat&oacute;rio" 
 		class="botao" 
-		onclick="document.form1.action = 'lista_alunos_aprovados_reprovados.php'" />
+		onclick="document.form1.action = 'lista_aprovados_reprovados.php'" />
 	<input type="image" name="input" 
 		src="../../../public/images/icons/pdf_icon.jpg" 
 		alt="Exibir relat&oacute;rio PDF" 
 		title="Exibir relat&oacute;rio PDF" 
 		class="botao" 
-		onclick="document.form1.action = 'pdf_alunos_aprovados_reprovados.php'" />
+		onclick="document.form1.action = 'pdf_aprovados_reprovados.php'" />
 	<input type="image" name="voltar" 
 		src="../../../public/images/icons/back.png" 
 		alt="Voltar" 
@@ -65,11 +65,11 @@ $carimbo = new carimbo($param_conn);
 	    <br />
 		C&oacute;digo do Aluno:<br />
 	    <input name="aluno" type="text" id="aluno" size="10" />
-    	<span class="dica">Caso n&atilde;o preenchido exibir&aacute; todos os alunos.</span>
+    	<span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todos os alunos.</span>
     	<br />
     	Turma:<br />
     	<input name="turma" type="text" id="turma" size="10" />
-   		<span class="dica">Caso n&atilde;o preenchido exibir&aacute; todas as turmas.</span>
+   		<span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todas as turmas.</span>
     	<br />
     	Situa&ccedil;&atilde;o:<br />
     	<input type="radio" name="aprovacao" id="aprovacao" value="1" /> Aprovado 
