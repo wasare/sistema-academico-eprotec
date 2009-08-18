@@ -8,7 +8,7 @@ $getcurso = $_GET['cur'];
 $getperiodo = $_SESSION['periodo'];
 
 
-
+// FIXME: nao fechar diarios sem prefessor
 // MARCA O DIARIO COMO CONCLUIDO
 $sql = "SELECT COUNT(*) 
 			FROM
@@ -17,7 +17,7 @@ $sql = "SELECT COUNT(*)
             fl_concluida = 't' AND
             ref_curso = $getcurso AND
 			ref_periodo = '$getperiodo' AND
-            is_cancelada = 0;";
+            is_cancelada = '0';";
 
 //echo $sql;die;
 

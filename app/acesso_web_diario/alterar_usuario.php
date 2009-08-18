@@ -1,11 +1,8 @@
 <?php
 
-
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
-header ("Cache-Control: no-cache");
-require("../../lib/common.php");
-require("../../configs/configuracao.php");
-require("../../lib/adodb/adodb.inc.php");
+header("Cache-Control: no-cache");
+require_once("../../configs/configuracao.php");
 
 
 //Criando a classe de conexão ADODB
@@ -30,15 +27,10 @@ $Result1 = $Conexao->Execute($sql);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Untitled Document</title>
+<title>SA</title>
 <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
-<script language="javascript">
-function habilita() {
-   document.form1.senha.disabled = (document.form1.senha.disabled) ? 0 : 1;
-}
-</script>
-
 </head>
+
 <body>
 <form id="form1" name="form1" method="post" action="alterar_action.php">
   <input type="hidden" id="codigo_pessoa" name="codigo_pessoa" value="<?php echo $codigo_pessoa; ?>" />
@@ -50,7 +42,7 @@ function habilita() {
         <input name="save" type="image" src="../../public/images/icons/save.png" />
         <br />
         Salvar</label></td>
-      <td width="60"><div align="center"><a href="javascript:history.back();" class="bar_menu_texto"><img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+      <td width="60"><div align="center"><a href="javascript:history.back(-1);" class="bar_menu_texto"><img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
           Voltar</a></div></td>
     </tr>
   </table>
@@ -65,30 +57,11 @@ function habilita() {
     </tr>
     <tr>
       <td>Senha:</td>
-      <td>
-		<input type="password" name="senha" id="senha" disabled="disabled" />
-	  </td>
+      <td><input type="password" name="senha" id="senha" /></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td>
-	  	<label>
-			<input type="checkbox" name="manter_senha" id="manter_senha" checked="checked" onchange="habilita()" />
-			Manter senha atual.
-		</label>
-		<label>
-		  <?php 
-		
-			if ($Result1->fields[2] == 't') {
-				echo '<input type="checkbox" checked="checked" name="ativar" id="ativar" />';
-			}
-			else {
-				echo '<input type="checkbox" name="ativar" id="ativar" />';
-			}
-		  ?>
-		Ativar/Desativar usu&aacute;rio.
-		</label>
-	  </td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>N&iacute;vel:</td>
@@ -111,14 +84,31 @@ function habilita() {
         </label></td>
     </tr>
     <tr>
+      <td>Ativar/Desativar:</td>
+	  <td><label>
+	  <?php 
+	  
+	  if ($Result1->fields[2] == 't') {
+	  
+		echo '<input type="checkbox" checked="checked" name="ativar" id="ativar" />';
+	  }
+	  else {
+	  
+	    echo '<input type="checkbox" name="ativar" id="ativar" />';
+	  }
+	  ?></label>
+	  </td>
+    </tr>
+    <tr>
       <td>Nome completo:</td>
-	  <td><?php echo $Result1->fields[3];?></td>
+      <td><?php echo $Result1->fields[3];?></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
   </table>
+  <p>&nbsp;</p>
 </form>
 </body>
 </html>

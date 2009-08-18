@@ -1,6 +1,6 @@
 <?php
 
-require("../../../lib/common.php");
+require("../common.php");
 require("../lib/InvData.php3");
 
 $ref_disciplina_ofer = $_GET['ref_disciplina_ofer'];

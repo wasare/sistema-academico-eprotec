@@ -1,7 +1,7 @@
-<? require("../../../../lib/common.php"); ?>
+<?php require_once("../../common.php"); ?>
 <html>
 <head>
-<title><?echo($title);?></title>
+<title><?=$title?></title>
 <script language="JavaScript">
 function _select(area_id,area)
 {

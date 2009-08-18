@@ -1,6 +1,6 @@
 <? 
 
-require("../../../../lib/common.php");
+require("../../common.php");
 
 
 $nome       = $_POST['nome'];

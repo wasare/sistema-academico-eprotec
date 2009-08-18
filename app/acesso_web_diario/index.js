@@ -9,7 +9,7 @@ function pesquisar() {
 
 //mostra o carregamento
 function carregando(){
-	$("msg").innerHTML = "<h2>Carregando...</h2>";//<img src='../../acessowebdiario/images/carregando.gif'>";
+	$("msg").innerHTML = "<h2>Carregando...</h2>"; //<img src='../../acesso_web_diario/images/carregando.gif'>";
 }
 
 // Escreve a tabela de listagem de clientes

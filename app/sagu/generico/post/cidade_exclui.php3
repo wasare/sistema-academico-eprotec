@@ -1,6 +1,6 @@
 <? 
 
-require("../../../../lib/common.php"); 
+require("../../common.php"); 
 
 $id = $_GET['id'];
 

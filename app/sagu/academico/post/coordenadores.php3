@@ -1,6 +1,6 @@
 <?php
 
-require("../../../../lib/common.php"); 
+require("../../common.php"); 
 
 $ref_campus    = $_POST['ref_campus'];
 $ref_cursos    = $_POST['ref_cursos'];

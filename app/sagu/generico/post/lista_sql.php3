@@ -1,7 +1,7 @@
-<? require("../../../../lib/common.php"); ?>
+<?php require_once("../../common.php"); ?>
 <html>
 <head>
-<title><?echo($title);?></title>
+<title><?=$title?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <?php 
 

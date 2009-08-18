@@ -90,7 +90,7 @@ function iframeAutoHeight(quem){
 							<a href="<?php echo $BASE_URL . 'app/webdiario'; ?>" target="frame2">Acessar WebDi&aacute;rio</a>
 						</li>
 						<li>
-							<a href="acessowebdiario/index.php" target="frame2">Usu&aacute;rios do WebDi&aacute;rio</a>
+							<a href="acesso_web_diario/index.php" target="frame2">Usu&aacute;rios do WebDi&aacute;rio</a>
 						</li>
 					</ul>
 				</li>

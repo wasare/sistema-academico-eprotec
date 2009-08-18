@@ -1,6 +1,6 @@
 <?php
 
-require("../../../../lib/common.php");
+require("../../common.php");
 require("../../lib/CheckUnique.php3");
 require("../../properties.php");
 require("../../lib/GetField.php3");

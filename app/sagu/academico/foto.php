@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../../lib/common.php"); 
+require_once("../common.php"); 
 // just so we know it is broken
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);

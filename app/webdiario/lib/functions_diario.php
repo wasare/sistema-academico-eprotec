@@ -137,8 +137,8 @@ function consulta_sql($sql_query) {
            }
     }
 
-    // echo $sql_query; 
-
+    //echo $sql_query; 
+    
     if (( $result_sql = pg_exec($dbconnect, $sql_query)) == false) {
         $error_msg = "Error ao executar a consulta: " . $sql_query;
 		$error_msg .= '<br /> <br />Entre em contato com o respons&aacute;vel: ';

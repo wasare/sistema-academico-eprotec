@@ -19,7 +19,8 @@ $CSS_DIR = $BASE_URL .'css/';
 /*Define onde está a página de erro*/
 $ERRO_URL = $BASE_URL .'erro.php';
 
-$speriodo = $_SESSION['lst_periodo'];
+if(isset($_SESSION['lst_periodo']))
+	$speriodo = $_SESSION['lst_periodo'];
 
 // PERIODOS/PROFESSORES LIBERADOS PARA ACESSO 
 //$L['20072'] = array('2530','2522','2524','2513','2516','2515','2491','2521');
