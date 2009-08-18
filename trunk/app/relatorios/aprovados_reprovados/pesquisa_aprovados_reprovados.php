@@ -2,12 +2,14 @@
 
 require_once("../../../configs/configuracao.php");
 require_once("../../../core/reports/carimbo.php");
+require_once("../../../core/search.php");
 
 $conn = new connection_factory($param_conn);
 
 $Result1 = $conn->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
 
 $carimbo = new carimbo($param_conn);
+$busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_lista.php');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -59,19 +61,20 @@ $carimbo = new carimbo($param_conn);
         	<?php  print $Result1->GetMenu('periodo',null,true,false,0,'onchange="ChangeOp();setPeriodo();"'); ?>
 	        <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
     	</span>
-	    <br />
-    	C&oacute;digo do Curso:<br />
-	    <span id="sprytextfield1">
-    		<input name="codigo_curso" type="text" id="codigo_curso" size="10" />
-        	<input name="descricao_curso" disabled="disabled" id="descricao_curso" value="" size="40" />
-	        <a href="javascript:abre_consulta_rapida('../../consultas_rapidas/cursos/index.php')" >
-    	    	<img src="../../../public/images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
-        	</a>
-        	<span class="textfieldRequiredMsg">Valor obrigat&oacute;rio.</span>
-    	</span>
-	    <br />
-		C&oacute;digo do Aluno:<br />
-	    <input name="aluno" type="text" id="aluno" size="10" />
+	<br />
+    	Curso:<br />
+	<span id="sprytextfield1">
+	    <?php 
+	        echo $busca->input_text_retorno("5"); 
+	        echo $busca->input_text_consulta("40");
+	        echo $busca->area_lista();
+	    ?>
+	    <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
+        </span>
+	
+	<br />
+	C&oacute;digo do Aluno:<br />
+	<input name="aluno" type="text" id="aluno" size="10" />
     	<span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todos os alunos.</span>
     	<br />
     	Turma:<br />
