@@ -461,10 +461,20 @@ function CheckFormParameters($list,$href=""){
 		$name  = $list[$i];
 
 		if ( !$name )
-		continue;
+			continue;
 
-		$value = trim($GLOBALS["$name"]);
-
+		if(array_key_exists($name, $GLOBALS['_GET']))
+		{
+			$value = trim($GLOBALS['_GET']["$name"]);
+		}
+		else
+		{
+			if (array_key_exists($name, $GLOBALS['_POST'])) 
+			{
+                $value = trim($GLOBALS['_POST']["$name"]);
+			}
+		}
+		
 		if (!is_numeric($value) AND empty($value))
 		{
 			$msg = "Campo obrigatório [<b><i>$name</i></b>] não informado!";
