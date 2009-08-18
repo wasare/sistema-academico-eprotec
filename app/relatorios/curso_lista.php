@@ -1,10 +1,8 @@
 <?php
-require_once '../../../lib/common.php';
-require_once '../../../configs/configuracao.php';
-require_once '../../../lib/adodb/adodb.inc.php';
 
-$Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+require_once '../../configs/configuracao.php';
+
+$conn = new connection_factory($param_conn);
 
 if($_POST['param'] == ''){
 	echo '';	
@@ -14,10 +12,8 @@ if($_POST['param'] == ''){
 			WHERE lower(to_ascii(descricao)) like lower(to_ascii('%".$_POST['param']."%')) 
 			ORDER BY descricao DESC LIMIT 10;";
 	$sql = iconv("utf-8", "iso-8859-1", $sql);
-	$RsCurso = $Conexao->Execute($sql);
-	if (!$RsCurso){ 
-		print $Conexao->ErrorMsg();
-	}
+	$RsCurso = $conn->Execute($sql);
+	
 	while(!$RsCurso->EOF){
 		$resp .= "<a href=\"javascript:send('".$RsCurso->fields[1]."', '".$RsCurso->fields[0]."')\">".$RsCurso->fields[0]." - ".$RsCurso->fields[1]."</a><br />";
 		$RsCurso->MoveNext();
