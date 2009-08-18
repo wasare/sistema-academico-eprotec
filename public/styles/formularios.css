@@ -47,21 +47,21 @@ td {
 	line-height: 22px;
 }
 
-.box_geral a{
-	text-decoration:underline;
-	color:#0000CC;
-}
-
-.tabela_geral {
+.box_menu_relatorio {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 12px;
+	color: #333333;
 	text-decoration: none;
-	padding:4px;
 }
 
-.tabela_geral a{
-	text-decoration:underline;
-	color:#0000CC;
+.box_menu_relatorio a {
+	text-decoration: none;
+}
+
+.box_menu_relatorio a:hover {
+	background-color: yellow;
+	font-weight: bold;
+	/**text-decoration: underline;*/
 }
 
 .titulo {
@@ -79,18 +79,6 @@ td {
 	cursor: hand;
 }
 
-.menu_relatorio {
-	text-decoration: none;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-weight: bold;
-	color: #333333;
-}
-
-.menu_relatorio:hover {
-	text-decoration: underline;
-}
-
 .msg_erro {
 	color: #FF0000;
 	font-family:Verdana, Arial, Helvetica, sans-serif;
@@ -101,4 +89,17 @@ td {
 	color: #006633;
 	font-family:Verdana, Arial, Helvetica, sans-serif;
 	font-size:12px;
+}
+
+/** Excluir abaixo */
+.tabela_geral {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+	padding:4px;
+}
+
+.tabela_geral a{
+	text-decoration:underline;
+	color:#0000CC;
 }
