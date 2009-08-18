@@ -35,8 +35,4 @@ $aluno_password = '@1srv27';
 $aluno_port = '';
 
 
-
-
-
-
 ?>

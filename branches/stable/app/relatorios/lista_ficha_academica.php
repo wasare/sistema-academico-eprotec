@@ -44,39 +44,18 @@ if (!$btnOK)
 	m.ref_disciplina_ofer as oferecida,
     m.ref_motivo_matricula,
 	professor_disciplina_ofer_todos(o.id),
-    chr.carga as carga_horaria_realizada
+    get_carga_horaria_realizada(o.id) as carga_horaria_realizada
 	FROM 
-		matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s, contratos c, (
-
-						SELECT SUM(CAST(flag AS INTEGER)) AS carga, 
-								ref_disciplina_ofer 
-							FROM 
-								diario_seq_faltas 
-							WHERE 
-								ref_disciplina_ofer IN (
-															SELECT 
-																	o.id 
-																FROM 
-																	matricula m, pessoas p, disciplinas_ofer o, periodos s, contratos c 
-																WHERE 
-																	m.ref_pessoa = p.id AND 
-																	p.ra_cnec = $aluno_id AND 
-																	m.ref_curso = $curso_id AND 
-																	c.id = $contrato_id AND 
-																	m.ref_contrato = $contrato_id AND 
-																	m.ref_disciplina_ofer = o.id) group by ref_disciplina_ofer 
-						) AS chr 
+		matricula m, disciplinas d, disciplinas_ofer o, periodos s, contratos c
 	WHERE 
-		m.ref_pessoa = p.id AND 
-		p.ra_cnec = $aluno_id AND 
 		m.ref_curso = $curso_id AND 
         c.id = $contrato_id AND
         m.ref_contrato = $contrato_id AND
-        chr.ref_disciplina_ofer = o.id AND
         c.id = m.ref_contrato AND
 		m.ref_periodo = s.id AND
 		m.ref_disciplina_ofer = o.id AND 
 		d.id = o.ref_disciplina AND
+		o.is_cancelada = '0' AND
 		s.id = o.ref_periodo
 	ORDER BY 2, 3";
 //-- m.dt_matricula >= '2004-01-01' AND	

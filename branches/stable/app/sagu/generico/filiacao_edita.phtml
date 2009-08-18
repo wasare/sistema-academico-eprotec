@@ -6,6 +6,8 @@
         <script language="PHP">
 CheckFormParameters(array("id"));
 
+$id = $_GET['id'];
+
 $conn = new Connection;
 $conn->Open();
 
@@ -21,7 +23,7 @@ $sql = " select " .
        "    mae_profissao," .
        "    mae_instrucao," .
        "    mae_loc_trabalho" .
-       " from filiacao where id = '$id'";
+       " from filiacao where id = $id;";
 
 $query = $conn->CreateQuery($sql);
 
