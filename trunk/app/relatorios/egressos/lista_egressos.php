@@ -7,10 +7,8 @@ require_once("../../../core/date.php");
 
 $conn = new connection_factory($param_conn);
 
-//Assinatura
 $carimbo = new carimbo($param_conn);
-//Cabecalho
-$header = new header($param_conn);
+$header  = new header($param_conn);
 
 $curso_id = $_POST['codigo_curso'];
 $data_inicio = date::convert_date($_POST['data_inicio']);
@@ -70,11 +68,11 @@ if($total < 1){
 
 <html>
 <head>
-<title>SA</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
+	<title>SA</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<body marginwidth="20" marginheight="20">
 	<div style="width: 760px;">
        
     	<div align="center" style="text-align:center; font-size:12px;">

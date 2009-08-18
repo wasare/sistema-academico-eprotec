@@ -1,14 +1,7 @@
 <?php
-  
-require_once("../../../configs/configuracao.php");
-require_once("../../../core/reports/header.php");
-require_once("../../../core/reports/carimbo.php");
-require_once("../../../lib/adodb/tohtml.inc.php");
+
 require_once("aprovados_reprovados.php");
  
-$header  = new header($param_conn);
-$carimbo = new carimbo($param_conn);
-  
 ?>
 <html>
 <head>
@@ -16,7 +9,7 @@ $carimbo = new carimbo($param_conn);
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
+<body marginwidth="20" marginheight="20">
 	<div style="width: 760px;" align="center">
 		<div align="center" style="text-align:center; font-size:12px;">
         	<?php echo $header->get_empresa($PATH_IMAGES); ?>
