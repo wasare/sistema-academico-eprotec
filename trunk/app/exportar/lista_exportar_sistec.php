@@ -1,8 +1,6 @@
 <?php
 
-require("../../lib/common.php");
-require("../../configs/configuracao.php");
-
+require_once("../../configs/configuracao.php");
 
 $conn = new connection_factory($param_conn);
 

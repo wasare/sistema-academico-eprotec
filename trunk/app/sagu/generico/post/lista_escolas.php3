@@ -1,6 +1,6 @@
 <? 
 
-require("../../../../lib/common.php"); 
+require("../../common.php"); 
 
 $cnome = $_POST['cnome'];
 

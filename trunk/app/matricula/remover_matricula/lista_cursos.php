@@ -1,10 +1,8 @@
 <?php
 
 //INCLUSAO DE BIBLIOTECAS
-require("../../../lib/common.php");
-require("../../../configs/configuracao.php");
-require("../../../lib/adodb/adodb.inc.php"); 
-require("../../../lib/adodb/tohtml.inc.php");
+require_once("../../../configs/configuracao.php");
+require_once("../../../lib/adodb/tohtml.inc.php");
 
 
 //error_reporting(E_ALL & ~E_NOTICE);

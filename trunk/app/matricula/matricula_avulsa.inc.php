@@ -9,10 +9,7 @@
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require_once("../../lib/common.php");
 require_once("../../configs/configuracao.php");
-require_once("../../lib/adodb/adodb.inc.php");
-
 
 //Criando a classe de conexao ADODB
 $Conexao = NewADOConnection("postgres");

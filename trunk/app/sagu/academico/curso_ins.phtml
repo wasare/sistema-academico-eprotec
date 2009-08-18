@@ -1,6 +1,6 @@
-<? require("../../../lib/common.php"); ?>
-<? require("../lib/SQLCombo.php3");?>
-<?
+<?php require_once("../common.php"); ?>
+<? requir_once("../lib/SQLCombo.php3");?>
+<?php
 $op_opcoes = SQLArray("select id||' - '||descricao, id from tipos_curso order by id");
 $op_opcoes2 = SQLArray("select nome, id from turnos order by nome");
 ?>

@@ -1,4 +1,4 @@
-<? require("../../../lib/common.php"); ?>
+<?php require_once("../common.php"); ?>
 
 <html>
 <head>

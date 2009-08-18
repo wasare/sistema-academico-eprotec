@@ -10,9 +10,7 @@
 header("Cache-Control: no-cache");
 
 //INCLUSAO DE BIBLIOTECAS
-require("../../lib/common.php");
-require("../../configs/configuracao.php");
-require("../../lib/adodb/adodb.inc.php"); 
+require_once("../../configs/configuracao.php");
 
 
 //Criando a classe de conexão

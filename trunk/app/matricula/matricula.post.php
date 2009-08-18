@@ -3,9 +3,7 @@
 header("Cache-Control: no-cache");
 
 //-- ARQUIVO E BIBLIOTECAS
-require_once("../../lib/common.php");
 require_once("../../configs/configuracao.php");
-require_once("../../lib/adodb/adodb.inc.php");
 
 //-- Conectando com o PostgreSQL
 $Conexao = NewADOConnection("postgres");

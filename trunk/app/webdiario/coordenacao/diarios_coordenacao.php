@@ -61,15 +61,11 @@ if(isset($_GET['id']) AND ( !is_numeric($diario['0']) OR !is_numeric($diario['1'
 
 }
 
-//else {
-
-	if($diario['2'] === '0' && $_GET['acao'] === '11') {
+	if($diario['3'] === '0' && $_GET['acao'] === '12') {
 
      echo '<script language="javascript">
-            window.alert("ERRO! Este diário já está aberto!"); javascript:window.history.back(1);
+            window.alert("ERRO! Este diário não pode ser finalizado sem professor!"); javascript:window.history.back(1);
      </script>';
-
-     //header("Location: diarios.php?periodo=". $_SESSION['periodo']);
 
       exit;
     }
@@ -165,8 +161,6 @@ if(isset($_GET['id']) AND ( !is_numeric($diario['0']) OR !is_numeric($diario['1'
 
 	if ($_GET['acao'] === "13") {
 
-		//echo $_GET['acao']; die;
-
         echo '<script language="javascript">
 
             function jsFinalizaTodos(id)
@@ -201,26 +195,8 @@ if(isset($_GET['id']) AND ( !is_numeric($diario['0']) OR !is_numeric($diario['1'
     }
 
 
-
-//}
-
-
-
-
 if($_SESSION['select_periodo'] != "")
 {
-/*
-	$query1 = getPeriodos($us);
-
-	while($row1 = pg_fetch_array($query1))  
-    {
-    	$nomeperiodo = $_SESSION['nomeperiodo'];
-        $codiperiodo = $_SESSION['codperiodo'];
-        $id = $_SESSION['id'];
-        // print "<option value=$codiperiodo>$nomeperiodo</option>";
-
- //   }
- */
 
 //  f.ref_professor = \''.$_SESSION['select_prof'].'\' AND 
    $getperiodo = $_SESSION['select_periodo'];
@@ -239,17 +215,33 @@ if($_SESSION['select_periodo'] != "")
                 o.id = f.ref_disciplina_ofer AND
                 o.ref_periodo = \''.$_SESSION['select_periodo'].'\' AND
 				o.ref_curso = '.$_SESSION['select_curso'].' AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = \'0\' AND
                 d.id = o.ref_disciplina
 				ORDER BY descricao_extenso;';
-  
-/*
-echo $sql3;
-exit;
-*/
-   
+
+ $sql =  " SELECT id as idof, " . 
+           "        ref_campus, " .
+           "        get_campus(ref_campus), " .
+           "        ref_curso, " .
+           "        curso_desc(ref_curso), " .
+           "		fl_digitada, fl_concluida, ".
+           "        descricao_disciplina(ref_disciplina) as descricao_extenso, " .
+           "        ref_disciplina, " .
+           "        get_num_matriculados(id) || '/' || num_alunos as qtde_alunos, " .
+           "        turma, " .
+           "        ref_periodo_turma, " .
+		   "     CASE WHEN professor_disciplina_ofer_todos(id) = '' THEN '<font color=\"red\">sem professor</font>' " .
+		   "			ELSE professor_disciplina_ofer_todos(id) " .
+		   "		END AS \"professor\" " .
+           " FROM disciplinas_ofer " .
+           " WHERE ref_periodo = '". $_SESSION['select_periodo'] ."'";
+
+		   $sql .= " AND ref_curso = ". $_SESSION['select_curso'];
+		   $sql .= " AND is_cancelada = '0';";
+
+           
 //   $con = diario_open_db();	 $dbconnect
-   $query3 = consulta_sql($sql3);
+   $query3 = consulta_sql($sql);
 }
 
 ?>
@@ -352,7 +344,9 @@ echo '<input type="hidden" name="vars" id="vars" value="' . $vars_b . '" />';
     <!--    <td width="10%">N</td>-->
 	    <td width="3%">&nbsp;</td>
 		<td width="15%" align="center"><b>C&oacute;d. Di&aacute;rio</b></td>
-        <td width="70%" align="center"><b>Descri&ccedil;&atilde;o</b></td>
+        <td width="43%" align="center"><b>Descri&ccedil;&atilde;o</b></td>
+		<td width="12%" align="center"><b>Mat. / Vagas</b></td>
+		<td width="15%" align="center"><b>Professor(es)</b></td>
         <td width="12%" align="center"><b>Situa&ccedil;&atilde;o</b></td>
 
        <!--        <td width="18%" align="center">A&ccedil;&otilde;es</td>
@@ -371,12 +365,20 @@ $r2 = '#FFFFCC';
 while($row3 = pg_fetch_array($query3))
 {
 	$nc = $row3["descricao_extenso"];
-    $idnc = $row3["id"];
+    $idnc = $row3["idof"];
     $idof = $row3["idof"];
 	$fl_digitada = $row3['fl_digitada'];
     $fl_concluida = $row3['fl_concluida'];
+	$professor = $row3['professor'];
+	$qtde_alunos = $row3['qtde_alunos'];
 
     $fl_encerrado = 0;
+
+	if ( preg_match('/sem professor/i', $professor) ) 
+		$fl_professor = 0;
+	else
+		$fl_professor = 1;
+
 
     if($fl_digitada == 'f' && $fl_concluida == 'f') {
         $fl_situacao = '<font color="green"><b>Aberto</b></font>';
@@ -392,9 +394,7 @@ while($row3 = pg_fetch_array($query3))
         }
     }
 
-//  print "<option value=$idnc:$idof>($idof) - $nc</option>";
-//	echo '<a href="diarios.php?periodo='.$codiperiodo.'" target="principal"><font color="#FFFFCC" size="1">'.($idof) - $nc.'</a><br />';
-      // print "<input type=\"hidden\" name=\"getofer\" value=$idof />";
+    // print "<input type=\"hidden\" name=\"getofer\" value=$idof />";
     if ( ($i % 2) == 0)
    	{
       $rcolor = $r1;
@@ -405,9 +405,11 @@ while($row3 = pg_fetch_array($query3))
    	}
 
    	echo "<tr bgcolor=\"$rcolor\">\n";
-	echo '<td width="3%" align="center"><input  type="radio" name="diario" id="diario" value="'.$idnc.'|'.$idof.'|'.$fl_encerrado.'" /></td>';
+	echo '<td width="3%" align="center">';
+	echo '<input  type="radio" name="diario" id="diario" value="'.$idnc.'|'.$idof.'|'.$fl_encerrado.'|'.$fl_professor.'" />';
+	echo '</td>';
 
-    echo " <td width=\"16%\" align=\"center\">$idof</td>\n <td >$nc</td>\n ";
+    echo " <td width=\"16%\" align=\"center\">$idof</td>\n <td>$nc</td>\n <td>$qtde_alunos</td>\n <td>$professor</td>\n ";
 
     echo " <td width=\"6%\" align=\"center\">$fl_situacao</td>\n ";
 

@@ -1,6 +1,6 @@
 <?php
 
-require("../../../../lib/common.php");
+require("../../common.php");
 require("../../lib/VerificaChaveUnica.php3");
 
 $id                  = $_POST['id'];

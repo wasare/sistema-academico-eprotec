@@ -1,9 +1,8 @@
 <?php
 
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
-header ("Cache-Control: no-cache");
-require("../../lib/common.php");
-require("../../configs/configuracao.php");
+header("Cache-Control: no-cache");
+require_once("../../configs/configuracao.php");
 
 $conn = new connection_factory($param_conn);
 

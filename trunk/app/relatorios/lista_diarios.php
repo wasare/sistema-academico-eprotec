@@ -2,10 +2,8 @@
 
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header("Cache-Control: no-cache");
-require("../../lib/common.php");
-require("../../configs/configuracao.php");
-require("../../lib/adodb/adodb.inc.php");
-require("../../lib/adodb/tohtml.inc.php");
+require_once("../../configs/configuracao.php");
+require_once("../../lib/adodb/tohtml.inc.php");
 
 
 //RECEBENDO OS DADOS DO FORMULARIO --
@@ -56,7 +54,7 @@ if($tipo != '')
 
 $sql .= " s.ref_tipo_curso = t.id AND
     o.ref_periodo = '$periodo' AND
-    o.is_cancelada = 0 AND
+    o.is_cancelada = '0' AND
     d.id = o.ref_disciplina AND ";
 
 if($campus != '') 

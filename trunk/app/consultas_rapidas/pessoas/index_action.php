@@ -1,10 +1,8 @@
 <?php
 
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
-header ("Cache-Control: no-cache");
-require("../../../lib/common.php");
+header("Cache-Control: no-cache");
 require("../../../configs/configuracao.php");
-require("../../../lib/adodb/adodb.inc.php");
 
 
 $sql = "SELECT id, nome 

@@ -14,6 +14,7 @@ $usuario = $_POST['usuario'];
 $senha = md5($_POST['senha']);
 $speriodo = trim($_POST['speriodo']);
 
+
 // CONTROLE DE SESSAO DE LOGIN NO WEBDIARIO
 $_SESSION['web_diario_login'] = $_POST['web_diario_login'];
 $_SESSION['nivel'] = 0;
@@ -84,7 +85,7 @@ if($result['diario'] == 'invalido') {
     $_SESSION['id'] = $result['id_nome'];
 
     $_SESSION['lst_periodo'] = $P["$speriodo"];
-
+	
 	if ($coordena == 1) { 
 	
 		$_SESSION['cursosc'] = coordena_sql($result['id_nome'],1); 

@@ -1,8 +1,6 @@
 <?php 
-require("../../lib/common.php");
-require_once("../../configs/configuracao.php");
-require_once("../../lib/adodb/adodb.inc.php");
 
+require_once("../../configs/configuracao.php");
 require_once('../../core/situacao_academica.php');
 
 

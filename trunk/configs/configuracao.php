@@ -18,8 +18,8 @@ list($user, $password) = split(":",$_SESSION['SessionAuth'],2);
 /**
  * Banco de dados
  */
-$host     = 'dados.cefetbambui.edu.br';
-$database = 'sagu';
+$host     = '192.168.0.234';
+$database = 'sa';
 
 /**
  * Variaveis de acesso a dados - SA 
