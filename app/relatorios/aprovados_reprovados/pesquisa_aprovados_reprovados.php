@@ -19,7 +19,6 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
 	<title>Relat&oacute;rio de Alunos Aprovados/Reprovados</title>
 	<script language="javascript" src="../../../lib/prototype.js"></script>
 	<script language="javascript" src="pesquisa_aprovados_reprovados.js"></script>
-	
 	<script src="../../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
 	<link href="../../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
 	<link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
@@ -56,36 +55,36 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
 	
 	<div class="box_geral">
 		Per&iacute;odo:<br />
-	    <span id="sprytextfield2">
-    		<input name="periodo1" type="text" id="periodo1" size="10" onchange="ChangeCode('periodo1','periodo'); setPeriodo();" />
-        	<?php  print $Result1->GetMenu('periodo',null,true,false,0,'onchange="ChangeOp();setPeriodo();"'); ?>
-	        <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
-    	</span>
-	<br />
-    	Curso:<br />
-	<span id="sprytextfield1">
-	    <?php 
-	        echo $busca->input_text_retorno("5"); 
-	        echo $busca->input_text_consulta("40");
-	        echo $busca->area_lista();
-	    ?>
-	    <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
-        </span>
-	
-	<br />
-	C&oacute;digo do Aluno:<br />
-	<input name="aluno" type="text" id="aluno" size="10" />
-    	<span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todos os alunos.</span>
-    	<br />
-    	Turma:<br />
-    	<input name="turma" type="text" id="turma" size="10" />
-   		<span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todas as turmas.</span>
-    	<br />
-    	Situa&ccedil;&atilde;o:<br />
-    	<input type="radio" name="aprovacao" id="aprovacao" value="1" /> Aprovado 
-    	<input type="radio" name="aprovacao" id="aprovacao" value="2" checked="checked" /> Reprovado 
-    	<input type="radio" name="aprovacao" id="aprovacao" value="3" /> Aprovado e Reprovado
-    	<br />
+		<span id="sprytextfield2">
+	    		<input name="periodo1" type="text" id="periodo1" size="10" onchange="ChangeCode('periodo1','periodo'); setPeriodo();" />
+	        	<?php  print $Result1->GetMenu('periodo',null,true,false,0,'onchange="ChangeOp();setPeriodo();"'); ?>
+		        <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
+	    	</span>
+		<br />
+	    	Curso:<br />
+		<span id="sprytextfield1">
+			<?php 
+		        echo $busca->input_text_retorno("5"); 
+		        echo $busca->input_text_consulta("40");
+		        echo $busca->area_lista();
+			?>
+			<span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
+	        </span>
+		
+		<br />
+		C&oacute;digo do Aluno:<br />
+		<input name="aluno" type="text" id="aluno" size="10" />
+	    	<span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todos os alunos.</span>
+	    	<br />
+	    	Turma:<br />
+	    	<input name="turma" type="text" id="turma" size="10" />
+	   	<span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todas as turmas.</span>
+	    	<br />
+	    	Situa&ccedil;&atilde;o:<br />
+	    	<input type="radio" name="aprovacao" id="aprovacao" value="1" /> Aprovado 
+	    	<input type="radio" name="aprovacao" id="aprovacao" value="2" checked="checked" /> Reprovado 
+	    	<input type="radio" name="aprovacao" id="aprovacao" value="3" /> Aprovado e Reprovado
+	    	<br />
 		Assinatura:<br />
 		<?php echo $carimbo->listar();?>
 	</div>
