@@ -470,7 +470,17 @@ function CheckFormParameters($list,$href=""){
         if ( !$name )
           continue;
         
-		$value = trim($GLOBALS["$name"]);
+		if(array_key_exists($name, $GLOBALS['_GET']))
+        {
+            $value = trim($GLOBALS['_GET']["$name"]);
+        }
+        else
+        {
+            if (array_key_exists($name, $GLOBALS['_POST']))
+            {
+                $value = trim($GLOBALS['_POST']["$name"]);
+            }
+        }
 
         if (!is_numeric($value) AND empty($value))
         {
