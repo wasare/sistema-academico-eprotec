@@ -1,5 +1,6 @@
 <?php
-include ('../../webdiario.conf.php');
+require_once ('../../webdiario.conf.php');
+
 
 $sql1 = "SELECT DISTINCT
       a.login,
@@ -7,14 +8,16 @@ $sql1 = "SELECT DISTINCT
       FROM
       diario_usuarios a, pessoas b
       WHERE
-      a.login = '$us'
+      a.login = '" .$_SESSION['login'] ."'
       AND
-      a.id_nome = b.id";
+      a.id_nome = b.id;";
+
 	  
 $query1 = pg_exec($dbconnect, $sql1);
-while($linha1 = pg_fetch_array($query1)) 	{
-        		$nomecompleto = $linha1["nome"];
-                }
+while($linha1 = pg_fetch_array($query1)) 	
+{
+    $nomecompleto = $linha1["nome"];
+}
                 
 ?>
 <html>
@@ -42,19 +45,19 @@ while($linha1 = pg_fetch_array($query1)) 	{
     <td width="22%">Digite sua senha atual: </td>
     <td width="78%"><form name="form1" method="post" action="passwd_troca.php">
         <?PHP print("<input type=\"hidden\" name=\"user\" value=\"$us\">"); ?>
-        <input type="password" name="passwdoriginal">
+        <input type="password" name="passwdoriginal" id="passwdoriginal" />
       </td>
   </tr>
   <tr> 
     <td>Digite a nova senha:</td>
     <td>
-        <input type="password" name="passwnew1">
+        <input type="password" name="passwnew1" id="passwnew1" />
     </td>
   </tr>
   <tr> 
     <td> Redigite sua nova senha:</td>
     <td>
-        <input type="password" name="passwnew2">
+        <input type="password" name="passwnew2" id="passwnew1" />
       </td>
   </tr>
   <tr> 

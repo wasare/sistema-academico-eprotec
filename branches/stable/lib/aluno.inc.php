@@ -28,39 +28,42 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios)
 	$diarios_matriculados = count($diarios);
     $diarios_reprovados = 0;
 
-    foreach($diarios as $id)
+	if($diarios_matriculados > 0)
     {
-        $diario_id = $id['diario'];
-		
-    	// -- Verifica se foi reprovado por faltas
-        $sqlDisciplina = "
-         SELECT DISTINCT
-            COUNT(o.id)
-        FROM
-                matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s
-        WHERE
+        foreach($diarios as $id)
+        {
+            $diario_id = $id['diario'];
+
+            // -- Verifica se foi reprovado por faltas
+            $sqlDisciplina = "
+                SELECT DISTINCT
+                    COUNT(o.id)
+                FROM
+                    matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s
+                WHERE
                 m.ref_pessoa = p.id AND
                 p.id = '$aluno_id' AND
                 m.ref_disciplina_ofer = o.id AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 ( m.num_faltas > ( 
-                                  	( SELECT
-                                        	SUM(CAST(flag AS INTEGER)) AS carga
-                                    	FROM
-                                        	diario_seq_faltas
-                                    	WHERE
-                                        	ref_disciplina_ofer = $diario_id ) * 0.25 
-									) 
-									 
-				) AND
-				o.id = $diario_id; ";
+                                    ( SELECT
+                                            SUM(CAST(flag AS INTEGER)) AS carga
+                                        FROM
+                                            diario_seq_faltas
+                                        WHERE
+                                            ref_disciplina_ofer = $diario_id ) * 0.25 
+                                    ) 
+                                     
+                ) AND
+                o.id = $diario_id; ";
 
-		$RsDisciplina = $Conexao->Execute($sqlDisciplina);
-		$diarios_reprovados += $RsDisciplina->fields[0];
+            $RsDisciplina = $Conexao->Execute($sqlDisciplina);
+            $diarios_reprovados += $RsDisciplina->fields[0];
+        }
 	}
-
+    
     if ($diarios_reprovados >= $diarios_matriculados)
          return TRUE;
     else
@@ -81,7 +84,7 @@ function verificaAprovacao($aluno_id,$curso_id,$diario_id)
                 p.id = '$aluno_id' AND
                 m.ref_disciplina_ofer = o.id AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 ( d.id = get_disciplina_de_disciplina_of('$diario_id') OR 
                             d.id IN ( 
@@ -127,7 +130,7 @@ function verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$diario_id)
                 m.ref_contrato = $contrato_id AND
                 c.id = $contrato_id AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 ( d.id = get_disciplina_de_disciplina_of('$diario_id') OR 
                             d.id IN ( 
@@ -175,7 +178,7 @@ function verificaAprovacaoContratoDisciplina($aluno_id,$curso_id,$contrato_id,$d
                 c.ref_curso = $curso_id AND
                 c.id = $contrato_id AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 m.ref_disciplina_ofer = $diario_id AND
                 ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
@@ -279,7 +282,7 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
                 		p.id = '$aluno_id' AND
                 		m.ref_disciplina_ofer = o.id AND
                 		d.id = o.ref_disciplina AND
-                		o.is_cancelada = 0 AND
+                		o.is_cancelada = '0' AND
                 		s.id = o.ref_periodo AND
                 		( d.id = '$disc_req' OR d.id IN ( select distinct ref_disciplina_equivalente 
 															from disciplinas_equivalentes 

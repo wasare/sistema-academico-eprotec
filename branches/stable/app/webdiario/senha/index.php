@@ -19,7 +19,7 @@
   </tr>
   <tr>
     <td height="400" bgcolor="#FFFFFF" align="center">
-	<form name="form1" method="post" action="./cadastra_senha.php">
+	<form name="form1" id="form1" method="post" action="cadastra_senha.php">
 	<span style="font-weight:bold; color:#000066; font-size:16px;">Senhas WebDi&aacute;rio</span>
               <p>Digite o seu e-mail cadastrado:
                 <br>

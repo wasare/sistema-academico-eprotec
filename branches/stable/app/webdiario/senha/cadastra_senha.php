@@ -1,6 +1,11 @@
 <?php
 
-require_once('../conf/conn_diario.php');
+session_start();
+
+$_SESSION['nivel'] = 0;
+$_SESSION['login'] = 'login';
+
+require_once('../webdiario.conf.php');
 
 
 function Gera_Senha(){
@@ -56,24 +61,27 @@ if ($mailconsulta =='') {
                    $id = $linha["id"];
       		}
 
-			$endereco = strtolower($endereco);
 
+			$endereco = strtolower($endereco);
 			$num_rand = Gera_Senha();
-	
 			$passwnew1 = md5($num_rand);
 
 			$sql1 = "UPDATE diario_usuarios SET senha = '$passwnew1' WHERE id_nome = $id;";
 	
 			$query1 =  pg_exec($dbconnect, $sql1);
 
-			$msg_assunto = "Usuario e Senha Web Diario - CEFET-BAMBUI";
+			$headers = "From: <gti@cefetbambui.edu.br>\n";
+            $headers .= "MIME-Version: 1.0\n";
+            $headers .= "Content-type: text/plain; charset=utf-8";
 
-			$msg_corpo = "Caro usuario " . $nomec . " ,a seu pedido sua senha do Web Diario foi enviada, segue abaixo seu usuario e sua nova senha provisoria:\n\n";
+			$msg_assunto = "senha alterada - Instituto Federal Minas Gerais - Campus Bambui / Campus Formiga";
+
+			$msg_corpo = "Caro usuario " . $nomec . " , conforme sua solicitacao, criamos uma senha de acesso provisoria ao Web diario, segue abaixo seu usuario e sua senha provisoria:\n\n";
         	$msg_corpo .= "Usuario: " . $user . "\n";
 			$msg_corpo .= "Senha: " . $num_rand . "\n\n";
 			$msg_corpo .= "Para sua seguranca altere esta senha ao acessar o sistema!"."\n\n";
-			$msg_corpo .= "Atenciosamente, " . "\nWeb Diario CEFET-BAMBUI\n\n\n";
-			$msg_corpo .= "OBS: Esta eh uma mensagem automatica e nao deve ser respondida, qualquer duvida envie e-mail para wanderson@cefetbambui.edu.br\n\n\n";
+			$msg_corpo .= "Atenciosamente, " . "\nSistema Academico \nInstituto Federal Minas Gerais - Campus Bambui / Campus Formiga\n\n\n";
+			$msg_corpo .= "OBS: Esta e uma mensagem automatica e nao deve ser respondida, qualquer duvida entre em contato com a secretaria\n\n\n";
 			$msg_corpo .= "MENSAGEM PROPOSITALMENTE SEM ACENTOS.";
 
 			echo '<html>
@@ -84,8 +92,9 @@ if ($mailconsulta =='') {
 
 					<body>';
 	
-		        	// EMAIL COM A NOVA SESSAO	
-				if ( @mail($mailconsulta, $msg_assunto, $msg_corpo, "FROM: diario@cefetbambui.edu.br") ) {
+				$to = "To: <$mailconsulta>\n";
+			   	// EMAIL COM A NOVA SESSAO	
+				if ( @mail($mailconsulta, $msg_assunto, $msg_corpo, $to . $headers) ) {
 
 					echo 	'<p>Sr.(a) <strong>'.$nomec.'</strong> a sua senha foi enviada para o e-mail <strong>' . $mailconsulta . '</strong></p>
 					<p>&nbsp;</p>

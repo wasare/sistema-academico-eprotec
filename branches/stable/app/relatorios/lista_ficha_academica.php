@@ -178,16 +178,16 @@ foreach ($ficha_academica as $disc) {
 	if($nota_final == ''){
 		$nota_final = ' - ';
 	}  
-    
+   
+	$pfaltas = 0;
+    $stfaltas = 0; 
 	if (!empty($carga_realizada)) {
     	$perfaltas = ($faltas_materia * 100) / $carga_realizada;
         $pfaltas = substr($perfaltas,0,5);
 		
 		$stfaltas = $pfaltas;
-        //$stfaltas = getNumeric2Real($pfaltas) . ' %';
     }
     else {
-		//$pfaltas = '-'; 
 		$stfaltas = $pfaltas;
 		$carga_realizada = 0;
 	}
