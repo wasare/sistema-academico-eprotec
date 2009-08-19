@@ -14,7 +14,7 @@ Tel.: (19)3492-1869
 
 $st = '#F3F3F3';
 
-include_once('../webdiario.conf.php');
+require_once('../webdiario.conf.php');
 
 $btnOK = false;
 
@@ -68,7 +68,7 @@ if (isset($_POST['btnOK']) && ( trim($_POST['btnOK']) == 'OK')) {
 	$nome = trim(@$_POST['nome']);
 
   	$sql1 = 'SELECT  DISTINCT 
-      a.nome, a.id, b.ref_curso, d.abreviatura
+      a.nome, a.id, b.ref_curso, d.abreviatura, c.id as contrato
    FROM
       pessoas a, matricula b, contratos c, cursos d
    WHERE
@@ -78,17 +78,8 @@ if (isset($_POST['btnOK']) && ( trim($_POST['btnOK']) == 'OK')) {
                         a.ref_pessoa
                      FROM 
                         matricula a ';
-  /*
-	if($_SESSION['cursosc'] != '' && isset($_SESSION['cursosc']) && !empty($_SESSION['cursosc'])) {
-		$sql1 .=  '  WHERE ref_curso IN ('.$_SESSION['cursosc'].') ';
-	}
-	else {						
-		if($_SESSION['nivel'] == 1) {
-			$sql1 .=  '  WHERE ref_periodo IN ('.$_SESSION['lst_periodo'].') ';
-		}
-	}
-   */
-   
+
+  
    	$coordenador = 0;
 
 	//Se é coordenador
@@ -103,7 +94,8 @@ if (isset($_POST['btnOK']) && ( trim($_POST['btnOK']) == 'OK')) {
 	 
             $sql1 .=  '  WHERE ref_periodo IN ('.$_SESSION['lst_periodo'].') ';
      }
-	
+
+    
 	//Se é secretaria
 	//Mostra tudo
 	
@@ -118,10 +110,9 @@ if (isset($_POST['btnOK']) && ( trim($_POST['btnOK']) == 'OK')) {
    
 
 	if(isset($ra) && is_numeric($ra) && $ra != "") {
-    
-		$sql1 .= " AND a.ra_cnec LIKE '%$ra%' ";
 
-		$btnOK = true;
+        $sql1 .= " AND a.ra_cnec = '$ra' ";
+        $btnOK = true;
     }
 
    if(isset($nome) && ($nome != "") && strlen($nome) != 2) {
@@ -175,14 +166,14 @@ if($btnOK) {
       	    	$q3id = str_pad($row3['id'], 5, "0", STR_PAD_LEFT);
 			    $q3curso = $row3['abreviatura'];
 				$q3cs  = $row3['ref_curso'];
+				$q3contrato = $row3['contrato'];
 
       			echo '<tr bgcolor="'.$st.'">';
 				echo ' <td align="center">'.$q3id.'</td>';
 				echo ' <td>'.$q3nome.'</td>';
                 echo ' <td align="center">'.$q3curso.'</td>';
-				echo ' <td align="center"> <a href="faltas_alunos.php?aluno='.$q3id.'&nome='.$q3nome.'&curso='.$q3curso.'&cs='.$q3cs.'"> <img src="../img/edit.gif" border="0" title="Ficha Acadêmica"></a>&nbsp; <a href="cadastro_alunos.php?aluno='.$q3id.'">    <img src="../img/compose.gif" border="0" title="Ver Cadastro"></a>&nbsp;</td>';
+				echo ' <td align="center"> <a href="lista_ficha_academica.php?aluno='.$q3id.'&nome='.$q3nome.'&curso='.$q3curso.'&cs='.$q3cs.'&contrato='. $q3contrato .'" target="_blank"> <img src="../img/edit.gif" border="0" title="Ficha Acadêmica"></a>&nbsp; <a href="cadastro_alunos.php?aluno='.$q3id.'">    <img src="../img/compose.gif" border="0" title="Ver Cadastro"></a>&nbsp;</td>';
 				echo '</tr>';
-               
     		}
 
             echo '</table>';
