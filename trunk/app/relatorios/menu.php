@@ -36,7 +36,7 @@ require("../../configs/configuracao.php");
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Alunos Matriculados por curso
 	</a>
 	<br />		
-	<a href="pesquisa_matriculados_por_cidade.php" title="Alunos matriculados por cidade de origem" target="_self">
+	<a href="matriculados_cidade/pesquisa_matriculados_por_cidade.php" title="Alunos matriculados por cidade de origem" target="_self">
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Alunos Matriculados por curso e cidade
 	</a>
 	<br />
@@ -56,8 +56,8 @@ require("../../configs/configuracao.php");
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Declara&ccedil;&atilde;o de matr&iacute;cula
 	</a>
 	<br />
-	<a href="pesquisa_diarios.php" title="Di&aacute;rios andamento no per&iacute;odo" target="_self">
-		<img src="../../public/images/icons/lupa.png" />&nbsp;Di&aacute;rios andamento no per&iacute;odo
+	<a href="pesquisa_diarios.php" title="Di&aacute;rios no per&iacute;odo" target="_self">
+		<img src="../../public/images/icons/lupa.png" />&nbsp;Di&aacute;rios no per&iacute;odo
 	</a>
 	<br />
 	<a href="egressos/pesquisa_egressos.php" title="Egressos" target="_self">
