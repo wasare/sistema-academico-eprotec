@@ -40,10 +40,6 @@ require("../../configs/configuracao.php");
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Alunos Matriculados por curso e cidade
 	</a>
 	<br />
-	<a href="pesquisa_alunos_novatos.php" title="Listagem de Alunos Novatos (v&iacute;nculo inicial no curso / per&iacute;odo" target="_self">
-		<img src="../../public/images/icons/lupa.png" />&nbsp;Alunos Novatos
-	</a>
-	<br />
 	<a href="pesquisa_boletim.php"	title="Emiss&atilde;o dos Boletins Escolares" target="_self">
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Boletim Escolar
 	</a>

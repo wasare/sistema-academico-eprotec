@@ -8,9 +8,9 @@ if($_POST['param'] == ''){
 	echo '';	
 }else{
 	$sql = "SELECT descricao, id 
-			FROM cursos
-			WHERE lower(to_ascii(descricao)) like lower(to_ascii('%".$_POST['param']."%')) 
-			ORDER BY descricao DESC LIMIT 10;";
+		FROM cursos
+		WHERE lower(to_ascii(descricao)) like lower(to_ascii('%".$_POST['param']."%')) 
+		ORDER BY descricao DESC LIMIT 10;";
 	$sql = iconv("utf-8", "iso-8859-1", $sql);
 	$RsCurso = $conn->Execute($sql);
 	

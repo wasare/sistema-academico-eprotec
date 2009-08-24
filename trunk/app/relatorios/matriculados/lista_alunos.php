@@ -15,7 +15,7 @@ require_once('matriculados.php');
 	        <?php echo $header->get_empresa($PATH_IMAGES); ?>
 	    	<br /><br />
 	</div> 
-	<h2>RELAT&Oacute;RIO DE ALUNOS MATRICULADOS</h2>
+	<h2><?php echo $titulo; ?></h2>
 	<?php echo $info; ?>
 	<?php rs2html($Result1, 'width="90%" cellspacing="0" border="0" class="tabela_relatorio" cellpadding="0"'); ?>
 	<div class="carimbo_box">
