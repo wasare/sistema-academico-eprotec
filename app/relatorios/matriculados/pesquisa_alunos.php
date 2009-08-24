@@ -26,6 +26,7 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
     <link href="../../../lib/SpryAssets/SpryValidationCheckbox.css" rel="stylesheet" type="text/css" />
     <link href="../../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
 <h2>Relat&oacute;rio de  Alunos Matriculados</h2>
 <form method="post" name="form1" id="form1" target="_blank">
@@ -62,13 +63,13 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
 	name="bt_voltar" 
 	class="botao" 
 	onclick="history.back(-1);return false;" />
-		
+	
     <div class="box_geral">
-    	Per&iacute;odo:<br />
+	Per&iacute;odo:<br />
         <span id="sprytextfield1">
-        	<input name="periodo1" type="text" id="periodo1" size="10" onchange="ChangeCode('periodo1','periodo'); setPeriodo();" />
+	    <input name="periodo1" type="text" id="periodo1" size="10" onchange="ChangeCode('periodo1','periodo'); setPeriodo();" />
             <?php  print $Result1->GetMenu('periodo',null,true,false,0,'onchange="ChangeOp()"; setPeriodo();'); ?>
-        	<span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
+            <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
         </span>
 	<br />
 	Curso:<br />
@@ -80,7 +81,6 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
 	    ?>
 	    <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
         </span>
-	
     	<br />
 	C&oacute;digo do Aluno:<br />
         <input name="aluno" type="text" id="aluno" size="10" />
@@ -89,9 +89,12 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
     	Turma:<br />
         <input name="turma" type="text" id="turma" size="10" />
         <br />
-        <div style="background-color:#CCCCCC">
-        	<strong>Exibir colunas:</strong>
-        	<br />
+	<input type="checkbox" name="novatos" id="novatos" value="true" /> Somente alunos novatos. 
+	<span class="comentario">Lista todos os alunos com v&iacute;nculo no curso relacionando o per&iacute;odo com o in&iacute;cio do curso.</span>
+	<br />
+        <div style="background-color:#CCCCCC; margin-top: 8px;margin-bottom: 6px;padding: 4px;">
+	    <strong>Exibir colunas:</strong>
+	    <br />
             <span id="sprycheckbox1">
                 <input type="checkbox" name="nome" id="nome" value="nome" />Nome 
                 <input type="checkbox" name="pai" id="pai" value="pai" />Nome do Pai 
@@ -111,7 +114,6 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
                 <span class="checkboxMinSelectionsMsg">Selecione no m&iacute;nimo uma coluna.</span>
              </span>
 	</div>
-	<br />
 	Assinatura:<br />
 	<?php echo $carimbo->listar();?>
     </div>
