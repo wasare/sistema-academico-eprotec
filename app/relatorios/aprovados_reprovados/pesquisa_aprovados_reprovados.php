@@ -16,7 +16,7 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<title>Relat&oacute;rio de Alunos Aprovados/Reprovados</title>
+	<title>SA</title>
 	<script language="javascript" src="../../../lib/prototype.js"></script>
 	<script language="javascript" src="pesquisa_aprovados_reprovados.js"></script>
 	<script src="../../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
@@ -24,7 +24,7 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
 	<link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body bgcolor="#FFFFFF">
+<body>
 <h2>Relatório de Alunos Aprovados/Reprovados</h2>
 <form method="post" name="form1" id="form1" target="_blank">
 
@@ -61,7 +61,7 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
 		        <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
 	    	</span>
 		<br />
-	    	Curso:<br />
+	    Curso:<br />
 		<span id="sprytextfield1">
 			<?php 
 		        echo $busca->input_text_retorno("5"); 
@@ -69,8 +69,7 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
 		        echo $busca->area_lista();
 			?>
 			<span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
-	        </span>
-		
+	    </span>
 		<br />
 		C&oacute;digo do Aluno:<br />
 		<input name="aluno" type="text" id="aluno" size="10" />

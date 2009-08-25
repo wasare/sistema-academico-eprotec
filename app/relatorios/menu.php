@@ -40,11 +40,11 @@ require("../../configs/configuracao.php");
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Alunos Matriculados por curso e cidade
 	</a>
 	<br />
-	<a href="pesquisa_boletim.php"	title="Emiss&atilde;o dos Boletins Escolares" target="_self">
+	<a href="boletim/pesquisa_boletim.php"	title="Emiss&atilde;o dos Boletins Escolares" target="_self">
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Boletim Escolar
 	</a>
 	<br />
-	<a href="pesquisa_cursos_no_periodo.php" title="Cursos em andamento" target="_self">
+	<a href="cursos_andamento/pesquisa_cursos_no_periodo.php" title="Cursos em andamento" target="_self">
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Cursos em andamento
 	</a>
 	<br />
@@ -52,7 +52,7 @@ require("../../configs/configuracao.php");
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Declara&ccedil;&atilde;o de matr&iacute;cula
 	</a>
 	<br />
-	<a href="pesquisa_diarios.php" title="Di&aacute;rios no per&iacute;odo" target="_self">
+	<a href="diarios_periodo/pesquisa_diarios.php" title="Di&aacute;rios no per&iacute;odo" target="_self">
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Di&aacute;rios no per&iacute;odo
 	</a>
 	<br />
