@@ -1,5 +1,5 @@
 <?php 
-require("../../../lib/common.php");
+
 require("../../../configs/configuracao.php");
 require("../../../core/reports/carimbo.php");
 require("../../../core/date.php");

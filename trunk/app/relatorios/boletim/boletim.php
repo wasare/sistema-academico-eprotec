@@ -1,10 +1,6 @@
 <?php
 
-//INICIALIZA A SESSÃO
-@session_start();
-
 require_once(dirname(__FILE__) .'/../../../configs/configuracao.php');
-require_once(dirname(__FILE__) .'/../../../core/login/check_login.php');
 
 define('PDF_TMP_DIR', dirname(__FILE__) .'/boletins/pdf_tmp/');
 
@@ -256,9 +252,9 @@ class concat_pdf extends FPDI {
 
 }
 
-$periodo = $_GET['periodo'];
-$curso = $_GET['curso'];
-$aluno_id = $_GET['id'];
+$periodo  = $_POST['periodo'];
+$curso    = $_POST['codigo_curso'];
+$aluno_id = $_POST['aluno_id'];
 
 $qryCurso = " SELECT abreviatura FROM cursos WHERE id = ".$curso.";";
 
@@ -271,7 +267,7 @@ $NCurso = $conn->adodb->getOne($qryCurso);
 
 
 // RECUPERA ALUNO(S)
-if ( !IsSet($aluno_id)  && !is_numeric($aluno_id) ) {
+//if ( !IsSet($aluno_id)  && !is_numeric($aluno_id) ) {
 
      $qryAlunos = "SELECT 
                      DISTINCT
@@ -284,7 +280,7 @@ if ( !IsSet($aluno_id)  && !is_numeric($aluno_id) ) {
                      ORDER BY A.ref_pessoa;";
 
 	$aAlunos = $conn->adodb->getAll($qryAlunos);
-}
+//}
 
 
 $qryBoletim = '
@@ -294,22 +290,20 @@ SELECT
         matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s
     WHERE 
         m.ref_pessoa = p.id AND 
-	o.ref_periodo = \'%s\' AND        
-	p.ra_cnec = %s AND 
+		o.ref_periodo = \'%s\' AND        
+		p.ra_cnec = \'%s\' AND 
         m.ref_curso = %s AND         
         m.ref_disciplina_ofer = o.id AND 
         d.id = o.ref_disciplina AND
         s.id = o.ref_periodo
     ORDER BY 3;';
 
-//echo sprintf($qryBoletim1,$periodo,$periodo,$aAlunos[0],$curso,$aAlunos[0]);
-
-//echo sprintf($qryBoletim,$periodo,$aAlunos[0],$curso); die;
 
 
 foreach ($aAlunos as $aluno) {
 
-    $Boletim = $conn->adodb->getAll(sprintf($qryBoletim,$periodo,$aluno['ref_pessoa'],$curso));
+    //echo sprintf($qryBoletim,$periodo,$aluno['ref_pessoa'],$curso);die;
+	$Boletim = $conn->adodb->getAll(sprintf($qryBoletim,$periodo,$aluno['ref_pessoa'],$curso));
     
 	// GERA PDF DA LISTA DE PRESENCA DOS CANDIDATOS^M
     $bo_pdf = new Boletim('P','mm','A4');
