@@ -205,7 +205,8 @@ class clsUsuario
 	public function GeraExtrato($codigo, $datainicial, $datafinal)
 	{
 	
-		$SQL = 'SELECT T.datahora_transacao, O.des_operacao, O.tipo_operacao, T.valor_transacao FROM financeiro.tb_transacao as T, financeiro.tb_operacao as O WHERE T."FKid_usuario"='.$codigo.' AND T.datahora_transacao<=\''.$datafinal.'\' AND T.datahora_transacao>=\''.$datainicial.'\' AND T."FKcod_operacao" = O.cod_operacao;';
+		$SQL = 'SELECT T.datahora_transacao, O.des_operacao, O.tipo_operacao, T.valor_transacao FROM financeiro.tb_transacao as T, financeiro.tb_operacao as O WHERE T."FKid_usuario"='.$codigo.' AND DATE(T.datahora_transacao) BETWEEN \''.$datainicial.'\' AND \''.$datafinal.'\' AND T."FKcod_operacao" = O.cod_operacao ORDER BY T.datahora_transacao;';
+		
 		$con = new gtiConexao();
 		$con->gtiConecta();
 		$tbl = $con->gtiPreencheTabela($SQL);
