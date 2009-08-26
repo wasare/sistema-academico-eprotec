@@ -1,5 +1,6 @@
 <?php
 require_once("../controle/gtiConexao.class.php");
+require_once("../controle/gtiData.class.php");
 
 class clsUsuario
 {	
@@ -17,8 +18,7 @@ class clsUsuario
 		$this->datanasc = "";
 		$this->saldo = "";
 		$this->imagem = "";
-		
-		require_once("../config.class.php");
+
 		$config = new clsConfig();
 		$this->imagem = @file_get_contents('imagens/' . $config->GetImagemSemFoto());
 	}
@@ -85,7 +85,7 @@ class clsUsuario
 		$SQL = 'SELECT id, nome FROM public.pessoas WHERE id='.$codigo.';'; 
 		
 		$con = new gtiConexao();
-		$con->gtiConecta();	
+        $con->gtiConecta();
 		$tbl = $con->gtiPreencheTabela($SQL);		
 
 		if ($tbl->RecordCount()>0)
@@ -206,18 +206,29 @@ class clsUsuario
 	public function GeraExtrato($codigo, $datainicial, $datafinal)
 	{
 	
-		$SQL = 'SELECT T.datahora_transacao, O.des_operacao, O.tipo_operacao, T.valor_transacao FROM financeiro.tb_transacao as T, financeiro.tb_operacao as O WHERE T."FKid_usuario"='.$codigo.' AND T.datahora_transacao<=\''.$datafinal.'\' AND T.datahora_transacao>=\''.$datainicial.'\' AND T."FKcod_operacao" = O.cod_operacao;';
+		$SQL = 'SELECT T.datahora_transacao, O.des_operacao, O.tipo_operacao, T.valor_transacao FROM financeiro.tb_transacao as T, financeiro.tb_operacao as O WHERE T."FKid_usuario"='.$codigo.' AND DATE(T.datahora_transacao) BETWEEN \''.$datainicial.'\' AND \''.$datafinal.'\' AND T."FKcod_operacao" = O.cod_operacao ORDER BY T.datahora_transacao;';
+		
 		$con = new gtiConexao();
 		$con->gtiConecta();
 		$tbl = $con->gtiPreencheTabela($SQL);
 		$con->gtiDesconecta();
 		
+		$fData = new gtiData();
+
 		$tabela = '';
 		
 		foreach($tbl as $chave => $linha)
 		{
+		
+			$d = substr($linha['datahora_transacao'],0,19);
+			$data = $d[0] .$d[1] .$d[2] .$d[3] .$d[4] .$d[5] .$d[6] .$d[7] .$d[8] .$d[9];
+			$data = $fData->ConverteDataBR($data);
+			$hora = $d[11] .$d[12] .$d[13] .$d[14] .$d[15] .$d[16] .$d[17] .$d[18];
+			
+			$momento = $data . ' ' . $hora;
+		
 			$lin = '<tr>';
-			$lin .= '<td><div class="style2" align="left">'.substr($linha['datahora_transacao'],0,19).'</div></td>';
+			$lin .= '<td><div class="style2" align="left">'.$momento.'</div></td>';
 			$lin .= '<td><div class="style2" align="left">'.$linha['des_operacao'].'</div></td>';
 			$lin .= '<td><div class="style2" align="left">'.$linha['tipo_operacao'].'</div></td>';
 			$lin .='<td><div class="style2" align="left">'.number_format($linha['valor_transacao'], 2, ',', '').'</div></td>';

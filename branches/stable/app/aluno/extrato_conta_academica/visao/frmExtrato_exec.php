@@ -71,7 +71,7 @@ $usu->PegaUsuario($codusuario);
   </tr>
   <tr>
     <td class="style4">Per&iacute;odo:</td>
-    <td><span class="style2"><?php echo $datainicial . ' at&eacute; ' . $datafinal; ?></span></td>
+    <td><span class="style2"><?php echo str_replace("-","/",$datainicial) . ' at&eacute; ' . str_replace("-","/",$datafinal); ?></span></td>
   </tr>
   
   <tr>
@@ -111,7 +111,7 @@ $usu->PegaUsuario($codusuario);
     <td colspan="2">-------------------------------------------------</td>
   </tr>
   <tr>
-    <td colspan="2"><div align="center"><strong>Conta Acad&ecirc;mica - CEFET Bambu&iacute;</strong></div></td>
+    <td colspan="2"><div align="center"><strong>Conta Acad&ecirc;mica - IFMG Campus Bambu&iacute;</strong></div></td>
   </tr>
   <tr>
     <td colspan="2"><div align="center">

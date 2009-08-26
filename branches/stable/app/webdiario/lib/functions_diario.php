@@ -57,7 +57,8 @@ function diario_sql($u, $p, $sp=0) {
    }
 
 	if (( $result_sql = pg_exec($dbconnect, $sql_query)) == false) {
-        $error_msg="Error ao executar a consulta: " . $sql_query;
+        $error_msg="Error ao executar a consulta: ". $sql_query;
+          // pg_result_error($result_sql) .'<br />'.pg_result_error_field($result_sql, PGSQL_DIAG_SQLSTATE);
         return false;
 	}
 	else {
@@ -143,6 +144,10 @@ function consulta_sql($sql_query) {
 
     if (( $result_sql = pg_exec($dbconnect, $sql_query)) == false) {
         $error_msg = "Error ao executar a consulta: " . $sql_query;
+        $error_msg .= '<br />'. pg_result_error($result_sql) .'<br />'.pg_result_error_field($result_sql, PGSQL_DIAG_SQLSTATE);
+/*
+PGSQL_DIAG_SEVERITY, PGSQL_DIAG_SQLSTATE, PGSQL_DIAG_MESSAGE_PRIMARY, PGSQL_DIAG_MESSAGE_DETAIL, PGSQL_DIAG_MESSAGE_HINT, PGSQL_DIAG_STATEMENT_POSITION, PGSQL_DIAG_INTERNAL_POSITION (PostgreSQL 8.0+ only), PGSQL_DIAG_INTERNAL_QUERY (PostgreSQL 8.0+ only), PGSQL_DIAG_CONTEXT, PGSQL_DIAG_SOURCE_FILE, PGSQL_DIAG_SOURCE_LINE or PGSQL_DIAG_SOURCE_FUNCTION
+*/
 		$error_msg .= '<br /> <br />Entre em contato com o respons&aacute;vel: ';
 		$error_msg .= '<a href="javascript:history.go(-1)">Voltar</a></b>';
         return $error_msg;
