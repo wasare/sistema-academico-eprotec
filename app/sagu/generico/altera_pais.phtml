@@ -20,7 +20,7 @@ $conn->Open();
 $sql = " select " .
        "    id," .
        "    nome" .
-       " from aux_paises where id = '$id'";
+       " from pais where id = '$id'";
 
 $query = $conn->CreateQuery($sql);
 

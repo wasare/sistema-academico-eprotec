@@ -15,7 +15,7 @@ $grupo = $_POST['grupo'];
 
 CheckFormParameters(array("nome","nome_completo","password1","password2","grupo","ref_setor"));
 
-$id_user = GetIdentity('seq_sagu_usuarios');
+$id_user = GetIdentity('usuario_id_seq');
 
 
 if (!$password1 || !$password2) 
@@ -39,7 +39,7 @@ $mensagem = "Criação de Usuário...";
 $ok = $conn->Execute($sql);  
 
 // Insere usuário na tabela SAGU_USUARIOS no banco de dados sagu.
-$sql2 = " insert into sagu_usuarios (id,".
+$sql2 = " insert into usuario (id,".
         "                            nome," .
         "                            nome_completo," .
         "                            email," .

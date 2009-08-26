@@ -14,14 +14,14 @@ CheckFormParameters(array("nome",
                           "ref_pais",
                           "ref_estado"));
 
-$id = GetIdentity('seq_aux_cidades');
+$id = GetIdentity('cidade_id_seq');
 
 $conn = new Connection;
 
 $conn->Open();
 $conn->Begin();
 
-$sql = "insert into aux_cidades (" .
+$sql = "insert into cidade (" .
        "     id," .
        "     nome," .
        "     cep," .

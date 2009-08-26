@@ -11,7 +11,7 @@ $conn = new Connection;
 $conn->Open();
 $conn->Begin();
 
-$sql = "delete from aux_paises" .
+$sql = "delete from pais" .
        "  where id = '$id'";
 
 $ok = $conn->Execute($sql);

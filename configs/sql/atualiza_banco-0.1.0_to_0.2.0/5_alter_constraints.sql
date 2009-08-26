@@ -1,0 +1,23 @@
+-- adiciona restricoes as tabelas - integridade referencial
+
+-- acesso_aluno
+-- Select  * from (select id, "AlunoID" from "AcessoAluno" LEFT OUTER JOIN pessoas ON ("AlunoID" = id)) as T1 where id is null
+-- select * from "AcessoAluno" where "AlunoID" IN (2085	,2127	,2175	,2533);
+-- delete from "AcessoAluno" where "AlunoID" IN (2085 ,2127   ,2175   ,2533);
+
+ALTER TABLE acesso_aluno ADD CONSTRAINT pessoas_acesso_aluno_fkey FOREIGN KEY (ref_pessoa) REFERENCES pessoas(id) MATCH FULL;
+ALTER TABLE acesso_aluno ADD CONSTRAINT acesso_aluno_ref_pessoa_unq UNIQUE (ref_pessoa);
+   
+
+
+
+
+
+
+--ALTER TABLE distribuidores ADD PRIMARY KEY (dist_id);LTER TABLE acesso_aluno ADD CONSTRAINT cep_chk CHECK (char_length(cod_cep) = 8);
+--  fkeyClientesPedido
+
+--ALTER TABLE acesso_aluno ADD CONSTRAINT acesso_aluno_pkey PRIMARY KEY (acesso_aluno_id
+   
+
+

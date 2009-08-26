@@ -54,7 +54,7 @@
 	'DD/MM/YYYY') as \"Data de Nascimento\" 
 	
 	FROM 
-	public.pessoas p, public.matricula c , public.contratos t , public.aux_cidades m , public.filiacao f 
+	public.pessoas p, public.matricula c , public.contratos t , public.cidade m , public.filiacao f 
 	
 	WHERE 
 	c.ref_periodo = '" . $_POST["periodo"] . "' AND 

@@ -12,7 +12,7 @@ require("../lib/GetCursoExterno.php3");
 $id = $_GET['id'];
 
 
-$op_opcoes = SQLArray("select id || ' - ' || nome, id from aux_paises order by id");
+$op_opcoes = SQLArray("select id || ' - ' || nome, id from pais order by id");
 
 ?>
 

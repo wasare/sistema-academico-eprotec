@@ -17,7 +17,7 @@ $conn = new Connection;
 $conn->Open();
 $conn->Begin();
 
-$sql = " delete from aux_cidades" .
+$sql = " delete from cidade" .
        " where id = '$id'";
 
 $ok = $conn->Execute($sql);

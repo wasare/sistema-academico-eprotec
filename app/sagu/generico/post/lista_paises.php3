@@ -61,7 +61,7 @@ $desc = $_POST['desc'];
                 $conn->Open();
 
                 // note the parantheses in the where clause !!!
-                $sql = "select id, nome from aux_paises";
+                $sql = "select id, nome from pais";
 
                 $where = '';
 

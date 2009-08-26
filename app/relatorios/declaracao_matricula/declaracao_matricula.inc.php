@@ -36,7 +36,7 @@ SELECT
 	a.cep, 
 	a.ref_estado
 FROM 
-	configuracao_empresa c, aux_cidades a
+	configuracao_empresa c, cidade a
 WHERE
 	c.id = 1 AND
 	a.id = c.ref_cidade;";
@@ -56,7 +56,7 @@ SELECT
 	f.pai_nome,
 	f.mae_nome
 FROM 
-	contratos a, campus b, cursos c, pessoas d, aux_cidades e, filiacao f
+	contratos a, campus b, cursos c, pessoas d, cidade e, filiacao f
 WHERE
 	a.id = $contrato AND
 	a.ref_campus = b.id AND

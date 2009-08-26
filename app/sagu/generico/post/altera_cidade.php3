@@ -17,7 +17,7 @@ $conn = new Connection;
 $conn->Open();
 $conn->Begin();
 
-$sql = "update aux_cidades set " .
+$sql = "update cidade set " .
        "    nome = '$nome'," .
        "    cep = '$cep'," .
        "    ref_pais = '$ref_pais'," .

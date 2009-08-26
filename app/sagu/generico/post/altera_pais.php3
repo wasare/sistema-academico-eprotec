@@ -13,7 +13,7 @@ $conn = new Connection;
 $conn->Open();
 $conn->Begin();
 
-$sql = " update aux_paises set " .
+$sql = " update pais set " .
        "    id = '$id'," .
        "    nome = '$nome'" .
        " where id = '$id'";

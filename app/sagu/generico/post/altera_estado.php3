@@ -16,7 +16,7 @@ $conn->Open();
 
 $conn->Begin();
 
-$sql = " update aux_estados set " .
+$sql = " update estado set " .
        "    id = '$id'," .
        "    nome = '$nome'," .
        "    ref_pais = '$ref_pais'" .
