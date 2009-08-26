@@ -74,7 +74,7 @@ function _select(id,desc){
 	$conn->Open();
 
 	// note the parantheses in the where clause !!!
-	$sql = "select id, nome from aux_estados where ref_pais = '$ref_pais'";
+	$sql = "select id, nome from estado where ref_pais = '$ref_pais'";
 
 	if ( $id != '' )
 	$where .= " and id = '$id'";

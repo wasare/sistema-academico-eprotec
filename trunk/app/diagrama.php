@@ -79,7 +79,7 @@ $avisos[0] = $Result1->fields[0];
     <tr>
       <td align="center"><br />
         <p><a href="../index.php"> Sair do Sistema</a> - <a href="javascript: abrir();">Avisos</a> - <a href="../public/help.php">Ajuda e Documenta&ccedil;&atilde;o</a> </p>
-        <p class="texto1 style1"><strong>Sistema Acad&ecirc;mico - revis&atilde;o <?=$REVISAO?></strong><br />
+        <p class="texto1 style1"><strong>Sistema Acad&ecirc;mico - revis&atilde;o <a href="../MUDANCAS.TXT" target="_blank"><?=$REVISAO?></a></strong><br />
           &copy;2008-2009  <?=$IEnome?><br />
       </p></td>
     </tr>

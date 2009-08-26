@@ -58,7 +58,7 @@ function ListaCidades()
            "        A.ref_pais, " .
            "        A.ref_estado, " .
            "        B.nome " .
-           " from aux_cidades A, aux_paises B ";
+           " from cidade A, pais B ";
 
 
 		$where = '';

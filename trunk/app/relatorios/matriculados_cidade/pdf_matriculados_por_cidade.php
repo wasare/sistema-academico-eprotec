@@ -72,7 +72,7 @@ while(!$RsCursos->EOF) {
 	COUNT(p.id) as \"Quant\", a.nome as \"Cidade\", a.ref_estado as \"UF\"
 	
 	FROM 
-	pessoas p LEFT JOIN aux_cidades a ON(p.ref_cidade = a.id)
+	pessoas p LEFT JOIN cidade a ON(p.ref_cidade = a.id)
 	
 	WHERE
 	p.id IN ( 

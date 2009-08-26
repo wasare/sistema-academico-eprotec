@@ -110,7 +110,7 @@ if (isset($_POST["cidade"]))
 	$colunas[] = "Cidade";
 	$sql .= ', m.nome || \'-\' || m.ref_estado as "Cidade"';
 	$condicao_municipio = " p.ref_cidade = m.id AND ";
-	$tabela_municipio = ", public.aux_cidades m";
+	$tabela_municipio = ", public.cidade m";
 }
 
 if (isset($_POST["cep"]))

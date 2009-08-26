@@ -86,7 +86,7 @@ else
              email,
              dt_nascimento
              FROM
-             pessoas p, aux_cidades c
+             pessoas p, cidade c
              WHERE p.id = $aluno AND p.ref_cidade = c.id ;";
 
  

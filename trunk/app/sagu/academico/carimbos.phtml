@@ -3,7 +3,7 @@
 require("../common.php");
 require("../lib/SQLCombo.php3");
 
-$op_opcoes = SQLArray("select nome_setor, id from sagu_setores order by nome_setor");
+$op_opcoes = SQLArray("select nome_setor, id from setor order by nome_setor");
 
 function Mostra_Carimbos()
 {
@@ -17,7 +17,7 @@ function Mostra_Carimbos()
         "        A.texto, " .
         "        A.ref_setor, " .
         "        B.nome_setor " .
-        " from carimbos A, sagu_setores B " .
+        " from carimbos A, setor B " .
         " where A.ref_setor = B.id " .
         " order by A.texto";
 

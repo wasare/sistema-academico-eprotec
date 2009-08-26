@@ -12,7 +12,7 @@ $conn = new Connection;
 $conn->Open();
 $conn->Begin();
 
-$sql = "select nextval('seq_aux_paises')";
+$sql = "select nextval('pais_id_seq')";
 
 $query = $conn->CreateQuery($sql);
 
@@ -29,7 +29,7 @@ $query->Close();
 
 SaguAssert($success,"Nao foi possivel obter um numero do País!");    
 
-$sql = " insert into aux_paises (id," .
+$sql = " insert into pais (id," .
        "                         nome)" .
        " values (" .
        "                         '$id_paises'," .

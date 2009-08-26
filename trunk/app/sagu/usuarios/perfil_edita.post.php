@@ -37,7 +37,7 @@ $mensagem = "Alteração de Usuário...";
 $ok = $conn->Execute($sql);  
 
 // Altera usuário na tabela SAGU_USUARIOS no banco de dados sagu.
-$sql2 = " update sagu_usuarios set " .
+$sql2 = " update usuario set " .
         "        nome = '$nome', " .
         "        nome_completo = '$nome_completo', " .
         "        email = '$email', " .

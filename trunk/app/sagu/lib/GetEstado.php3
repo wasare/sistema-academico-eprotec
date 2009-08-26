@@ -4,7 +4,7 @@
    */
   function GetEstado($id,$SaguAssert)
   {
-    $sql = "select nome from aux_estados where id = '$id'";
+    $sql = "select nome from estado where id = '$id'";
 
     $conn = new Connection;
 

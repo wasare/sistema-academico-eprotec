@@ -36,7 +36,7 @@ SELECT
   a.nome || ' - ' || a.ref_estado,
   P.cep
 FROM 
-  contratos c, pessoas p, aux_cidades a, cursos s
+  contratos c, pessoas p, cidade a, cursos s
 
 WHERE "; 
 
