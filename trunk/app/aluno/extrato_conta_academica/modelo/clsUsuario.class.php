@@ -1,5 +1,6 @@
 <?php
 require_once("../controle/gtiConexao.class.php");
+require_once("../controle/gtiData.class.php");
 
 class clsUsuario
 {	
@@ -212,12 +213,22 @@ class clsUsuario
 		$tbl = $con->gtiPreencheTabela($SQL);
 		$con->gtiDesconecta();
 		
+		$fData = new gtiData();
+
 		$tabela = '';
 		
 		foreach($tbl as $chave => $linha)
 		{
+		
+			$d = substr($linha['datahora_transacao'],0,19);
+			$data = $d[0] .$d[1] .$d[2] .$d[3] .$d[4] .$d[5] .$d[6] .$d[7] .$d[8] .$d[9];
+			$data = $fData->ConverteDataBR($data);
+			$hora = $d[11] .$d[12] .$d[13] .$d[14] .$d[15] .$d[16] .$d[17] .$d[18];
+			
+			$momento = $data . ' ' . $hora;
+		
 			$lin = '<tr>';
-			$lin .= '<td><div class="style2" align="left">'.substr($linha['datahora_transacao'],0,19).'</div></td>';
+			$lin .= '<td><div class="style2" align="left">'.$momento.'</div></td>';
 			$lin .= '<td><div class="style2" align="left">'.$linha['des_operacao'].'</div></td>';
 			$lin .= '<td><div class="style2" align="left">'.$linha['tipo_operacao'].'</div></td>';
 			$lin .='<td><div class="style2" align="left">'.number_format($linha['valor_transacao'], 2, ',', '').'</div></td>';

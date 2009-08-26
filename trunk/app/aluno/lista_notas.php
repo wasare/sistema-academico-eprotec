@@ -25,7 +25,7 @@ $qryNotas = 'SELECT
       a.ref_disciplina = c.id AND
       a.ref_pessoa = b.id AND
 	  a.ref_disciplina_ofer = d.id AND
-	  d.is_cancelada = 0 AND
+	  d.is_cancelada = \'0\' AND
       a.ref_curso = %s AND
       a.ref_pessoa = %s
       ORDER BY
@@ -38,7 +38,6 @@ $data = $DataInicial;
 $periodo = $_GET["p"];
 $curso = $_GET["c"];
 
-$sql = sprintf($qryNotas,$periodo,$periodo,$aluno,$curso,$aluno);
 $RES = $conn->getAll(sprintf($qryNotas,$periodo,$periodo,$aluno,$curso,$aluno));
 
 //echo sprintf($qryCurso,$aluno, $data, $aluno);

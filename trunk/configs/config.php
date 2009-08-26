@@ -4,14 +4,14 @@
 */
 
 //Dados da Instituição
-$IEendereco = "";
-$IEbairro   = "";
-$IEcidade   = "Bambu&iacute;";
-$IEUF       = "MG";
-$IECE	      = "";
-$IEfone     = "";
-$IEfax      = "";
-$IEemail    = "webmaster@cefetbambui.edu.br";
+//$IEendereco = "";
+//$IEbairro   = "";
+//$IEcidade   = "Bambu&iacute;";
+//$IEUF       = "MG";
+//$IECE	      = "";
+//$IEfone     = "";
+//$IEfax      = "";
+//$IEemail    = "webmaster@cefetbambui.edu.br";
 $IEnome     = "IFMG - Campus Bambu&iacute;";
 $IEurl      = "http://www.ifmg.edu.br/bambui";
 
@@ -74,11 +74,6 @@ $status_disciplina["0"] = "Cursada";
 $status_disciplina["1"] = "Liberada";
 $status_disciplina["2"] = "Bloqueada";
 $status_disciplina[""] = "Fora do Currículo";
-
-$status_matricula["1"] = "Reprovado";
-$status_matricula["2"] = "Desistente";
-$status_matricula["3"] = "Aprovado";
-$status_matricula["4"] = "Dispensado";
 
 $requisitos["P"] = "Pré-Requisito";
 $requisitos["C"] = "Co-Requisito";

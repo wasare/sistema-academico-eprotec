@@ -1,5 +1,6 @@
 <?php
 
+
 require_once('aluno.conf.php');
 
 include_once('topo.htm');

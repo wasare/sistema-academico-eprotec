@@ -1,13 +1,13 @@
 <?php
 
 session_start();
-
 error_reporting(0);
 
 ini_set('display_errors', '0');
 
-//PATH ONDE SE ENCONTRA A CLASSE ADODB
-require_once('../../lib/adodb/adodb.inc.php');
+// CONTROLE DE SESSAO DE LOGIN NO MODULO ALUNO
+$_SESSION['aluno_login'] = 1;
+
 require_once('../../configs/configuracao.php');
 
 //EFETUA A CONEXÃO
@@ -47,23 +47,15 @@ else
 
 }
 
-$qryUsuarioCont= 'SELECT 
+$qryUsuarioCont = 'SELECT 
                      COUNT(*)
                   FROM 
-                     "AcessoAluno" a, pessoas b
-                  WHERE "AlunoID" = '.$user.' AND
+                     acesso_aluno a, pessoas b
+                  WHERE a.ref_pessoa = '.$user.' AND
                          b.id = '.$user.' AND
                          dt_nascimento = \''.$nasc.'\' AND
-                        "cvSenha" = \''.$senha.'\';';
+                        a.senha = \''.$senha.'\';';
 
-//echo $qryUsuarioCont; die;
-/*
-SELECT      COUNT(*)
-                  FROM 
-                     "AcessoAluno" a, 
-                  WHERE "AlunoID" = 245 and b.id = 245
-                  and dt_nascimento = '06/08/1975'
-*/
 $AlunoCont = $conn->getOne($qryUsuarioCont);
 
 // VERIFICA O ACESSO

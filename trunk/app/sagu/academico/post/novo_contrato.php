@@ -209,19 +209,18 @@ if ($ref_periodo_turma == '')
 if ($percentual_pago == '')
 { $sql=$sql . " null) " ;} else { $sql=$sql . "'$percentual_pago') " ;}
 	
+// usa conection factory para verificar se o aluno já tem senha
+$conexao = new connection_factory($param_conn);
 
-$sql2 = "SELECT COUNT(\"AlunoID\") FROM \"AcessoAluno\" WHERE \"AlunoID\" = '$ref_pessoa'";
-$rs = $conn->Execute($sql2);
- 
-if($rs == false){
-	 
-	$sql3 = "; INSERT INTO \"AcessoAluno\"(\"AlunoID\",\"cvSenha\") VALUES('$ref_pessoa',md5(lpad('$ref_pessoa', 5, '0'))); ";
-	$sql .= $sql3;
-	 
+$sql2 = "SELECT COUNT(ref_pessoa) FROM acesso_aluno WHERE ref_pessoa = '$ref_pessoa';";
+
+$cont_aluno = (int) $conexao->adodb->getOne($sql2);
+
+if($cont_aluno == 0)
+{
+	$sql3 = "; INSERT INTO acesso_aluno(ref_pessoa,senha) VALUES('$ref_pessoa',md5(lpad('$ref_pessoa', 5, '0'))); ";
+    $sql .= $sql3;
 }
-//echo $sql . "<br>Resource: " . $rs . "<br>Linha: " . $row[0];
-//die;
- 
  
 $ok = $conn->Execute($sql);
 
