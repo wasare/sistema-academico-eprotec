@@ -67,7 +67,7 @@ $usu->PegaUsuario($codusuario);
   
   <tr>
     <td><span class="style4">Usu&aacute;rio:</span></td>
-    <td><span class="style2"><?php echo utf8_encode($usu->GetNome()); ?></span></td>
+    <td><span class="style2"><?php echo $usu->GetNome(); ?></span></td>
   </tr>
   <tr>
     <td class="style4">Per&iacute;odo:</td>
@@ -115,7 +115,7 @@ $usu->PegaUsuario($codusuario);
   </tr>
   <tr>
     <td colspan="2"><div align="center">
-	<a href="javascript:history.back(-1);">Voltar</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="../../lista_cursos.php">Voltar</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <a href="javascript:window.print();" >Imprimir</a>
 
     </div></td>

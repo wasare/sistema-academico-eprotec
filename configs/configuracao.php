@@ -66,11 +66,12 @@ $REVISAO 		= @file_get_contents ('../VERSAO.TXT');
  */
 require_once($BASE_DIR .'core/data/connection_factory.php');
 
+
 /* 
-* NAO VERIFICA AUTENTICACAO NO SA CASO TENHA UMA SESSAO DO WEB DIARIO ABERTA
-* NÃO PERMITE LOGIN SIMULTANEO NO SA E NO WEB DIARIO
+* NAO VERIFICA AUTENTICACAO NO SA CASO TENHA UMA SESSAO ABERTA DO WEB DIARIO OU MODULO DO ALUNO
+* NÃO PERMITE LOGIN SIMULTANEO NO SA E NO WEB DIARIO OU MODULO DO ALUNO
 */
-if(!isset($_SESSION['web_diario_login']) OR $_SESSION['web_diario_login'] != "1")
+if((!isset($_SESSION['web_diario_login']) OR $_SESSION['web_diario_login'] != "1") AND (!isset($_SESSION['aluno_login']) OR $_SESSION['aluno_login'] != "1"))
 { 
 	require_once($BASE_DIR .'core/login/check_login.php');
 }
