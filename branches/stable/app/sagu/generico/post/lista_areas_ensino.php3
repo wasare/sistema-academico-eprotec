@@ -1,4 +1,9 @@
-<? require("../../../../lib/common.php"); ?>
+<?php 
+	require("../../../../lib/common.php"); 
+
+	$id = $_POST['id'];
+	$area = $_POST['area'];
+?>
 <html>
 <head>
 <title><?echo($title);?></title>
@@ -70,11 +75,11 @@ if ( $id != '' || $area != '' )
 
   if ( $area != '' )
     if ( $where != '' )
-       $where .= " and upper(area) like upper('$area%')";
+       $where .= " AND lower(to_ascii(area)) SIMILAR TO lower(to_ascii('%". $area."%'))";
     else
-       $where .= " upper(area) like upper('$area%')";
+       $where .= " lower(to_ascii(area)) SIMILAR TO lower(to_ascii('%". $area."%'))";
 
-  $sql .= " where" . $where . " order by id";
+  $sql .= " where" . $where . " order by id;";
 
   $query = $conn->CreateQuery($sql);
 

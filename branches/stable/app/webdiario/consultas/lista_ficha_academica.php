@@ -96,7 +96,7 @@ $contMatriculada = pg_numrows($qry1);
 <font color="#000000" size="3"> <b>Curso: </b><?php echo($_GET['curso']);?><br />
 <b>Data: </b> <?php echo date("d/m/Y"); ?> <b>Hora: </b><?php echo date("H:i"); ?> </font><br>
 <br>
-<table cellpadding="0" cellspacing="0" class="tabela_relatorio">
+<table cellpadding="0" cellspacing="0" class="tabela_relatorio" border="1">
   <tr bgcolor="#666666">
     <th width="14%"><div align="center"><font color="#FFFFFF"><b>Per&iacute;odo</b></font></div></th>
     <th width="60%"><div align="center"><font color="#FFFFFF"><b>Componente Modular</b></font></div></th>
@@ -256,20 +256,20 @@ while($disc = pg_fetch_array($qry1))
 //INFORMACOES --
 
 //Media nas disciplinas aprovadas
-$notaMediaAprovado = number_format($notaAprovado / $contAprovado,'2',',','.');
+$notaMediaAprovado = @number_format($notaAprovado / $contAprovado,'2',',','.');
 
 //Media percentual de faltas das disciplinas aprovadas
-$percFaltasAprovado = $percFaltasAprovado / $contAprovado;
+$percFaltasAprovado = @($percFaltasAprovado / $contAprovado);
 
 //Convertendo para o padrao decimal - Media percentual de faltas das disciplinas aprovadas
 $percFaltasAprovado = number_format($percFaltasAprovado,'2',',','.');
 
 
 //Media nas disciplinas matriculadas
-$notaMediaMatriculada = number_format($notaMatriculada / $contMatriculada,'2',',','.');
+$notaMediaMatriculada = @number_format($notaMatriculada / $contMatriculada,'2',',','.');
 
 //Media percentual de faltas das disciplinas matriculadas
-$percFaltasMatriculada = $percFaltasMatriculada / $contMatriculada;
+$percFaltasMatriculada = @($percFaltasMatriculada / $contMatriculada);
 
 //Convertendo para o padrao decimal - Media percentual de faltas das disciplinas matriculada
 $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
@@ -291,7 +291,7 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
 
 <br /><br />
 
-<table width="420" border="0" cellspacing="0" cellpadding="0" class="tabela_relatorio">
+<table width="420" border="1" cellspacing="0" cellpadding="0" class="tabela_relatorio">
   <tr bgcolor="666666">
     <th height="24" colspan="2">
     	<b>Informa&ccedil;&otilde;es:</b><br>    

@@ -115,7 +115,7 @@ $usu->PegaUsuario($codusuario);
   </tr>
   <tr>
     <td colspan="2"><div align="center">
-	<a href="javascript:history.back(-1);">Voltar</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="../../lista_cursos.php">Voltar</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <a href="javascript:window.print();" >Imprimir</a>
 
     </div></td>
