@@ -1,38 +1,22 @@
 <?php
 
-  //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
-  header ("Cache-Control: no-cache");
-  require("../../lib/common.php");
-  require("../../configs/configuracao.php");
-  require("../../lib/adodb/adodb.inc.php");
-  require("../../lib/adodb/tohtml.inc.php");
+require_once("../../../configs/configuracao.php");
+require_once("../../../core/reports/header.php");
   
-  //Criando a classe de conexão ADODB
-  $Conexao = NewADOConnection("postgres");
+$conn = new connection_factory($param_conn);
 
-  //Setando como conexão persistente
-  $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
-
+$header  = new header($param_conn);
   
-  if ( is_numeric($_POST['cidade']) ) {
+if ( is_numeric($_POST['cidade']) ) {
+	$cidade = ' t.ref_campus = '. $_POST['cidade'] .' AND';
+	$RsCidade = $conn->Execute("SELECT cidade_campus FROM campus WHERE id = " . $_POST['cidade'] . ";");
+	$txt_cidade = "&nbsp;&nbsp;-&nbsp;&nbsp;<strong>Cidade: </strong>" . $RsCidade->fields[0];
+} else{
+	$cidade = '';
+}
 
-	  $cidade = ' t.ref_campus = '. $_POST['cidade'] .' AND';
-          //EXECUTANDO SQL COM ADODB
-	  $RsCidade = $Conexao->Execute("SELECT cidade_campus FROM campus WHERE id = " . $_POST['cidade'] . ";");
-
-	 // Se RsCidade falhar
-	 if (!$RsCidade){
-        	print $Conexao->ErrorMsg();
-    		die();	
-	 }
-         $txt_cidade = "&nbsp;&nbsp;-&nbsp;&nbsp;<strong>Cidade: </strong>" . $RsCidade->fields[0];
-
-  }
-  else
-	  $cidade = '';
-
-
-  $sql = "SELECT DISTINCT 
+$sql = "
+SELECT DISTINCT 
 	p.id as \"Código\", 
   	p.nome as \"Nome\" , 
 	f.pai_nome as \"Pai\", 
@@ -53,127 +37,82 @@
 	to_char(p.dt_nascimento, 
 	'DD/MM/YYYY') as \"Data de Nascimento\" 
 	
-	FROM 
-	public.pessoas p, public.matricula c , public.contratos t , public.cidade m , public.filiacao f 
+FROM 
+	pessoas p, matricula c , contratos t , cidade m , filiacao f 
 	
-	WHERE 
+WHERE 
 	c.ref_periodo = '" . $_POST["periodo"] . "' AND 
 	p.ref_filiacao = f.id AND 
 	p.ref_cidade = m.id AND 
 	c.ref_pessoa = p.id AND 
 	t.ref_curso = c.ref_curso AND $cidade
 	t.ref_pessoa = p.id 
-	ORDER BY 2";
+ORDER BY 2";
 
-  $sql = 'SELECT * FROM ('. $sql .') AS T1 ORDER BY lower(to_ascii("Nome"));';	
-  //echo $sql;
-  //die;
+$sql = 'SELECT * FROM ('. $sql .') AS T1 ORDER BY lower(to_ascii("Nome"));';	
+ 
+$Result1 = $conn->Execute($sql);
   
+$num_result = $Result1->RecordCount();
   
-  
-  $Result1 = $Conexao->Execute($sql);
-  
-  
-  //numero de ocorrencias
-  $num_result = $Result1->RecordCount();
-  
-  
-  //Informacoes de cabecalho
-  $info = "<strong>Data: </strong>" . date("d/m/Y") . "&nbsp;&nbsp;-&nbsp;&nbsp;";
-  $info .= "<strong>Hora: </strong>" . date("H:i:s") . "&nbsp;&nbsp;-&nbsp;&nbsp;";
-  $info .= "<strong>Total de Registros: </strong>" . $num_result . "&nbsp;&nbsp;-&nbsp;&nbsp;";
-  $info .= "<strong>Período: </strong> <span>".$_POST['periodo']."</span> $txt_cidade <br><br>";
+$info = "<strong>Data: </strong>" . date("d/m/Y") . "&nbsp;&nbsp;-&nbsp;&nbsp;";
+$info .= "<strong>Hora: </strong>" . date("H:i:s") . "&nbsp;&nbsp;-&nbsp;&nbsp;";
+$info .= "<strong>Total de Registros: </strong>" . $num_result . "&nbsp;&nbsp;-&nbsp;&nbsp;";
+$info .= "<strong>Período: </strong> <span>".$_POST['periodo']."</span> $txt_cidade <br><br>";
   
 ?>
 <html>
 <head>
-<title>Lista de Alunos</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="../../public/styles/style.css" rel="stylesheet" type="text/css">
+	<title>SA</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
 </head>
-<body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
-<form method="post" name="FrmImprimir" id="FrmImprimir" action="">
-  <h2>RELAT&Oacute;RIO COM TODOS OS ALUNOS MATRICULADOS POR PER&Iacute;ODO</h2>
-  <p>
-    <?php 
-  
-  echo $info;
-  
-  //rs2html($Result1, 'width="90%" cellspacing="0" border="0" class="tabela_relatorio" cellpadding="0"'); 
-  
-  echo '<TABLE COLS=16 width="90%" cellspacing="0" border="0" class="tabela_relatorio" cellpadding="0"><tr>
-			<TH>Código</TH>
-			<TH>Nome</TH>
-			<TH>Pai</TH>
-			<TH>Mae</TH>
-			<TH>Endereço</TH>
-			<TH>Bairro</TH>
-			<TH>Cidade</TH>
-			<TH>CEP</TH>
-			<TH>Tel. Part.</TH>
-			<TH>Tel. Prof.</TH>
-			<TH>Tel. Cel.</TH>
-			<TH>Tel. Rec.</TH>
-			<TH>RG</TH>
-			<TH>CPF</TH>
-			<TH>Sexo</TH>
-			<TH>Data de Nascimento</TH>
-		</tr>';
-
-  
-  /*
-  echo '<table width="90%" cellspacing="0" border="0" class="tabela_relatorio" cellpadding="0">
-  <tr>
-    <th>C&oacute;d.</th>
-    <th>Nome </th>
-    <th>Turma</th>
-    <th>Pai</th>
-    <th>M&atilde;e</th>
-    <th>Endere&ccedil;o</th>
-    <th>Bairro</th>
-    <th>Cidade</th>
-    <th>CEP</th>
-    <th>Tel. Part.</th>
-    <th>Tel. Prof.</th>
-    <th>Tel. Cel.</th>
-    <th>Tel. Rec.</th>
-    <th>RG</th>
-    <th>CPF</th>
-    <th>Sexo</th>
-    <th>Dt. Nascimento</th>
-  </tr>';
-  */
-  while(!$Result1->EOF){
-  
-  	  echo "
-	  <TR valign=top>
-		<TD align=right>" . $Result1->fields[0] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[1] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[2] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[3] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[4] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[5] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[6] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[7] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[8] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[9] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[10] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[11] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[12] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[13] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[14] . "</TD>
-		<TD>&nbsp;" . $Result1->fields[15] . "</TD>
-	  </TR>";
-  
-  	$Result1->MoveNext();
-  
-  }
-  
-  echo "</table>";
-
-
-?>
-  </p>
-</form>
+<body marginwidth="20" marginheight="20">
+	<div align="center" style="text-align:center; font-size:12px;">
+       	<?php echo $header->get_empresa($PATH_IMAGES); ?>
+        <br /><br />
+    </div> 
+	<h2>RELAT&Oacute;RIO COM TODOS OS ALUNOS MATRICULADOS POR PER&Iacute;ODO</h2>
+	<?php echo $info; ?>
+	<table cols=16 width="90%" cellspacing="0" border="0" class="tabela_relatorio" cellpadding="0">
+		<tr>
+			<th>Código</th>
+			<th>Nome</ht>
+			<th>Pai</th>
+			<th>Mae</th>
+			<th>Endereço</th>
+			<th>Bairro</th>
+			<th>Cidade</th>
+			<th>CEP</th>
+			<th>Tel. Part.</th>
+			<th>Tel. Prof.</th>
+			<th>Tel. Cel.</th>
+			<th>Tel. Rec.</th>
+			<th>RG</th>
+			<th>CPF</th>
+			<th>Sexo</th>
+			<th>Data de Nascimento</th>
+		</tr>
+		<?php while(!$Result1->EOF){ ?>
+		<tr valign=top>
+			<td align=right> <?php echo $Result1->fields[0]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[1]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[2]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[3]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[4]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[5]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[6]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[7]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[8]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[9]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[10]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[11]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[12]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[13]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[14]; ?></td>
+			<td>&nbsp; <?php echo $Result1->fields[15]; ?></td>
+		</tr>
+		<?php $Result1->MoveNext(); } ?>
+	</table>
 </body>
 </html>
