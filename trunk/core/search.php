@@ -71,7 +71,7 @@ class search{
 	    }
 	    div#$this->nome_area_lista a {
 		float:left;
-		width:318px;
+		width:314px;
 		clear:both;
 		padding:3px 3px;
 		text-decoration:none;

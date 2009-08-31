@@ -13,6 +13,7 @@ class connection_factory{
     private $port;
     private $conn_persistent; //verifica se e conexao persistente
 	private $debug;
+	
     public $adodb; //Objeto de ADODB
 
     /**
@@ -21,11 +22,11 @@ class connection_factory{
      * @param default true para conexao persistente
      */
     public function __construct($arr, $conn_persistent = TRUE, $debug = FALSE){
-        $this->host = $arr['host'];
-		$this->user = $arr['user'];
+        $this->host 	= $arr['host'];
+		$this->user 	= $arr['user'];
 		$this->password = $arr['password'];
 		$this->database = $arr['database'];
-        $this->port = $arr['port'];
+        $this->port 	= $arr['port'];
 
         $this->conn_persistent = $conn_persistent;
 
