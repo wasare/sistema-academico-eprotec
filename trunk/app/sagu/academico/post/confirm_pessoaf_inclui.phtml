@@ -276,9 +276,10 @@ echo($estados_civis[$estado_civil]);
                 <tr>
                     <td bgcolor="#EFEFFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sexo</font></td>
                     <td bgcolor="#FFFFEF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"><b>&nbsp;
-                                <script language="PHP">
-echo($sexos[$sexo]);
-                                </script>
+					<?php
+						if($sexo == 'M') echo 'Masculino';
+						if($sexo == 'F') echo 'Feminino';
+					?>
                     </b></font></td>
                 </tr>
                 <tr>

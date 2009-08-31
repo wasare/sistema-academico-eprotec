@@ -345,7 +345,7 @@ echo '<input type="hidden" name="vars" id="vars" value="' . $vars_b . '" />';
 	    <td width="3%">&nbsp;</td>
 		<td width="15%" align="center"><b>C&oacute;d. Di&aacute;rio</b></td>
         <td width="43%" align="center"><b>Descri&ccedil;&atilde;o</b></td>
-		<td width="12%" align="center"><b>Mat. / Vagas</b></td>
+		<td width="12%" align="center"><b>Alunos / Vagas</b></td>
 		<td width="15%" align="center"><b>Professor(es)</b></td>
         <td width="12%" align="center"><b>Situa&ccedil;&atilde;o</b></td>
 
@@ -374,10 +374,9 @@ while($row3 = pg_fetch_array($query3))
 
     $fl_encerrado = 0;
 
+	$fl_professor = TRUE;
 	if ( preg_match('/sem professor/i', $professor) ) 
-		$fl_professor = 0;
-	else
-		$fl_professor = 1;
+		$fl_professor = FALSE;
 
 
     if($fl_digitada == 'f' && $fl_concluida == 'f') {
@@ -406,10 +405,13 @@ while($row3 = pg_fetch_array($query3))
 
    	echo "<tr bgcolor=\"$rcolor\">\n";
 	echo '<td width="3%" align="center">';
-	echo '<input  type="radio" name="diario" id="diario" value="'.$idnc.'|'.$idof.'|'.$fl_encerrado.'|'.$fl_professor.'" />';
+    if($fl_professor)
+		echo '<input  type="radio" name="diario" id="diario" value="'.$idnc.'|'.$idof.'|'.$fl_encerrado.'|'.$fl_professor.'" />';
+	else
+		echo '&nbsp; &nbsp;';
 	echo '</td>';
 
-    echo " <td width=\"16%\" align=\"center\">$idof</td>\n <td>$nc</td>\n <td>$qtde_alunos</td>\n <td>$professor</td>\n ";
+    echo " <td width=\"16%\" align=\"center\">$idof</td>\n <td>$nc</td>\n <td align=\"center\">$qtde_alunos</td>\n <td>$professor</td>\n ";
 
     echo " <td width=\"6%\" align=\"center\">$fl_situacao</td>\n ";
 

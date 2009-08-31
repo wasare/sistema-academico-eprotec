@@ -76,7 +76,74 @@ if((!isset($_SESSION['web_diario_login']) OR $_SESSION['web_diario_login'] != "1
 	require_once($BASE_DIR .'core/login/check_login.php');
 }
 
-require_once($BASE_DIR .'configs/config.php');
+/*
+   ALGUNS PARAMETROS DO SISTEMA ACADEMICO
+   ** acima de cada parametro os respectivos arquivos onde sao utilizados **
+*/
+
+// app/diagrama.php
+// public/help.php
+$IEnome     = 'IFMG - Campus Bambu&iacute;';
+
+// app/inicio.php
+// public/help.php
+$IEurl      = 'http://www.ifmg.edu.br/bambui';
+
+// app/sagu/academico/cursos_disciplinas_edita.phtm
+$curriculos["M"] = "M&iacute;nimo";
+$curriculos["C"] = "Complementar";
+$curriculos["O"] = "Optativa";
+$curriculos["P"] = "Profici&ecirc;ncia";
+$curriculos["A"] = "Atividade complementar";
+
+// app/sagu/academico/cursos_disciplinas_edita.phtm
+$historico["S"] = "Sim";
+$historico["N"] = "N&atilde;o";
+
+// app/sagu/academico/curso_altera.phtml 
+// app/sagu/academico/lista_disciplinas_ofer.phtml
+$status["1"] = "Sim";
+$status["0"] = "N&atilde;o";
+
+// app/sagu/academico/pessoaf_edita.phtml
+// app/sagu/academico/documentos_edita.phtml
+// app/sagu/academico/post/confirm_pessoaf_inclui.phtml
+$opcoes["t"] = "Sim";
+$opcoes["f"] = "N&atilde;o";
+
+// app/sagu/academico/pessoaf_edita.phtml 
+// app/sagu/academico/post/confirm_pessoaf_inclui.phtml 
+$estados_civis["S"] = "Solteiro";
+$estados_civis["C"] = "Casado";
+$estados_civis["V"] = "Vi&uacute;vo";
+$estados_civis["D"] = "Desquitado";
+$estados_civis["U"] = "Uni&atilde;o est&aacute;vel";
+$estados_civis["E"] = "Solteiro emancipado";
+
+// app/sagu/generico/post/lista_areas_ensino.php3
+// app/sagu/generico/post/lista_cidades.php3
+// app/sagu/generico/post/lista_escolas.php3
+// app/sagu/generico/post/lista_professores.php3
+// app/sagu/generico/post/lista_pessoas.php3
+// app/sagu/generico/post/lista_sql.php3
+// app/sagu/academico/consulta_disciplinas_equivalentes.phtml
+$limite_list        = 25;
+
+
+// app/sagu/academico/periodos_altera.phtml
+// app/sagu/academico/novo_contrato.phtml
+// app/sagu/academico/periodos.phtml
+// app/sagu/academico/alterar_contrato.phtml
+// app/sagu/academico/atualiza_disciplina_ofer.phtml
+// app/sagu/academico/disciplina_ofer.phtml
+$sql_periodos_academico    = "
+  SELECT
+    'Selecione o Periodo',
+    '' union all select id||' / '||substr(descricao, 0, 25) as d,
+    id
+  FROM
+    periodos
+  ORDER BY 1 DESC;";
 
 //$host = '192.168.0.234';$user = 'usrsagu';$password = 'x6S8YzrJBs';
 

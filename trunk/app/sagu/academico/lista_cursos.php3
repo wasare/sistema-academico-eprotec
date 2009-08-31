@@ -1,18 +1,15 @@
 <?php
 
-require("../common.php");
+require_once("../common.php");
 
 function ListaCursos()
 {
-	global $turnos;
 
 	$conn = new Connection;
 
 	$conn->open();
 
-	$sql = " SELECT
-   id, descricao, turno, case when sequencia = 0 then null else sequencia end 
-   FROM cursos ORDER BY 2, id, 4;";
+	$sql = " SELECT c.id, descricao, t.nome as turno, case when sequencia = 0 then null else sequencia end FROM cursos c, turno t WHERE t.id = c.turno ORDER BY 2, c.id, 4;";
 	 
 	$query = $conn->CreateQuery($sql);
 
@@ -64,7 +61,7 @@ function ListaCursos()
 		echo ("<tr bgcolor=\"$bg\">\n");
 		echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$href</td>\n");
 		echo ("<td width=\"75%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">$descricao</td>\n");
-		echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">&nbsp;$turnos[$turno]</td>\n");
+		echo ("<td width=\"10%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">&nbsp;$turno</td>\n");
 		echo ("</tr>\n");
 		 
 		$i++;

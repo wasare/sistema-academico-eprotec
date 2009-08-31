@@ -135,10 +135,9 @@ function ChangeCode(fld_name,op_name)
 				face="Verdana, Arial, Helvetica, sans-serif" size="2"
 				color="#00009C">&nbsp;Grupo</font></td>
 			<td colspan="3" width="410"><select name="grupo">
-				<option value="<?echo($grupo)?>" selected><?echo($grupos[$grupo]); ?></option>
-				<option value="access">Acesso</option>
-				<option value="admin">Administração</option>
-                <option value="admin_matriz">Administração da Matriz Curricular</option>
+				<option value="access" <?php if($grupo == 'access') echo 'selected="selected"';?>>Acesso</option>
+				<option value="admin" <?php if($grupo == 'admin') echo 'selected="selected"';?>>Administração</option>
+                <option value="admin_matriz" <?php if($grupo == 'admin_matriz') echo 'selected="selected"';?>>Administração da Matriz Curricular</option>
 			</select></td>
 		</tr>
 
@@ -146,8 +145,7 @@ function ChangeCode(fld_name,op_name)
 			<td bgcolor="#CCCCFF" width="109"><font
 				face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Setor</font></td>
 			<td width="379"><font color="#000000"> <input name="ref_setor"
-				type=text size="5" onChange="ChangeCode('ref_setor','op')"
-				value="<?echo($ref_setor)?>"> <? ComboArray("op",$op_opcoes,"0","ChangeOp()"); ?>
+				type=text size="5" onChange="ChangeCode('ref_setor','op')" value="<?echo($ref_setor)?>"> <?php ComboArray("op",$op_opcoes,$ref_setor,"ChangeOp()"); ?>
 			</font></td>
 		</tr>
 		<TR>

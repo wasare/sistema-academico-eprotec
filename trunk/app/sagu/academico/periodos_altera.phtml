@@ -3,14 +3,8 @@
 require("../common.php");
 require("../lib/SQLCombo.php3");
 require("../lib/InvData.php3"); 
-require("../lib/GetOrigem.php3"); 
-
 
 $op1_options = SQLArray($sql_periodos_academico);
-$op2_options = SQLArray("select id || ' - ' || substr(descricao,1,30), id from historicos where fl_extinto<>true order by id");
-$op_opcoes5 = SQLArray("select descricao,id from tipos_cobr");
-$op_opcoes6 = SQLArray("select descricao,id from locais_pgto");
-
 
 $id = $_GET['id'];
 
@@ -21,29 +15,6 @@ $id = $_GET['id'];
 function _init()
 {
   document.myform.ref_anterior.focus();
-}
-
-function buscaOrig()
-{
-  var title = 'Sele��o Origens';
-  
-  var sql = " select id as Codigo, " +
-            "        descricao as Origem " + 
-            " from origens " +
-            " order by id";
-  
-  var url = "../generico/post/lista_sql.php3?title=" + escape(title) + "&sql=" + escape(sql);
-  
-  window.setResultCallback = window.setOrig;
-  
-  var wnd = window.open(url,'buscaOrig','toolbar=no,width=550,height=350,scrollbars=yes');
-
-}
-
-function setOrig(id,nome)
-{
-  document.myform.ref_origem.value = id;
-  document.myform.origem.value = nome;
 }
 
 function ChangeOption(opt,fld)
@@ -61,16 +32,6 @@ function ChangeOp1()
   ChangeOption(document.myform.op1,document.myform.ref_anterior);
 }
 
-function ChangeOp2()
-{
-  ChangeOption(document.myform.op2,document.myform.ref_historico);
-}
-
-function ChangeOp4()
-{
-  ChangeOption(document.myform.op4,document.myform.ref_historico_dce);
-}
-
 function ChangeOp5()
 {
   ChangeOption(document.myform.op5,document.myform.ref_cobranca);
@@ -79,16 +40,6 @@ function ChangeOp5()
 function ChangeOp6()
 {
   ChangeOption(document.myform.op6,document.myform.ref_local);
-}
-
-function ChangeOp7()
-{
-  ChangeOption(document.myform.op7,document.myform.ref_historico_taxa);
-}
-
-function ChangeOp8()
-{
-  ChangeOption(document.myform.op8,document.myform.ref_historico_cancel);
 }
 
 function ChangeCode(fld_name,op_name)
@@ -106,7 +57,7 @@ function ChangeCode(fld_name,op_name)
     }
   }
 
-  alert(code + ' n�o � um c�digo v�lido!');
+  alert(code + ' não é um código válido!');
 
   field.focus();
 
@@ -124,26 +75,12 @@ $conn->Open();
 
 $sql = " select id," .
        "        ref_anterior," .
-       "        ref_cobranca," .
-       "        ref_origem," .
-       "        ref_historico," .
-       "        ref_historico_dce," .
        "        descricao," .
        "        dt_inicial," .
        "        dt_final," .
-       "        tx_dce_normal," .
-       "        tx_dce_vest," .
-       "        ref_historico_taxa," .
-       "        ref_historico_cancel," .
-       "        tx_acresc," .
-       "        tx_cancel," .
-       "        tx_banco," .
-       "        ref_status_vest," .
-       "        ref_local," .
        "        fl_livro_matricula," .
        "        media," .
        "        media_final," .
-       "        fl_gera_financeiro," .
        "        dt_inicio_aula" .
        " from periodos where id = '$id'";
 
@@ -153,26 +90,13 @@ SaguAssert($query && $query->MoveNext(),"Registro n�o encontrado!");
 
 list ($id,
       $ref_anterior,
-      $ref_cobranca,
-      $ref_origem,
-      $ref_historico,
-      $ref_historico_dce,
       $descricao,
       $dt_inicial,
       $dt_final,
-      $tx_dce_normal,
-      $tx_dce_vest,
-      $ref_historico_taxa,
-      $ref_historico_cancel,
-      $tx_acresc,
-      $tx_cancel,
-      $tx_banco,
       $ref_status_vest,
-      $ref_local,
       $fl_livro_matricula,
       $media,
       $media_final,
-      $fl_gera_financeiro,
       $dt_inicio_aula) = $query->GetRowValues();
 
 $query->Close();
@@ -183,15 +107,13 @@ $dt_inicial = InvData($dt_inicial);
 $dt_final = InvData($dt_final);
 $dt_inicio_aula = InvData($dt_inicio_aula);
 
-$origem = GetOrigem($ref_origem, true);
-
 ?>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
 <form method="post" action="post/periodos_altera.php3" name="myform">
   <table width="90%" align="center">
     <tr>
-      <td bgcolor="#000099" colspan="2" height="35" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Altera��o de Per�odo</b></font></td>
+      <td bgcolor="#000099" colspan="2" height="35" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Altera&ccedil;&atilde;o de per&iacute;odo letivo</b></font></td>
     </tr>
     <tr>
       <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo&nbsp;</font></td>
@@ -212,52 +134,6 @@ $origem = GetOrigem($ref_origem, true);
         <?PHP ComboArray("op1",$op1_options,"$ref_anterior","ChangeOp1()") ?> </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cobran&ccedil;a&nbsp;</font></td>
-      <td>
-        <input name="ref_cobranca" type=text onChange="ChangeCode('ref_cobranca','op5')" value="<?echo($ref_cobranca);?>" size="12">
-        <font color="#000000"><?PHP ComboArray("op5",$op_opcoes5,$ref_cobranca,"ChangeOp5()"); ?></font>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Origem
-        </font></td>
-      <td>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td>
-              <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td width="21%">
-                    <input name="ref_origem" type=text value="<?echo($ref_origem);?>" size="12" maxlength="12">
-                  </td>
-                  <td width="59%">
-                    <input type="text" name="origem" size="38" value="<?echo($origem);?>">
-                  </td>
-                  <td width="20%">
-                    <input type="button" value="..." onClick="buscaOrig()" name="button2">
-                  </td>
-                </tr>
-              </table>
-            </td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Hist&oacute;rico&nbsp;Matr&iacute;cula</font></td>
-      <td>
-        <input name="ref_historico" type=text onChange="ChangeCode('ref_historico','op2')" value="<?echo($ref_historico);?>" size="12">
-        <?PHP ComboArray("op2",$op2_options,"$ref_historico","ChangeOp2()") ?> </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Local de Pagamento&nbsp;</font></td>
-      <td>
-        <input name="ref_local" type="text" onChange="ChangeCode('ref_local','op6')" value="<?echo($ref_local);?>" size="12"><?PHP ComboArray("op6",$op_opcoes6,$ref_local,"ChangeOp6()"); ?>
-      </td>
-    </tr>
-    <tr>
       <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Inicial<br>&nbsp;(dd/mm/aaaa)</font></td>
       <td>
         <input name="dt_inicial" type=text value="<?echo($dt_inicial);?>" size="12" maxlength="10" />
@@ -270,126 +146,24 @@ $origem = GetOrigem($ref_origem, true);
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;M�dia Aprova��o sem Exame</font>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;M&eacute;dia aprova&ccedil;&atilde;o sem reavalia&ccedil;&atilde;o</font>
       </td>
       <td>
         <input name="media" type=text size="5" maxlength="5" value="<?echo($media);?>">
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;M�dia Final Aprova��o</font>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;M&eacute;dia final aprova&ccedil;&atilde;o</font>
       </td>
       <td>
         <input name="media_final" type=text size="5" maxlength="5" value="<?echo($media_final);?>">
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data In�cio Aulas (Caderno de Chamadas)<br>&nbsp;(dd-mm-aaaa)</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data in&iacute;cio aulas (Caderno de Chamadas)<br>&nbsp;(dd-mm-aaaa)</font></td>
       <td>
         <input name="dt_inicio_aula" type=text value="<?echo($dt_inicio_aula);?>" size="10" maxlength="10">
       </td>
-    </tr>
-<!--
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Hist&oacute;rico DCE &nbsp;</font></td>
-      <td>
-        <input name="ref_historico_dce" type=text onChange="ChangeCode('ref_historico_dce','op4')" value="<?echo($ref_historico_dce);?>" size="12">
-        <?PHP ComboArray("op4",$op2_options,"$ref_historico_dce","ChangeOp4()") ?> </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa DCE Normal&nbsp;</font></td>
-      <td>
-        <input name="tx_dce_normal" type=text value="<?echo($tx_dce_normal);?>" size="5"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C">% - Percentual referente ao valor do cr�dito base do curso para Veteranos</font>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa DCE Vestibular&nbsp;</font></td>
-      <td>
-        <input name="tx_dce_vest" type=text value="<?echo($tx_dce_vest);?>" size="5"><font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C">% - Percentual referente ao valor do cr�dito base do curso para Calouros</font>
-      </td>
-    </tr>
--->
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa Acr&eacute;scimo&nbsp;</font></td>
-      <td>
-        <input name="tx_acresc" type=text value="<?echo($tx_acresc);?>" size="12">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa Cancelamento&nbsp;</font></td>
-      <td>
-        <input name="tx_cancel" type=text value="<?echo($tx_cancel);?>" size="12">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Hist�rico Taxa </font></td>
-      <td>
-        <input name="ref_historico_taxa" type=text onChange="ChangeCode('ref_historico_taxa','op7')" value="<?echo($ref_historico_taxa);?>" size="12">
-        <?PHP ComboArray("op7",$op2_options,"$ref_historico_taxa","ChangeOp7()") ?> </td>
-    </tr>
-
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Hist�rico Cancelamento </font></td>
-      <td>
-        <input name="ref_historico_cancel" type=text onChange="ChangeCode('ref_historico_cancel','op8')" value="<?echo($ref_historico_cancel);?>" size="12">
-        <?PHP ComboArray("op8",$op2_options,"$ref_historico_cancel","ChangeOp8()") ?> </td>
-    </tr>
-<!--
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Taxa Banco&nbsp;</font></td>
-      <td>
-        <input name="tx_banco" type=text value="<?echo($tx_banco);?>" size="12">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Status Vestibular&nbsp;</font></td>
-      <td>
-        <input name="ref_status_vest" type=text value="<?echo($ref_status_vest);?>" size="12">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Status do Livro Matr�cula</font></td>
-      <td> <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-
-<?
-  if ($fl_livro_matricula=='1')
-  {
-    echo("<input type=\"radio\" name=\"fl_livro_matricula\" value=\"yes\" checked> Sim ");
-    echo("<input type=\"radio\" name=\"fl_livro_matricula\" value=\"no\"> N�o ");
-  }
-  else
-  {
-    echo("<input type=\"radio\" name=\"fl_livro_matricula\" value=\"yes\"> Sim ");
-    echo("<input type=\"radio\" name=\"fl_livro_matricula\" value=\"no\" checked> N�o ");
-  }
-
-?>
-
-</font></td>
-    </tr>
--->
-    <tr>
-        <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Gerar financeiro?</font></td>
-        <td>
-            <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-            <?
-                if ( $fl_gera_financeiro=='t' )
-                {
-            ?>
-                <input type="radio" name="fl_gera_financeiro" value="yes" checked>Sim
-                <input type="radio" name="fl_gera_financeiro" value="no">Nao
-            <?
-                }
-                else
-                {
-            ?>
-                 <input type="radio" name="fl_gera_financeiro" value="yes">Sim
-                 <input type="radio" name="fl_gera_financeiro" value="no" checked>Nao
-            <?
-                }
-            ?>
-            </font>
-        </td>
     </tr>
     <tr>
       <td colspan="2">

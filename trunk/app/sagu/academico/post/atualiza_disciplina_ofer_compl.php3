@@ -36,7 +36,6 @@ $dt_exame = InvData($dt_exame);
 $sql = " update disciplinas_ofer_compl set " .
            "    ref_disciplina_ofer = '$ref_disciplina_ofer'," .
            "    dia_semana = '$dia_semana'," .
-           "    turno = get_turno_horario('$ref_horario')," .
            "    desconto = '$desconto'," .
            "    num_creditos_desconto = '$num_creditos_desconto'," .
            "    num_sala = '$num_sala'," .
@@ -45,7 +44,6 @@ $sql = " update disciplinas_ofer_compl set " .
            "    ref_regime = '$ref_regime', " .
            "    ref_professor_aux = '$ref_professor_aux', " .
            "    dia_semana_aux = '$dia_semana_aux', " .
-           "    turno_aux = get_turno_horario('$ref_horario_aux'), " .
            "    num_sala_aux = '$num_sala_aux', " .
            "    ref_horario_aux = '$ref_horario_aux', ";
  

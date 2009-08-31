@@ -19,7 +19,6 @@ $desconto              = $_POST['desconto'];
 $ref_professor         = $_POST['ref_professor'];
 $ref_professor_nome    = $_POST['ref_professor_nome'];
 $dia_semana            = $_POST['dia_semana'];
-$ref_horario           = $_POST['ref_horario'];
 $ref_regime            = $_POST['ref_regime'];
 $num_sala              = $_POST['num_sala'];
 $num_alunos            = $_POST['num_alunos'];
@@ -114,7 +113,6 @@ $sql = " insert into disciplinas_ofer_compl (" .       // Disciplina_ofer_compl
            " values ('$id_disciplina_ofer_compl'," .
            "         '$id_disciplina_ofer'," .
            "         '$dia_semana'," .
-           "         get_turno_horario('$ref_horario')," .
            "         '$desconto'," .
            "         '$num_creditos_desconto', " .
            "         '$num_sala', " .

@@ -10,7 +10,6 @@ $ref_anterior         = $_POST['ref_anterior'];
 $ref_cobranca         = $_POST['ref_cobranca'];
 $ref_origem           = $_POST['ref_origem'];
 $origem               = $_POST['origem'];
-$ref_historico        = $_POST['ref_historico'];
 $ref_local            = $_POST['ref_local'];
 $dt_inicial           = $_POST['dt_inicial'];
 $dt_final             = $_POST['dt_final'];
@@ -19,18 +18,12 @@ $media_final          = $_POST['media_final'];
 $dt_inicio_aula       = $_POST['dt_inicio_aula'];
 $tx_acresc            = $_POST['tx_acresc'];
 $tx_cancel            = $_POST['tx_cancel'];
-$ref_historico_taxa   = $_POST['ref_historico_taxa'];
-$ref_historico_cancel = $_POST['ref_historico_cancel'];
 $ref_status_vest      = $_POST['ref_status_vest'];
-$fl_gera_financeiro   = $_POST['fl_gera_financeiro'];
 
 CheckFormParameters(array("id",
                           "descricao",
                           "dt_inicial",
                           "dt_final",
-                          "ref_historico",
-                          "ref_historico_taxa",
-                          "ref_historico_cancel",
                           "media",
                           "media_final",
                           "dt_inicio_aula"));
@@ -49,23 +42,17 @@ $conn = new Connection;
 $conn->Open();
 $conn->Begin();
 
-$ref_historico_dce = $ref_historico_dce ? $ref_historico_dce : 0;
 
 $sql = " insert into periodos (id," .
        "                       descricao," .
        "                       ref_anterior," .
        "                       ref_cobranca," .
        "                       ref_origem," .
-       "                       ref_historico," .
-       "                       ref_historico_bolsa," .
-       "                       ref_historico_dce," .
        "                       dt_inicial," .
        "                       dt_final," .
        "                       ref_local," .
        "                       tx_dce_normal," .
        "                       tx_dce_vest," .
-       "                       ref_historico_taxa," .
-       "                       ref_historico_cancel," .
        "                       tx_acresc," .
        "                       tx_cancel," .
        "                       tx_banco," .
@@ -73,7 +60,6 @@ $sql = " insert into periodos (id," .
        "                       fl_livro_matricula," .
        "                       media, " .
        "                       media_final, " .
-       "                       fl_gera_financeiro, " .
        "                       dt_inicio_aula)" .
        "  values (" .
        "                       '$id'," .
@@ -81,16 +67,12 @@ $sql = " insert into periodos (id," .
        "                       '$ref_anterior'," .
        "                       '$ref_cobranca'," .
        "                       '$ref_origem'," .
-       "                       '$ref_historico'," .
        "                       '0'," .
-       "                       '$ref_historico_dce'," .
        "                       '$dt_inicial'," .
        "                       '$dt_final'," .
        "                       '$ref_local'," .
        "                       '$tx_dce_normal'," .
        "                       '$tx_dce_vest'," .
-       "                       '$ref_historico_taxa'," .
-       "                       '$ref_historico_cancel'," .
        "                       '$tx_acresc'," .
        "                       '$tx_cancel'," .
        "                       '$tx_banco'," .
@@ -98,7 +80,6 @@ $sql = " insert into periodos (id," .
        "                       '$fl_livro_matricula'," .
        "                       '$media'," .
        "                       '$media_final'," .
-       "                       '$fl_gera_financeiro'," .
        "                       '$dt_inicio_aula')";
 
 $ok = $conn->Execute($sql);
