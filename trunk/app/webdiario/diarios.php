@@ -171,7 +171,7 @@ if($_GET['periodo'] != "")
                 f.ref_professor = \''.$_SESSION['id'].'\' AND
                 o.id = f.ref_disciplina_ofer AND
                 o.ref_periodo = \''.$_SESSION['periodo'].'\' AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = \'0\' AND
                 d.id = o.ref_disciplina;';
  
 			   //echo $sql3; die;	

@@ -90,7 +90,7 @@ if($_GET["getperiodo"] != "")
                WHERE f.ref_professor = '$id' 
                AND o.id = f.ref_disciplina_ofer 
                AND o.ref_periodo = '$getperiodo' 
-               AND o.is_cancelada = 0 
+               AND o.is_cancelada = '0' 
                AND d.id = o.ref_disciplina";
 		$query3 = pg_exec($dbconnect, $sql3);
 }

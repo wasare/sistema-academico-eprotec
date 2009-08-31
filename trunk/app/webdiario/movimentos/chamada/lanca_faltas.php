@@ -166,7 +166,7 @@ $sqlCurso = "SELECT DISTINCT
         WHERE
           d.ref_periodo = '$periodo' AND
           d.id = '$oferecida' AND
-          d.is_cancelada = 0;";
+          d.is_cancelada = '0';";
 //d.ref_disciplina = '$disciplina' AND
 
 

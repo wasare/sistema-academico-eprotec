@@ -49,7 +49,7 @@ $sql1 = "SELECT DISTINCT
 		m.dt_matricula >= '2004-01-01' AND
 		m.ref_disciplina_ofer = o.id AND 
 		d.id = o.ref_disciplina AND
-		o.is_cancelada = 0 AND
+		o.is_cancelada = '0' AND
 		s.id = o.ref_periodo
 	ORDER BY 2, 3";
 
