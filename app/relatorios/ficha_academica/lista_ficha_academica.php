@@ -1,16 +1,15 @@
 <?php
 
-  //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
-  header ("Cache-Control: no-cache");
-  require_once('../../../configs/configuracao.php');
-  require_once('../../../core/situacao_academica.php');
+require_once('../../../configs/configuracao.php');
+require_once('../../../core/situacao_academica.php');
+require_once("../../../core/reports/header.php");
   
+$conn = new connection_factory($param_conn);
 
-$Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$header  = new header($param_conn);
 
-$aluno_id = $_GET['aluno'];
-$curso_id = $_GET['cs'];
+$aluno_id    = $_GET['aluno'];
+$curso_id    = $_GET['cs'];
 $contrato_id = $_GET['contrato'];
 
 $btnOK = TRUE;	
@@ -57,53 +56,43 @@ if (!$btnOK)
         s.id = o.ref_periodo
     ORDER BY 2, 3";
 
-
-//-- m.dt_matricula >= '2004-01-01' AND	
-//echo '<pre>'.$sql1.'</pre>';	die;
 	
-	//EXECUTANDO A SQL COM ADODB
-  	$ficha_academica = $Conexao->getAll($sql1);
+$ficha_academica = $conn->adodb->getAll($sql1);
 	
-	//CONTA O NUMERO DE RESULTADOS = DISCIPLINAS MATRICULADAS
-	$contMatriculada = count($ficha_academica);
+$contMatriculada = count($ficha_academica);
 
-	if ($contMatriculada == 0)
-		die('Nenhum dado encontrado para o aluno informado!');
-
-	
+if ($contMatriculada == 0)
+	die('Nenhum dado encontrado para o aluno informado!');
 
 ?>
 <html>
 <head>
 <title>SA</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="../../public/styles/style.css" rel="stylesheet" type="text/css">
+<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
 <body>
-<div style="width: 760px;">
-<div align="center" style="text-align:center; font-size:12px;">
-	<img src="../../public/images/armasbra.jpg" width="57" height="60"><br />
-	MEC-SETEC<br />
-	INSTITUTO FEDERAL MINAS GERAIS<br />
-    SETOR DE REGISTROS ESCOLARES
-    <br />
-</div>
-<h2>Ficha Acad&ecirc;mica</h2>
-<font color="#000000" size="2"> <b>Matr&iacute;cula: </b><?php echo($aluno_id);?> <b> Nome: </b><?php echo($_GET['nome']);?> </font><br>
-<font color="#000000" size="2"> <b>Curso: </b><?php echo($_GET['curso']);?><br />
-<b>Data: </b> <?php echo date("d/m/Y"); ?> <b>Hora: </b><?php echo date("H:i"); ?> </font><br>
-<br>
-<table width="700" cellpadding="0" cellspacing="0" class="tabela_relatorio">
-  <tr bgcolor="#666666">
-    <th width="14%"><div align="center"><font color="#FFFFFF"><b>Per&iacute;odo</b></font></div></th>
-    <th width="60%"><div align="center"><font color="#FFFFFF"><b>Componente Modular</b></font></div></th>
-    <th width="8%"><div align="center"><font color="#FFFFFF"><b>M&eacute;dia</b></font></div></th>
-    <th width="8%"><div align="center"><font color="#FFFFFF"><b>Faltas</b></font></div></th>
-    <th width="20%"><div align="center"><font color="#FFFFFF"><b>% Faltas</b></font></div></th>
-    <th width="12%"><div align="center"><font color="#FFFFFF"><b>CH Realizada</b></font></div></th>
-    <th width="12%"><div align="center"><font color="#FFFFFF"><b>CH Prevista</b></font></div></th>
-    <th width="5%"><div align="center"><font color="#FFFFFF"><b>Matr&iacute;cula</b></font></div></th>
-    <th width="6%"><div align="center"><font color="#FFFFFF"><b>Situa&ccedil;&atilde;o</b></font></div></th>
-  </tr>
+	<div style="width: 760px;">
+		<div align="center" style="text-align:center; font-size:12px;">
+        	<?php echo $header->get_empresa($PATH_IMAGES); ?>
+            <br /><br />
+        </div> 
+	<h2>Ficha Acad&ecirc;mica</h2>
+	<font color="#000000" size="2"> <b>Matr&iacute;cula: </b><?php echo($aluno_id);?> <b> Nome: </b><?php echo($_GET['nome']);?> </font><br>
+	<font color="#000000" size="2"> <b>Curso: </b><?php echo($_GET['curso']);?><br />
+	<b>Data: </b> <?php echo date("d/m/Y"); ?> <b>Hora: </b><?php echo date("H:i"); ?> </font><br>
+	<br>
+	<table width="700" cellpadding="0" cellspacing="0" class="tabela_relatorio">
+	  <tr bgcolor="#666666">
+	    <th width="14%"><div align="center"><font color="#FFFFFF"><b>Per&iacute;odo</b></font></div></th>
+	    <th width="60%"><div align="center"><font color="#FFFFFF"><b>Componente Modular</b></font></div></th>
+	    <th width="8%"><div align="center"><font color="#FFFFFF"><b>M&eacute;dia</b></font></div></th>
+	    <th width="8%"><div align="center"><font color="#FFFFFF"><b>Faltas</b></font></div></th>
+	    <th width="20%"><div align="center"><font color="#FFFFFF"><b>% Faltas</b></font></div></th>
+		    <th width="12%"><div align="center"><font color="#FFFFFF"><b>CH Realizada</b></font></div></th>
+	    <th width="12%"><div align="center"><font color="#FFFFFF"><b>CH Prevista</b></font></div></th>
+	    <th width="5%"><div align="center"><font color="#FFFFFF"><b>Matr&iacute;cula</b></font></div></th>
+	    <th width="6%"><div align="center"><font color="#FFFFFF"><b>Situa&ccedil;&atilde;o</b></font></div></th>
+	  </tr>
 <?php	
 
 //VARIAVEIS --

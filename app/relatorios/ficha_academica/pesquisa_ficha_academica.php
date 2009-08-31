@@ -1,17 +1,10 @@
 <?php
 
-  //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
-  header("Cache-Control: no-cache");
-  require_once("../../../configs/configuracao.php");
+require_once("../../../configs/configuracao.php");
   
-  $btnOK = false;
-  //print_r($_SESSION);
+$btnOK = false;
   
-  //Criando a classe de conexão ADODB
-  $Conexao = NewADOConnection("postgres");
-  
-  //Setando como conexão persistente
-  $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$conn = new connection_factory($param_conn);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -19,23 +12,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Pesquisa ficha academica</title>
-<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-<!--
-.style1 {
-	color: #0099FF;
-	font-style: italic;
-}
--->
-</style>
+<link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
 </head>
-<body bgcolor="#FFFFFF">
+<body>
 <h2>Pesquisa Ficha Acad&ecirc;mica</h2>
 <form action="pesquisa_ficha_academica.php" method="post" name="busca">
   <table border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="60"><div align="center">
-          <label class="bar_menu_texto"> <a href="#" onclick="history.back(-1)" class="bar_menu_texto"> <img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
+          <label class="bar_menu_texto"> <a href="#" onclick="history.back(-1)" class="bar_menu_texto"> <img src="../../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
           Voltar</a> </label>
         </div></td>
     </tr>
@@ -99,8 +84,7 @@ if ($_POST) {
 	$sql1 .= " ORDER BY a.nome LIMIT 20 OFFSET -1;"; 
 
 	
-	//EXECUTANDO A SQL COM ADODB
-  	$Result1 = $Conexao->Execute($sql1);
+	$Result1 = $conn->Execute($sql1);
 	
 	
 	//CONTANTO O NUMERO DE RESULTADOS
@@ -108,9 +92,7 @@ if ($_POST) {
   	
 	
 	if(is_string($Result1)) {
-			
 		echo $Result1;
-		//echo $qry1;
 		exit;
 	} 
 	else {
@@ -142,17 +124,12 @@ if ($_POST) {
                	echo ' <td>' . $Result1->fields[3] . '</td>';
 				echo ' <td align="center">
 						<a target="_blank" href="lista_ficha_academica.php?aluno=' . $q3id . '&nome=' . $Result1->fields[0] . '&curso=' . $Result1->fields[3] . '&cs='.$Result1->fields[2] . '&contrato='. $Result1->fields[4] .'">
-						<img src="../../public/images/icons/print.jpg" width="20" height="20" title="Exibir 
+						<img src="../../../public/images/icons/print.jpg" width="20" height="20" title="Exibir 
 dados em 
 HTML" alt="Exibir 
 dados 
 em HTML" /></a></td>';
-/*
-						<a target="_blank" href="pdf_ficha_academica.php?aluno=' . $q3id . '&nome=' . $Result1->fields[0] . '&curso=' . $Result1->fields[3] . '&cs='.$Result1->fields[2] . '">
-						<img src="../../public/images/icons/pdf_icon.jpg" width="20" height="20" target="_blank" 
-title="Exibir dados em PDF"  
-alt="Exibir dados em PDF" /></a></td>';
-*/
+
 				echo '</tr>';
 					
            		$Result1->MoveNext();

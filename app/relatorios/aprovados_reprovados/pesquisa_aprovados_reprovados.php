@@ -73,17 +73,17 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
 		<br />
 		C&oacute;digo do Aluno:<br />
 		<input name="aluno" type="text" id="aluno" size="10" />
-	    	<span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todos os alunos.</span>
-	    	<br />
-	    	Turma:<br />
-	    	<input name="turma" type="text" id="turma" size="10" />
+	    <span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todos os alunos.</span>
+	    <br />
+	    Turma:<br />
+	    <input name="turma" type="text" id="turma" size="10" />
 	   	<span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todas as turmas.</span>
-	    	<br />
-	    	Situa&ccedil;&atilde;o:<br />
-	    	<input type="radio" name="aprovacao" id="aprovacao" value="1" /> Aprovado 
-	    	<input type="radio" name="aprovacao" id="aprovacao" value="2" checked="checked" /> Reprovado 
-	    	<input type="radio" name="aprovacao" id="aprovacao" value="3" /> Aprovado e Reprovado
-	    	<br />
+	    <br />
+	    Situa&ccedil;&atilde;o:<br />
+	    <input type="radio" name="aprovacao" id="aprovacao" value="1" /> Aprovado 
+	    <input type="radio" name="aprovacao" id="aprovacao" value="2" checked="checked" /> Reprovado 
+	    <input type="radio" name="aprovacao" id="aprovacao" value="3" /> Aprovado e Reprovado
+	    <br />
 		Assinatura:<br />
 		<?php echo $carimbo->listar();?>
 	</div>
