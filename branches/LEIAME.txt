@@ -1,0 +1,27 @@
+-----------------------------------------------------------
+PRATO - Ponto Automatizado de Refeitório
+
+Desenvolvedor: Ciniro Nametala
+Última Modificação:27/01/2009
+
+Instituto Federal de Minas Gerais - Campus Bambuí
+-----------------------------------------------------------
+
+>>OBJETIVO DO SISTEMA
+Sistema para gestão de ponto no refeitório. Integrado a
+Conta Acadêmica e a base de pessoas do sagu este sistema
+tem por objetivo controlar os custos, a venda, e o movimento
+das alimentações no refeitório da instituição.
+
+>>INSTALAÇÃO
+>O PRATO possui um arquivo chamado 'config.class.php'.
+Neste arquivo existem as configurações de banco de dados
+que podem ser alteradas para que a conexão seja estabelecida.
+>No PRATO existem alguns arquivos que contém referencias a 
+caminhos absolutos(https://sistemas...). 
+Quando coloca-lo em produção fazer um find substituindo o
+caminho absoluto para o qual for usado.
+>O prato utiliza a base de usuários do SAGU bem como
+faz registros de transações automaticamente na conta
+acadêmica.
+
