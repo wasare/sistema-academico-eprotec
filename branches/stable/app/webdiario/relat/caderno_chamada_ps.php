@@ -1,18 +1,10 @@
 <?php 
-  // error_reporting(E_ALL);
   
-   require_once('../webdiario.conf.php');
-   //require("/var/www/sagu/html/conf/common.php3"); 
-   //require("/var/www/sagu/html/conf/GetPessoaNome.php3"); 
-   // require("/var/www/sagu/html/conf/GetField.php3");
+require_once('../webdiario.conf.php');
 
-   ini_set('display_errors', 0);
+ini_set('display_errors', 0);
 
-   require_once("pslib.php"); 
-   //require("/var/www/sagu/html/conf/academico/histlib.php"); 
-   //require("/var/www/sagu/html/conf/InvData.php3"); 
-   //require("/var/www/sagu/html/conf/config.php3"); 
-   //require_once("pslib.class");
+require_once("pslib.php"); 
 
 $getdisciplina = $_GET['disc'];
 $getofer = $_GET['ofer'];
@@ -68,9 +60,6 @@ $campus_id = 'undefined';
     <title>Cadernos de Chamada</title>
 </head>
 <body  bgcolor="#FFFFFF">
-<script Language="Javascript">
-var NOVAWIN = window.open("/aguarde.html", "NOVAWIN", "status=no,toolbar=no,location=no,menu=no,scrollbars=no,width=260,height=105,left=280,top=235");
-</script>
 
 
 <table width="90%" height="73" border="0">
@@ -157,8 +146,8 @@ ica, sans-serif"><strong>Impress&atilde;o de Caderno de Chamadas</strong></font>
             "      get_tipo_curso(A.ref_curso) " .
             " FROM matricula A, disciplinas_ofer_compl B, disciplinas C " .
             " WHERE A.ref_disciplina_ofer = '$id_disc' and " .
-    	    "       B.dia_semana = '$dia' and " .
-            "       B.turno = '$turno' and " .
+ //   	    "       B.dia_semana = '$dia' and " .
+ //           "       B.turno = '$turno' and " .
             "       A.obs_aproveitamento = '' and " .  // Aproveitamentos n?o entram no caderno
             "       A.ref_disciplina_ofer = B.ref_disciplina_ofer and " .
             "       A.ref_disciplina = C.id and " .
@@ -171,7 +160,7 @@ ica, sans-serif"><strong>Impress&atilde;o de Caderno de Chamadas</strong></font>
     	    "          is_ouvinte(A.ref_pessoa, A.ref_curso), " .
     	    "          pessoa_nome(A.ref_pessoa) ";
    } 
-   else 
+/*   else 
    {
     $sql =  " SELECT distinct " .
             " 	   A.ref_disciplina, " .
@@ -213,8 +202,8 @@ ica, sans-serif"><strong>Impress&atilde;o de Caderno de Chamadas</strong></font>
             "      get_tipo_curso(A.ref_curso) " .
             " FROM matricula A, disciplinas_ofer_compl B, disciplinas C, disciplinas_ofer D " .
             " WHERE A.ref_periodo = '$ref_periodo' and " .
-            "       B.dia_semana = '$dia' and " .
-            "       B.turno = '$turno' and " .
+           // "       B.dia_semana = '$dia' and " .
+           // "       B.turno = '$turno' and " .
             "       A.obs_aproveitamento = '' and ";  // Aproveitamentos n?o entram no caderno
             
             if ($campus_id)
@@ -242,7 +231,7 @@ ica, sans-serif"><strong>Impress&atilde;o de Caderno de Chamadas</strong></font>
     	    "          is_ouvinte(A.ref_pessoa, A.ref_curso), " .
     	    "          pessoa_nome(A.ref_pessoa); ";
     }
-
+*/
 function cabecalho($myfile_ps, $data, $ref_disciplina, $disciplina, $ref_curso, $curso, $campus, $texto, $dia_semana, $dia_semana_desc, $departamento, $creditos, $hora_aula, $creditos_desconto, $hora_aula_desconto, $ref_professor, $nome_professor, $periodo, $sala, $fl_ouvinte, $turno, $turno_desc, $ref_disciplina_ofer, $descricao_disciplina_subst, &$quebra_pagina, $complemento_disc)
 {
 
@@ -363,7 +352,7 @@ function cabecalho($myfile_ps, $data, $ref_disciplina, $disciplina, $ref_curso, 
  
    // $query2->Close();
     //@$conn2->Close();
-   pg_close($dbconnect);
+    pg_close($dbconnect);
     $lin = $lin - 5;
     
  }
@@ -580,28 +569,13 @@ PS_line($myfile_ps, 45, $lin, 814, $lin, 2);
 // Begin Program Principal
 
 $quebra_pagina = 25;
-//$conn = new Connection;
-//$conn->Open();
-//$query = $conn->CreateQuery($sql);
-
-//echo $sql;
-//exit;
 
 $query = pg_exec($dbconnect, $sql);
 
 
-//echo $sql;
-//exit;
-
-//SaguAssert($query,"Não foi possivel executar a consulta SQL!");
-
 $num = 1 ;
 $count = 1;
 $totalLinhas = pg_numrows($query);
-/*
-echo $totalLinhas;
-exit;
-*/
 
 if($totalLinhas < 1)
 {
@@ -621,46 +595,6 @@ while($row =  pg_fetch_all($query))
 } */
 for($row = 0; $row < $totalLinhas ;  $row++)
 {
-
-/*   
-   $ref_disciplina = $row[0];
-   $disciplina = $row[1];
-   $ref_curso = $row[2];
-   $curso = $row[3];
-   $departamento = $row[4];
-   $ref_professor_aux = $row[5];
-   $nome_professor_aux = $row[6];
-   $dia_semana = $row[7];
-   $dia_semana_desc = $row[8];
-   $creditos = $row[9];
-   $hora_aula = $row[10];
-   $creditos_aprov = $row[11];
-   $hora_aula_aprov = $row[12];
-   $creditos_desconto = $row[13];
-   $periodo = $row[14];
-   $sala = $row[15];
-   $ref_disciplina_ofer = $row[16];
-   $ref_pessoa = $row[17];
-   $nome = $row[18];
-   $ref_disciplina_subst = $row[19];
-   $descricao_disciplina_subst = $row[20];
-   $creditos_subst = $row[21];
-   $hora_aula_subst = $row[22];
-   $campus = $row[23];
-   $ref_campus = $row[24];
-   $fl_ouvinte = $row[25];
-   $turno = $row[26];
-   $turno_desc = $row[27];
-   $turma = $row[28];
-   $dia_semana_aux = $row[29];
-   $dia_semana_aux_desc = $row[30];
-   $turno_aux = $row[31];
-   $turno_desc_aux = $row[32];
-   $num_sala_aux = $row[33];
-   $complemento_disc = $row[34];
-   $dt_cancelamento = $row[35];
-   $ref_tipo_curso = $row[36];
- */
          list($ref_disciplina,
         $disciplina,
         $ref_curso,
