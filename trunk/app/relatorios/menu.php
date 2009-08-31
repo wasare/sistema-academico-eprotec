@@ -60,15 +60,15 @@ require("../../configs/configuracao.php");
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Egressos
 	</a>
 	<br />
-	<a href="pesquisa_faltas_global.php" title="Faltas global por per&iacute;odo / Curso" target="_self">
+	<a href="faltas_global/pesquisa_faltas_global.php" title="Faltas global por per&iacute;odo / Curso" target="_self">
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Faltas global
 	</a>
 	<br />
-	<a href="pesquisa_ficha_academica.php" title="Ficha acad&ecirc;mica" target="_self">
+	<a href="ficha_academica/pesquisa_ficha_academica.php" title="Ficha acad&ecirc;mica" target="_self">
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Ficha acad&ecirc;mica
 	</a>
 	<br />
-	<a href="pesquisa_todos_alunos_periodo.php" title="Pessoas com matr&iacute;cula" target="_self">
+	<a href="matriculados_pessoas/pesquisa_todos_alunos_periodo.php" title="Pessoas com matr&iacute;cula" target="_self">
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Pessoas com matr&iacute;cula
 	</a>
 	</div>

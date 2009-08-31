@@ -10,9 +10,9 @@ $conn = new connection_factory($param_conn);
 $carimbo = new carimbo($param_conn);
 $header  = new header($param_conn);
 
-$curso_id = $_POST['codigo_curso'];
+$curso_id    = $_POST['codigo_curso'];
 $data_inicio = date::convert_date($_POST['data_inicio']);
-$data_fim = date::convert_date($_POST['data_fim']);
+$data_fim    = date::convert_date($_POST['data_fim']);
 
 
 $sql = "
