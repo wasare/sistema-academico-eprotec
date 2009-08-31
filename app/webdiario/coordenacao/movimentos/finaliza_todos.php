@@ -51,7 +51,7 @@ $sql1 = "UPDATE
 		    fl_concluida = 't' AND
 			ref_curso = $getcurso AND
             ref_periodo = '$getperiodo' AND 
-            is_cancelada = 0;";
+            is_cancelada = '0';";
 
 //echo $sql1;die;
 $res = consulta_sql($sql1);

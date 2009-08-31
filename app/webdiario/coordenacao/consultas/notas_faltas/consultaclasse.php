@@ -31,7 +31,7 @@ $sql1 = "SELECT DISTINCT
                 WHERE
                 o.id = f.ref_disciplina_ofer AND
                 o.ref_periodo = '$getperiodo' AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 d.id = o.ref_disciplina
                 ORDER BY d.descricao_disciplina;";
 

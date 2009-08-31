@@ -5,24 +5,6 @@ $us = $_SESSION['login'];
 
 /* Seleciona o Período */
 
-/*
-$sql1 = "SELECT DISTINCT
-      a.login,
-      a.id_nome,
-      b.ref_professor,
-      b.ref_disciplina_ofer,
-      c.id,
-      c.ref_periodo,
-      d.id,
-      d.descricao
-      FROM
-      diario_usuarios a, disciplinas_ofer_prof b, disciplinas_ofer c, periodos d
-      WHERE
-      a.id_nome = b.ref_professor AND
-      b.ref_disciplina_ofer =  c.id AND
-      c.ref_periodo = d.id";
-*/
-
 $sql1 = "SELECT DISTINCT
       d.id,
       d.descricao
@@ -31,7 +13,7 @@ $sql1 = "SELECT DISTINCT
       WHERE
       a.id_nome = b.ref_professor AND
       b.ref_disciplina_ofer =  c.id AND
-      c.is_cancelada = 0 AND
+      c.is_cancelada = '0' AND
       c.ref_periodo = d.id";
 $query1 = pg_exec($dbconnect, $sql1);
 

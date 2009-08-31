@@ -31,7 +31,7 @@ $sql1 = "SELECT DISTINCT
       WHERE
       a.id_nome = b.ref_professor AND
       b.ref_disciplina_ofer =  c.id AND
-      c.is_cancelada = 0 AND
+      c.is_cancelada = '0' AND
       c.ref_periodo = d.id";
 $query1 = pg_exec($dbconnect, $sql1);
 

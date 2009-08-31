@@ -6,52 +6,6 @@ include_once('../../webdiario.conf.php');
 //$data_postgres = date("d/m/Y");
 
 /* Seleciona o Período */
-/* $sql1 = "SELECT DISTINCT
-      a.login,
-      a.id_nome,
-      b.ref_professor,
-      b.ref_disciplina_ofer,
-      c.id,
-      c.ref_periodo,
-      d.id,
-      d.descricao
-      FROM
-      diario_usuarios a, disciplinas_ofer_prof b, disciplinas_ofer c, periodos d
-      WHERE
-      a.login = '$us'
-      AND
-      a.id_nome = b.ref_professor
-      AND
-      b.ref_disciplina_ofer =  c.id
-      AND
-      c.ref_periodo = d.id
-      AND
-      d.dt_inicial < '$data_postgres'
-      AND
-      d.dt_final > '$data_postgres'";
-    
-$sql1 = "SELECT DISTINCT
-      a.login,
-      a.id_nome,
-      b.ref_professor,
-      c.ref_periodo,
-      d.descricao
-      FROM
-      diario_usuarios a, disciplinas_ofer_prof b, disciplinas_ofer c, periodos d
-      WHERE
-      a.login = '$us'
-      AND
-      a.id_nome = b.ref_professor
-      AND
-      b.ref_disciplina_ofer =  c.id
-      AND
-      c.ref_periodo = d.id
-      AND
-      d.dt_inicial < '$data_postgres'
-      AND
-      d.dt_final > '$data_postgres'";
-$query1 = pg_exec($dbconnect, $sql1);
-*/
 $query1 = getPeriodos($us);
 
 
@@ -94,7 +48,7 @@ $queryid = pg_exec($dbconnect, $sqlid);
                 f.ref_professor = '$id' AND
                 o.id = f.ref_disciplina_ofer AND
                 o.ref_periodo = '$getperiodo' AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 d.id = o.ref_disciplina";
 		$query3 = pg_exec($dbconnect, $sql3);
 	}

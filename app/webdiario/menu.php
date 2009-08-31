@@ -22,7 +22,7 @@ if(@$_GET["getperiodo"] != "")
                 f.ref_professor = '$id' AND
                 o.id = f.ref_disciplina_ofer AND
                 o.ref_periodo = '$getperiodo' AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 d.id = o.ref_disciplina";
 
 /*

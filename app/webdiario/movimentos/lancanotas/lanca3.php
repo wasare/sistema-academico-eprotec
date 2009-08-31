@@ -80,7 +80,7 @@ $sql9 = "SELECT DISTINCT
           c.id = '$getperiodo' AND
           d.id = '$getofer' AND
           d.ref_disciplina = '$getdisciplina' AND
-          d.is_cancelada = 0 AND
+          d.is_cancelada = '0' AND
           a.id = d.ref_curso";
 
 $query9 = pg_exec($dbconnect, $sql9);

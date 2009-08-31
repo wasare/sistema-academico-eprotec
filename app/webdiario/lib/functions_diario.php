@@ -563,32 +563,7 @@ function getHeaderDisc($ofer)
 {
    global $dbconnect, $error_msg;
 
-/*
-   $sql9 = "SELECT DISTINCT
-         a.id || ' - ' || a.descricao as cdesc,
-         b.descricao_extenso || '  ' || '(' || d.id || ')' as descricao_extenso,
-         c.descricao as perdesc,
-         d.ref_curso,
-         f.nome
-         FROM
-          cursos a,
-          disciplinas b,
-          periodos c,
-          disciplinas_ofer d,
-		  disciplinas_ofer_prof e,
-		  pessoas f
-		WHERE
-          d.ref_periodo = '$periodo' AND
-		  e.ref_professor = f.id AND
-		  d.id = e.ref_disciplina_ofer AND
-          b.id = '$disc' AND
-          c.id = '$periodo' AND
-          d.id = '$ofer' AND
-          d.ref_disciplina = '$disc' AND
-          d.is_cancelada = 0 AND
-          a.id = d.ref_curso";
 
-*/
 	$sql9 = "SELECT DISTINCT
           a.id || ' - ' || a.descricao as cdesc,
           b.id || ' - ' || b.descricao_extenso || '  ' || '(' || d.id || ')' as descricao_extenso,
@@ -599,7 +574,7 @@ function getHeaderDisc($ofer)
           cursos a LEFT OUTER JOIN disciplinas_ofer d ON (a.id = d.ref_curso) LEFT OUTER JOIN disciplinas b ON (d.ref_disciplina = b.id) LEFT OUTER JOIN periodos c ON (c.id = d.ref_periodo) LEFT OUTER JOIN disciplinas_ofer_prof e ON (e.ref_disciplina_ofer = d.id) LEFT OUTER JOIN pessoas f ON (e.ref_professor = f.id)
         WHERE
           d.id = $ofer AND
-          d.is_cancelada = 0
+          d.is_cancelada = '0'
         ORDER BY f.nome;";
 
     //echo $sql9;	exit;

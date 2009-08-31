@@ -56,27 +56,7 @@ while($linha = pg_fetch_array($queryid))
    $result = $linha["id_nome"];
    $identificacao = $result;
 }
-/* Seleciona os Cursos Referente ao Período
-	if ($_GET["getperiodo"] != "") {
-		$sql2 = "SELECT DISTINCT
-        a.id,
-        a.descricao
-        FROM
-        cursos a,
-        disciplinas_ofer b,
-        disciplinas_ofer_compl c,
-        disciplinas_ofer_prof d,
-        periodos e
-        WHERE
-        d.ref_professor = '$id' AND
-        b.ref_periodo = '$getperiodo' AND
-        d.ref_disciplina_ofer = b.id AND
-        d.ref_disciplina_compl = c.id AND
-        b.ref_curso = a.id ";
-		$query2 = pg_exec($dbconnect, $sql2);
-	}
 
-*/
 if ($_GET["getperiodo"] != "") 
 {
   $sql3 = "SELECT DISTINCT
@@ -88,7 +68,7 @@ if ($_GET["getperiodo"] != "")
                WHERE f.ref_professor = '$id' 
                AND o.id = f.ref_disciplina_ofer 
                AND o.ref_periodo = '$getperiodo' 
-               AND o.is_cancelada = 0 
+               AND o.is_cancelada = '0' 
                AND d.id = o.ref_disciplina";
                $query3 = pg_exec($dbconnect, $sql3);
 }
