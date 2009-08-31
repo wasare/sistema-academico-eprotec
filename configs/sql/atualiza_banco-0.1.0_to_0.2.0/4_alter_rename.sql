@@ -43,7 +43,18 @@ ALTER TABLE aux_paises RENAME TO pais;
 ALTER TABLE seq_aux_paises RENAME TO pais_id_seq;
 ALTER TABLE pais ALTER COLUMN id SET DEFAULT NEXTVAL('public.pais_id_seq');
 
+-- turno
+ALTER TABLE turnos RENAME TO turno;
+DROP FUNCTION get_turno(character varying);
+DROP FUNCTION get_turno_(character varying);
 
+CREATE FUNCTION get_turno_(character varying) RETURNS character varying
+    AS $_$select nome from turno where id = $1$_$
+    LANGUAGE sql;
+
+CREATE FUNCTION get_turno(character varying) RETURNS character varying
+    AS $_$select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;$_$
+    LANGUAGE sql;
 
 
 

@@ -1,4 +1,4 @@
--- exclui 91 tabelas nao utilizadas
+-- exclui 97 tabelas nao utilizadas
 TRUNCATE TABLE acordos_obs; DROP TABLE acordos_obs RESTRICT;
 TRUNCATE TABLE atestados; DROP TABLE atestados RESTRICT;
 TRUNCATE TABLE autorizacao; DROP TABLE autorizacao RESTRICT;
@@ -37,12 +37,15 @@ TRUNCATE TABLE fies; DROP TABLE fies RESTRICT;
 TRUNCATE TABLE fies_titulos; DROP TABLE fies_titulos RESTRICT;
 TRUNCATE TABLE frequencias; DROP TABLE frequencias RESTRICT;
 TRUNCATE TABLE gnuteca_pessoas; DROP TABLE gnuteca_pessoas RESTRICT;
+TRUNCATE TABLE historicos; DROP TABLE historicos RESTRICT;
+TRUNCATE TABLE horarios; DROP TABLE horarios RESTRICT;
 TRUNCATE TABLE integra_lancamentos; DROP TABLE integra_lancamentos RESTRICT;
 TRUNCATE TABLE integra_previsoes; DROP TABLE integra_previsoes RESTRICT;
 TRUNCATE TABLE lancamentos_cr; DROP TABLE lancamentos_cr RESTRICT;
 TRUNCATE TABLE lideres; DROP TABLE lideres RESTRICT;
 TRUNCATE TABLE limites_contabeis; DROP TABLE limites_contabeis RESTRICT;
 TRUNCATE TABLE livro_matricula; DROP TABLE livro_matricula RESTRICT;
+TRUNCATE TABLE locais_pgto; DROP TABLE locais_pgto RESTRICT;
 TRUNCATE TABLE log_titulos; DROP TABLE log_titulos RESTRICT;
 TRUNCATE TABLE mensagens; DROP TABLE mensagens RESTRICT;
 TRUNCATE TABLE mensagens_financeiro; DROP TABLE mensagens_financeiro RESTRICT;
@@ -51,11 +54,13 @@ TRUNCATE TABLE mov_rec_banco; DROP TABLE mov_rec_banco RESTRICT;
 TRUNCATE TABLE notas_bimestre; DROP TABLE notas_bimestre RESTRICT;
 TRUNCATE TABLE ocorrencia_titulos; DROP TABLE ocorrencia_titulos RESTRICT;
 TRUNCATE TABLE ocorr_locais_pgto; DROP TABLE ocorr_locais_pgto RESTRICT;
+TRUNCATE TABLE origens; DROP TABLE origens RESTRICT;
 TRUNCATE TABLE pconta; DROP TABLE pconta RESTRICT;
 TRUNCATE TABLE pedagogia; DROP TABLE pedagogia RESTRICT;
 TRUNCATE TABLE precos_curso; DROP TABLE precos_curso RESTRICT;
 TRUNCATE TABLE previsao_lcto; DROP TABLE previsao_lcto RESTRICT;
 TRUNCATE TABLE previsoes_vcto; DROP TABLE previsoes_vcto RESTRICT;
+TRUNCATE TABLE regimes_disciplinas; DROP TABLE regimes_disciplinas RESTRICT;
 TRUNCATE TABLE rel_curso_cc; DROP TABLE rel_curso_cc RESTRICT;
 TRUNCATE TABLE sagu_header; DROP TABLE sagu_header RESTRICT;
 TRUNCATE TABLE sagu_modulos; DROP TABLE sagu_modulos RESTRICT;
@@ -69,6 +74,7 @@ TRUNCATE TABLE sequencial_banco_avulso; DROP TABLE sequencial_banco_avulso RESTR
 TRUNCATE TABLE sequencial_banco_vest; DROP TABLE sequencial_banco_vest RESTRICT;
 TRUNCATE TABLE siga_vinculos; DROP TABLE siga_vinculos RESTRICT;
 TRUNCATE TABLE status_matricula; DROP TABLE status_matricula RESTRICT;
+TRUNCATE TABLE tipos_cobr; DROP TABLE tipos_cobr RESTRICT;
 TRUNCATE TABLE tipos_motivos; DROP TABLE tipos_motivos RESTRICT;
 TRUNCATE TABLE tipos_pgto; DROP TABLE tipos_pgto RESTRICT;
 TRUNCATE TABLE titulos_cr; DROP TABLE titulos_cr RESTRICT;

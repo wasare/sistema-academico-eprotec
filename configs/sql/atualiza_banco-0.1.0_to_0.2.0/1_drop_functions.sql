@@ -1,4 +1,4 @@
--- exclui 172 funções não utilizadas pelo sistema
+-- exclui 175 funções não utilizadas pelo sistema
 DROP FUNCTION aberto(character varying);
 DROP FUNCTION abreviado_prova(character varying);
 DROP FUNCTION campus_disciplina_ofer(integer);
@@ -57,6 +57,7 @@ DROP FUNCTION get_estado(integer);
 DROP FUNCTION get_filiacao(integer);
 DROP FUNCTION get_grupo(integer, integer);
 DROP FUNCTION get_horarios_todos(integer);
+DROP FUNCTION get_turno_horario(integer);
 DROP FUNCTION get_id_contrato(integer, integer, integer);
 DROP FUNCTION get_id_matricula(integer, integer, character varying);
 DROP FUNCTION get_incentivo(integer);
@@ -98,6 +99,8 @@ DROP FUNCTION get_taxa(character varying);
 DROP FUNCTION get_tipo_motivo(integer);
 DROP FUNCTION get_turma(integer, character varying);
 DROP FUNCTION get_turno_curso(integer, integer);
+DROP FUNCTION get_turno_abrv(character varying);
+DROP FUNCTION get_turno_abrv_(character varying);
 DROP FUNCTION get_uf(integer);
 DROP FUNCTION get_usename(integer);
 DROP FUNCTION get_vagas(character varying, integer, integer);

@@ -174,17 +174,7 @@ function setResult(id,nome)
       </td>
     </tr>
 
-   <!-- <tr>
-      <td bgcolor="#CCCCFF" width="147"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Tipo&nbsp;</font></td>
-      <td width="341">
-       <select name="tipo" size="1">
-         <option selected><?echo($requisitos[$tipo]);?></option>
-         <option value="P">Pré-Requisito</option>
-         <option value="C">Co-Requisito</option>
-       </select>
-      </td>
-    </tr>-->
-    <input type="hidden" id="tipo" name="tipo" value="<?php echo ($requisitos[$tipo]);?>" />
+    <input type="hidden" id="tipo" name="tipo" value="<?php echo $tipo;?>" />
     <!--<tr>
       <TD colspan="2"><hr></td>
     </tr>

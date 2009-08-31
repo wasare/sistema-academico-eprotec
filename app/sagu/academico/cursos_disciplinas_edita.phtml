@@ -12,7 +12,6 @@ $ref_campus     = $_GET['ref_campus'];
 $op1_opcoes = SQLArray("select descricao,id from cursos order by descricao");
 $op2_opcoes = SQLArray("select nome_campus, id from campus order by nome_campus");
 
-
 $conn = new Connection;
 $conn->Open();
 

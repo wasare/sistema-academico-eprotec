@@ -4,14 +4,10 @@ require("../common.php");
 require("../lib/SQLCombo.php3");
 
 
-$op_opcoes5 = SQLArray("select descricao,id from tipos_cobr");
-$op_opcoes6 = SQLArray("select descricao,id from locais_pgto");
-
 $op1_options = SQLArray($sql_periodos_academico);
 
 $sql = "select substr(nome_campus,1,25),id from campus order by nome_campus";
 
-$op2_options = SQLArray("select id || ' - ' || substr(descricao,1,30), id from historicos where fl_extinto<>true order by id");
 
 ?>
 <html>
@@ -36,15 +32,6 @@ function ChangeOp1()
   ChangeOption(document.myform.op1,document.myform.ref_anterior);
 }
 
-function ChangeOp2()
-{
-  ChangeOption(document.myform.op2,document.myform.ref_historico);
-}
-
-function ChangeOp4()
-{
-  ChangeOption(document.myform.op4,document.myform.ref_historico_dce);
-}
 
 function ChangeOp5()
 {
@@ -57,15 +44,6 @@ function ChangeOp6()
   ChangeOption(document.myform.op6,document.myform.ref_local);
 }
 
-function ChangeOp7()
-{
-  ChangeOption(document.myform.op7,document.myform.ref_historico_taxa);
-}
-
-function ChangeOp8()
-{
-  ChangeOption(document.myform.op8,document.myform.ref_historico_cancel);
-}
 
 function ChangeCode(fld_name,op_name)
 {
@@ -89,24 +67,6 @@ function ChangeCode(fld_name,op_name)
   return true;
 }
 
-function buscaOrig()
-{
-  var title = 'Seleção Origens';
-  
-  var sql = "select id as Codigo, descricao as Origem from origens order by id";
-  
-  window.setResultCallback = window.setOrig;
-  
-  var url = "../generico/post/lista_sql.php3?title=" + escape(title) + "&sql=" + escape(sql);
-  
-  var wnd = window.open(url,'buscaOrig','toolbar=no,width=550,height=350,scrollbars=yes');
-}
-
-function setOrig(id,nome)
-{
-  document.myform.ref_origem.value = id;
-  document.myform.origem.value = nome;
-}
 </script>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20"
@@ -116,8 +76,7 @@ function setOrig(id,nome)
 <TABLE width="90%">
 	<tr>
 		<td bgcolor="#000099" colspan="2" height="35" align="center"><font
-			size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Inclusão
-		de Período</b></font></td>
+			size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Inclusão de período letivo</b></font></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
@@ -138,22 +97,15 @@ function setOrig(id,nome)
 			<tr>
 				<td><input name="ref_anterior" type=text size="12"
 					onChange="ChangeCode('ref_anterior','op1')"></td>
-				<td width="100%"><?PHP ComboArray("op1",$op1_options,"0","ChangeOp1()") ?>
+				<td width="100%"><?php ComboArray("op1",$op1_options,"0","ChangeOp1()") ?>
 				</td>
 			</tr>
 		</table>
 		</td>
 	</tr>
-	<input name="ref_cobranca" type="hidden" value="0" size="5">
-	<input name="ref_origem" type="hidden" value="1" size="12"
-		maxlength="12">
-	<input type="hidden" name="origem" size="38" value="Indefinida">
-	<input name="ref_historico" type="hidden" value="1" size="5">
-	<input name="ref_local" type="hidden" value="1" size="5">
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data
-		Inicial<br>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Inicial<br>
 		&nbsp;(dd/mm/aaaa)</font></td>
 		<td><input name="dt_inicial" type="text" size="12" maxlength="10"> <font
 			face="Verdana, Arial, Helvetica, sans-serif" size="1"> </font></td>
@@ -189,17 +141,7 @@ function setOrig(id,nome)
 	</tr>
 	<input name="tx_acresc" id="tx_acresc" value="" type="hidden" size="5">
 	<input name="tx_cancel" id="tx_cancel" value="" type="hidden" size="5">
-	<input name="ref_historico_taxa" type="hidden" value="1" size="5">
-	<input name="ref_historico_cancel" type="hidden" value="1" size="5">
 	<input name="ref_status_vest" type=hidden value="1">
-	<tr>
-		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Gerar
-		financeiro?</font></td>
-		<td><font face="Verdana, Arial, Helvetica, sans-serif" size="2"> <input
-			type="radio" name="fl_gera_financeiro" value="yes">Sim <input
-			type="radio" name="fl_gera_financeiro" value="no" checked="checked" />Não</font></td>
-	</tr>
 	<tr>
 		<td colspan="2">
 		<hr size="1">

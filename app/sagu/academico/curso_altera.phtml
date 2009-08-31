@@ -7,7 +7,7 @@ require("../lib/SQLCombo.php3");
 $id = $_GET['id'];
 
 $op_opcoes = SQLArray("select id||' - '||descricao, id from tipos_curso order by id");
-$op_opcoes2 = SQLArray("select nome, id from turnos order by nome");
+$op_opcoes2 = SQLArray("select nome, id from turno order by nome");
 
 
 CheckFormParameters(array("id"));
@@ -187,26 +187,10 @@ function setResult(arg1,arg2)
 		<td><input name="total_semestres" type=text
 			value="<?echo($total_semestres);?>" size="10"></td>
 	</tr>
-	<!--
-  <tr>
-    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Turno</font></td>
-    <td>
-      <select name="turno">
-         <option value=<?echo($turno);?> selected><?echo($turnos[$turno]); ?></option>
-         <option value="M">Manha</option>
-         <option value="T">Tarde</option>
-         <option value="N">Noite</option>
-         <option value="V">Vespertino</option>
-      </select>
-    </td>
-  </tr>
--->
 	<tr>
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Turno</font></td>
-		<td><font color="#000000"> <input name="turno"
-			value="<?echo($turno);?>" type="text" size="2"
-			onChange="ChangeCode('turno','op2')"> <? ComboArray("op2",$op_opcoes2,"0","ChangeOp2()"); ?>
+		<td><font color="#000000"> <input name="turno" value="<?echo($turno);?>" type="text" size="2" onChange="ChangeCode('turno','op2')"> <? ComboArray("op2",$op_opcoes2,$turno,"ChangeOp2()"); ?>
 		</font></td>
 	</tr>
 
@@ -216,7 +200,7 @@ function setResult(arg1,arg2)
 		do Curso</font></td>
 		<td><font color="#000000"> <input name="ref_tipo_curso" type="text"
 			size="5" onChange="ChangeCode('ref_tipo_curso','op')"
-			value="<?echo($ref_tipo_curso);?>"> <? ComboArray("op",$op_opcoes,"0","ChangeOp()"); ?>
+			value="<?echo($ref_tipo_curso);?>"> <? ComboArray("op",$op_opcoes,$ref_tipo_curso,"ChangeOp()"); ?>
 		</font></td>
 	</tr>
 	<tr>
