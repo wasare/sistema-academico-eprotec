@@ -8,7 +8,6 @@
 **/
 
 //Arquivos de configuracao e biblioteca
-header("Cache-Control: no-cache");
 require_once("../../lib/common.php");
 require_once("../../configuracao.php");
 require_once("../../lib/adodb/adodb.inc.php");

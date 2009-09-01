@@ -20,7 +20,6 @@ $Conexao = NewADOConnection("postgres");
 //Setando como conexao persistente
 $Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
-
 function verificaReprovacaoPorFaltas($aluno_id,$diarios)
 {
 	global $Conexao;
@@ -59,8 +58,7 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios)
                 ) AND
                 o.id = $diario_id; ";
 
-            $RsDisciplina = $Conexao->Execute($sqlDisciplina);
-            $diarios_reprovados += $RsDisciplina->fields[0];
+            $diarios_reprovados += $Conexao->getOne($sqlDisciplina);
         }
 	}
     
@@ -96,8 +94,7 @@ function verificaAprovacao($aluno_id,$curso_id,$diario_id)
                 ) AND
                 ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
 
-        $RsDisciplina = $Conexao->Execute($sqlDisciplina);
-        $diarios_matriculados = $RsDisciplina->GetAll();
+        $diarios_matriculados = $Conexao->getAll($sqlDisciplina);
 
         if (count($diarios_matriculados) > 0 )
         {
@@ -142,8 +139,7 @@ function verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$diario_id)
                 ) AND 
                 ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
     
-        $RsDisciplina = $Conexao->Execute($sqlDisciplina);
-        $diarios_matriculados = $RsDisciplina->GetAll();
+        $diarios_matriculados = $Conexao->getAll($sqlDisciplina);
 
         if (count($diarios_matriculados) > 0 )
         {
@@ -183,8 +179,7 @@ function verificaAprovacaoContratoDisciplina($aluno_id,$curso_id,$contrato_id,$d
                 m.ref_disciplina_ofer = $diario_id AND
                 ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
 
-        $RsDisciplina = $Conexao->Execute($sqlDisciplina);
-        $diarios_matriculados = $RsDisciplina->GetAll();
+        $diarios_matriculados = $Conexao->getAll($sqlDisciplina);
 
         if (count($diarios_matriculados) > 0 )
         {
@@ -213,8 +208,7 @@ function verificaEquivalencia($curso_id,$diario_id)
                         WHERE 
                              ref_disciplina = get_disciplina_de_disciplina_of('$diario_id') AND ref_curso = '$curso_id';";
 
-    $RsDisciplina = $Conexao->Execute($sqlDisciplina);
-    $equivalentes = $RsDisciplina->GetAll();
+    $equivalentes = $Conexao->getAll($sqlDisciplina);
 
     if (count($equivalentes) > 0 )
         return TRUE;
@@ -245,9 +239,8 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
                              ref_disciplina_equivalente = get_disciplina_de_disciplina_of('$diario_id') AND 
                              ref_curso = '$curso_id';";
 
-    	$RsEquivalente = $Conexao->Execute($sqlEquivalente);
-    	$equivalentes = $RsEquivalente->GetAll(); 
-
+    	$equivalentes = $Conexao->getAll($sqlEquivalente); 
+//        print_r($equivalentes); if ($diario_id = '5354') die;
       	if (count($equivalentes) > 0)
             $disciplinas =  $sqlEquivalente;
     } 
@@ -260,8 +253,7 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
             WHERE
                 ref_disciplina IN ( $disciplinas ) AND ref_curso = $curso_id;";
 
-    $RsPreRequisito = $Conexao->Execute($sqlPreRequisito);
-    $pre_requisitos = $RsPreRequisito->GetAll();
+    $pre_requisitos = $Conexao->getAll($sqlPreRequisito);
 
     $total_requisitos = count($pre_requisitos);
     $requisitos_matriculados = array();
@@ -288,9 +280,7 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
 															from disciplinas_equivalentes 
 														where ref_disciplina = '$disc_req' and ref_curso = '$curso_id'  ) ) AND 
         	       		( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
-        				$RsPreRequisito1 = $Conexao->Execute($sqlPreRequisito1);
-        				$requisitos_matriculados = array_merge($requisitos_matriculados,$RsPreRequisito1->GetAll());
-						//$requisitos_matriculados = $RsPreRequisito1->GetAll();
+        				$requisitos_matriculados = array_merge($requisitos_matriculados,$Conexao->getAll($sqlPreRequisito1));
 		 }
     }
    
@@ -302,14 +292,14 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
             $ret = TRUE;
       	else
             $ret = FALSE;
+	}
 
-        // VERIFICA SE A QUANTIDADE DE REQUISITOS MATRICULADOS APROVADOS É MAIOR OU IGUAL 
-        // AOS REQUISITOS  EXIGIDOS PELA DISCIPLINA, NESTE CASO OS REQUISITOS FORAM SATISFEITOS
-	    if (count($requisitos_matriculados) >= $total_requisitos)
-			$ret = FALSE;
-		else
-			$ret = TRUE;
-    }
+   // VERIFICA SE A QUANTIDADE DE REQUISITOS MATRICULADOS APROVADOS É MAIOR OU IGUAL 
+   // AOS REQUISITOS  EXIGIDOS PELA DISCIPLINA, NESTE CASO OS REQUISITOS FORAM SATISFEITOS
+   if (count($requisitos_matriculados) >= $total_requisitos)
+		$ret = FALSE;
+	else
+		$ret = TRUE;
     
     return $ret;
 }
@@ -327,7 +317,7 @@ function verificaPeriodo($periodo_id)
                         WHERE 
                              id = '$periodo_id';";
 
-    $data_final_periodo = strtotime($Conexao->GetOne($sqlPeriodo));
+    $data_final_periodo = strtotime($Conexao->getOne($sqlPeriodo));
     $data_atual = strtotime(date('Y-m-d'));
 
     if ( $data_atual > $data_final_periodo )
