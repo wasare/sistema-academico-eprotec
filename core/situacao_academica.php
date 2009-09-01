@@ -51,8 +51,7 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios)
 				) AND
 				o.id = $diario_id; ";
 
-			$RsDisciplina = $conn->Execute($sqlDisciplina);
-			$diarios_reprovados += $RsDisciplina->fields[0];
+			$diarios_reprovados += $conn->getOne($sqlDisciplina);//$RsDisciplina->fields[0];
 		}
 	}
 
@@ -274,12 +273,10 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
 															from disciplinas_equivalentes 
 														where ref_disciplina = '$disc_req' and ref_curso = '$curso_id'  ) ) AND 
         	       		( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
-        				//$requisitos_matriculados = $conn->adodb->getAll($sqlPreRequisito1);
         				$requisitos_matriculados = array_merge($requisitos_matriculados,$conn->adodb->getAll($sqlPreRequisito1));
-						//$requisitos_matriculados = $RsPreRequisito1->GetAll();
 		 }
     }
-   
+  
     $ret = FALSE; 
 	if (count($requisitos_matriculados) > 0)
     {
@@ -296,7 +293,7 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
     	$ret = FALSE;
     else
         $ret = TRUE;	
-    
+   
     return $ret;
 }
 
