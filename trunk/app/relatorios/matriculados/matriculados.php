@@ -109,8 +109,8 @@ if (isset($_POST["cidade"]))
 {
 	$colunas[] = "Cidade";
 	$sql .= ', m.nome || \'-\' || m.ref_estado as "Cidade"';
-	$condicao_municipio = " p.ref_cidade = m.id AND ";
-	$tabela_municipio = ", public.cidade m";
+	//$condicao_municipio = " p.ref_cidade = m.id AND ";
+	$tabela_municipio = " LEFT OUTER JOIN cidade m ON (p.ref_cidade = m.id) ";
 }
 
 if (isset($_POST["cep"]))
@@ -155,7 +155,7 @@ if (isset($_POST["data_nascimento"]))
 
 $sql .= "  
 	FROM
-	     pessoas p $tabela_filiacao, $tabela_c c $tabela_contrato $tabela_municipio
+	     pessoas p $tabela_filiacao $tabela_municipio, $tabela_c c $tabela_contrato 
 	WHERE
 	     $periodo_c = '$periodo' AND ";
 
