@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__).'/../../lib/adodb/adodb.inc.php');
+require_once(dirname(__FILE__).'/../../lib/adodb5/adodb.inc.php');
 /**
  * Connection factory
  * usando a bibliote ADODB

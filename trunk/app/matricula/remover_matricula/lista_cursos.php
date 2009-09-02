@@ -2,7 +2,7 @@
 
 //INCLUSAO DE BIBLIOTECAS
 require_once("../../../configs/configuracao.php");
-require_once("../../../lib/adodb/tohtml.inc.php");
+require_once("../../../lib/adodb5/tohtml.inc.php");
 
 
 //error_reporting(E_ALL & ~E_NOTICE);

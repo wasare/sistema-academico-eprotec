@@ -4,9 +4,9 @@ require_once(dirname(__FILE__) .'/../../../configs/configuracao.php');
 
 define('PDF_TMP_DIR', dirname(__FILE__) .'/boletins/pdf_tmp/');
 
-require_once(dirname(__FILE__) .'/../../../lib/fpdf153/fpdf.php');
+require_once(dirname(__FILE__) .'/../../../lib/fpdf16/fpdf.php');
 require_once(dirname(__FILE__) .'/../../../lib/fpdi/fpdi.php');
-require_once(dirname(__FILE__) .'/../../../lib/fpdf153/pdf.ext.php');
+require_once(dirname(__FILE__) .'/../../../lib/fpdf16/pdf.ext.php');
 
 
 function remove_files($dir)

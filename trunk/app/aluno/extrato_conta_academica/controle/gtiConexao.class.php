@@ -1,6 +1,6 @@
 <?php
 //importa��o da ADODB
-require_once('../../../../lib/adodb/adodb.inc.php');
+require_once('../../../../lib/adodb5/adodb.inc.php');
 require_once('../config.class.php');
 
 /**
