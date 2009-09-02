@@ -2,10 +2,9 @@
 
 header("Cache-Control: no-cache");
 //INCLUSAO DE BIBLIOTECAS
-require("../../../lib/common.php");
 require_once("../../../configs/configuracao.php");
-require("../../../lib/adodb/adodb.inc.php"); 
-require("../../../lib/adodb/tohtml.inc.php");
+require("../../../lib/adodb5/adodb.inc.php"); 
+require("../../../lib/adodb5/tohtml.inc.php");
 
 
 $pessoa = $_GET["aluno"];
