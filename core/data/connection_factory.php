@@ -38,35 +38,40 @@ class connection_factory{
      * Abre a conexao com o banco de dados
      */
     public function Open(){
-        $this->adodb = ADONewConnection("postgres");
+	
+		// reaproveita a conexao da sessao caso exista
+		if(is_object($GLOBALS['ADODB_SESS_CONN'])) {
+			$this->adodb = $GLOBALS['ADODB_SESS_CONN'];
+			ADOdb_session::Persist($connectMode = $this->conn_persistent);
+		}
+		else {
+	
+			$this->adodb = ADONewConnection("postgres");
         
-        if($this->conn_persistent){
-        	//Conexao persistente
-            if(!$this->adodb->PConnect("host=$this->host dbname=$this->database
-                user=$this->user password=$this->password")){
-            	
-            	print '<h2 style="color: red">DB: Erro ao conectar com o banco de dados</h2>'.
-            		  '<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
-            		  		$this->adodb->ErrorMsg().
-            		  '</div>';
-            	die();		
-            }
-        }else{
-            //Quando aberta usar a funcao close() para fechar a conexao
-            if(!$this->adodb->Connect("host=$this->host dbname=$this->database
-                user=$this->user password=$this->password")){
-            	
-            	print '<h2 style="color: red">DB: Erro ao conectar com o banco de dados</h2>'.
-            		  '<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
-            		  		$this->adodb->ErrorMsg().
-            		  '</div>';
-            	die();		
-            }
-        }
+			if($this->conn_persistent){
+				// Conexao persistente
+				if(!$this->adodb->PConnect("host=$this->host dbname=$this->database user=$this->user password=$this->password")){
+					print '<h2 style="color: red">DB: Erro ao conectar com o banco de dados</h2>'.
+							'<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
+							$this->adodb->ErrorMsg().
+							'</div>';
+					die();		
+				}
+			} 
+			else {
+				// Conexao nao persistente
+				if(!$this->adodb->Connect("host=$this->host dbname=$this->database user=$this->user password=$this->password")){
+						print '<h2 style="color: red">DB: Erro ao conectar com o banco de dados</h2>'.
+								'<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
+									$this->adodb->ErrorMsg().
+								'</div>';
+						die();		
+				}
+			}
+		}
 
 		$this->adodb->debug = $this->debug;
-
-    }
+	}
     
     /**
      * Fecha conexao

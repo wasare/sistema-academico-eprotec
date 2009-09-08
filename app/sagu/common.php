@@ -4,7 +4,7 @@ require_once(dirname(__FILE__) . '/../../configs/configuracao.php');
 
 $LoginHost   = $host; //  nome do host ;
 $LoginDB     = $database; // nome do banco;
-list($LoginUID, $LoginPWD) = split(":",$_SESSION['SessionAuth'],2);
+list($LoginUID, $LoginPWD) = split(":",$_SESSION['sa_auth'],2);
 
 
 $ErrorURL   	  = $BASE_DIR . 'app/sagu/fatalerror.php';
@@ -127,12 +127,6 @@ class Connection {
 	{
 		global $LoginUID,$LoginPWD,$LoginDB,$LoginHost;
 
-		$SessionAuth = $_COOKIE['SessionAuth'];
-
-		if ( ! empty($SessionAuth) ){
-			list ( $LoginUID, $LoginPWD ) = split(":",$SessionAuth,2);
-
-		}
 
 		$arg = "host=$LoginHost dbname=$LoginDB port=5432 user=$LoginUID password=$LoginPWD";
 		$this->id = @pg_Connect($arg);

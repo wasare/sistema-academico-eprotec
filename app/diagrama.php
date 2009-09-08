@@ -4,6 +4,7 @@ require_once("../configs/configuracao.php");
 
 $conn = new connection_factory($param_conn);
 
+
 $sql = 'SELECT descricao, data FROM avisos WHERE id = 1;';
 $Result1 = $conn->Execute($sql);
 

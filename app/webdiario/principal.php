@@ -1,6 +1,6 @@
 <?php
 
-
+/*
 session_start();
 
 setcookie("us", "0", time( )-9999);
@@ -9,18 +9,25 @@ setcookie("login", "0", time( )-9999);
 $_SESSION = array();
 session_destroy();
 @session_start();
+*/
 
-$usuario = $_POST['usuario'];
-$senha = md5($_POST['senha']);
+$usuario = $_SESSION['uid'];
+$senha = md5($_SESSION['pwd']);
 $speriodo = trim($_POST['speriodo']);
 
 
 // CONTROLE DE SESSAO DE LOGIN NO WEBDIARIO
-$_SESSION['web_diario_login'] = $_POST['web_diario_login'];
-$_SESSION['nivel'] = 0;
-$_SESSION['login'] = 'login';
+//$_SESSION['web_diario_login'] = $_POST['web_diario_login'];
+//$_SESSION['nivel'] = 0;
+//$_SESSION['login'] = 'login';
 
 require_once('webdiario.conf.php');
+
+
+// CONTROLE DE SESSAO DE LOGIN NO WEBDIARIO
+//$_SESSION['web_diario_login'] = $_POST['web_diario_login'];
+$_SESSION['nivel'] = 0;
+$_SESSION['login'] = 'login';
 
 $result = diario_sql($usuario, $senha,$speriodo);
 

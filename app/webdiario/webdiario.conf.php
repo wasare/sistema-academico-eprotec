@@ -4,8 +4,6 @@ $BASE_DIR_WEBDIARIO  = dirname(__FILE__) . '/';
 
 require_once($BASE_DIR_WEBDIARIO .'../../configs/configuracao.php');
 
-@session_start();
-
 ini_set('display_errors',1);
 
 date_default_timezone_set('America/Sao_Paulo');

@@ -1,11 +1,13 @@
 <?php
 //include_once('manutencao.php');
-	
-session_start();
-setcookie ("us", "0", time( )-9999);
-setcookie ("login", "0", time( )-9999);
-$_SESSION = array();
-session_destroy();
+
+
+// controle para evitar a verificacao do login antes da autenticacao
+$_POST['sa_login'] = 'web_diario_login';
+
+require_once(dirname(__FILE__).'/webdiario.conf.php');
+
+session::destroy();
 
 ?>
 
@@ -19,7 +21,7 @@ session_destroy();
 <body background="img/bar1.jpg" text="#000000" onLoad="document.form1.usuario.focus()">
 
 <div align="center">
-  <form name="form1" id="form1" method="post" action="principal.php">
+  <form name="form1" id="form1" method="post" action="../../core/login/login.php">
     <table border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td width="770" height="60" background="img/top2.jpg">&nbsp;</td>
@@ -60,7 +62,7 @@ session_destroy();
               <td colspan="2" height="41" align="center">
 			  <p> <br>
 			    <input type="submit" name="submit" target="_parent" value="Entrar">
-				<input type="hidden" id="web_diario_login" name="web_diario_login" value="1" />
+				<input type="hidden" id="sa_login" name="sa_login" value="web_diario_login" />
 			    </p>
 				<p align="center"><a href="senha/">Esqueceu sua senha?<br>Primeiro acesso?</a> <br />  <br /> <a href="../../public/docs/usuario/manual_webdiario_professor.pdf">Manual do Webdi&aacute;rio (M&oacute;dulo Professor)</a></p></td>
             </tr>
