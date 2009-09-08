@@ -1,8 +1,8 @@
 <?php
 
-include_once('webdiario.conf.php');
+require_once('webdiario.conf.php');
 
-if ( !IsSet($_SESSION['login']) ) 
+if ( !isset($_SESSION['sa_login']) && $_SESSION['sa_login'] != 'web_diario_login'  ) 
 {
    header("location:$erro");
    exit;
@@ -47,7 +47,7 @@ exit;
 <table width="114" border="0">
 
   <tr>
-     <td colspan="2"><div align="center"><font size="1"><a href="../prin.php?y=2003" target="principal"><font color="#000033"><a href="prin.php" target="principal"><?php echo $_SESSION['login'];  ?></a></font></font></div> <hr /></td>
+     <td colspan="2"><div align="center"><font size="1"><a href="../prin.php?y=2003" target="principal"><font color="#000033"><a href="prin.php" target="principal"><?php echo $_SESSION['uid'];  ?></a></font></font></div> <hr /></td>
   </tr>
 
 <?php

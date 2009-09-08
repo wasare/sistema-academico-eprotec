@@ -37,7 +37,8 @@
 					</td>
 				</tr>
 			  </table>
-			  <input type="hidden" name="btnOK" value="true">
+			  <input type="hidden" name="btnOK" value="true" />
+		      <input type="hidden" id="sa_login" name="sa_login" value="aluno_login" />		
 			</form>
 		  </div></td>
 	  </tr>

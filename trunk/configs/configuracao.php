@@ -1,25 +1,20 @@
 <?php
 
-if(!$_SESSION['SessionAuth'] OR !$_SESSION['web_diario_login'])
-{
-	@session_start();
-}
-
 /**
  * Forca o fuso horario da aplicacao
  */
 date_default_timezone_set('America/Sao_Paulo');
 
 /**
- * Variaveis de Login
- */
-list($user, $password) = split(":",$_SESSION['SessionAuth'],2);
-
-/**
  * Banco de dados
  */
-$host     = 'dados.cefetbambui.edu.br';
-$database = 'sagu';
+$host     = '192.168.0.234';
+$database = 'sa';
+$user = 'usrsagu'; 
+$password = 'x6S8YzrJBs';
+
+//$user = trim($_POST['uid']); 
+//$password = trim($_POST['pwd']);
 
 /**
  * Variaveis de acesso a dados - SA 
@@ -29,7 +24,7 @@ $param_conn['database'] = $database;
 $param_conn['user']     = $user;
 $param_conn['password'] = $password;
 $param_conn['port']     = $port;
-
+//print_r($param_conn);
 
 /**
  * Variaveis de acesso a dados - Web Diario
@@ -60,19 +55,26 @@ $LOGIN_URL      = $BASE_URL .'index.php';
 $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';
 $PATH_IMAGES    = $BASE_URL."public/images/";
 $REVISAO 		= @file_get_contents ('../VERSAO.TXT');
+$SESS_TABLE     = 'sessao';
+
+
 
 /**
  * Arquivos requeridos
  */
 require_once($BASE_DIR .'core/data/connection_factory.php');
 
+require_once($BASE_DIR .'core/login/session.php');
+
+session::init($param_conn);
+
 
 /* 
 * NAO VERIFICA AUTENTICACAO NO SA CASO TENHA UMA SESSAO ABERTA DO WEB DIARIO OU MODULO DO ALUNO
 * NÃO PERMITE LOGIN SIMULTANEO NO SA E NO WEB DIARIO OU MODULO DO ALUNO
 */
-if((!isset($_SESSION['web_diario_login']) OR $_SESSION['web_diario_login'] != "1") AND (!isset($_SESSION['aluno_login']) OR $_SESSION['aluno_login'] != "1"))
-{ 
+if(!isset($_POST['sa_login']) OR empty($_POST['sa_login']))
+{
 	require_once($BASE_DIR .'core/login/check_login.php');
 }
 
@@ -145,7 +147,4 @@ $sql_periodos_academico    = "
     periodos
   ORDER BY 1 DESC;";
 
-//$host = '192.168.0.234';$user = 'usrsagu';$password = 'x6S8YzrJBs';
-
-//print_r($_SESSION);die;
 ?>

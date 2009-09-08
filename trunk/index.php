@@ -1,8 +1,13 @@
 <?php
 
-session_start();
-$_SESSION = array();
-session_destroy();
+
+// controle para evitar a verificacao do login antes da autenticacao
+$_POST['sa_login'] = 'sa_login';
+
+require_once(dirname(__FILE__).'/configs/configuracao.php');
+
+session::destroy();
+
 
 ?>
 
@@ -18,7 +23,7 @@ session_destroy();
 	<div align="center">
 		<div id="caixa_login">
 			<div id="caixa_login2">
-				<form method="post" action="core/login/check_login.php" name="myform">
+				<form method="post" action="core/login/login.php" name="myform">
 					<table border="0" cellspacing="0" cellpadding="0">
 						<tr>
 							<td valign="top">
@@ -39,6 +44,7 @@ session_destroy();
 					<br />
 					Senha:<br />
 					<input type="password" name="pwd" maxlength="20" style="width: 140px;" />
+					<input type="hidden" name="sa_login" id="sa_login" value="sa_login" />
 					<p>
 						<input type="submit" name="Submit" value=" Entrar " />
 					</p>
