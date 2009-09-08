@@ -20,11 +20,17 @@ function clear_session($expireref, $sesskey) {
 $log_msg = $_SERVER['REMOTE_ADDR'] .' - ['. date("d/m/Y H:i:s") .'] - ';
 
 
-// valida autenticacao neste ponto - variaveis de sessao disponiveis
+//unset($_SESSION['sa_auth']);
+list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
+
+// TODO: valida autenticacao neste ponto - variaveis de sessao disponiveis
+
+
 
 // unset($_SESSION['sa_auth']);
-if(empty($_SESSION['sa_auth'])) 
+if(empty($uid) && empty($pwd)) 
 {
+
 	unset($_SESSION['sa_auth']);
 
 	// grava log de falha de acesso 
@@ -37,7 +43,6 @@ if(empty($_SESSION['sa_auth']))
 }
 else
 {
-	list($uid, $pwd) = $_SESSION['sa_auth'];
 
 	$GLOBALS['USERID'] = $uid;
     $GLOBALS['ADODB_SESSION_EXPIRE_NOTIFY'] = array('USERID','clear_session');

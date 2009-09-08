@@ -4,7 +4,10 @@ require_once(dirname(__FILE__) . '/../../configs/configuracao.php');
 
 $LoginHost   = $host; //  nome do host ;
 $LoginDB     = $database; // nome do banco;
-list($LoginUID, $LoginPWD) = split(":",$_SESSION['sa_auth'],2);
+$LoginUID    = $user;
+$LoginPWD    = $password;
+
+//list($LoginUID, $LoginPWD) = explode(":",$_SESSION['sa_auth']);
 
 
 $ErrorURL   	  = $BASE_DIR . 'app/sagu/fatalerror.php';
@@ -552,7 +555,7 @@ function Today_usa(){
 
 function DMA_To_AMD($dt){
 
-	list ( $d, $m, $a ) = split("/",$dt,3);
+	list ( $d, $m, $a ) = explode("/",$dt);
 	return sprintf("%0.4d/%0.2d/%0.2d",$a,$m,$d);
 }
 
@@ -563,7 +566,7 @@ function DMA_To_AMD($dt){
 
 function MDA_To_DMA($dt){
 
-	list ( $d, $m, $a ) = split("-",$dt,3);
+	list ( $d, $m, $a ) = explode("-",$dt);
 	return sprintf("%0.2d/%0.2d/%0.2d",$m,$d,$a);
 }
 
@@ -619,7 +622,7 @@ function CheckAccess($user,$path){
 			continue;
 
 			// userid: url,url,...
-			list ( $uid, $action, $url_list ) = split(":",$ln,3);
+			list ( $uid, $action, $url_list ) = explode(":",$ln);
 
 			$uid      = trim($uid);
 			$action   = strtoupper(trim($action));
@@ -627,7 +630,7 @@ function CheckAccess($user,$path){
 
 			if ( $uid == $user || $uid == "*" )
 			{
-				$a = split(",",$url_list);
+				$a = explode(",",$url_list);
 
 				for ( $i=0; $i < count($a); $i++ )
 				{
