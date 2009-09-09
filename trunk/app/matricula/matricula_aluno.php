@@ -10,7 +10,7 @@
 header("Cache-Control: no-cache");
 
 //INCLUSAO DE BIBLIOTECAS
-require_once("../../configs/configuracao.php");
+require_once("../../app/setup.php");
 
 
 //Criando a classe de conexão

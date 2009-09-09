@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__).'/../configs/configuracao.php');
+require_once(dirname(__FILE__).'/../app/setup.php');
 
 list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
 
@@ -41,12 +41,12 @@ function iframeAutoHeight(quem){
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td width="50" valign="middle">
-					<a href="inicio.php">
+					<a href="index.php">
 						<img src="../public/images/icon_sa.gif" alt="Principal" width="40" height="34" />
 					</a>
 				</td>
 				<td width="230">
-					<a href="inicio.php" class="titulo1">
+					<a href="index.php" class="titulo1">
 						Sistema Acad&ecirc;mico
 					</a>
 				</td>
@@ -71,14 +71,13 @@ function iframeAutoHeight(quem){
 	</tr>
 	<tr>
 		<td width="23" class="menu">
-			<a href="inicio.php">
+			<a href="index.php">
 				<img src="../public/images/home_icon.gif" alt="P&aacute;gina inicial" title="P&aacute;gina inicial" />
 			</a>
 		</td>
 		<td width="526" class="menu">
 		
 		<ul id="MenuBar1" class="MenuBarHorizontal">
-			<!-- <li><a href="inicio.php">In&iacute;cio</a></li>-->
 			<li><a class="MenuBarItemSubmenu" href="#">Sistema</a>
 			<ul>
 				<li>

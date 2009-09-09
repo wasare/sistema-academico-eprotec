@@ -2,7 +2,7 @@
 
 header("Cache-Control: no-cache");
 //INCLUSAO DE BIBLIOTECAS
-require_once("../../../configs/configuracao.php");
+require_once("../../../app/setup.php");
 require("../../../lib/adodb5/adodb.inc.php"); 
 require("../../../lib/adodb5/tohtml.inc.php");
 

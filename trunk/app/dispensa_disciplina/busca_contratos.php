@@ -9,7 +9,7 @@
 
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
-require_once('../../configs/configuracao.php');
+require_once('../../app/setup.php');
 
 /**
  * @var string com o codigo do aluno

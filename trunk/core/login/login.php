@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__).'/../../configs/configuracao.php');
+require_once(dirname(__FILE__).'/../../app/setup.php');
 
 /*
   TODO: registrar em log o acesso com sucesso ou falha - gravar em banco de dados
@@ -26,7 +26,7 @@ if($autenticado === 1) {
 
 	switch ($_POST['sa_login']) {
     case 'sa_login':
-        header('Location: '. $BASE_URL .'app/inicio.php');
+        header('Location: '. $BASE_URL .'app/index.php');
         break;
     case 'web_diario_login':
         //header('Location: '. $BASE_URL .'app/webdiario/');

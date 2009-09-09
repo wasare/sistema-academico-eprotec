@@ -1,7 +1,7 @@
 <?php
 
 header ("Cache-Control: no-cache");
-require_once("../../configs/configuracao.php");
+require_once("../../app/setup.php");
 
 
 $id_pessoa = $_GET['codigo_pessoa'];

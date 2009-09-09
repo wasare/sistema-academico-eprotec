@@ -1,7 +1,7 @@
 <?php
 
 //INCLUSAO DE BIBLIOTECAS
-require_once("../../../configs/configuracao.php");
+require_once("../../../app/setup.php");
 require_once("../../../lib/adodb5/tohtml.inc.php");
 
 

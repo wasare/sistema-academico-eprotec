@@ -30,7 +30,7 @@
 			$this->app_imagens = "conta_academica/visao/imagens/";
 			$this->app_estilos = "conta_academica/visao/estilo/";
 
-            require('../../../../configs/configuracao.php');
+            require('../../../../app/setup.php');
 
 			//dados do banco
 			$this->m_driver = 'postgres';

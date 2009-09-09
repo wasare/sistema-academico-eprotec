@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) .'/../../../configs/configuracao.php');
+require_once(dirname(__FILE__) .'/../../../app/setup.php');
 
 define('PDF_TMP_DIR', dirname(__FILE__) .'/boletins/pdf_tmp/');
 

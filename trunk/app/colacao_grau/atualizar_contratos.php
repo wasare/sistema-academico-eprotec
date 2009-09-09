@@ -1,5 +1,5 @@
 <?php
-require_once("../../configs/configuracao.php");
+require_once("../../app/setup.php");
 
 
 $Conexao = NewADOConnection("postgres");

@@ -2,7 +2,7 @@
 
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header("Cache-Control: no-cache");
-require("../../../configs/configuracao.php");
+require("../../../app/setup.php");
 
 
 $sql = "SELECT id, nome 

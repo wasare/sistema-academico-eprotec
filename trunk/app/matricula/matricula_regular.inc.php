@@ -9,7 +9,7 @@
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require_once("../../configs/configuracao.php");
+require_once("../../app/setup.php");
 require_once('../../core/situacao_academica.php');
 
 //Criando a classe de conexao ADODB

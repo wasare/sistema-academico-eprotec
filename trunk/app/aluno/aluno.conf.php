@@ -8,7 +8,7 @@ ini_set('display_errors', '0');
 // CONTROLE DE SESSAO DE LOGIN NO MODULO ALUNO
 $_SESSION['aluno_login'] = 1;
 
-require_once('../../configs/configuracao.php');
+require_once('../../app/setup.php');
 
 //EFETUA A CONEXÃO
 $conn = NewADOConnection('postgres');

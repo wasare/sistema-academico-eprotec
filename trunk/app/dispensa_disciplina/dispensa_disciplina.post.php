@@ -3,7 +3,7 @@
 header("Cache-Control: no-cache");
 
 //-- ARQUIVO CONFIGURACAO E BIBLIOTECAS
-require_once('../../configs/configuracao.php');
+require_once('../../app/setup.php');
 
 
 // PROCESSA A DISPENSA SE NAO HOUVER ERROS

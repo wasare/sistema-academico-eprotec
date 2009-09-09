@@ -2,7 +2,7 @@
 
 $BASE_DIR_WEBDIARIO  = dirname(__FILE__) . '/';
 
-require_once($BASE_DIR_WEBDIARIO .'../../configs/configuracao.php');
+require_once($BASE_DIR_WEBDIARIO .'../../app/setup.php');
 
 ini_set('display_errors',1);
 
