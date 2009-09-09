@@ -11,13 +11,13 @@ $log_msg = $_SERVER['REMOTE_ADDR'] .' - ['. date("d/m/Y H:i:s") .'] - ';
 // fazer a verificacao do login neste ponto
 $autenticado = (int) 1;
 
-if($autenticado === 1)
-{
+if($autenticado === 1) {
+
 	// grava log de acesso
     $log_msg .= $uid .' - *** LOGIN ACEITO (host='. $param_conn['host'] .',db='. $param_conn['database'] .',uid='. $uid .',pwd=) ***'."\n";
 
 	$GLOBALS['USERID'] = trim($_POST['uid']);
-	$GLOBALS['ADODB_SESSION_EXPIRE_NOTIFY'] = array('USERID','clear_session');
+	$GLOBALS['ADODB_SESSION_EXPIRE_NOTIFY'] = array('USERID','session::clear_session');
 	
 	$_SESSION['sa_auth'] = trim($_POST['uid']) .':'. trim($_POST['pwd']);
 	$_SESSION['sa_login'] = $_POST['sa_login'];
@@ -40,8 +40,8 @@ if($autenticado === 1)
     exit;
 
 }
-else
-{
+else {
+
 	// grava log de acesso
 	$log_msg .=  $uid .' - *** LOGIN RECUSADO (host='. $param_conn['host'] .',db='. $param_conn['database'] .',uid='. $uid .',pwd=) ***'."\n";
 	error_log($log_msg,3,$LOGIN_LOG_FILE);

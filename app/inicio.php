@@ -2,6 +2,8 @@
 
 require_once(dirname(__FILE__).'/../configs/configuracao.php');
 
+list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -206,7 +208,7 @@ function iframeAutoHeight(quem){
 		</td>
 		<td width="193" class="menu">
 			<span class="texto1"> 
-        		<img src="../public/images/icons/bola_verde.gif" width="10" height="10" /> <?php echo $_SESSION['uid']; ?> 
+        		<img src="../public/images/icons/bola_verde.gif" width="10" height="10" /> <?=$uid?> 
         	</span>
 		</td>
 	</tr>
