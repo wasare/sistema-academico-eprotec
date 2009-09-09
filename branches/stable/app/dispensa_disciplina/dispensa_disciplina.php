@@ -112,7 +112,7 @@ SELECT DISTINCT
         WHERE
                 d.id = o.ref_disciplina AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 o.ref_campus = '$ref_campus' AND
                 o.id IN 
@@ -133,7 +133,7 @@ SELECT DISTINCT
                 p.id = '$aluno_id' AND
                 m.ref_disciplina_ofer = o.id AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 d.id IN (
                   select distinct ref_disciplina
                         from cursos_disciplinas
@@ -156,7 +156,7 @@ SELECT DISTINCT
                 c.ref_disciplina = d.id AND
                 d.id = o.ref_disciplina AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 d.id IN (
                   select distinct ref_disciplina
@@ -170,7 +170,8 @@ SELECT DISTINCT
 									select distinct ref_disciplina_ofer
 						                 from matricula m
 									where
-										m.ref_pessoa = $aluno_id)
+										m.ref_pessoa = $aluno_id AND
+										m.ref_contrato = $id_contrato)
 				)
 
 ) AS T2 USING (ref_disciplina)
@@ -179,7 +180,7 @@ WHERE matriculada is null
 
 // -- o.fl_digitada = 'f' AND -- somente em diario aberto/finalizado
 //
-//echo  $sqlDisciplinas;
+//echo  '<pre>'. $sqlDisciplinas .'</pre>';
 
     $RsDisciplinas = $Conexao->Execute($sqlDisciplinas);
 
