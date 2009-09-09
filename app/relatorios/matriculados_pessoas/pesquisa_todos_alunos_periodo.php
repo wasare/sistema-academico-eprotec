@@ -1,6 +1,6 @@
 <?php
 
-require("../../../configs/configuracao.php");
+require("../../../app/setup.php");
 
 $conn = new connection_factory($param_conn);
 

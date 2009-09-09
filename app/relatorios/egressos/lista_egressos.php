@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../../configs/configuracao.php");
+require_once("../../../app/setup.php");
 require_once("../../../core/reports/header.php");
 require_once("../../../core/reports/carimbo.php");
 require_once("../../../core/date.php");

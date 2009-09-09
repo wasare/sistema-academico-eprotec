@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../configs/configuracao.php");
+require_once("../../app/setup.php");
 
 
 $id_curso = $_POST['codigo_curso'];

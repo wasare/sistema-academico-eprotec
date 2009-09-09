@@ -9,7 +9,7 @@
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require_once('../../configs/configuracao.php');
+require_once('../../app/setup.php');
 
 
 $diario_id = $_POST['id_diario'];

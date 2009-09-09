@@ -3,7 +3,7 @@
   //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
   header ("Cache-Control: no-cache");
   require("../../../lib/common.php");
-  require("../../../configs/configuracao.php");
+  require("../../../app/setup.php");
   require("../../../lib/adodb5/adodb.inc.php");
   require("../../../lib/adodb5/tohtml.inc.php");
   

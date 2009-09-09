@@ -1,6 +1,6 @@
 <?php
 
-require_once("../configs/configuracao.php");
+require_once("../app/setup.php");
 
 $conn = new connection_factory($param_conn);
 

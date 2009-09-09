@@ -1,6 +1,6 @@
 <?php
 
-require("../../../configs/configuracao.php");
+require("../../../app/setup.php");
 
 $id_pessoa = $_GET['codigo_pessoa'];
 

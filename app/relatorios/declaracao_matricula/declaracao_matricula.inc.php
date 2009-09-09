@@ -1,6 +1,6 @@
 <?php 
 
-require("../../../configs/configuracao.php");
+require("../../../app/setup.php");
 require("../../../core/reports/carimbo.php");
 require("../../../core/date.php");
 

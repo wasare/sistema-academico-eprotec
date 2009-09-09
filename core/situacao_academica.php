@@ -9,7 +9,7 @@
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require_once(dirname(__FILE__) .'/../configs/configuracao.php');
+require_once(dirname(__FILE__) .'/../app/setup.php');
 
 $conn = new connection_factory($param_conn);
 
