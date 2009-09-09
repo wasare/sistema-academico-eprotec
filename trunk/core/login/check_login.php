@@ -11,7 +11,6 @@ function clear_session($expireref, $sesskey) {
 
     if(is_object($GLOBALS['ADODB_SESS_CONN'])){
         $GLOBALS['ADODB_SESS_CONN']->Execute("DELETE FROM sessao WHERE expireref = '". $expireref ."';");
-        return TRUE;
     }
     else
         return FALSE;
@@ -26,11 +25,9 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
 // TODO: valida autenticacao neste ponto - variaveis de sessao disponiveis
 
 
-
 // unset($_SESSION['sa_auth']);
 if(empty($uid) && empty($pwd)) 
 {
-
 	unset($_SESSION['sa_auth']);
 
 	// grava log de falha de acesso 
@@ -50,7 +47,8 @@ else
 	// desconectar usuario com duas sessoes simultaneas
 	if($GLOBALS['ADODB_SESS_CONN']->getOne("SELECT COUNT(*) FROM $SESS_TABLE WHERE expireref = '". $GLOBALS['USERID']  ."';") != 1)
 	{
-		unset($_SESSION['sa_auth']);
+		// destroi a sessao para forcar a exclusao de qualquer sessao associada com o login do usuario
+		session::destroy();
 
 		// grava log de falha de acesso 
 		$log_msg .= $param_conn['user'] .' - *** LOGIN DUPLICADO (host='. $param_conn['host'] .',db='. $param_conn['database'] .',uid='. $param_conn['user'] .',pwd=) ***'."\n";
