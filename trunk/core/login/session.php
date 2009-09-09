@@ -14,15 +14,12 @@ class session {
 	public static function refresh() {
 
         if ((rand()%10) == 0) adodb_session_regenerate_id();
-		//adodb_session_regenerate_id();
-		//echo 'chamou';
     }
 
 	public static function destroy() {
         unset($_SESSION);
         session_destroy();
     }
-
 
 	public static function init($info_connection, $persist = TRUE, $debug = FALSE, $table = 'sessao') {  
 
@@ -46,10 +43,19 @@ class session {
 			$GLOBALS['ADODB_SESS_CONN']->debug = $debug;
 			session::refresh();
 		}
-        
+       
 		@session_start();
 		
 	}
+
+	// forca eliminacao da sessao do usuario no banco
+	// TODO: limpar outras sessoes expiradas (?), redirecionar o usuario para uma pagina com aviso de sessao expirada
+	public static function clear_session($expireref, $sesskey) {
+
+    	if(is_object($GLOBALS['ADODB_SESS_CONN'])){
+        	$GLOBALS['ADODB_SESS_CONN']->Execute("DELETE FROM sessao WHERE expireref = '". $expireref ."';");
+    	}
+	}	
 }
 
 ?>

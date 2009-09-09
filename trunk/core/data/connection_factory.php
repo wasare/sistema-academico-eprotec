@@ -39,33 +39,32 @@ class connection_factory{
      */
     public function Open(){
 	
-		// reaproveita a conexao da sessao caso exista
-		if(is_object($GLOBALS['ADODB_SESS_CONN'])) {
-			$this->adodb = $GLOBALS['ADODB_SESS_CONN'];
+		$this->adodb = $GLOBALS['ADODB_SESS_CONN'];
+
+		// reaproveita a conexao da sessao, caso exista uma e seja identica a conexao sendo criada
+		if(is_object($this->adodb) && $this->adodb->host == $this->host && $this->adodb->database == $this->database && $this->adodb->user == $this->user && $this->adodb->password == $this->passowrd) {
 			ADOdb_session::Persist($connectMode = $this->conn_persistent);
 		}
 		else {
+
+			$conn_data = "host=$this->host dbname=$this->database user=$this->user password=$this->password";
 	
 			$this->adodb = ADONewConnection("postgres");
         
 			if($this->conn_persistent){
 				// Conexao persistente
-				if(!$this->adodb->PConnect("host=$this->host dbname=$this->database user=$this->user password=$this->password")){
-					print '<h2 style="color: red">DB: Erro ao conectar com o banco de dados</h2>'.
+				if(!$this->adodb->PConnect($conn_data)) {
+					die('<h2 style="color: red">DB: Erro ao conectar com o banco de dados</h2>'.
 							'<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
-							$this->adodb->ErrorMsg().
-							'</div>';
-					die();		
+							$this->adodb->ErrorMsg() .'</div>');
 				}
 			} 
 			else {
 				// Conexao nao persistente
-				if(!$this->adodb->Connect("host=$this->host dbname=$this->database user=$this->user password=$this->password")){
-						print '<h2 style="color: red">DB: Erro ao conectar com o banco de dados</h2>'.
+				if(!$this->adodb->Connect($conn_data)) {
+						die('<h2 style="color: red">DB: Erro ao conectar com o banco de dados</h2>'.
 								'<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
-									$this->adodb->ErrorMsg().
-								'</div>';
-						die();		
+									$this->adodb->ErrorMsg() .'</div>');
 				}
 			}
 		}
@@ -86,12 +85,10 @@ class connection_factory{
      * @return ResultSet
      */
     public function Execute($sql){
-		if (!$ResultSet = $this->adodb->Execute($sql)){
-            print '<h2 style="color: red">DB: Erro ao executar consulta</h2>'.
-            	  '<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
-            	  		$this->adodb->ErrorMsg().
-            	  '</div>';
-            die();
+		if (!$ResultSet = $this->adodb->Execute($sql)) {
+				die('<h2 style="color: red">DB: Erro ao executar consulta</h2>'.
+					'<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
+            	  		$this->adodb->ErrorMsg() .'</div>');
 		}
         return $ResultSet;
     }

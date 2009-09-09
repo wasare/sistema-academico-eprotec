@@ -167,7 +167,8 @@ SELECT DISTINCT
 									select distinct ref_disciplina_ofer
 						                 from matricula m
 									where
-										m.ref_pessoa = $aluno_id)
+										m.ref_pessoa = $aluno_id AND
+                                        m.ref_contrato = $id_contrato )
 				)
 
 ) AS T2 USING (ref_disciplina)
