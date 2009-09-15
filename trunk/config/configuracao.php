@@ -10,11 +10,8 @@ date_default_timezone_set('America/Sao_Paulo');
  */
 $host     = '192.168.0.234';
 $database = 'sa';
-$user = 'usrsagu'; 
+$user     = 'usrsagu';
 $password = 'x6S8YzrJBs';
-
-//$user = trim($_POST['uid']); 
-//$password = trim($_POST['pwd']);
 
 /**
  * Variaveis de acesso a dados - SA 
@@ -24,17 +21,15 @@ $param_conn['database'] = $database;
 $param_conn['user']     = $user;
 $param_conn['password'] = $password;
 $param_conn['port']     = $port;
-//print_r($param_conn);
 
 /**
  * Variaveis de acesso a dados - Web Diario
  */
-$webdiario_host		= $param_conn['host'];
+$webdiario_host     = $param_conn['host'];
 $webdiario_database = $param_conn['database'];
-$webdiario_user		= 'usrsagu';
+$webdiario_user     = 'usrsagu';
 $webdiario_password = 'x6S8YzrJBs';
-$webdiario_port		= $param_conn['port'];
-
+$webdiario_port     = $param_conn['port'];
 
 /**
  * Variaveis de acesso a dados - Modulo do aluno
@@ -45,19 +40,16 @@ $aluno_user     = 'aluno';
 $aluno_password = '@1srv27';
 $aluno_port     = '';
 
-
 /**
  * Variaveis do sistema
  */
-$BASE_URL       = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/wanderson/dev/sa/';
-$BASE_DIR       = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/wanderson/dev/sa/';
+$BASE_URL       = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/santiago/sistema-academico/';
+$BASE_DIR       = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/santiago/sistema-academico/';
 $LOGIN_URL      = $BASE_URL .'index.php';
 $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';
 $PATH_IMAGES    = $BASE_URL."public/images/";
 $REVISAO 		= @file_get_contents ('../VERSAO.TXT');
 $SESS_TABLE     = 'sessao';
-
-
 
 /*
    ALGUNS PARAMETROS DO SISTEMA ACADEMICO
@@ -80,19 +72,19 @@ $curriculos["P"] = "Profici&ecirc;ncia";
 $curriculos["A"] = "Atividade complementar";
 
 // app/sagu/academico/cursos_disciplinas_edita.phtm
-$historico["S"] = "Sim";
-$historico["N"] = "N&atilde;o";
+$historico["S"]  = "Sim";
+$historico["N"]  = "N&atilde;o";
 
 // app/sagu/academico/curso_altera.phtml 
 // app/sagu/academico/lista_disciplinas_ofer.phtml
-$status["1"] = "Sim";
-$status["0"] = "N&atilde;o";
+$status["1"]     = "Sim";
+$status["0"]     = "N&atilde;o";
 
 // app/sagu/academico/pessoaf_edita.phtml
 // app/sagu/academico/documentos_edita.phtml
 // app/sagu/academico/post/confirm_pessoaf_inclui.phtml
-$opcoes["t"] = "Sim";
-$opcoes["f"] = "N&atilde;o";
+$opcoes["t"]     = "Sim";
+$opcoes["f"]     = "N&atilde;o";
 
 // app/sagu/academico/pessoaf_edita.phtml 
 // app/sagu/academico/post/confirm_pessoaf_inclui.phtml 
@@ -120,12 +112,10 @@ $limite_list        = 25;
 // app/sagu/academico/atualiza_disciplina_ofer.phtml
 // app/sagu/academico/disciplina_ofer.phtml
 $sql_periodos_academico    = "
-  SELECT
-    'Selecione o Periodo',
+SELECT 'Selecione o Periodo',
     '' union all select id||' / '||substr(descricao, 0, 25) as d,
     id
-  FROM
-    periodos
-  ORDER BY 1 DESC;";
+FROM periodos
+ORDER BY 1 DESC;";
 
 ?>
