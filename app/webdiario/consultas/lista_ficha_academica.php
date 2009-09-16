@@ -133,6 +133,7 @@ $chRealizadaMatriculada = 0;
 //foreach ($ficha_academica as $disc) {
 while($disc = pg_fetch_array($qry1)) 
 {
+	$fcolor = '#000000';
 // id	periodo	descricao	carga_horaria	ref_periodo	faltas	nota_final	nota	oferecida	ref_motivo_matricula	professor_disciplina_ofer_todos	carga_horaria_realizada
 	$nome_materia = $disc['id'] .' - '. $disc['descricao'];
     $periodo = $disc['periodo'];
@@ -214,8 +215,6 @@ while($disc = pg_fetch_array($qry1))
 		$percFaltasAprovado += $stfaltas;
 		//Total carga horaria realizada
 		$chRealizadaAprovado += $carga_realizada;
-		
-		$fcolor = '#000000';
 	}
 
      //total notas matriculada
