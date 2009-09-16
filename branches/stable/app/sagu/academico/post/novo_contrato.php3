@@ -208,25 +208,28 @@ if ($ref_periodo_turma == '')
 
 if ($percentual_pago == '')
 { $sql=$sql . " null) " ;} else { $sql=$sql . "'$percentual_pago') " ;}
-	
 
-$sql2 = "SELECT COUNT(\"AlunoID\") FROM \"AcessoAluno\" WHERE \"AlunoID\" = '$ref_pessoa'";
-$rs = $conn->Execute($sql2);
- 
-if($rs == false){
-	 
-	$sql3 = "; INSERT INTO \"AcessoAluno\"(\"AlunoID\",\"cvSenha\") VALUES('$ref_pessoa',md5(lpad('$ref_pessoa', 5, '0'))); ";
-	$sql .= $sql3;
-	 
-}
-//echo $sql . "<br>Resource: " . $rs . "<br>Linha: " . $row[0];
-//die;
- 
- 
+
+// CRIA O ACESSO PARA TODOS OS ALUNOS QUE AINDA NÃO POSSUEM,
+// MAS ESTEJAM MATRICULADOS NO SEMESTRE DO CONTRATO DESTE ALUNO
+$sql2 = 'INSERT INTO "AcessoAluno" ("AlunoID", "cvSenha") ';
+$sql2 .= 'SELECT ref_pessoa, md5(lpad(CAST(ref_pessoa AS VARCHAR), \'5\', \'0\')) 
+            FROM (   
+                    SELECT DISTINCT ref_pessoa,"AlunoID" 
+                            FROM 
+                                contratos c 
+                            LEFT OUTER JOIN 
+                                "AcessoAluno" a ON (ref_pessoa = "AlunoID") 
+                            WHERE c.ref_periodo_turma = \''. $ref_periodo_turma .'\' AND "AlunoID" IS NULL) AS T1;';
+
 $ok = $conn->Execute($sql);
 
 $conn->Finish();
+
+$ok2 = $conn->Execute($sql2);
+
 $conn->Close();
+
 SaguAssert($ok,"Nao foi possivel inserir o registro!");
 
 SuccessPage("Inclusão de Contrato",

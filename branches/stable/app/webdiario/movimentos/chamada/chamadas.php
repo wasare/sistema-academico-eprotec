@@ -45,7 +45,7 @@ $sqlCurso = "SELECT DISTINCT
         WHERE
           d.ref_periodo = '$getperiodo' AND
           d.id = '$getofer' AND
-          d.is_cancelada = 0;";
+          d.is_cancelada = '0';";
 
 //d.ref_disciplina = '$getdisciplina' AND
 
@@ -247,6 +247,7 @@ rong>Observa&ccedil;&otilde;es:<br />
 		<option value="12" <?php if($_SESSION['aulatipo'] == "12") { echo 'selected="selected"';} ?>>2 Aulas  (Aula Dupla)</option>
 		<option value="123" <?php if($_SESSION['aulatipo'] == "123") { echo 'selected="selected"';} ?>>3 Aulas (Aula Tripla)</option>
 		<option value="1234" <?php if($_SESSION['aulatipo'] == "1234") { echo 'selected="selected"';} ?>>4 Aulas (Aula Qu&aacute;drupla)</option>
+		<option value="12345" <?php if($_SESSION['aulatipo'] == "12345") { echo 'selected="selected"';} ?>>5 Aulas (5 Aulas seguidas)</option>
 		<option value="123456" <?php if($_SESSION['aulatipo'] == "123456") { echo 'selected="selected"';} ?>>6 Aulas (6 Aulas seguidas)</option>
 		<option value="12345678" <?php if($_SESSION['aulatipo'] == "12345678") { echo 'selected="selected"';} ?>>8 Aulas (8 Aulas seguidas)</option>
         </select>
