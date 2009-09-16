@@ -209,24 +209,28 @@ if ($ref_periodo_turma == '')
 if ($percentual_pago == '')
 { $sql=$sql . " null) " ;} else { $sql=$sql . "'$percentual_pago') " ;}
 	
-// usa conection factory para verificar se o aluno já tem senha
-$conexao = new connection_factory($param_conn);
 
-$sql2 = "SELECT COUNT(ref_pessoa) FROM acesso_aluno WHERE ref_pessoa = '$ref_pessoa';";
-
-$cont_aluno = (int) $conexao->adodb->getOne($sql2);
-
-if($cont_aluno == 0)
-{
-	$sql3 = "; INSERT INTO acesso_aluno(ref_pessoa,senha) VALUES('$ref_pessoa',md5(lpad('$ref_pessoa', 5, '0'))); ";
-    $sql .= $sql3;
-}
- 
+// CRIA O ACESSO PARA TODOS OS ALUNOS QUE AINDA NÃO POSSUEM,
+// MAS ESTEJAM MATRICULADOS NO SEMESTRE DO CONTRATO DESTE ALUNO
+$sql2 = 'INSERT INTO acesso_aluno (ref_pessoa, senha) ';
+$sql2 .= 'SELECT ref_pessoa, md5(lpad(CAST(ref_pessoa AS VARCHAR), \'5\', \'0\')) 
+            FROM (   
+                    SELECT DISTINCT c.ref_pessoa,a.ref_pessoa AS aluno 
+                            FROM 
+                                contratos c
+                            LEFT OUTER JOIN 
+                                acesso_aluno a ON (c.ref_pessoa = a.ref_pessoa) 
+                            WHERE c.ref_periodo_turma = \''. $ref_periodo_turma .'\' AND a.ref_pessoa IS NULL) AS T1;';
 $ok = $conn->Execute($sql);
 
 $conn->Finish();
+
+$ok2 = $conn->Execute($sql2);
+
 $conn->Close();
+
 SaguAssert($ok,"Nao foi possivel inserir o registro!");
+
 
 SuccessPage("Inclusão de Contrato",
                "location='../novo_contrato.phtml'",
