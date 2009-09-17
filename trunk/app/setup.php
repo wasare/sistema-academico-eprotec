@@ -20,20 +20,7 @@ session::init($param_conn);
 /* 
  * Verifica a autenticacao do usuario
  */
-var_dump($_SESSION['sa_auth']);
-
-$auth = new auth();
-$auth->check_login($BASE_URL, $SESS_TABLE, $LOGIN_LOG_FILE);
-
-/*
-if(isset($_SESSION['sa_modulo']) AND !empty($_SESSION['sa_modulo']))
-{
-    auth::check_login();
-}
-else { 
-    header('Location: '. $BASE_URL .'index.php?sa_msg=3');
-}
-*/
+auth::check_login($BASE_URL, $SESS_TABLE, $LOGIN_LOG_FILE);
 
 ?>
 
