@@ -9,7 +9,7 @@ session::init($param_conn);
 
 if($_POST) {
     $conn = new connection_factory($param_conn);
-    auth::login($_POST['uid'],$_POST['pwd'],$_POST['modulo'], $conn);
+    exit(auth::login($_POST['uid'],$_POST['pwd'],$_POST['modulo'], $conn));
 }
 
 session::destroy();
@@ -139,16 +139,7 @@ session::destroy();
                         <img src="public/images/alert.png" alt="Aten&c&ccedil;&ati&atilde;o" />
                     </td>
                     <td>
-                            <?php
-                            if($_GET['sa_msg'] == 1 OR $_GET['sa_msg'] == 2 OR $_GET['sa_msg'] == 3)
-                                echo 'Senha ou usuário inválido.';
-                            if($_GET['sa_msg'] == 4)
-                                echo 'Sem permissão ou sua sessao experiou.';
-                            if($_GET['sa_msg'] == 5)
-                                echo 'Sessao expirada por duplicidade de acesso.';
-                            if($_GET['sa_msg'] == 0)
-                                echo 'Nome de usuário e senha não preenchidos.';
-                            ?>
+                        <?php echo $_GET['sa_msg']; ?>
                     </td>
                 </tr>
             </table>
