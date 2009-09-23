@@ -20,7 +20,7 @@ $param_conn['host']     = $host;
 $param_conn['database'] = $database;
 $param_conn['user']     = $user;
 $param_conn['password'] = $password;
-$param_conn['port']     = $port;
+$param_conn['port']     = '5432';
 
 /**
  * Variaveis de acesso a dados - Web Diario

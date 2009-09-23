@@ -103,7 +103,6 @@ class auth {
      */
     public function check_login($BASE_URL, $SESS_TABLE, $LOGIN_LOG_FILE) 
     {
-
         if($_SESSION['sa_modulo'] == 'aluno_login')
         {
             //Redirecionamento de alunos
