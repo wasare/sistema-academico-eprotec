@@ -136,9 +136,34 @@ if ($dispensas > 0 ) {
 <html>
 <head>
 <title><?=$IEnome?> - papeleta completa</title>
-</head>
 
 <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
+
+<style media="print">
+<!--
+
+.nao_imprime {display:none}
+
+table.papeleta {
+    font: 0.7em verdana, arial, tahoma, sans-serif;
+    border: 0.0015em solid;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+.papeleta td {
+    font: 0.7em verdana, arial, tahoma, sans-serif;
+    border: 0.0015em solid;
+    padding: 2px;
+    border-collapse: collapse;
+    border-spacing: 1px;
+}
+
+
+-->
+</style>
+
+</head>
 
 <font size="2">
 
@@ -294,7 +319,7 @@ foreach($matriculas as $row3)
 	print("Aulas previstas: <b>$ch_prevista</b> <br />");
 	print("<br />ASSINATURA(S):");
 	
-    echo '<br />';
+    echo '<br /><br />';
 
     $i = 0;
 
@@ -379,6 +404,11 @@ foreach($matriculas as $row3)
 
 </table>
 <br /><br />
+<div class="nao_imprime">
 <input type="button" value="Imprimir" onClick="window.print()">
+&nbsp;&nbsp;&nbsp;
+<input type="button" name="fechar" id="fechar" value="Fechar" onclick="javascript:window.close();" />
+</div>
+<br /><br />
 </body>
 </html>

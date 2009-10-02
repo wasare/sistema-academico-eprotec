@@ -40,7 +40,7 @@ $busca2  = new search('curso','curso_id','cursos_list', 'form1', '../../relatori
 		<div class="box_geral">	
 
 		    Per&iacute;odo:<br />
-			&nbsp;&nbsp;<span class="comentario">Comece digitando o ano para listar os per&iacute;odos.</span><br />
+			&nbsp;&nbsp;<span class="comentario">Comece digitando o ano para listar os per&iacute;odos ou informe o c&oacute;digo do per&iacute;odo no primeiro campo.</span><br />
 			<span id="sprytextfield0">
                 <?php
                     echo $busca1->input_text_retorno("5");
@@ -52,7 +52,7 @@ $busca2  = new search('curso','curso_id','cursos_list', 'form1', '../../relatori
             <br />
 			
 		    Curso:<br />
-			&nbsp;&nbsp;<span class="comentario">Comece digitando o nome do curso para list&aacute;-los.</span><br />
+			&nbsp;&nbsp;<span class="comentario">Comece digitando o nome do curso para list&aacute;-los ou informe o c&oacute;digo do curso no primeiro campo.</span><br />
 		    <span id="sprytextfield1">
 		        <?php 
 		            echo $busca2->input_text_retorno("5"); 
@@ -64,7 +64,7 @@ $busca2  = new search('curso','curso_id','cursos_list', 'form1', '../../relatori
 			<br />
 			<h4>Ou</h4>
             C&oacute;digo do di&aacute;rio:<br />
-			<span class="comentario">Se preenchido os campos anteriores ser&atilde;o ignorados.</span><br />
+			 &nbsp;&nbsp;<span class="comentario">Se preenchido os campos anteriores ser&atilde;o ignorados.</span><br />
             <input name="diario_id" type="text" id="diario_id" size="10" />
 			<br /><br />
 			<input name="lista_diarios" type="submit" id="lista_diarios" value="Listar di&aacute;rios" />
