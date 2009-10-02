@@ -1,0 +1,249 @@
+<?
+
+class postscript
+{
+
+    var $fp;
+    var $filename;
+    var $string="";
+    var $page=1;
+    var $acentos="";
+
+    #- startup the whole thing = Aqui tudo inicia
+    function postscript($fname = "", $author="PSLib", $title="Generated with PSLib",  $orientation="Portrait")
+    {
+        #- A text string was requested: file name to create
+        if($fname)
+        {
+            if(! $this->fp = fopen($fname,"w")) return(0);
+        }
+        
+        $this->string .= "%!PS-Adobe-3.0 \n";
+        $this->string .= '%%Creator: ' . $author . "\n";
+        $this->string .= '%%CreationDate: ' . date("d/m/Y, H:i") . "\n";
+        $this->string .= '%%Title: ' . $title . "\n";
+        $this->string .= "%%PageOrder: Ascend \n";
+        $this->string .= '%%Orientation: ' . $orientation . "\n";
+        $this->string .= "%%EndComments \n";
+        $this->string .= "%%BeginProlog \n";
+        $this->string .= "%%BeginResource: definicoes \n";
+        //* Comment this to disable support for international character encoding (or remove file acentos.ps)
+        // Para nao ter suporte a acentuacao comente este trecho(ou retire o arquivo acentos.ps).
+        if (file_exists('acentos.ps'))
+        {
+             if($f = join('',file('acentos.ps'))) $this->string .= $f;
+        }
+        //*/
+        $this->string .= "%%EndResource \n";
+        $this->string .= "%%EndProlog \n";
+
+        return(1);
+    }
+
+
+    #- Begin new page = Inicia uma nova pagina
+    function begin_page($page)
+    {
+        $this->string.= "%%Page: " . $page . ' ' . $page . "\n";
+        return(1);
+    }
+
+    
+    #- End page = Finaliza pagina
+    function end_page()
+    {
+        $this->string .= "showpage \n";
+        return(1);
+    }
+
+
+    #- Close the postscript file = Fecha o arquivo postscript 
+    function close()
+    {
+        $this->string .= "showpage \n";
+        if($this->fp)
+          {
+           fwrite($this->fp,$this->string);
+           fclose($this->fp);
+          }
+
+        return($this->string);
+   }
+
+    #- Draw a line = Desenha uma linha
+    function line($xcoord_from=0, $ycoord_from=0, $xcoord_to=0, $ycoord_to=0, $linewidth=0)
+    {
+        if(!$xcoord_from || !$ycoord_to || !$xcoord_to || !$ycoord_to || !$linewidth) return(0);
+        
+        $this->string .= $linewidth . " setlinewidth  \n";
+        $this->string .= $xcoord_from . ' ' . $ycoord_from  . " moveto \n";
+        $this->string .= $xcoord_to . ' ' . $ycoord_to  . " lineto \n";
+        $this->string .= "stroke \n";
+        
+        return(1);
+    }
+
+
+    #- Move to coordinates = Move para as coordenadas
+    function moveto($xcoord, $ycoord)
+    {
+        if(empty($xcoord) || empty($ycoord)) return(0);
+        
+        $this->string .= $xcoord . ' ' . $ycoord . " moveto \n";
+        
+        return(1);
+    }
+
+
+    #- Move to coordinates and change the font = Move para as coordenadas e muda a fonte
+    function moveto_font($xcoord, $ycoord, $font_name, $font_size)
+    {
+        if(!$xcoord || !$ycoord || !$font_name || !$font_size) return(0);
+        
+        $this->string .= $xcoord . ' ' . $ycoord . " moveto \n";
+        $this->string .= '/' . $font_name . ' findfont ' . $font_size . " scalefont setfont \n";
+        
+        return(1);
+    }
+
+
+    #-Insert a PS file/image (remember to delete the information in the top of the file (source))
+    #-Insere um arquivo/imagem PS (lembre-se de remover a informaçao no inicio daquele arquivo)
+    function open_ps($ps_file="")
+    {
+        if(!$ps_file) return(0);
+
+        if($f = join('',file($ps_file)))
+          $this->string .= $f;
+        else
+          return(0);
+
+        return(1);
+    }
+
+
+    #- Draw a rectangle = Desenha um retangulo
+    function rect($xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth)
+    {
+        if(!$xcoord_from || !$ycoord_from || !$xcoord_to || !$ycoord_to || !$linewidth) return(0);
+
+          $this->string .= $linewidth . " setlinewidth  \n";
+          $this->string .= "newpath \n";
+          $this->string .= $xcoord_from . ' ' . $ycoord_from  . " moveto \n";
+          $this->string .= $xcoord_to . ' ' . $ycoord_from  . " lineto \n";
+          $this->string .= $xcoord_to . ' ' . $ycoord_to  . " lineto \n";
+          $this->string .= $xcoord_from . " " . $ycoord_to  . " lineto \n";
+          $this->string .= "closepath \n";
+          $this->string .= "stroke \n";
+
+          return(1);
+    }
+
+
+    #- Draw and shade a rectangle = Desenha um retangulo e preenche
+    function rect_fill($xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth, $darkness)
+    {
+
+        if(!$xcoord_from || !$ycoord_from || !$xcoord_to || !$ycoord_to || !$linewidth || !$darkness) return(0);
+
+          $this->string .= "newpath \n";
+          $this->string .= $linewidth . " setlinewidth  \n";
+          $this->string .= $xcoord_from . ' ' . $ycoord_from  . " moveto \n";
+          $this->string .= $xcoord_to . ' ' . $ycoord_from  . " lineto \n";
+          $this->string .= $xcoord_to . ' ' . $ycoord_to  . " lineto \n";
+          $this->string .= $xcoord_from . ' ' . $ycoord_to  . " lineto \n";
+          $this->string .= "closepath \n";
+          $this->string .= "gsave \n";
+          $this->string .= $darkness . " setgray  \n";
+          $this->string .= "fill \n";
+          $this->string .= "grestore \n";
+          $this->string .= "stroke \n";
+
+          return(1);
+    }
+
+
+   #- Set rotation, use 0 or 360 to end rotation = Muda a rotacao do texto, passe 0 ou 360 para finalizar a rotacao 
+   function rotate($degrees)
+   {
+       if(!$degrees) return(0);
+
+       if(($degrees == '0') or ($degrees == '360'))
+           $this->string .= "grestore \n";
+       else
+       {
+           $this->string .= "gsave \n";
+           $this->string .= $degrees . " rotate \n";
+        }
+
+      return(1);
+   }
+
+
+   #- Set the font to show = Muda a fonte
+   function set_font($font_name, $font_size)
+   {
+       if(!$font_name || !$font_size) return(0);
+
+       $this->string .=  '/' . $font_name . ' findfont ' . $font_size . " scalefont setfont \n";
+       
+       return(1);
+   }
+
+
+   #- Showsome text at the current coordinates (use 'moveto' to set coordinates)
+   #- Escreve o texto na posicao atual (utilize 'moveto' para mudar a posicao)
+   function show($text)
+   {
+       if(!$text) return(0);
+
+       $this->string .=  '(' . $text  . ") show \n";
+
+       return(1);
+   }
+
+
+   #- Evaluate the text and show it at the current coordinates
+   #- Processa o texto e o escreve na posicao atual
+   function show_eval($text)
+   {
+       if(!$text) return(0);
+       
+       eval("\$text = \"$text\";");
+       $this->string .=  '(' . $text  . ") show \n";
+       
+       return(1);
+   }
+
+
+   #- Show some text at specific coordinates 
+   #- Escreve o texto na coordenada informada
+   function show_xy($text, $xcoord, $ycoord)
+   {
+
+       if(!$text || !$xcoord || !$ycoord) return(0);
+       
+       $this->moveto($xcoord, $ycoord);
+       $this->show($text);
+
+     return(1);
+
+   }
+
+
+   #- Show some text at specific coordinates with font settings
+   #- Mostra o texto na coordenada informa com a fonte especifica
+   function show_xy_font($text, $xcoord, $ycoord, $font_name, $font_size)
+   {
+       if(!$text || !$xcoord || !$ycoord || !$font_name || !$font_size) return(0);
+
+       $this->set_font($font_name, $font_size);
+       $this->show_xy($text, $xcoord, $ycoord);
+
+       return(1);
+   }
+
+
+} #- end class
+
+?>
