@@ -45,12 +45,12 @@ session::destroy();
             }
             #caixa_login {
                 background-color: #CEE7FF;
-                width:280px;
+                width:300px;
                 font-family: Verdana, Arial, Helvetica, sans-serif;
                 font-size: 12px;
                 border: 4px solid #3399FF;
-                padding:10px;
-                margin:10px;
+                padding: 10px 5px 10px 5px;
+                margin: 10px 5px 10px 5px;
             }
         </style>
     </head>
@@ -75,7 +75,7 @@ session::destroy();
                     <table border="0">
                         <tr>
                             <td align="right">
-                                Nome de usu&aacute;rio:
+                                Usu&aacute;rio:
                             </td>
                             <td>
                                 <input type="text" name="uid" maxlength="20" style="width: 140px;" />
@@ -91,10 +91,11 @@ session::destroy();
                         </tr>
                         <tr>
                             <td align="right">
-                                M&oacute;dulo
+                                M&oacute;dulo:
                             </td>
                             <td>
                                 <select id="modulo" name="modulo" style="width: 145px;">
+									<option value="web_diario_login">Coordenador</option>
                                     <option value="web_diario_login">Professor</option>
                                     <option value="sa_login" selected>Secretaria</option>
                                     <option value="aluno_login">Aluno</option>

@@ -84,15 +84,7 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                                         <a href="exportar/exportar_sistec.php" target="frame2">Exportar matr&iacute;culas para o SISTEC</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="MenuBarItemSubmenu">WebDi&aacute;rio</a>
-                                        <ul>
-                                            <li>
-                                                <a href="<?php echo $BASE_URL . 'app/webdiario'; ?>" target="frame2">Acessar WebDi&aacute;rio</a>
-                                            </li>
-                                            <li>
-                                                <a href="acesso_web_diario/index.php" target="frame2">Usu&aacute;rios do WebDi&aacute;rio</a>
-                                            </li>
-                                        </ul>
+                                        <a href="web_diario/secretaria/pesquisa_diarios.php" target="frame2">Web Di&aacute;rio</a>
                                     </li>
                                     <li>
                                         <a href="#" class="MenuBarItemSubmenu">Configura&ccedil;&otilde;es</a>
