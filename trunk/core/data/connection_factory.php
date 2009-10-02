@@ -88,7 +88,7 @@ class connection_factory {
         if (!$ResultSet = $this->adodb->Execute($sql)) {
             die('<h2 style="color: red">DB: Erro ao executar consulta</h2>'.
                 '<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
-                $this->adodb->ErrorMsg() .'</div>');
+                $this->adodb->ErrorMsg() .'</div>'.'<pre>'. $sql .'</pre>');
         }
         return $ResultSet;
     }

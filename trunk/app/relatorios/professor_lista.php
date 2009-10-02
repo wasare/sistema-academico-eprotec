@@ -14,10 +14,10 @@ if(!isset($_POST)){
 		break;
 	}
 
-    $sql = "SELECT descricao, id 
-        FROM periodos
-        WHERE lower(to_ascii(descricao)) like lower(to_ascii('%". $termo_pesquisa ."%')) 
-        ORDER BY descricao DESC LIMIT 10;";
+    $sql = "SELECT p.nome, p.id 
+        FROM professores prof, pessoas p
+        WHERE lower(to_ascii(p.nome)) like lower(to_ascii('%". $termo_pesquisa ."%')) AND prof.ref_professor = p.id
+        ORDER BY p.nome DESC LIMIT 10;";
     $sql = iconv("utf-8", "iso-8859-1", $sql);
     $RsCurso = $conn->Execute($sql);
 

@@ -51,7 +51,7 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios)
 				) AND
 				o.id = $diario_id; ";
 
-			$diarios_reprovados += $conn->getOne($sqlDisciplina);//$RsDisciplina->fields[0];
+			$diarios_reprovados += $conn->adodb->getOne($sqlDisciplina);//$RsDisciplina->fields[0];
 		}
 	}
 

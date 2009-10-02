@@ -6,7 +6,7 @@ $conn = new connection_factory($param_conn);
 
 $Result1 = $conn->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
 
-$RsCidades = $conn->Execute("SELECT cidade_campus, id FROM campus WHERE ref_empresa = 1 ORDER BY 1;");
+$RsCidades = $conn->Execute("SELECT nome_campus, id FROM campus WHERE ref_empresa = 1 ORDER BY 1;");
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -79,9 +79,9 @@ $RsCidades = $conn->Execute("SELECT cidade_campus, id FROM campus WHERE ref_empr
 		    <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
 		</span>
 		<br />
-	    Cidade:<br />
+	    Campus:<br />
 	    <?php  print $RsCidades->GetMenu('cidade',null,true,false,0); ?>
-	    <span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todas.</span>
+	    <span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todos.</span>
 	</div>
 	</form>
 	<script type="text/javascript">

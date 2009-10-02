@@ -69,9 +69,11 @@ if ($contMatriculada == 0)
 <head>
 <title>SA</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
+<!--<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">-->
+<link href="<?=$BASE_URL .'public/styles/relatorio.css'?>" rel="stylesheet" type="text/css">
+
 <body>
-	<div style="width: 760px;">
+	<div>
 		<div align="center" style="text-align:center; font-size:12px;">
         	<?php echo $header->get_empresa($PATH_IMAGES); ?>
             <br /><br />
@@ -81,17 +83,17 @@ if ($contMatriculada == 0)
 	<font color="#000000" size="2"> <b>Curso: </b><?php echo($_GET['curso']);?><br />
 	<b>Data: </b> <?php echo date("d/m/Y"); ?> <b>Hora: </b><?php echo date("H:i"); ?> </font><br>
 	<br>
-	<table width="700" cellpadding="0" cellspacing="0" class="tabela_relatorio">
+	<table cellpadding="0" cellspacing="0" class="relato">
 	  <tr bgcolor="#666666">
-	    <th width="14%"><div align="center"><font color="#FFFFFF"><b>Per&iacute;odo</b></font></div></th>
-	    <th width="60%"><div align="center"><font color="#FFFFFF"><b>Componente Modular</b></font></div></th>
-	    <th width="8%"><div align="center"><font color="#FFFFFF"><b>M&eacute;dia</b></font></div></th>
-	    <th width="8%"><div align="center"><font color="#FFFFFF"><b>Faltas</b></font></div></th>
-	    <th width="20%"><div align="center"><font color="#FFFFFF"><b>% Faltas</b></font></div></th>
-		    <th width="12%"><div align="center"><font color="#FFFFFF"><b>CH Realizada</b></font></div></th>
-	    <th width="12%"><div align="center"><font color="#FFFFFF"><b>CH Prevista</b></font></div></th>
-	    <th width="5%"><div align="center"><font color="#FFFFFF"><b>Matr&iacute;cula</b></font></div></th>
-	    <th width="6%"><div align="center"><font color="#FFFFFF"><b>Situa&ccedil;&atilde;o</b></font></div></th>
+	    <th><div align="center"><font color="#FFFFFF"><b>Per&iacute;odo</b></font></div></th>
+	    <th><div align="center"><font color="#FFFFFF"><b>Componente Modular</b></font></div></th>
+	    <th><div align="center"><font color="#FFFFFF"><b>M&eacute;dia</b></font></div></th>
+	    <th><div align="center"><font color="#FFFFFF"><b>Faltas</b></font></div></th>
+	    <th><div align="center"><font color="#FFFFFF"><b>% Faltas</b></font></div></th>
+		<th><div align="center"><font color="#FFFFFF"><b>CH Realizada</b></font></div></th>
+	    <th><div align="center"><font color="#FFFFFF"><b>CH Prevista</b></font></div></th>
+	    <th><div align="center"><font color="#FFFFFF"><b>Matr&iacute;cula</b></font></div></th>
+	    <th><div align="center"><font color="#FFFFFF"><b>Situa&ccedil;&atilde;o</b></font></div></th>
 	  </tr>
 <?php	
 
@@ -209,7 +211,7 @@ foreach ($ficha_academica as $disc) {
      $chRealizadaMatriculada += $carga_realizada;
 	
 	if ($st == '#F3F3F3') {
-   		$st = '#E3E3E3';
+   		$st = '#FFFFFF';
 	}
 	else {
 		$st ='#F3F3F3';
@@ -224,7 +226,7 @@ foreach ($ficha_academica as $disc) {
     echo 
 	"<tr bgcolor=\"$st\">
         <td><font color=$fcolor>$periodo</font></td>
-		<td><span id=\"$oferecida\" title=\"Di&aacute;rio: $oferecida Professor(es): $professor\"><font color=$fcolor>$nome_materia</font></span></td>
+		<td><span id=\"$oferecida\" title=\"Di&aacute;rio: $oferecida  - Professor(es): $professor\"><font color=$fcolor>$nome_materia</font></span></td>
 		<td align=center><font color=$fcolor>$nota_final</font></td>
         <td align=center><font color=$fcolor>$faltas_materia</font></td>
         <td align=center><font color=$fcolor>$stfaltas</font></td>
@@ -275,7 +277,7 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
 
 <br /><br />
 
-<table width="420" border="0" cellspacing="0" cellpadding="0" class="tabela_relatorio">
+<table border="0" cellspacing="0" cellpadding="0" class="relato">
   <tr bgcolor="666666">
     <th height="24" colspan="2">
     	<b>Informa&ccedil;&otilde;es:</b><br>    

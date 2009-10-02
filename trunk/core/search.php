@@ -29,13 +29,13 @@ class search{
         //Javascript
         $script = "
         <script language=\"javascript\">
-	    function pesquisar() {
+	    function ". $nome_campo_consulta ."_pesquisar() {
 	        nome = \$F('".$this->nome_campo_consulta."');
 		var url = '".$this->arq_action."';
-		var parametros = 'param=' + nome;
-		var myAjax = new Ajax.Request( url, { method: 'post', parameters: parametros, onComplete: escreve});
+		var parametros = '". $nome_campo_consulta ."=' + nome;
+		var myAjax = new Ajax.Request( url, { method: 'post', parameters: parametros, onComplete: ". $nome_campo_consulta  ."_escreve});
 	    }
-	    function escreve(request){
+	    function ". $nome_campo_consulta ."_escreve(request){
 		if($('".$this->nome_campo_consulta."').value.length<3) {
 		    $(\"".$this->nome_area_lista."\").style.display = \"none\";
 		}else{
@@ -45,12 +45,12 @@ class search{
 		$(\"".$this->nome_area_lista."\").innerHTML = saida;
 		$(\"msg\").innerHTML = \"\";
 	    }
-	    function send(id,descricao){
+	    function ". $nome_campo_consulta ."_send(id,descricao){
 	        document.$this->nome_formulario.$this->nome_campo_retorno.value=id;
 		document.$this->nome_formulario.$this->nome_campo_consulta.value=descricao;
-		fechar();
+		". $nome_campo_consulta ."_fechar();
 	    }
-	    function fechar(){
+	    function ". $nome_campo_consulta ."_fechar(){
 		$(\"".$this->nome_area_lista."\").style.display = \"none\";
 	    }
     	</script>";
@@ -87,9 +87,9 @@ class search{
     }
 
 	function input_text_consulta($width="", $type="text"){
-                return "<input type=\"$type\" id=\"$this->nome_campo_consulta\"
-			name=\"$this->nome_campo_consulta\" autocomplete=\"off\"
-			size=\"$width\" onkeyup=\"pesquisar();\"/>";
+                return '<input type="'. $type .'" id="'. $this->nome_campo_consulta .'"
+			name="'. $this->nome_campo_consulta .'" autocomplete="off"
+			size="'. $width .'" onkeyup="'. $this->nome_campo_consulta .'_pesquisar();"/>';
 	}
 
 	function input_text_retorno($width="", $type="text"){
