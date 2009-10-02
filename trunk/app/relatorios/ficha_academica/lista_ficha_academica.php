@@ -69,9 +69,31 @@ if ($contMatriculada == 0)
 <head>
 <title>SA</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<!--<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">-->
 <link href="<?=$BASE_URL .'public/styles/relatorio.css'?>" rel="stylesheet" type="text/css">
 
+<style media="print">
+<!--
+.nao_imprime {display:none}
+
+table.relato {
+    font: 0.7em verdana, arial, tahoma, sans-serif;
+    border: 0.0015em solid;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+.relato td, th {
+    font: 0.7em verdana, arial, tahoma, sans-serif;
+    border: 0.0015em solid;
+    padding: 2px;
+    border-collapse: collapse;
+    border-spacing: 1px;
+}
+-->
+</style>
+
+
+</head>
 <body>
 	<div>
 		<div align="center" style="text-align:center; font-size:12px;">
@@ -242,17 +264,17 @@ foreach ($ficha_academica as $disc) {
 //INFORMACOES --
 
 //Media nas disciplinas aprovadas
-$notaMediaAprovado = number_format($notaAprovado / $contAprovado,'2',',','.');
+$notaMediaAprovado = @number_format($notaAprovado / $contAprovado,'2',',','.');
 
 //Media percentual de faltas das disciplinas aprovadas
-$percFaltasAprovado = $percFaltasAprovado / $contAprovado;
+$percFaltasAprovado = @($percFaltasAprovado / $contAprovado);
 
 //Convertendo para o padrao decimal - Media percentual de faltas das disciplinas aprovadas
 $percFaltasAprovado = number_format($percFaltasAprovado,'2',',','.');
 
 
 //Media nas disciplinas matriculadas
-$notaMediaMatriculada = number_format($notaMatriculada / $contMatriculada,'2',',','.');
+$notaMediaMatriculada = @number_format($notaMatriculada / $contMatriculada,'2',',','.');
 
 //Media percentual de faltas das disciplinas matriculadas
 $percFaltasMatriculada = $percFaltasMatriculada / $contMatriculada;
@@ -262,7 +284,7 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
                  
 ?>
 </table>
-<div align="left">
+<div align="left" class="relato">
     <h4>Legenda</h4>
     <strong>CI</strong> - Disciplina Cursada na Institui&ccedil;&atilde;o<br />
     <strong>AE</strong> - Aproveitamento de Estudos <br />
@@ -310,5 +332,12 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
 </table>
 <br />
 <br />
+<br /><br />
+<div class="nao_imprime">
+<input type="button" value="Imprimir" onClick="window.print()">
+&nbsp;&nbsp;&nbsp;
+<input type="button" name="fechar" id="fechar" value="Fechar" onclick="javascript:window.close();" />
+</div>
+<br /><br />
 </body>
 </html>

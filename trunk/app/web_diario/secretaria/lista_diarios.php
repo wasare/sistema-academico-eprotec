@@ -298,6 +298,8 @@ echo '</table> <br />';
 	echo '</p>';
 */
 ?>
+&nbsp;&nbsp;
+<input type="button" name="fechar" id="fechar" value="Fechar" onclick="javascript:window.close();" />
 </form>
 </body>
 </head>
