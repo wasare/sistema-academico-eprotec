@@ -104,45 +104,6 @@ function finaliza_todos(curso,periodo)
         return false;
    }
 }
-
-            function jsAbreDiario(id)
-            {
-                if (! id == "") {
-                    if (! confirm('Você deseja marcar como aberto o diário \' + id + \'?\' + \'\n Com o diário aberto o prefessor poderá fazer alterações!'))
-                    {
-                        javascript:window.history.back(1);
-                        return false;
-                    }
-                    else {
-                        self.location = "movimentos/marca_aberto.php?ofer=" + id;
-                        return true;
-                    }
-                }
-                else {
-                    javascript:window.history.back(1);
-                    return false;
-                }
-            }
-
- function jsFinalizaDiario(id)
-            {
-                if (! id == "") {
-                    if (! confirm('Você deseja realmente finalizar o diário ' + id + '?' + '\n Depois de finalizado o professor não poderá fazer alterações e \n somente a secretaria poderá abri-lo novamente!'))
-                    {
-                        javascript:window.history.back(1);
-                        return false;
-                    }
-                    else {
-                        self.location = "movimentos/marca_finalizado.php?ofer=" + id;
-                        return true;
-                    }
-                }
-                else {
-                    javascript:window.history.back(1);
-                    return false;
-                }
-            }
-
 </script>
 
 </head>

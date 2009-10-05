@@ -1,50 +1,55 @@
 <?php
-require_once ('../../webdiario.conf.php');
+
+require_once('../../../setup.php');
+
+list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
+
+$conn = new connection_factory($param_conn);
 
 
 $sql1 = "SELECT DISTINCT
-      a.login,
       b.nome
       FROM
       diario_usuarios a, pessoas b
       WHERE
-      a.login = '" .$_SESSION['login'] ."'
+      a.login = '". $uid ."'
       AND
       a.id_nome = b.id;";
 
-	  
-$query1 = pg_exec($dbconnect, $sql1);
-while($linha1 = pg_fetch_array($query1)) 	
+$nome_completo = $conn->adodb->getOne($sql1);
+
+if($nome_completo === FALSE || !is_string($nome_completo))
 {
-    $nomecompleto = $linha1["nome"];
+    die('Falha ao efetuar a consulta: '. $conn->adodb->ErrorMsg());
 }
-                
+	 
 ?>
 <html>
 <head>
-<title>Untitled Document</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="../../css/geral.css" rel="stylesheet" type="text/css">
+  <title><?=$IEnome?> - troca senha</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
+
 </head>
 
 <body>
-<table width="95%" border="0" cellspacing="0" cellpadding="0">
+<table border="0" cellspacing="0" cellpadding="0" class="papeleta">
   <tr> 
-    <td colspan="2"><div align="center"><font color="#CC0000" size="4" face="Arial, Helvetica, sans-serif"><strong>TROCA 
-        DE SENHA</strong></font></div></td>
+    <td colspan="2"><div align="center"><font color="#CC0000" size="4" face="Arial, Helvetica, sans-serif"><strong>Troca 
+        de Senha</strong></font></div></td>
   </tr>
   <tr> 
     <td colspan="2"><div align="left"> 
-        <?PHP print("<p>Ol&aacute; <strong>$nomecompleto</strong>, bem vindo ao processo de troca da senha. Para efetuar
+        <?php print("<p>Ol&aacute; <strong>$nome_completo</strong>, bem vindo ao processo de troca da senha. Para efetuar
           a troca digite sua senha atual em seguida a nova senha.</p>");
           ?>
         <p>&nbsp;</p>
       </div></td>
   </tr>
   <tr> 
-    <td width="22%">Digite sua senha atual: </td>
-    <td width="78%"><form name="form1" method="post" action="passwd_troca.php">
-        <?PHP print("<input type=\"hidden\" name=\"user\" value=\"$us\">"); ?>
+    <td>Digite sua senha atual: </td>
+    <td><form name="form1" method="post" action="passwd_troca.php">
+        <?php print("<input type=\"hidden\" name=\"user\" value=\"$uid\">"); ?>
         <input type="password" name="passwdoriginal" id="passwdoriginal" />
       </td>
   </tr>

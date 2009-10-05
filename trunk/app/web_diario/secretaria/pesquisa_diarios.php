@@ -27,7 +27,7 @@ $busca2  = new search('curso','curso_id','cursos_list', 'form1', '../../relatori
 <body>
 	<h2>Consulta Di&aacute;rios</h2>
 	
-	<form name="form1" id="form1" action="lista_diarios.php" method="get" target="_blank">
+	<form name="form1" id="form1" action="lista_diarios_secretaria.php" method="get" target="_blank">
 		<input type="image" name="voltar" 
 			src="../../../public/images/icons/back.png" 
 			alt="Voltar" 

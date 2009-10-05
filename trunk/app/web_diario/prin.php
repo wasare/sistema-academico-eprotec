@@ -16,6 +16,8 @@
 	border: 1px outset;
 }--></style>
 <?php
+require_once('../../app/setup.php');
+
 include("calendar.php");
 // Construct a calendar to show the current month
 // If no month/year set, use current month/year
