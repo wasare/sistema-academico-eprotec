@@ -6,23 +6,19 @@ $conn = new connection_factory($param_conn);
 
 $sql = '
 SELECT
-    usuario.id,
-    usuario.nome,
-    usuario.nome_completo,
-    usuario.email,
-    usuario.setor,
-    usuario.obs,
-    usuario.grupo,
-    usuario.ref_pessoa,
-    usuario.senha,
-    usuario.ativado,
-    setor.nome_setor
+    u.id,
+    u.nome,
+    u.ref_pessoa,
+    u.senha,
+    u.ativado,
+    s.nome_setor,
+    p.id || \' - \' || p.nome as nome_pessoa
 FROM
-    usuario, setor
+    usuario u, setor s, pessoas p
 WHERE
-    lower(to_ascii("nome")) like lower(to_ascii(\'%'.$_POST['nome'].'%\')) AND
-    setor.id = usuario.ref_setor
-ORDER BY lower(usuario.nome)';
+    s.id = u.ref_setor AND
+    u.ref_pessoa = p.id
+ORDER BY lower(u.nome)';
 
 $sql = iconv("utf-8","iso-8859-1",$sql);
 
@@ -69,13 +65,13 @@ $RsNome = $conn->Execute($sql);
                 <td>Usu&aacute;rio</td>
                 <td>Setor</td>
                 <td>Permiss&atilde;o</td>
-                <td>Alterar</td>
+                <td width="60" align="center">Op&ccedil;&otilde;es</td>
             </tr>
             <?php
 
             while(!$RsNome->EOF) {
 
-                if($RsNome->fields[9] == 't') {
+                if($RsNome->fields['ativado'] == 't') {
                     $cor_linha = '#DDDDDD';
                     $situacao = ' ';
 
@@ -86,14 +82,23 @@ $RsNome = $conn->Execute($sql);
             ?>
             <tr bgcolor="<?=$cor_linha?>">
                 <td align="left">
-                    <a href="../relatorios/pessoas/lista_pessoas.php?id_pessoa=<?=$RsNome->fields[7]?>" target="blank"><?=$RsNome->fields[1]?></a>
+                    <a href="../relatorios/pessoas/lista_pessoas.php?id_pessoa=<?=$RsNome->fields[2]?>"
+                       target="blank"
+                       alt="<?=$RsNome->fields['nome_pessoa']?>"
+                       title="<?=$RsNome->fields['nome_pessoa']?>" >
+                       <?=$RsNome->fields[1]?>
+                    </a>
                     <?=$situacao?>
                 </td>
-                <td align="left"><?=$RsNome->fields[10]?></td>
-                <td align="left"><?=$RsNome->fields[6]?></td>
+                <td align="left"><?=$RsNome->fields['nome_setor']?></td>
+                <td align="left"></td>
                 <td align="center">
                     <a href="alterar.php?id_usuario=<?=$RsNome->fields[0]?>">
                         <img src="../../public/images/icons/edit.png" alt="Editar" />
+                    </a>
+                    &nbsp;&nbsp;
+                    <a href="excluir_action.php?id_usuario=<?=$RsNome->fields[0]?>" onclick="confirm('Deseja realmente excluir?')">
+                        <img src="../../public/images/icons/delete.png" alt="Excluir" />
                     </a>
                 </td>
             </tr>

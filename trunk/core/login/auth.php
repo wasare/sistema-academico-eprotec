@@ -12,40 +12,38 @@
  */
 class auth {
 
-   /**
-    * Efetua a autenticação do usuário em um módulo do SA
-    * @param Login
-    * @param Senha
-    * @param Módulo que vai acessar no SA
-    * @param conexao com banco de dados
-    * @return efetuado ou rejeitado
-    */
-    public function login($login, $senha, $modulo, $conn) 
-    {
+/**
+ * Efetua a autenticação do usuário em um módulo do SA
+ * @param Login
+ * @param Senha
+ * @param Módulo que vai acessar no SA
+ * @param conexao com banco de dados
+ * @return efetuado ou rejeitado
+ */
+    public function login($login, $senha, $modulo, $conn) {
         $log_msg = $_SERVER['REMOTE_ADDR'] .' - ['. date("d/m/Y H:i:s") .'] - ';
 
-        if($login == '' OR empty($senha)) 
-        {
+        if($login == '' OR empty($senha)) {
             exit(header('Location: '. $BASE_URL .'index.php?sa_msg=Nome de usuário e senha não preenchidos.'));
         }
         else {
 
-            $sql = "SELECT COUNT(*) FROM usuario
+            $sql = "SELECT id, ref_pessoa FROM usuario
                     WHERE nome = '$login' AND
-                    senha = '". md5(trim($senha)) ."' AND 
+                    senha = '". hash('sha256',trim($senha)) ."' AND
                     ativado = 'TRUE'; ";
 
+            $usuario = $conn->adodb->getRow($sql);
+
             //retorna o primeiro valor da consulta
-            if($conn->adodb->getOne($sql) == 1) 
-            {
-                $verifica_usuario = true;
-            }
-            else 
-            {
+            if($usuario === FALSE || !is_array($usuario)) {
                 $verifica_usuario = false;
             }
+            else {
+                $verifica_usuario = true;
+            }
 
-            if($verifica_usuario) 
+            if($verifica_usuario)
             {
                 $log_msg .= $login .' - *** LOGIN ACEITO (host='.
                     $param_conn['host'] .',db='.
@@ -57,12 +55,14 @@ class auth {
                 $GLOBALS['USERID'] = trim($login);
                 $GLOBALS['ADODB_SESSION_EXPIRE_NOTIFY'] = array('USERID','session::clear_session');
 
-                $_SESSION['sa_auth'] = trim($login) .':'. trim($senha);
+                $_SESSION['sa_auth'] = trim($login) .':'.
+                                       hash('sha256',trim($senha)).':'.
+                                       $usuario['id'].':'.
+                                       $usuario['ref_pessoa'];
 
                 $_SESSION['sa_modulo'] = $modulo;
 
-                switch ($modulo)
-                {
+                switch ($modulo) {
                     case 'sa_login':
                         exit(header('Location: '. $BASE_URL .'app/index.php'));
                         break;
@@ -74,8 +74,7 @@ class auth {
                         break;
                 }
             }
-            else 
-            {
+            else {
                 $log_msg .=  $login .' - *** LOGIN RECUSADO (host='.
                     $param_conn['host'] .',db='.
                     $param_conn['database'] .',uid='.
@@ -101,37 +100,32 @@ class auth {
      * Checa a autenticação do usuário
      * @return void
      */
-    public function check_login($BASE_URL, $SESS_TABLE, $LOGIN_LOG_FILE) 
-    {
-        if($_SESSION['sa_modulo'] == 'aluno_login')
-        {
-            //Redirecionamento de alunos
+    public function check_login($BASE_URL, $SESS_TABLE, $LOGIN_LOG_FILE) {
+
+        if($_SESSION['sa_modulo'] == 'aluno_login') {
+        //Redirecionamento de alunos
             $redirecionamento = '';
         }
-        else
-        {
+        else {
             $redirecionamento = $BASE_URL .'index.php?sa_msg=';
         }
 
-        if(!isset($_SESSION['sa_auth']) OR empty($_SESSION['sa_auth'])) 
-        {
+        if(!isset($_SESSION['sa_auth']) OR empty($_SESSION['sa_auth'])) {
             exit(header('Location: '. $redirecionamento .'Sem permissão ou sua sessao expirou.'));
         }
-        else 
-        {
+        else {
             list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
 
             // verifica e desconecta usuario com duas sessoes simultaneas
-            $sql = "SELECT COUNT(*) 
+            $sql = "SELECT COUNT(*)
                     FROM $SESS_TABLE 
                     WHERE expireref = '". $uid ."';";
-            
+
             $cont_sess = $GLOBALS['ADODB_SESS_CONN']->getOne($sql);
 
             $log_msg = $_SERVER['REMOTE_ADDR'] .' - ['. date("d/m/Y H:i:s") .'] - ';
 
-            if($cont_sess > 1) 
-            {
+            if($cont_sess > 1) {
                 session::clear_session($uid, NULL);
                 session::destroy();
 
@@ -144,13 +138,11 @@ class auth {
 
                 exit(header('Location: '. $redirecionamento .'Sessao expirada por duplicidade de acesso.'));
             }
-            elseif($cont_sess == 1)
-            {
+            elseif($cont_sess == 1) {
                 $GLOBALS['USERID'] = $uid;
                 $GLOBALS['ADODB_SESSION_EXPIRE_NOTIFY'] = array('USERID','session::clear_session');
             }
-            else
-            {
+            else {
                 unset($_SESSION['sa_auth']);
 
                 $log_msg .= $param_conn['user'] .' - *** FALHA AO VERIFICAR LOGIN (host='.
