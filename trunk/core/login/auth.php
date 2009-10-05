@@ -34,10 +34,9 @@ class auth {
                     ativado = 'TRUE'; ";
 
             $usuario = $conn->adodb->getRow($sql);
-
-			
-            // retorna o primeiro valor da consulta
-            if($usuario === TRUE || count($usuario) == 2) {
+            
+			// retorna o primeiro valor da consulta
+            if($usuario === TRUE || !empty($usuario)) {
 
                 $log_msg .= $login .' - *** LOGIN ACEITO (host='.
                     $param_conn['host'] .',db='.
