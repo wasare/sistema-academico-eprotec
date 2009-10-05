@@ -1,22 +1,21 @@
 <?php
 
-	
-require_once('webdiario.conf.php');
-/*
+require_once('../../app/setup.php');
 
-SELECT DISTINCT o.ref_periodo FROM disciplinas_ofer o, disciplinas_ofer_prof p WHERE p.ref_professor = 245 AND o.id = p.ref_disciplina_ofer ORDER BY ref_periodo DESC
+if(empty($_SESSION['web_diario_periodo_id']))
+{
+        echo '<script language="javascript">
+                window.alert("ERRO! Primeiro informe um período!");
+                window.close();
+        </script>';
+        exit;
+}
 
+list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
 
-SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, disciplinas_ofer_prof dp, periodos p WHERE dp.ref_professor = 245 AND o.id = dp.ref_disciplina_ofer AND p.id = o.ref_periodo ORDER BY ref_periodo DESC
-
-
-SELECT DISTINCT o.ref_periodo,p.descricao,DATE_PART('YEAR', dt_inicial) AS ano FROM disciplinas_ofer o, disciplinas_ofer_prof dp, periodos p WHERE dp.ref_professor = 245 AND o.id = dp.ref_disciplina_ofer AND p.id = o.ref_periodo ORDER BY ref_periodo DESC
-
-
-*/
+$conn = new connection_factory($param_conn);
 
 //ini_set("display_errors",1);
-
 
 unset($_SESSION['conteudo']);
 unset($_SESSION['flag_falta']);
@@ -156,16 +155,15 @@ else
 }
 
 
-
-
-if($_GET['periodo'] != "")
+$qryPeriodo = 'SELECT id, descricao FROM periodos WHERE id = \''. $_SESSION['web_diario_periodo_id'].'\';';
+$periodo = $conn->adodb->getRow($qryPeriodo);
+if($periodo === FALSE)
 {
- 
-   $getperiodo = $_GET['periodo'];
-   
-   $_SESSION['periodo'] = $getperiodo;
-   
-   $sql3 = 'SELECT DISTINCT
+    die('Falha ao efetuar a consulta: '. $conn->adodb->ErrorMsg());
+}
+
+
+$sql3 = 'SELECT DISTINCT
                 d.id,
                 d.descricao_disciplina,
                 d.descricao_extenso,
@@ -174,36 +172,32 @@ if($_GET['periodo'] != "")
                 o.fl_concluida
                 FROM disciplinas_ofer_prof f, disciplinas_ofer o, disciplinas d
                 WHERE
-                f.ref_professor = \''.$_SESSION['id'].'\' AND
+                f.ref_professor = ( SELECT ref_pessoa FROM usuario WHERE nome = \''. $uid .'\') AND
                 o.id = f.ref_disciplina_ofer AND
-                o.ref_periodo = \''.$_SESSION['periodo'].'\' AND
+                o.ref_periodo = \''.$_SESSION['web_diario_periodo_id'].'\' AND
                 o.is_cancelada = \'0\' AND
-                d.id = o.ref_disciplina;';
- 
-			   //echo $sql3; die;	
-/*
-echo $sql3;
-exit;
-*/
-   
-//   $con = diario_open_db();	 $dbconnect
-   $query3 = consulta_sql($sql3);
-}
+                d.id = o.ref_disciplina;';  
+
+	$diarios = $conn->adodb->getAll($sql3);
+
+   if(count($diarios) == 0)
+   {
+        echo '<script language="javascript">
+                window.alert("Nenhum diário encontrado para o filtro selecionado!");
+        </script>';
+        exit;
+   }
 
 ?>
 
 <html>
 <head>
-<title>CEFET-BAMBU&Iacute;</title>
+<title><?=$IEnome?> - web di&aacute;rio</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<!--<link rel="stylesheet" href="css/forms.css" type="text/css">
-<link rel="stylesheet" href="css/gerals.css" type="text/css">-->
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
 
-<style type="text/css" title="Standard" media="screen">
-		@import "css/forms.css";
-		@import "css/gerals.css";
-</style>
-  
+<script type="text/javascript" src="<?=$BASE_URL .'lib/prototype.js'?>"> </script>
+
 <script language="javascript" type="text/javascript">
 
 function setOpcao() {
@@ -290,37 +284,31 @@ function enviar(id) {
 
 <body bgcolor="#FFFFFF" text="#000000" >
 <center>
-<div align="left"><br>
-<?php
-    
-   print('
-  <table width="471" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr>
-  <td width="471"><div align="center"><font color="#990000" size="4" face="Verdana, Arial, Helvetica, sans-serif"><strong><font color="red">Per&iacute;odo: '.getNomePeriodo($getperiodo).'</font></strong></font></div></td>
-  </tr>
-</table>
+<div align="left">
+<br />
+  
+<strong>
+			<font size="4" face="Verdana, Arial, Helvetica, sans-serif">
+				Per&iacute;odo: 
+				<font color="red" size="4" face="Verdana, Arial, Helvetica, sans-serif"><?=$periodo['descricao']?></font>
+			</font>
+</strong>
+&nbsp;&nbsp;
+<span><a href="#" title="alterar o per&iacute;odo" alt="alterar o per&iacute;odo">alterar</a></span>
+<br /> <br /> <br />
 
-  ');
+<h3>Marque o di&aacute;rio desejado e selecione uma op&ccedil;&atilde;o:</h3>
+<br />
+<form id="change_acao" name="change_acao" method="get" action="lista_diarios.php">
+<input type="hidden" name="id" id="id" value="<?=$_SESSION['id']?>" />
+<input type="hidden" name="vars" id="vars" value="<?=$vars_b?>" />
 
-echo '<p><h3>Marque o di&aacute;rio desejado e selecione a op&ccedil;&atilde;o:</h3></p>';
-
-echo '<form id="change_acao" name="change_acao" method="get" action="diarios.php">';
-
-echo '<input type="hidden" name="id" id="id" value="' . $_SESSION['id'] . '" />';
-
-echo '<input type="hidden" name="vars" id="vars" value="' . $vars_b . '" />';
-											
-
-?>   
-
-
-
-<table width="80%" cellspacing="0" cellpadding="0" class="papeleta">
+<table cellspacing="0" cellpadding="0" class="papeleta">
     <tr bgcolor="#cccccc">
-	    <td width="3%"> &nbsp;</td>
-        <td width="15%" align="center"><b>C&oacute;d. Di&aacute;rio</b></td>
-        <td width="70%" align="center"><b>Descri&ccedil;&atilde;o</b></td>
-		<td width="12%" align="center"><b>Situa&ccedil;&atilde;o</b></td>
+	    <td> &nbsp; &nbsp; </td>
+        <td align="center"><b>Di&aacute;rio</b></td>
+        <td align="center"><b>Descri&ccedil;&atilde;o</b></td>
+		<td align="center"><b>Situa&ccedil;&atilde;o</b></td>
     </tr>
 <?php
 
@@ -332,7 +320,7 @@ $r1 = '#FFFFFF';
 $r2 = '#FFFFCC';
  
 // $curso = $_GET["getcurso"];
-while($row3 = pg_fetch_array($query3))
+foreach($diarios as $row3)
 {
 	$nc = $row3["descricao_extenso"];
     $idnc = $row3["id"];
@@ -356,10 +344,6 @@ while($row3 = pg_fetch_array($query3))
         }        
 	}
 
-
-//    print "<option value=$idnc:$idof>($idof) - $nc</option>";
-//	echo '<a href="diarios.php?periodo='.$codiperiodo.'" target="principal"><font color="#FFFFCC" size="1">'.($idof) - $nc.'</a><br />';
-      // print "<input type=\"hidden\" name=\"getofer\" value=$idof />";
     if ( ($i % 2) == 0)
    	{
       $rcolor = $r1;
@@ -380,34 +364,32 @@ while($row3 = pg_fetch_array($query3))
    	$i++;
 }
 
-echo '</table> <br />';
-
-   echo '<p>';
-
-   echo '&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<input type="button" id="notas" name="notas" value="Notas" onclick="enviar(1);"/> &nbsp; &nbsp; &nbsp;';
-
-    echo '<input type="button" id="chamada" name="chamada" value="Chamada" onclick="enviar(0);"/> &nbsp; &nbsp; &nbsp;';
-
-    echo '<input type="button" id="papeleta" name="papeleta" value="Papeleta" onclick="enviar(5);" /> &nbsp; &nbsp; &nbsp;';
-
-    echo '<input type="button" id="conteudo" name="conteudo" value="Conte&uacute;do de Aula" onclick="enviar(6);" /> &nbsp; &nbsp;  &nbsp; &nbsp;';
- 
-    echo '<select name="acao" id="acao" class="select" onchange="document.change_acao.submit();">
-	   	<option>---  outras   op&ccedil;&otilde;es     ---</option>';
-	echo '<option value="10">Marcar/Desmarcar como Conclu&iacute;do</option>';
-	echo '<option value="7">Papeleta Completa</option>';
-	echo '<option value="9">Relat&oacute;rio de Faltas Completo</option>';
-	echo '<option value="3">Alterar Faltas nas Chamadas</option>';
-    echo '<option value="4">Excluir Chamada</option>';
-	echo '<option value="2">Imprimir Caderno de Chamada</option>';
-//	echo '<option value="1">Lan&ccedil;ar ou Alterar Notas</option>';
-//	echo '<option value="5">Papeleta</option>';
-//	echo '<option value="6">Relat&oacute;rio com Conte&uacute;do de Aulas</option>';
-    echo "</select>";
-	echo "</p></form>";
-
-
 ?>
+</table>
+
+<br /><br />
+<p>
+
+   &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<input type="button" id="notas" name="notas" value="Notas" onclick="enviar(1);"/> &nbsp; &nbsp; &nbsp;
+
+<input type="button" id="chamada" name="chamada" value="Chamada" onclick="enviar(0);"/> &nbsp; &nbsp; &nbsp;
+<input type="button" id="papeleta" name="papeleta" value="Papeleta" onclick="enviar(5);" /> &nbsp; &nbsp; &nbsp;
+<input type="button" id="conteudo" name="conteudo" value="Conte&uacute;do de Aula" onclick="enviar(6);" /> &nbsp; &nbsp;  &nbsp; &nbsp;
+<select name="acao" id="acao" class="select" onchange="document.change_acao.submit();">
+  	<option>---  outras   op&ccedil;&otilde;es     ---</option>
+	<option value="10">Marcar/Desmarcar como Conclu&iacute;do</option>
+	<option value="7">Papeleta Completa</option>
+	<option value="9">Relat&oacute;rio de Faltas Completo</option>
+	<option value="3">Alterar Faltas nas Chamadas</option>
+    <option value="4">Excluir Chamada</option>
+	<option value="2">Imprimir Caderno de Chamada</option>
+<!--<option value="1">Lan&ccedil;ar ou Alterar Notas</option>
+<option value="5">Papeleta</option>
+<option value="6">Relat&oacute;rio com Conte&uacute;do de Aulas</option>-->
+</select>
+	</p></form>
+<br /><br />
+<br /><br />
 </form>
 </body>
 </head>

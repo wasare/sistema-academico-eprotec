@@ -50,3 +50,65 @@ table.papeleta {
     color: #00047D;
 }
 
+.tabbed-pane * {
+	margin: 0;
+	padding: 0;
+}
+
+.tabbed-pane {
+	/*width: 960px;*/
+}
+.tabbed-pane .tabs {
+	list-style: none;
+	clear: both;
+	float: left;
+	margin-bottom: -1px;
+}
+
+.tabbed-pane .tabs li a.active {
+	background: white;
+	border-bottom: 1px solid white;
+}
+
+.tabbed-pane .tabs li {
+	float: left;
+	margin: 0 0.35em 0 0;
+}
+
+.tabbed-pane .tabs li a {
+	color: #336699;
+	display: block;
+	padding: 10px;
+	background: #f0f0f0;
+	border-color: #333;
+	border-style: solid;
+	border-width: 1px;
+	text-decoration: none;
+}
+
+.tabbed-pane .pane {
+	border: 1px solid #333;
+	padding: 30px;
+	clear: both;
+	/*height: 100%;*/
+}
+
+.tabbed-container {
+	position: relative;
+	clear: both;
+	min-height: 10em;
+}
+.tabbed-container .overlay {
+	position: absolute;
+	clear: both;
+	border: 1px solid #333;
+	padding: 30px;
+	/*width: 90%;*/
+	top: 0;
+	left: 0;
+	background: white center center no-repeat;
+	text-align: center;
+	z-index: 100;
+	/*height: 100%;*/
+}
+

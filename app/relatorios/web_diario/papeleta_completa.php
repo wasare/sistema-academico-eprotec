@@ -323,6 +323,44 @@ foreach($matriculas as $row3)
 
     $i = 0;
 
+	$sql_notas_distribuidas = 'SELECT nota_distribuida FROM diario_formulas WHERE grupo ilike \'%-'. $diario_id .'\' order by prova;';
+$notas_distribuidas = $conn->adodb->getAll($sql_notas_distribuidas);
+
+	if($notas_distribuidas === FALSE)
+	{
+		envia_erro($sql_notas_distribuidas);
+		exit;
+	}
+
+?>
+	<h4>Notas distribu&iacute;das</h4>
+<table cellspacing="0" cellpadding="0" class="papeleta">
+    <tr bgcolor="#cccccc">
+        <td align="center"><b>N1</b></td>
+        <td align="center"><b>N2</b></td>
+        <td align="center"><b>N3</b></td>
+        <td align="center"><b>N4</b></td>
+        <td align="center"><b>N5</b></td>
+        <td align="center"><b>N6</b></td>
+    </tr>
+
+    <tr bgcolor="#ffffff">
+        <?php
+            foreach($notas_distribuidas as $nota)
+			{
+				$nota_d = number_format($nota['nota_distribuida'],'1',',','.');
+				if($nota_d == 0 || empty($nota_d))
+					$nota_d = '-';
+				echo '<td align="center">'. $nota_d .'</td>';
+			}
+        ?>
+    </tr>
+</table>
+<font size="-1" color="brown"><strong>*</strong> as notas acima s&atilde;o informadas pelo professor.</font>
+<br />
+
+<?php
+
     if (!empty($msg_dispensa)) {
 	
 		$sql_dispensas = "SELECT 
@@ -339,7 +377,8 @@ foreach($matriculas as $row3)
 		$qry_dispensas = $conn->adodb->getAll($sql_dispensas);
 
 ?>
-		<h4> Alunos Dispensados </h4>
+
+		<h4> Alunos dispensados </h4>
 		<table cellspacing="0" cellpadding="0" class="papeleta">
         <tr bgcolor="#cccccc">
 			<td align="center"><b>Matr&iacute;cula</b></td>

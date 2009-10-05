@@ -1,32 +1,38 @@
 <?php
+require_once('../../setup.php');
 
-/*
-====================================
-DESENVOLVIDO SOBRE LEIS DA GNU/GPL
-====================================
+list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
 
-E-CNEC : ti@cneccapviari.br
+$conn = new connection_factory($param_conn);
 
-CNEC CAPVIARI - www.cneccapivari.br
-Rua Barão do Rio Branco, 347, Centro - Capivari/SP
-Tel.: (19)3492-1869
-*/
+
+$sql1 = "SELECT DISTINCT
+      b.nome
+      FROM
+      diario_usuarios a, pessoas b
+      WHERE
+      a.login = '". $uid ."'
+      AND
+      a.id_nome = b.id;";
+
+$nome_completo = $conn->adodb->getOne($sql1);
+
+if($nome_completo === FALSE || !is_string($nome_completo))
+{
+    die('Falha ao efetuar a consulta: '. $conn->adodb->ErrorMsg());
+}
+
 
 $st = '#F3F3F3';
 
-require_once('../webdiario.conf.php');
-
 $btnOK = false;
-
-//print_r($_SESSION);
 
 ?>
 <html>
 <head>
-  <title>CONSULTAS DE ALUNOS</title>
-  <link rel="stylesheet" href="../css/forms.css" type="text/css">
-  <link rel="stylesheet" href="../css/geral.css" type="text/css">
-  <link rel="stylesheet" href="../css/gerals.css" type="text/css">
+<title><?=$IEnome?> - consulta alunos</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
   
 </head>
 
