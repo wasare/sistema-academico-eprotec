@@ -22,5 +22,12 @@ session::init($param_conn);
  */
 auth::check_login($BASE_URL, $SESS_TABLE, $LOGIN_LOG_FILE);
 
+/*
+ * Dados do usuario autenticado
+ */
+list( $sa_usuario,
+      $sa_senha,
+      $sa_usuario_id,
+      $sa_ref_pessoa) = explode(":",$_SESSION['sa_auth']);
 ?>
 
