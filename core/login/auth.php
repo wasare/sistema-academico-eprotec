@@ -35,16 +35,10 @@ class auth {
 
             $usuario = $conn->adodb->getRow($sql);
 
-            //retorna o primeiro valor da consulta
-            if($usuario === FALSE || !is_array($usuario)) {
-                $verifica_usuario = false;
-            }
-            else {
-                $verifica_usuario = true;
-            }
+			
+            // retorna o primeiro valor da consulta
+            if($usuario === TRUE || count($usuario) == 2) {
 
-            if($verifica_usuario)
-            {
                 $log_msg .= $login .' - *** LOGIN ACEITO (host='.
                     $param_conn['host'] .',db='.
                     $param_conn['database'] .',uid='.
@@ -67,7 +61,7 @@ class auth {
                         exit(header('Location: '. $BASE_URL .'app/index.php'));
                         break;
                     case 'web_diario_login':
-                        exit(header('Location: '. $BASE_URL .'app/webdiario/'));
+						exit(header('Location: '. $BASE_URL .'app/web_diario/'));
                         break;
                     case 'aluno_login':
                         exit(header('Location: '. $BASE_URL .'app/aluno'));
