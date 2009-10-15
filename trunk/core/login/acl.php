@@ -11,88 +11,94 @@
  */
 class acl {
 
-
     /**
-     * Verifica se o usuario tem permissao para acessar uma url
-     * @param codigo do usuario
-     * @param url de acesso
-     * @param conexao com banco de dados
-     * @return efetuado ou rejeitado
+     * Verifica se tem acesso a uma url
+     * @return verdadeiro ou falso
      */
-    public function check ($id_usuario, $url, connection_factory $conn) {
+    public function has_access ($url, connection_factory $conn) {
 
-        if(empty($id_usuario) or empty($url)) {
-            return false;
+        global $sa_usuario_id, $BASE_DIR;
+
+
+        $url_completo = '/'. str_replace($BASE_DIR,'',$url);
+        $url_raiz     = str_replace(basename($url_completo),'',$url_completo);
+
+        $arr_dirs     = explode('/',$url_raiz);
+
+        array_pop($arr_dirs);
+
+        foreach($arr_dirs as $dir){
+            if(empty($dir)){
+                $dir_1 = "/";
+            }else {
+                $dir_1 .= $dir."/";
+            }
+            $where_in .= "'".$dir_1."', ";
         }
-        else
-        {
 
-            //-- buscar os papeis que a url passada por parametro tem permissao
+        $sql_url = "SELECT ref_papel
+                    FROM url, papel_url
+                    WHERE
+                        url_id = ref_url AND
+                        url IN ($where_in '$url_completo');";
 
-            $sql_url = "SELECT ref_papel
-                        FROM url, papel_url
-                        WHERE
-                            url_id = ref_url AND
-                            url = '$url';";
+        $rs_url    = $conn->Execute($sql_url);
+        $roles_url = $rs_url->GetArray();
+        $arr_url   = array();
 
-            $rs_url = $conn->Execute($sql_url);
-
-            $roles_url = $rs_url->GetArray();
-
-            $arr_url = array();
-
-            foreach($roles_url as $row_url)
-                $arr_url[] = $row_url['ref_papel'];
+        foreach($roles_url as $row_url)
+            $arr_url[] = $row_url['ref_papel'];
 
 
-            //-- busca os papeis do usuario
+        //-- busca os papeis do usuario
 
-            $sql_usr = "SELECT ref_papel
-                        FROM usuario_papel
-                        WHERE 
-                            ref_usuario = $id_usuario";
+        $sql_usr = "SELECT ref_papel
+                    FROM usuario_papel
+                    WHERE ref_usuario = $sa_usuario_id";
 
-            $rs_usr    = $conn->Execute($sql_usr);
+        $rs_usr    = $conn->Execute($sql_usr);
+        $roles_usr = $rs_usr->GetArray();
+        $arr_usr   = array();
 
-            $roles_usr = $rs_usr->GetArray();
-
-            $arr_usr = array();
-
-            foreach($roles_usr as $row_usr)
-                $arr_usr[] = $row_usr['ref_papel'];
+        foreach($roles_usr as $row_usr)
+            $arr_usr[] = $row_usr['ref_papel'];
 
 
-            //-- Verifica se o usuario tem permissao para acessar esta url
+        //-- Verifica os papeis do usuario e url para acesso
 
-            $arr = array_intersect($arr_usr, $arr_url);
+        $arr = array_intersect($arr_usr, $arr_url);
 
-            if(count($arr) > 0)
-            {
-                print 'Permitido';
-            }
-            else
-            {
-                print 'Sem permissao';
-            }
+        if(!count($arr) > 0) {
+            return false;
+        }else{
+            return true;
+        }
 
+
+    }
+    
+    /**
+    * Verifica se o usuario tem permissao para acessar uma url
+    * @param url de acesso
+    * @param conexao com banco de dados
+    * @return efetuado ou rejeitado acesso a arquivo
+    */
+    public static function check($url, connection_factory $conn){
+        
+        $acl = new acl();
+
+        if(!$acl->has_access($url, $conn)){
+            die('<center><h2>Sem permiss&atilde;o para acessar esta p&aacute;gina.</h2>'.
+                '<a href="javascript:history.back(-1)">Voltar</a></center>');
         }
     }
+
 }
 
-/**
- * TESTE DA CLASSE
- */
 require_once("../../app/setup.php");
 
-acl::check(115, __FILE__, new connection_factory($param_conn));
+acl::check(__FILE__, new connection_factory($param_conn));
 
-//$teste = new acl();
-//$teste->check(115, '/app/setup.php', new connection_factory($param_conn));
-
-$caminho_relativo_completo = '/'. str_replace($BASE_DIR,'',__FILE__);
-$caminho_relativo_raiz = str_replace(basename($caminho_relativo_completo),'',$caminho_relativo_completo);
-
-echo '<br />', $caminho_relativo_completo;
-echo '<br />', $caminho_relativo_raiz.'<br />';
-print_r($_SESSION);
 ?>
+
+<h2>Acessou!</h2>

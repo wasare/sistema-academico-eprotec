@@ -4,25 +4,13 @@ require_once("../../app/setup.php");
 
 $conn = new connection_factory($param_conn);
 
-$sql = '
-SELECT
-    u.id,
-    u.nome,
-    u.ref_pessoa,
-    u.senha,
-    u.ativado,
-    s.nome_setor,
-    p.id || \' - \' || p.nome as nome_pessoa
-FROM
-    usuario u, setor s, pessoas p
-WHERE
-    s.id = u.ref_setor AND
-    u.ref_pessoa = p.id
-ORDER BY lower(u.nome)';
+$sqlPapeis = iconv(
+		'utf-8',
+		'iso-8859-1',
+		'SELECT papel_id, descricao, nome FROM papel ORDER BY nome'
+	     );
 
-$sql = iconv("utf-8","iso-8859-1",$sql);
-
-$RsNome = $conn->Execute($sql);
+$RsPapeis = $conn->Execute($sqlPapeis);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -31,12 +19,10 @@ $RsNome = $conn->Execute($sql);
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
         <title>SA</title>
         <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
-        <script language="javascript" src="../../lib/prototype.js" type="text/js"></script>
-        <script language="javascript" src="index.js" type="text/js"></script>
     </head>
 
     <body onLoad="pesquisar();">
-        <h2>Controle de usu&aacute;rios</h2>
+        <h2>Controle de permiss&otilde;es</h2>
         <table border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td width="60">
@@ -61,48 +47,35 @@ $RsNome = $conn->Execute($sql);
 
         <table width="80%" border="1">
             <tr  style="font-weight:bold; color: white; background-color: black;">
-                <td>Usu&aacute;rio</td>
-                <td>Setor</td>
-                <td>Permiss&atilde;o</td>
+                <td>Nome</td>
+                <td>Descri&ccedil;&atilde;o</td>
                 <td width="60" align="center">Op&ccedil;&otilde;es</td>
             </tr>
-            <?php
+            <?php 
+	    
+	    $bg = '#DDDDDD';
+		
+            while(!$RsPapeis->EOF) {
+	    	
+		if($bg == '#DDDDDD') $bg = '#FFFFFF';
+		else $bg = '#DDDDDD';
 
-            while(!$RsNome->EOF) {
-
-                if($RsNome->fields['ativado'] == 't') {
-                    $cor_linha = '#DDDDDD';
-                    $situacao = ' ';
-
-                } else {
-                    $cor_linha = '#999999';
-                    $situacao = ' - <font color="#DDDDDD">Usu&aacute;rio desativado</font>';
-                }
             ?>
-            <tr bgcolor="<?=$cor_linha?>">
-                <td align="left">
-                    <a href="../relatorios/pessoas/lista_pessoas.php?id_pessoa=<?=$RsNome->fields[2]?>"
-                       target="blank"
-                       alt="<?=$RsNome->fields['nome_pessoa']?>"
-                       title="<?=$RsNome->fields['nome_pessoa']?>" >
-                       <?=$RsNome->fields[1]?>
-                    </a>
-                    <?=$situacao?>
-                </td>
-                <td align="left"><?=$RsNome->fields['nome_setor']?></td>
-                <td align="left"></td>
+            <tr bgcolor="<?=$bg?>">
+                <td align="left"><?=$RsPapeis->fields[2]?></td>
+                <td align="left"><?=$RsPapeis->fields[1]?></td>
                 <td align="center">
-                    <a href="alterar.php?id_usuario=<?=$RsNome->fields[0]?>">
+                    <a href="alterar.php?id=<?=$RsPapeis->fields[0]?>">
                         <img src="../../public/images/icons/edit.png" alt="Editar" />
-                    </a>
-                    &nbsp;&nbsp;
-                    <a href="excluir_action.php?id_usuario=<?=$RsNome->fields[0]?>" onclick="confirm('Deseja realmente excluir?')">
+                    </a>&nbsp;&nbsp;
+                    <a href="excluir_action.php?id=<?=$RsPapeis->fields[0]?>" 
+		    	onclick="confirm('Deseja realmente excluir?')">
                         <img src="../../public/images/icons/delete.png" alt="Excluir" />
                     </a>
                 </td>
             </tr>
             <?php
-                $RsNome->MoveNext();
+                $RsPapeis->MoveNext();
             }
             ?>
         </table>
