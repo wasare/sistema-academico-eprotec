@@ -110,6 +110,9 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                                             <li>
                                                 <a href="usuarios/index.php" target="frame2">Usu&aacute;rios</a>
                                             </li>
+					    <li>
+                                                <a href="papeis/index.php" target="frame2">Permiss&otilde;es</a>
+                                            </li>
                                         </ul>
                                     </li>
                                 </ul>
