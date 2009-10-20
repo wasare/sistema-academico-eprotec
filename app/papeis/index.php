@@ -52,16 +52,11 @@ $RsPapeis = $conn->Execute($sqlPapeis);
                 <td width="60" align="center">Op&ccedil;&otilde;es</td>
             </tr>
             <?php 
-	    
-	    $bg = '#DDDDDD';
 		
             while(!$RsPapeis->EOF) {
-	    	
-		if($bg == '#DDDDDD') $bg = '#FFFFFF';
-		else $bg = '#DDDDDD';
 
             ?>
-            <tr bgcolor="<?=$bg?>">
+            <tr>
                 <td align="left"><?=$RsPapeis->fields[2]?></td>
                 <td align="left"><?=$RsPapeis->fields[1]?></td>
                 <td align="center">
