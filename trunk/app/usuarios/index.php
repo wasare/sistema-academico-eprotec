@@ -96,7 +96,8 @@ $RsNome = $conn->Execute($sql);
                         <img src="../../public/images/icons/edit.png" alt="Editar" />
                     </a>
                     &nbsp;&nbsp;
-                    <a href="excluir_action.php?id_usuario=<?=$RsNome->fields[0]?>" onclick="confirm('Deseja realmente excluir?')">
+                    <a href="excluir_action.php?id_usuario=<?=$RsNome->fields[0]?>" 
+			onclick="confirm('Deseja realmente excluir?')">
                         <img src="../../public/images/icons/delete.png" alt="Excluir" />
                     </a>
                 </td>

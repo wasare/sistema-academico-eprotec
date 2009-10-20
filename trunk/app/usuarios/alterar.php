@@ -4,27 +4,29 @@ require_once("../../app/setup.php");
 
 $conn = new connection_factory($param_conn);
 
-$codigo_pessoa = $_GET["id_pessoa"];
+$id_usuario = $_GET["id_usuario"];
 
-$sql = '
+$sqlUsuario = '
 SELECT
-    usuario.id,
-    usuario.nome,
-    usuario.nome_completo,
-    usuario.email,
-    usuario.setor,
-    usuario.obs,
-    usuario.grupo,
-    usuario.ref_pessoa,
-    usuario.senha,
-    usuario.ativado,
-    setor.nome_setor
+    u.id,
+    u.nome,
+    u.ativado,
+	u.ref_pessoa,
+	p.nome,
+    s.nome_setor
 FROM
-    usuario, setor
+    usuario u, setor s, pessoas p
 WHERE
-    id_nome = '.$codigo_pessoa;
+	s.id = u.ref_setor AND
+	u.ref_pessoa = p.id AND
+	u.id = '.$id_usuario;
 
-$Result1 = $conn->Execute($sql);
+$RsUsuario = $conn->Execute($sqlUsuario);
+
+$sqlPapelUsuario = 'SELECT ref_papel FROM usuario_papel WHERE ref_usuario = '.$id_usuario.'; ';
+$RsPapelUsuario = $conn->Execute($sqlPapelUsuario);
+
+$RsPapel = $conn->Execute('SELECT papel_id, descricao, nome FROM papel');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -39,80 +41,71 @@ $Result1 = $conn->Execute($sql);
             <h2>Alterar usu&aacute;rio</h2>
             <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
-                    <td width="60"><div align="center">
+                    <td width="60">
+						<div align="center">
                             <label class="bar_menu_texto">
                                 <input name="save" type="image" src="../../public/images/icons/save.png" />
                                 <br />
                                 Salvar</label></td>
-                    <td width="60"><div align="center"><a href="javascript:history.back();" class="bar_menu_texto"><img src="../../public/images/icons/back.png" alt="Voltar" width="20" height="20" /><br />
-                                Voltar</a></div></td>
+                    <td width="60">
+						<div align="center">
+							<a href="javascript:history.back();" 
+								class="bar_menu_texto">
+								<img src="../../public/images/icons/back.png" 
+										alt="Voltar" 
+										width="20" 
+										height="20" />
+								<br />
+                                Voltar</a>
+						</div>
+					</td>
                 </tr>
             </table>
-            <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#E6E6E6" class="linha">
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td width="19%">Login:</td>
-                    <td width="81%"><?php echo $Result1->fields[0]; ?></td>
-                </tr>
-                <tr>
-                    <td>Senha:</td>
-                    <td>
-                        <input type="password" name="senha" id="senha" disabled="disabled" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>
-                        <label>
-                            <input type="checkbox" name="manter_senha" id="manter_senha" checked="checked" onchange="habilita()" />
-			Manter senha atual.
-                        </label>
-                        <label>
-                            <?php
+            <div class="box_geral">
+				<p>
+                	<strong>Usu&aacute;rio:</strong>
+                	<?php echo $RsUsuario->fields[1]; ?>
+				</p>
+                <strong>Senha:</strong><br />
+                <input type="password" name="senha" id="senha" /><br />
+				<strong>Digite a senha novamente:</strong><br />
+				<input type="password" name="resenha" id="resenha" />
+				<p>
+    	            <strong>Permiss&atilde;o:</strong><br />
+    	            <select name="permissao" id="permissao" multiple="multiple" size="4">
+    	            	<?php
 
-                            if ($Result1->fields[2] == 't') {
-                                echo '<input type="checkbox" checked="checked" name="ativar" id="ativar" />';
-                            }
-                            else {
-                                echo '<input type="checkbox" name="ativar" id="ativar" />';
-                            }
-                            ?>
-		Ativar/Desativar usu&aacute;rio.
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>N&iacute;vel:</td>
-                    <td><label>
-                            <?php
+							while(!$RsPapelUsuario->EOF){	
+								$papelUsuario[] = $RsPapelUsuario->fields[0];
+								$RsPapelUsuario->MoveNext();
+							}
 
-                            if ($Result1->fields[1] == 1) {
-                                $option1 = "<option value=\"1\" selected=\"selected\">Professor</option>
-                                            <option value=\"2\">Secretaria</option>";
-                            }
-                            if ($Result1->fields[1] == 2) {
-                                $option1 = "<option value=\"1\">Professor</option>
-                                            <option value=\"2\" selected=\"selected\">Secretaria</option>";
-                            }
-
-                            ?>
-                            <select name="nivel" id="nivel">
-                                <?php echo $option1;?>
-                            </select>
-                        </label></td>
-                </tr>
-                <tr>
-                    <td>Nome completo:</td>
-                    <td><?php echo $Result1->fields[3];?></td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>
+							while(!$RsPapel->EOF){
+								echo '<option value="'.$RsPapel->fields[0].'" '; 	
+								if(in_array($RsPapel->fields[0], $papelUsuario)){							
+									echo ' checked="checked" ';
+								}
+								echo ">";
+								echo $RsPapel->fields[2]."</option>";								
+								$RsPapel->MoveNext();
+							}
+		                ?>
+	                </select>
+				</p>
+				<strong>Pessoa:</strong><br />
+                <?=$RsUsuario->fields[3]?> - <?=$RsUsuario->fields[4]?>
+				<p>
+	                <?php
+	                    if ($RsUsuario->fields[2] == 't') {
+	                        echo '<input type="checkbox" checked="checked" name="ativar" id="ativar" />';
+	                    }
+	                	else {
+	                		echo '<input type="checkbox" name="ativar" id="ativar" />';
+	                	}
+	                ?>
+					Ativar/Desativar usu&aacute;rio.
+				</p>
+            </div>
         </form>
     </body>
 </html>

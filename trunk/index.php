@@ -107,7 +107,7 @@ session::destroy();
                                 <p>
                                     <input type="image" src="public/images/bt_entrar.png" />
                                 </p>
-                                <a href="#">Esqueci minha senha.</a>
+                                <a href="public/esqueci_senha.php">Esqueci minha senha.</a>
                             </td>
                         </tr>
                     </table>
@@ -125,6 +125,9 @@ session::destroy();
                     </td>
                 </tr>
             </table>
+			<p>
+				<font color="#999999">&copy;2009 IFMG Campus Bambu&iacute;</font>
+			</p>
         </div>
         <!-- Mensagens -->
         <?php if($_GET['sa_msg']) { ?>
