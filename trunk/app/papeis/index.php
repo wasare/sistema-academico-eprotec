@@ -22,17 +22,9 @@ $RsPapeis = $conn->Execute($sqlPapeis);
     </head>
 
     <body onLoad="pesquisar();">
-        <h2>Controle de permiss&otilde;es</h2>
+        <h2>Permiss&otilde;es de usu&aacute;rio</h2>
         <table border="0" cellspacing="0" cellpadding="0">
             <tr>
-                <td width="60">
-                    <div align="center">
-                        <a href="cadastrar.php" class="bar_menu_texto">
-                            <img src="../../public/images/icons/new.png" alt="Novo" width="20" height="20" />
-                            <br />Novo
-                        </a>
-                    </div>
-                </td>
                 <td width="60">
                     <div align="center">
                         <a href="javascript:history.back();" class="bar_menu_texto">
@@ -45,29 +37,19 @@ $RsPapeis = $conn->Execute($sqlPapeis);
             </tr>
         </table>
 
-        <table width="80%" border="1">
-            <tr  style="font-weight:bold; color: white; background-color: black;">
+        <table width="80%" border="0">
+            <tr  style="font-weight:bold; color: white; background-color: #666666;">
                 <td>Nome</td>
                 <td>Descri&ccedil;&atilde;o</td>
-                <td width="60" align="center">Op&ccedil;&otilde;es</td>
             </tr>
             <?php 
 		
             while(!$RsPapeis->EOF) {
 
             ?>
-            <tr>
+            <tr bgcolor="#F3F3F3">
                 <td align="left"><?=$RsPapeis->fields[2]?></td>
                 <td align="left"><?=$RsPapeis->fields[1]?></td>
-                <td align="center">
-                    <a href="alterar.php?id=<?=$RsPapeis->fields[0]?>">
-                        <img src="../../public/images/icons/edit.png" alt="Editar" />
-                    </a>&nbsp;&nbsp;
-                    <a href="excluir_action.php?id=<?=$RsPapeis->fields[0]?>" 
-		    	onclick="confirm('Deseja realmente excluir?')">
-                        <img src="../../public/images/icons/delete.png" alt="Excluir" />
-                    </a>
-                </td>
             </tr>
             <?php
                 $RsPapeis->MoveNext();
