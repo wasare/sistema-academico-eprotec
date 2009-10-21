@@ -42,13 +42,14 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                             <tr>
                                 <td width="50" valign="middle">
                                     <a href="index.php">
-                                        <img src="../public/images/icon_sa.gif" alt="Principal" width="40" height="34" />
+                                        <img src="../public/images/icon_sa.gif" 
+												alt="Principal" 
+												width="40" 
+												height="34" />
                                     </a>
                                 </td>
                                 <td width="230">
-                                    <a href="index.php" class="titulo1">
-						Sistema Acad&ecirc;mico
-                                    </a>
+                                    <a href="index.php" class="titulo1">Sistema Acad&ecirc;mico</a>
                                 </td>
                                 <td valign="top">
                                     <div align="right" class="texto1">
@@ -57,9 +58,15 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                                 </td>
                                 <td valign="middle">&nbsp;
                                     <a href="<?=$IEurl?>" target="_blank">
-                                        <img src="../public/images/ifmg.jpg" alt="IFMG - Campus Bambu&iacute;" title="IFMG - Campus Bambu&iacute;" />
+                                        <img src="../public/images/ifmg.jpg" 
+												alt="IFMG - Campus Bambu&iacute;" 
+												title="IFMG - Campus Bambu&iacute;" />
                                     </a>&nbsp;&nbsp;
-                                    <img src="../public/images/gti.jpg" alt="Ger&ecirc;ncia TI" title="Ger&ecirc;ncia de TI" width="50" height="34" />
+                                    <img src="../public/images/gti.jpg" 
+											alt="Ger&ecirc;ncia TI" 
+											title="Ger&ecirc;ncia de TI" 
+											width="50" 
+											height="34" />
                                     <?php
                                     if ($_SERVER['HTTP_HOST'] == 'dev.cefetbambui.edu.br' || $host != 'dados.cefetbambui.edu.br')
                                         echo '&nbsp;&nbsp;&nbsp;&nbsp;<strong>Servidor de BD: </strong>'. $host;
@@ -72,7 +79,9 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                 <tr>
                     <td width="23" class="menu">
                         <a href="index.php">
-                            <img src="../public/images/home_icon.gif" alt="P&aacute;gina inicial" title="P&aacute;gina inicial" />
+                            <img src="../public/images/home_icon.gif" 
+									alt="P&aacute;gina inicial" 
+									title="P&aacute;gina inicial" />
                         </a>
                     </td>
                     <td width="526" class="menu">
@@ -80,80 +89,101 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                         <ul id="MenuBar1" class="MenuBarHorizontal">
                             <li><a class="MenuBarItemSubmenu" href="#">Sistema</a>
                                 <ul>
-                                    <li>
-                                        <a href="exportar/exportar_sistec.php" target="frame2">Exportar matr&iacute;culas para o SISTEC</a>
-                                    </li>
-                                    <li>
-                                        <a href="web_diario/secretaria/pesquisa_diarios.php" target="frame2">Web Di&aacute;rio</a>
-                                    </li>
+									<li>
+										<a href="#" class="MenuBarItemSubmenu">Exportar</a>
+										<ul>
+                                    		<li>
+                                        		<a href="exportar/exportar_sistec.php" target="frame2">SISTEC</a>
+                                    		</li>
+										</ul>
+									</li>
                                     <li>
                                         <a href="#" class="MenuBarItemSubmenu">Configura&ccedil;&otilde;es</a>
                                         <ul>
                                             <li>
-                                                <a href="sagu/academico/consulta_periodos.phtml" target="frame2">Per&iacute;odos</a>
+                                                <a href="sagu/academico/consulta_periodos.phtml" 	
+													target="frame2">Per&iacute;odos</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/academico/consulta_inclui_departamentos.phtml" target="frame2">Departamentos</a>
+                                                <a href="sagu/academico/consulta_inclui_departamentos.phtml" 
+													target="frame2">Departamentos</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/academico/areas_ensino.phtml" target="frame2">&Aacute;rea de ensino</a>
+                                                <a href="sagu/academico/areas_ensino.phtml" 
+													target="frame2">&Aacute;rea de ensino</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/academico/cadastro_salas.phtml" target="frame2">Salas</a>
+                                                <a href="sagu/academico/cadastro_salas.phtml" 
+													target="frame2">Salas</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/academico/carimbos.phtml" target="frame2">Carimbos</a>
+                                                <a href="sagu/academico/carimbos.phtml" 
+													target="frame2">Carimbos</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/usuarios/consulta_inclui_usuarios.phtml" target="frame2">Usu&aacute;rios do sistema</a>
+												<a href="usuarios/index.php" 
+													target="frame2">Usu&aacute;rios do sistema</a>
                                             </li>
-                                            <li>
-                                                <a href="usuarios/index.php" target="frame2">Usu&aacute;rios</a>
-                                            </li>
-					    <li>
-                                                <a href="papeis/index.php" target="frame2">Permiss&otilde;es</a>
+					    					<li>
+                                                <a href="papeis/index.php" 
+													target="frame2">Permiss&otilde;es</a>
                                             </li>
                                         </ul>
+                                    </li>
+									<li>
+                                        <a href="web_diario/secretaria/pesquisa_diarios.php" 
+											target="frame2">Web Di&aacute;rio</a>
                                     </li>
                                 </ul>
                             </li>
                             <li><a class="MenuBarItemSubmenu" href="#">Cadastros</a>
                                 <ul>
                                     <li>
-                                        <a href="sagu/academico/consulta_inclui_pessoa.phtml" target="frame2">Pessoas F&iacute;sicas</a>
+                                        <a href="sagu/academico/consulta_inclui_pessoa.phtml" 
+											target="frame2">Pessoas F&iacute;sicas</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_inclui_contratos.phtml" target="frame2">Contratos</a>
+                                        <a href="sagu/academico/consulta_inclui_contratos.phtml" 
+											target="frame2">Contratos</a>
                                     </li>
                                     <li>
-                                        <a href="colacao_grau/index.php" target="frame2">Cola&ccedil;&atilde;o de grau</a>
+                                        <a href="colacao_grau/index.php" 
+											target="frame2">Cola&ccedil;&atilde;o de grau</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_inclui_professores.phtml" target="frame2">Professores</a>
+                                        <a href="sagu/academico/consulta_inclui_professores.phtml" 
+											target="frame2">Professores</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/coordenadores.phtml" target="frame2">Coordenadores</a>
+                                        <a href="sagu/academico/coordenadores.phtml" 
+											target="frame2">Coordenadores</a>
                                     </li>
                                     <li>
                                         <a href="#" class="MenuBarItemSubmenu">Gen&eacute;rico</a>
                                         <ul>
                                             <li>
-                                                <a href="sagu/generico/paises_inclui.phtml" target="frame2">Pa&iacute;ses</a>
+                                                <a href="sagu/generico/paises_inclui.phtml" 
+													target="frame2">Pa&iacute;ses</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/generico/consulta_inclui_estados.phtml" target="frame2">Estados</a>
+                                                <a href="sagu/generico/consulta_inclui_estados.phtml" 
+													target="frame2">Estados</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/generico/consulta_cidades.phtml" target="frame2">Cidades</a>
+                                                <a href="sagu/generico/consulta_cidades.phtml" 
+													target="frame2">Cidades</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/generico/configuracao_empresa.phtml" target="frame2">Empresas</a>
+                                                <a href="sagu/generico/configuracao_empresa.phtml" 
+													target="frame2">Empresas</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/generico/campus_inclui.phtml" target="frame2">Campus</a>
+                                                <a href="sagu/generico/campus_inclui.phtml" 
+													target="frame2">Campus</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/generico/consulta_inclui_instituicoes.phtml" target="frame2">Institui&ccedil;&otilde;es</a>
+                                                <a href="sagu/generico/consulta_inclui_instituicoes.phtml" 
+													target="frame2">Institui&ccedil;&otilde;es</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -166,37 +196,47 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                                         <a href="sagu/academico/consulta_cursos.phtml" target="frame2">Cursos</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_disciplinas.phtml" target="frame2">Disciplinas</a>
+                                        <a href="sagu/academico/consulta_disciplinas.phtml" 
+											target="frame2">Disciplinas</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_inclui_cursos_disciplinas.phtml" target="frame2">Cursos / Disciplinas</a>
+                                        <a href="sagu/academico/consulta_inclui_cursos_disciplinas.phtml" 
+											target="frame2">Cursos / Disciplinas</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/disciplina_ofer.phtml" target="frame2">Disciplinas Oferecidas (Di&aacute;rios)</a>
+                                        <a href="sagu/academico/disciplina_ofer.phtml" 
+											target="frame2">Disciplinas Oferecidas (Di&aacute;rios)</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_inclui_pre_requisito.phtml" target="frame2">Pr&eacute;-requisitos</a>
+                                        <a href="sagu/academico/consulta_inclui_pre_requisito.phtml" 
+											target="frame2">Pr&eacute;-requisitos</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_disciplinas_equivalentes.phtml" target="frame2">Disciplinas Equivalentes</a>
+                                        <a href="sagu/academico/consulta_disciplinas_equivalentes.phtml" 
+											target="frame2">Disciplinas Equivalentes</a>
                                     </li>
                                 </ul>
                             </li>
                             <li><a href="#" class="MenuBarItemSubmenu">Matr&iacute;culas</a>
                                 <ul>
                                     <li>
-                                        <a href="matricula/matricula_aluno.php" target="frame2">Matr&iacute;cula</a>
+                                        <a href="matricula/matricula_aluno.php" 
+											target="frame2">Matr&iacute;cula</a>
                                     </li>
                                     <li>
-                                        <a href="dispensa_disciplina/dispensa_aluno.php" target="frame2">Dispensa de Disciplina</a>
+                                        <a href="dispensa_disciplina/dispensa_aluno.php" 
+											target="frame2">Dispensa de Disciplina</a>
                                     </li>
                                     <li>
-                                        <a href="matricula/remover_matricula/filtro.php" target="frame2">Excluir Matr&iacute;cula</a>
+                                        <a href="matricula/remover_matricula/filtro.php" 
+											target="frame2">Excluir Matr&iacute;cula</a>
                                     </li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="relatorios/menu.php" title="relatorios" target="frame2">Relat&oacute;rios</a>
+                                <a href="relatorios/menu.php" 
+									title="relatorios" 
+									target="frame2">Relat&oacute;rios</a>
                             </li>
                             <li>
                                 <a href="../index.php">Sair</a>
@@ -205,13 +245,19 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                     </td>
                     <td width="193" class="menu">
                         <span class="texto1">
-                            <img src="../public/images/icons/bola_verde.gif" width="10" height="10" /> <?=$uid?>
-                        </span>
+                            <img src="../public/images/icons/bola_verde.gif" width="10" height="10" /> 
+							<strong><?=$uid?></strong>&nbsp;&nbsp;
+                        </span> 
+						<a href="usuarios/alterar_senha.php" target="frame2">Alterar senha</a>
                     </td>
                 </tr>
             </table>
 
-            <iframe id='frame2' name='frame2' src='diagrama.php' onload='iframeAutoHeight(this)' frameborder='0'></iframe>
+            <iframe id='frame2' 
+				name='frame2' 
+				src='diagrama.php' 
+				onload='iframeAutoHeight(this)' 
+				frameborder='0'></iframe>
         </div>
         <script type="text/javascript">
             <!--

@@ -23,9 +23,7 @@ WHERE
 
 $RsUsuario = $conn->Execute($sqlUsuario);
 
-$sqlPapelUsuario = 'SELECT ref_papel FROM usuario_papel WHERE ref_usuario = '.$id_usuario.'; ';
-$RsPapelUsuario = $conn->Execute($sqlPapelUsuario);
-
+$RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
 $RsPapel = $conn->Execute('SELECT papel_id, descricao, nome FROM papel');
 
 ?>
@@ -33,77 +31,116 @@ $RsPapel = $conn->Execute('SELECT papel_id, descricao, nome FROM papel');
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-        <title>Untitled Document</title>
+        <title>SA</title>
         <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+		<script>
+			function validarSenha(){
+				if(document.form1.senha_atual.checked == 1){
+					return true;	
+				}else{
+					senha1 = document.form1.senha.value;
+					senha2 = document.form1.resenha.value;
+					if(senha1 == ""){
+						alert("O campo senha nao pode ser vazio!");
+						return false;
+					}
+					if (senha1 != senha2){
+						alert("As senhas nao conferem!");
+						return false;
+					}
+					return true;
+				}
+			}
+		</script>
     </head>
     <body>
-        <form id="form1" name="form1" method="post" action="alterar_action.php">
-            <h2>Alterar usu&aacute;rio</h2>
+        <h2>Alterar usu&aacute;rio</h2>
+        
+		<form id="form1" name="form1" method="post" action="alterar_action.php" onSubmit="return validarSenha()">
+			<input type="hidden" name="id_usuario" id="id_usuario" value="<?php echo $id_usuario; ?>" />
+
             <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                     <td width="60">
 						<div align="center">
                             <label class="bar_menu_texto">
-                                <input name="save" type="image" src="../../public/images/icons/save.png" />
-                                <br />
-                                Salvar</label></td>
+                                <input name="save" 
+									type="image" 
+									src="../../public/images/icons/save.png" />
+								<br />Salvar
+							</label>
+						</div>
+					</td>
                     <td width="60">
 						<div align="center">
 							<a href="javascript:history.back();" 
 								class="bar_menu_texto">
 								<img src="../../public/images/icons/back.png" 
-										alt="Voltar" 
-										width="20" 
-										height="20" />
-								<br />
-                                Voltar</a>
+									alt="Voltar" 
+									width="20" 
+									height="20" />
+								<br />Voltar
+							</a>
 						</div>
 					</td>
                 </tr>
             </table>
+
             <div class="box_geral">
+				<strong>Pessoa:</strong><br />
+                <?=$RsUsuario->fields[3]?> - <?=$RsUsuario->fields[4]?><br />
+				<strong>Setor:</strong><br />
+				<select name="setor" id="setor">
+					<?php 
+						while(!$RsSetor->EOF){
+							echo '<option value="'.$RsSetor->fields[0].'" >';
+							echo $RsSetor->fields[1]."</option>";							
+							$RsSetor->MoveNext();
+						}
+		            ?>
+				</select>
 				<p>
-                	<strong>Usu&aacute;rio:</strong>
-                	<?php echo $RsUsuario->fields[1]; ?>
+                	<strong>Usu&aacute;rio:</strong><br />
+                	<input type="text" 
+						name="usuario" 
+						id="usuario" 
+						value="<?php echo $RsUsuario->fields[1]; ?>"
+						disabled="disabled" />
 				</p>
                 <strong>Senha:</strong><br />
                 <input type="password" name="senha" id="senha" /><br />
 				<strong>Digite a senha novamente:</strong><br />
 				<input type="password" name="resenha" id="resenha" />
 				<p>
-    	            <strong>Permiss&atilde;o:</strong><br />
-    	            <select name="permissao" id="permissao" multiple="multiple" size="4">
+					Manter senha atual? 
+					<input type="checkbox"  
+						name="senha_atual" 
+						id="senha_atual" />
+					 <span class="comentario">Marcado para sim.</span>
+				</p>
+				<p>
+    	            <strong>Permiss&otilde;es:</strong><br />
+    	            <select name="permissao[]" id="permissao[]" multiple="multiple" size="4">
     	            	<?php
-
-							while(!$RsPapelUsuario->EOF){	
-								$papelUsuario[] = $RsPapelUsuario->fields[0];
-								$RsPapelUsuario->MoveNext();
-							}
-
 							while(!$RsPapel->EOF){
-								echo '<option value="'.$RsPapel->fields[0].'" '; 	
-								if(in_array($RsPapel->fields[0], $papelUsuario)){							
-									echo ' checked="checked" ';
-								}
-								echo ">";
-								echo $RsPapel->fields[2]."</option>";								
+								echo '<option value="'.$RsPapel->fields[0].'" >'; 	
+								echo $RsPapel->fields[2]."</option>";							
 								$RsPapel->MoveNext();
 							}
 		                ?>
 	                </select>
 				</p>
-				<strong>Pessoa:</strong><br />
-                <?=$RsUsuario->fields[3]?> - <?=$RsUsuario->fields[4]?>
+				
 				<p>
+					Usu&aacute;rio ativado? 
 	                <?php
 	                    if ($RsUsuario->fields[2] == 't') {
-	                        echo '<input type="checkbox" checked="checked" name="ativar" id="ativar" />';
+	                        echo '<input type="checkbox" checked="checked" name="ativado" id="ativado" />';
 	                    }
 	                	else {
-	                		echo '<input type="checkbox" name="ativar" id="ativar" />';
+	                		echo '<input type="checkbox" name="ativado" id="ativado" />';
 	                	}
-	                ?>
-					Ativar/Desativar usu&aacute;rio.
+	                ?> <span class="comentario">Marcado para sim.</span>
 				</p>
             </div>
         </form>
