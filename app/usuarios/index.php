@@ -110,13 +110,13 @@ $RsNome = $conn->Execute(iconv("utf-8","iso-8859-1",$sql));
 							alt="Alterar Usu&aacute;rio"
 							title="Alterar Usu&aacute;rio" />
                     </a>
-					<!--
+					
                     &nbsp;&nbsp;
                     <a href="excluir_action.php?id_usuario=<?=$RsNome->fields[0]?>" 
-						onclick="confirm('Deseja realmente excluir?')">
+						onclick="return confirm('Deseja realmente excluir?')">
                         <img src="../../public/images/icons/delete.png" alt="Excluir" />
                     </a>
-					-->
+					
                 </td>
             </tr>
             <?php
