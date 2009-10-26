@@ -232,10 +232,10 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
                              ref_disciplina_equivalente = get_disciplina_de_disciplina_of('$diario_id') AND 
                              ref_curso = '$curso_id';";
 
-    	$equivalentes = $conn->adodb->getAll($sqlEquivalente);
-
-      	if (count($equivalentes) > 0)
-            $disciplinas =  $sqlEquivalente;
+		$disc_original = $conn->adodb->getOne($sqlEquivalente);
+//        print_r($equivalentes); if ($diario_id = '5354') die;
+        if (!empty($disc_original) && is_numeric($disc_original))
+            $disciplinas =  "'". $disc_original ."'";
     } 
 
     $sqlPreRequisito = "
