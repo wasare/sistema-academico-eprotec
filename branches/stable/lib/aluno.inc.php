@@ -237,12 +237,12 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
                                 disciplinas_equivalentes 
                         WHERE 
                              ref_disciplina_equivalente = get_disciplina_de_disciplina_of('$diario_id') AND 
-                             ref_curso = '$curso_id';";
+                             ref_curso = '$curso_id' LIMIT 1;";
 
-    	$equivalentes = $Conexao->getAll($sqlEquivalente); 
+    	$disc_original = $Conexao->getOne($sqlEquivalente); 
 //        print_r($equivalentes); if ($diario_id = '5354') die;
-      	if (count($equivalentes) > 0)
-            $disciplinas =  $sqlEquivalente;
+      	if (!empty($disc_original) && is_numeric($disc_original))
+            $disciplinas =  "'". $disc_original ."'";
     } 
 
     $sqlPreRequisito = "
@@ -257,7 +257,7 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
 
     $total_requisitos = count($pre_requisitos);
     $requisitos_matriculados = array();
-    if (count($total_requisitos) > 0) 
+    if ($total_requisitos > 0) 
 	{
 		foreach($pre_requisitos as $req)
 		{
