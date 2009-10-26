@@ -10,13 +10,21 @@ $RsPessoa = $conn->Execute("SELECT nome FROM pessoas WHERE id = $sa_ref_pessoa")
 $msg = '';
 
 if($_POST){
-	$senha = $_POST['senha'];
-	$sqlUsuario = "UPDATE usuario SET senha='".hash('sha256',$senha)."' WHERE id = $sa_usuario_id;";
-
-	if($conn->Execute($sqlUsuario)){
-		$msg = '<font color="green">Senha alterada com sucesso!</font>';
+	$senha_atual = $_POST['senha_atual'];
+	$sqlSenhaAtual = "SELECT senha FROM usuario WHERE id = $sa_usuario_id  AND senha = '".
+				hash('sha256',$senha_atual)."';";
+	$RsSenhaAtual = $conn->Execute($sqlSenhaAtual);
+	if($RsSenhaAtual->RecordCount() != 1){
+		$msg = 'A senha atual n&atilde;o confere!';
 	}else{
-		$msg = 'Ocorreu alguma falha ao alterar a senha!'; 
+		$senha = $_POST['senha'];
+		$sqlUsuario = "UPDATE usuario SET senha='".hash('sha256',$senha)."' WHERE id = $sa_usuario_id;";
+		
+		if($conn->Execute($sqlUsuario)){
+			$msg = '<font color="green">Senha alterada com sucesso!</font>';
+		}else{
+			$msg = 'Ocorreu alguma falha ao alterar a senha!'; 
+		}
 	}
 }
 
@@ -45,7 +53,6 @@ if($_POST){
     </head>
     <body>
         <h2>Alterar senha do usu&aacute;rio "<?=$sa_usuario?>"</h2>
-        
 		<form id="form1" name="form1" method="post" action="alterar_senha.php" onSubmit="return validarSenha()">
             <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
@@ -74,17 +81,21 @@ if($_POST){
                 </tr>
             </table>
 			
-            <div class="box_geral">
-				<strong>Pessoa:</strong><br />
-                <?=$RsPessoa->fields[0]?><br />
-                <strong>Senha:</strong><br />
-                <input type="password" name="senha" id="senha" /><br />
-				<strong>Digite a senha novamente:</strong><br />
-				<input type="password" name="resenha" id="resenha" />
-            </div>
+		<div class="box_geral">
+			<strong>Pessoa:</strong><br />
+	                <?=$RsPessoa->fields[0]?><br />
 			<p>
-				<font color="red"><?php echo $msg;?></font>
+				<strong>Senha atual:</strong><br />
+				<input type="password" name="senha_atual" id="senha_atual" />
 			</p>
+        	        <strong>Nova senha:</strong><br />
+                	<input type="password" name="senha" id="senha" /><br />
+			<strong>Digite a senha novamente:</strong><br />
+			<input type="password" name="resenha" id="resenha" />
+		</div>
+		<p>
+			<font color="red"><?php echo $msg;?></font>
+		</p>
         </form>
     </body>
 </html>
