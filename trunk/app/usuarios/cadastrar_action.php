@@ -4,27 +4,57 @@ require_once("../setup.php");
 
 $conn = new connection_factory($param_conn);
 
-$nome       = $_POST['nome'];
-$senha      = hash('sha256', $_POST['senha']);
 $ref_pessoa = $_POST['ref_pessoa'];
-$ativado    = $_POST['ativado'];
-$ref_setor  = $_POST['ref_setor'];
+$ref_setor  = $_POST['setor'];
+$usuario    = $_POST['usuario'];
+$senha      = hash('sha256', $_POST['senha']);
+$permissoes = $_POST['permissao'];
 
+if($_POST['ativado']){
+	$ativado = 't';
+}else{
+	$ativado = 'f';
+}
 
-//Cadastrar o usuario
-echo $sql_usuario = sprintf('INSERT INTO usuario (
-nome, senha, ref_pessoa, ativado, ref_setor )
-VALUES (%s, %s, %d, %d, %d );', $nome, $senha, $ref_pessoa, $ativado, $ref_setor);
+//Verificando se existe login igual cadastrado
+$usuario_existe = $conn->Execute("SELECT id FROM usuario WHERE nome = '$usuario';");
 
-//$conn->Execute($sql_usuario);
+if(empty($usuario_existe->fields[0]))
+{
+	$sqlUsuario = "INSERT INTO usuario (nome, senha, ref_pessoa, ativado, ref_setor )
+	VALUES('$usuario', '$senha', $ref_pessoa, '$ativado', $ref_setor);";
+	
+	if($conn->Execute($sqlUsuario)){
+		$msg = '<font color="green">Usu&aacute;rio cadastrado com sucesso!</font>';
+	}else{
+		$msg = 'Erro ao cadastrar usu&aacute;rio!'; 
+	}
 
-//Cadastrar a permissao
-/*
-$sql_permissao = '';
-$conn->Execute(sprintf($sql_permissao, $args));
-*/
+	$usuario_cadastrado = $conn->Execute("SELECT id FROM usuario WHERE nome = '$usuario';");
+	$id_usuario_cadastrado = $usuario_cadastrado->fields[0];
+
+	//Criando as permissoes
+	foreach($permissoes as $permissao){
+		if(!$conn->Execute("INSERT INTO usuario_papel(ref_usuario, ref_papel) 
+							VALUES($id_usuario_cadastrado, $permissao); "))
+			$msg = 'Erro ao criar permiss&otilde;oes do usu&aacute;rio!';
+	}
+}else{
+	$msg = 'Usu&aacute;rio j&aacute; cadastrado no sistema!';
+}
+
 ?>
-
-<h2><font color="green">Cadastro realizado com sucesso!</font></h2>
-<a href="#">Cadastrar novo usu&aacute;rio</a>
-<a href="#">Listar usu&aacute;rios</a>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>SA</title>
+        <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>Cadastro de usu&aacute;rio</h2>
+		<font color="red"><?php echo $msg;?></font>
+		<p>
+			<a href="index.php">Voltar para o controle de usu&aacute;rios</a>
+		</p>
+	</body>
+</html>
