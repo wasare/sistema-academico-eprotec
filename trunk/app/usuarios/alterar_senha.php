@@ -4,7 +4,7 @@ require_once("../../app/setup.php");
 
 $conn = new connection_factory($param_conn);
 
-$RsPessoa = $conn->Execute("SELECT nome FROM pessoas WHERE id = $sa_ref_pessoa");
+$RsPessoa = $conn->Execute("SELECT nome, email FROM pessoas WHERE id = $sa_ref_pessoa");
 
 
 $msg = '';
@@ -24,7 +24,16 @@ if($_POST) {
         $sqlUsuario = "UPDATE usuario SET senha='".hash('sha256',$senha)."' WHERE id = $sa_usuario_id;";
 
         if($conn->Execute($sqlUsuario)) {
+
             $msg = '<font color="green">Senha alterada com sucesso!</font>';
+
+			$message = 'SA - Senha do usuário "'.$sa_usuario.'" alterada para: '.$senha;
+
+            if(mail($RsPessoa->fields[1], 'SA - Senha alterada', $message, 'From: SA')) {
+                $msg .= '<p><font color=green>A nova senha foi enviada para o seu email.</font></p>';
+            }else {
+                $msg .= '<p>Erro ao enviar email com a nova senha!</p>';
+            }
         }else {
             $msg = 'Ocorreu alguma falha ao alterar a senha!';
         }
@@ -84,12 +93,12 @@ if($_POST) {
                 </p>
                 <p>
                     <span id="sprypassword2">
-                        <strong>Senha:</strong><br />
+                        <strong>Nova senha:</strong><br />
                         <input type="password" name="senha" id="senha" />
                         <span class="passwordRequiredMsg">Valor obrigat&oacute;rio</span>
                     </span><br />
                     <span id="spryconfirm1">
-                        <strong>Confirme a senha:</strong><br />
+                        <strong>Confirme a nova senha:</strong><br />
                         <input type="password" name="confirm1" id="confirm1" />
                         <span class="confirmRequiredMsg">Valor obrigat&oacute;rio</span>
                         <span class="confirmInvalidMsg">As senhas n&atilde;o conferem.</span>
