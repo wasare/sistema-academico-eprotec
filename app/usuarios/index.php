@@ -90,13 +90,17 @@ $RsNome = $conn->Execute(iconv("utf-8","iso-8859-1",$sql));
                 <td align="left"><?=$RsNome->fields['nome_setor']?></td>
                 <td align="left">
 				<?php
-				
+
+				//Listagem das permissoes do usuario
+
 				$sqlPapel = "SELECT nome FROM papel, usuario_papel 
 							WHERE ref_usuario = ".$RsNome->fields[0].
 							" AND ref_papel = papel_id";
 				
 				$RsPapel = $conn->Execute($sqlPapel);
-
+				
+				if($RsPapel->RecordCount() == 0) echo '<font color=grey>Nenhuma</font>';
+				
 				while(!$RsPapel->EOF) {
 					echo $RsPapel->fields[0] . '<br />';
 					$RsPapel->MoveNext();
