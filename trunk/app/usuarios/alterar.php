@@ -11,20 +11,19 @@ SELECT
     u.id,
     u.nome,
     u.ativado,
-	u.ref_pessoa,
-	p.nome,
+    u.ref_pessoa,
+    p.nome,
     s.nome_setor
 FROM
     usuario u, setor s, pessoas p
 WHERE
-	s.id = u.ref_setor AND
-	u.ref_pessoa = p.id AND
-	u.id = '.$id_usuario;
+    s.id = u.ref_setor AND
+    u.ref_pessoa = p.id AND
+    u.id = '.$id_usuario;
 
 $RsUsuario = $conn->Execute($sqlUsuario);
 
 $RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
-$RsPapel = $conn->Execute('SELECT papel_id, descricao, nome FROM papel');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -122,11 +121,26 @@ $RsPapel = $conn->Execute('SELECT papel_id, descricao, nome FROM papel');
                     <strong>Permiss&otilde;es:</strong><br />
                     <select name="permissao[]" id="permissao[]" multiple="multiple" size="4">
                         <?php
-                        while(!$RsPapel->EOF) {
-                            echo '<option value="'.$RsPapel->fields[0].'" >';
-                            echo $RsPapel->fields[2]."</option>";
-                            $RsPapel->MoveNext();
-                        }
+
+						//Permissoes de usuario
+
+						$sqlPapelUsuario =  'SELECT ref_papel '.
+											'FROM usuario_papel '.
+											'WHERE ref_usuario = '.$RsUsuario->fields[0];
+					
+						$arr_papel_usuario = $conn->adodb->GetCol($sqlPapelUsuario);
+
+						$arr_papel = $conn->adodb->GetAll('SELECT papel_id, descricao, nome FROM papel');
+
+						foreach($arr_papel as $papel){
+							if(in_array($papel['papel_id'],$arr_papel_usuario)){
+								echo '<option value="'.$papel['papel_id'].'" selected="selected" >';
+		                        echo $papel['nome']."</option>";
+							}else{
+								echo '<option value="'.$papel['papel_id'].'" >';
+		                      	echo $papel['nome']."</option>";
+							}
+						}
                         ?>
                     </select>
                 </p>
