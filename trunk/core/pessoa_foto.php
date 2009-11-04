@@ -25,7 +25,7 @@ function pessoa_foto($id) {
             $image = pg_unescape_bytea(pg_fetch_result($rs, 0, 0));
         }
         else {
-            $image = file_get_contents('fotosagu.jpg');
+            $image = file_get_contents($BASE_DIR.'/public/images/user.gif');
         }
 
         header("Content-type: image/jpeg");

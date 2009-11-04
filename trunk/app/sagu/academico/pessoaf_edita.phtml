@@ -15,17 +15,13 @@ $id = $_GET['id'];
 $op_opcoes = SQLArray("select id || ' - ' || nome, id from pais order by id");
 
 ?>
-
-
 <html>
 <head>
 <script language="JavaScript">
-            function _init()
-            {
-                document.myform.nome.focus();
-            }
-
-        </script>
+function _init(){
+	document.myform.nome.focus();
+}
+</script>
 <?php
 
 CheckFormParameters(array("id"));
@@ -331,7 +327,7 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 		editar</font><br />
 		<a
 			href="form_foto.php?id=<?php echo $id; ?>&pessoa=<?php echo $nome; ?>"><img
-			title="<? echo($nome); ?>" src="foto.php?id=<? echo($id); ?>"
+			title="<? echo($nome); ?>" src="../../../core/pessoa_foto.php?id=<? echo($id); ?>"
 			alt="<?echo($nome);?>" border="1" width="120" /></a></th>
 
 	</tr>

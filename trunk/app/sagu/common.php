@@ -7,9 +7,6 @@ $LoginDB     = $database; // nome do banco;
 $LoginUID    = $user;
 $LoginPWD    = $password;
 
-//list($LoginUID, $LoginPWD) = explode(":",$_SESSION['sa_auth']);
-
-
 $ErrorURL   	  = $BASE_DIR . 'app/sagu/fatalerror.php';
 $SuccessURL 	  = $BASE_DIR . 'app/sagu/modelos/modelo_exito.phtml';
 $PATH_SAGU_IMAGES = $BASE_URL .'app/sagu/images/';

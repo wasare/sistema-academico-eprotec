@@ -95,10 +95,4 @@ class acl {
 
 }
 
-require_once("../../app/setup.php");
-
-acl::check(__FILE__, new connection_factory($param_conn));
-
 ?>
-
-<h2>Acessou!</h2>
