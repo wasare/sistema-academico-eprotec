@@ -5,18 +5,18 @@ require("../../lib/InvData.php3");
 
 
 $id                     = $_POST['id'];
-$nome                   = $_POST['nome'];
-$rua                    = $_POST['rua'];
-$complemento            = $_POST['complemento'];
-$bairro                 = $_POST['bairro'];
+$nome                   = addslashes($_POST['nome']);
+$rua                    = addslashes($_POST['rua']);
+$complemento            = addslashes($_POST['complemento']);
+$bairro                 = addslashes($_POST['bairro']);
 $cep                    = $_POST['cep'];
 $ref_cidade             = $_POST['ref_cidade'];
 $fone_particular        = $_POST['fone_particular'];
 $fone_profissional      = $_POST['fone_profissional'];
 $fone_celular           = $_POST['fone_celular'];
 $fone_recado            = $_POST['fone_recado'];
-$email                  = $_POST['email'];
-$email_alt              = $_POST['email_alt'];
+$email                  = addslashes($_POST['email']);
+$email_alt              = addslashes($_POST['email_alt']);
 $estado_civil           = $_POST['estado_civil'];
 $dt_cadastro            = $_POST['dt_cadastro'];
 $dt_nascimento          = $_POST['dt_nascimento'];
@@ -48,8 +48,8 @@ $ref_escola_2g          = $_POST['ref_escola_2g'];
 $cidade_2g              = $_POST['cidade_2g'];
 $ref_curso_2g           = $_POST['ref_curso_2g'];
 $cod_passivo            = $_POST['cod_passivo'];
-$obs                    = $_POST['obs'];
-$deficiencia            = $_POST['deficiencia'];
+$obs                    = addslashes($_POST['obs']);
+$deficiencia            = addslashes($_POST['deficiencia']);
 $cod_externo            = $_POST['cod_externo'];
 $fl_cartao              = $_POST['fl_cartao'];
 
