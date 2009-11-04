@@ -68,10 +68,8 @@ function jsConfirm(dia)
                  diario_seq_faltas
                  WHERE
                  periodo = '$getperiodo' AND
-                 ref_disciplina_ofer = '$getofer'; ";
+                 ref_disciplina_ofer = '$getofer' ORDER BY dia DESC; ";
 
-// id_prof = '$id' AND
-// disciplina = '$getdisciplina' AND
 				 
 		$qry4 = consulta_sql($sql4);
 
