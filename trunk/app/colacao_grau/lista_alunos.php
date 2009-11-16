@@ -120,7 +120,7 @@ echo "<strong>Curso: </strong> ".$id_curso." - ".$RsNomeCurso->fields[0].
 
 ?>
 </h4>
-<div class="box_geral">
+<div class="panel">
 <form action="atualizar_contratos.php" name="form1" method="post">
 Data da cola&ccedil;&atilde;o: 
 <span id="sprytextfield1">

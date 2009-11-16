@@ -47,7 +47,7 @@ $aluno_nome = $RsAluno->fields[0];
 if ( @$RsContrato->RecordCount() > 0 )
 {
 
-$Result1 .= '<div class="box_geral"><strong>Aluno: </strong>' .  $id_pessoa .' - '. $aluno_nome ;
+$Result1 .= '<div class="panel"><strong>Aluno: </strong>' .  $id_pessoa .' - '. $aluno_nome ;
 $Result1 .= '<h4>Selecione o curso: </h4>';
 
 $cont = 0;
@@ -78,5 +78,5 @@ $Result1 .= '<input type="submit" name="processeguir" id="prosseguir"  value=" >
 echo $Result1;
 }
 else
-   echo '<div class="box_geral"><div align="center"><b><font color="#CC0000">nenhum curso encontrado.</font></b> </div></div>';
+   echo '<div class="panel"><div align="center"><b><font color="#CC0000">nenhum curso encontrado.</font></b> </div></div>';
 ?>

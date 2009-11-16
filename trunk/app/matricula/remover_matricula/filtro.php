@@ -86,7 +86,7 @@ function submit_opt(arq){
 <form id="form1" name="form1" method="post" action="lista_cursos.php">
   <div align="center">
     <h1>Excluir Matr&iacute;cula</h1>
-    <div class="box_geral"> 
+    <div class="panel">
       Per&iacute;odo:<br />
       <span id="sprytextPeriodo">
       <input name="periodo1" type="text" id="periodo2" size="10" value="<?=$sa_periodo_id?>" 

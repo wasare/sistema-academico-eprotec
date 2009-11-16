@@ -81,7 +81,7 @@ if($_POST) {
                     </td>
                 </tr>
             </table>
-            <div class="box_geral">
+            <div class="panel">
                 <strong>Pessoa:</strong><br />
                 <?=$RsPessoa->fields[0]?><br />
                 <p>

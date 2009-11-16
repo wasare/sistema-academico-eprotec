@@ -41,7 +41,7 @@ $carimbo = new carimbo($param_conn);
 	class="botao"
 	onclick="history.back(-1);return false;" />
     
-    <div class="box_geral">
+    <div class="panel">
         Per&iacute;odo:<br />
         <span id="sprytextfield1">
             <input type="text" name="periodo1" id="periodo1" size="10" onchange="ChangeCode('periodo1','periodo')" />

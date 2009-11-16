@@ -92,7 +92,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
 			onclick="history.back(-1);return false;" />
 		
 		<div  style="height: 400px;">
-		<div class="box_geral">
+		<div class="panel">
 			Per&iacute;odo:<br />
 		    <span id="sprytextfield2">
 					<input name="periodo1" type="text" id="periodo1" size="10" value="<?=$sa_periodo_id?>" onchange="ChangeCode('periodo1','periodo'); setPeriodo();" />

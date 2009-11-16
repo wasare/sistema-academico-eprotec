@@ -78,7 +78,7 @@ if (!$Result1){
 <body>
 <div align="center" style="height: 600px;">
 <h1>Cola&ccedil;&atilde;o de grau</h1>
-<div class="box_geral">
+<div class="panel">
 <form method="post" name="form1" action="lista_alunos.php">
 <table>
 <tr>

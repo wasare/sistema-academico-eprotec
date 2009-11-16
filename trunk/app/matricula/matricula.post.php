@@ -260,7 +260,7 @@ function deselecionar_tudo(){
 <body>
 <div align="center">
   <h1>Processo de Matr&iacute;cula</h1>
-  <div class="box_geral"> 
+  <div class="panel">
 	<?=$title?>
        <?=$cabecalho?>
     <?=$msg?>

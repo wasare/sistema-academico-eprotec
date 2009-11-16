@@ -59,7 +59,7 @@ if ($_POST['btnOK'] == 10)
 <body>
 <div align="center">
   <h1>Ajuste de Notas e Faltas</h1>
-  <div class="box_geral"> 
+  <div class="panel">
 	<?=$title?>
 
 	<?php

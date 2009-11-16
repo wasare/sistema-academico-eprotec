@@ -63,7 +63,7 @@ $Result1 = $conn->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;")
 <body>
 <div align="center" style="height: 600px;">
 <h1>Exportar alunos matriculados para o SISTEC</h1>
-<div class="box_geral">
+<div class="panel">
 <form method="post" name="form1" action="lista_exportar_sistec.php">
 <table>
 <tr>

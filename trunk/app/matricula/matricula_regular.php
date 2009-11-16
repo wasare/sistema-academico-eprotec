@@ -36,7 +36,7 @@ function deselecionar_tudo()
 <div align="center" style="height:600px;">
   <h1>Processo de Matr&iacute;cula Regular</h1>
   <h4>Sele&ccedil;&atilde;o das disciplinas: Etapa 2/2</h4>
-  <div class="box_geral"> <strong>Aluno: </strong>
+  <div class="panel"> <strong>Aluno: </strong>
     <?=$aluno_id?>
     -
     <?=$aluno_nome?>
@@ -55,12 +55,12 @@ function deselecionar_tudo()
     <strong>Cidade: </strong>
     <?=$campus_nome?>
   </div>
-  <div class="box_geral"> <strong>Di&aacute;rios matriculados</strong> (Di&aacute;rio / Disciplina / Professor) <br />
+  <div class="panel"> <strong>Di&aacute;rios matriculados</strong> (Di&aacute;rio / Disciplina / Professor) <br />
     <br />
     <?=$DisciplinasMatriculadas?>
   </div>
   <form name="form1" method="post" action="matricula.post.php">
-    <div class="box_geral"> <strong>Selecione os di&aacute;rios para matricular</strong> (Di&aacute;rio / Disciplina / Professor)
+    <div class="panel"> <strong>Selecione os di&aacute;rios para matricular</strong> (Di&aacute;rio / Disciplina / Professor)
       <p>
         <?=$MarcaDisciplina?>
       </p>

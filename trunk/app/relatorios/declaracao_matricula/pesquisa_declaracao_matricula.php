@@ -53,7 +53,7 @@ $carimbo = new carimbo($param_conn);
 
         <span class="comentario">ATENÇÃO: este relatório não verifica a situação acadêmica do aluno, apenas emite o documento.</span>
 
-        <div class="box_geral">Data de emiss&atilde;o: <br />
+        <div class="panel">Data de emiss&atilde;o: <br />
 
             <input type="text" name="data" id="data" value="<?php echo date("d/m/Y");?>" size="10" />
             <script	language="JavaScript">

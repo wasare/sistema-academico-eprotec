@@ -76,7 +76,7 @@ $resp_erro_cpf .= "</table>";
 <div align="center" style="height: 600px;">
 <h2>Exportar alunos matriculados para o SISTEC</h2>
 <h3><?php echo $RsCurso->fields[0]." - ".$RsCurso->fields[1]." - Per&iacute;odo da matr&iacute;cula: ".$_POST['periodo1']; ?> </h3>
-<div class="box_geral">
+<div class="panel">
     Copie o texto do formul&aacute;rio abaixo e cole no respectivo campo do SISTEC.<br />
     Para facilitar dê um clique na caixa de texto do formul&aacute;rio e utilize os 
     atalhos de teclado "Ctrl + A" para selecionar o texto, "Ctrl + C" para copiar e 

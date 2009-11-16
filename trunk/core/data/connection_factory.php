@@ -31,13 +31,13 @@ class connection_factory {
         $this->conn_persistent = $conn_persistent;
 
         $this->debug = $debug;
-        $this->Open();
+        $this->open();
     }
 
     /**
      * Abre a conexao com o banco de dados
      */
-    public function Open() {
+    public function open() {
 
         $this->adodb = $GLOBALS['ADODB_SESS_CONN'];
 
@@ -75,7 +75,7 @@ class connection_factory {
     /**
      * Fecha conexao
      */
-    public function Close() {
+    public function close() {
         $this->adodb->Close();
     }
 
@@ -91,6 +91,14 @@ class connection_factory {
                 $this->adodb->ErrorMsg() .'</div>'.'<pre>'. $sql .'</pre>');
         }
         return $ResultSet;
+    }
+    /**
+     * 
+     * @param string $sql
+     * @return array
+     */
+    public function get_all($sql){
+        return $this->adodb->GetAll($sql);
     }
 }
 

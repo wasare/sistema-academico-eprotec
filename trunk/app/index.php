@@ -156,6 +156,10 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                                            target="frame2">Coordenadores</a>
                                     </li>
                                     <li>
+                                        <a href="setor/index.php"
+                                           target="frame2">Setores</a>
+                                    </li>
+                                    <li>
                                         <a href="#" class="MenuBarItemSubmenu">Gen&eacute;rico</a>
                                         <ul>
                                             <li>
