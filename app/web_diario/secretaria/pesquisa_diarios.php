@@ -37,7 +37,7 @@ $busca2  = new search('curso','curso_id','cursos_list', 'form1', '../../relatori
 			class="botao"
 			onclick="history.back(-1);return false;" />
         
-		<div class="box_geral">	
+		<div class="panel">
 
 		    Per&iacute;odo:<br />
 			&nbsp;&nbsp;<span class="comentario">Comece digitando o ano para listar os per&iacute;odos ou informe o c&oacute;digo do per&iacute;odo no primeiro campo.</span><br />

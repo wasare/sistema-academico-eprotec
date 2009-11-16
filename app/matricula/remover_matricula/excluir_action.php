@@ -176,7 +176,7 @@ else
 <body>
 <div align="center">
   <h1>Excluir Matr&iacute;cula</h1>
-  <div class="box_geral"> <strong>Aluno: </strong><?php echo exibeDadosAluno($cod_aluno, $Conexao); ?><br />
+  <div class="panel"> <strong>Aluno: </strong><?php echo exibeDadosAluno($cod_aluno, $Conexao); ?><br />
     <strong>Per&iacute;odo: </strong>
     <?=$periodo?>
   </div>

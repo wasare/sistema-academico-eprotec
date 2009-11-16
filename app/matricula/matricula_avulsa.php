@@ -42,14 +42,14 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
         <div align="center" style="height:600px;">
             <h1>Processo de Matr&iacute;cula Avulsa</h1>
             <h4>Sele&ccedil;&atilde;o das disciplinas: Etapa 2/2</h4>
-            <div class="box_geral"> <strong>Aluno: </strong>
+            <div class="panel"> <strong>Aluno: </strong>
                 <?=$aluno_id?> - <?=$aluno_nome?><br />
                 <strong>Curso: </strong><?=$curso_id?> - <?=$curso_nome?> <strong>Turma: </strong><?=$turma?><br />
                 <strong>Per&iacute;odo: </strong><?=$periodo_id?>
                 <strong>Contrato: </strong><?=$contrato_id?>
                 <strong>Cidade: </strong><?=$campus_nome?>
             </div>
-            <div class="box_geral"> <strong>Di&aacute;rios matriculados</strong> (Di&aacute;rio / Disciplina / Professor) <br />
+            <div class="panel"> <strong>Di&aacute;rios matriculados</strong> (Di&aacute;rio / Disciplina / Professor) <br />
                 <br />
                 <?=$DisciplinasMatriculadas?>
             </div>
@@ -63,7 +63,7 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
                     <img src="../../public/images/icons/lupa.png" alt="" /> Buscar di&aacute;rio
                 </a>
 
-                <div class="box_geral">
+                <div class="panel">
                     <strong>Di&aacute;rios para matricular</strong>
                     (Di&aacute;rio / Disciplina / Professor)
                     <br /><br />

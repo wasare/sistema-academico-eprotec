@@ -58,7 +58,7 @@ else{
 <body>
 <center>
 	<h1>Cola&ccedil;&atilde;o de grau</h1>
-	<div class="box_geral">
+	<div class="panel">
 		<?php echo $resp; ?>
 		<p>
 		<a href="index.php">Realizar nova Cola&ccedil;&atilde;o de Grau</a>

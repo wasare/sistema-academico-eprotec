@@ -106,7 +106,7 @@ else
   <input type="hidden" name="periodo" id="cod_aluno" value="<?=$periodo?>" />
   <div align="center">
     <h1>Excluir Matr&iacute;cula</h1>  
-    <div class="box_geral">
+    <div class="panel">
       <strong>Aluno: </strong><?=$RsAluno->fields[0]?> - <?=$RsAluno->fields[1]?><br />
       <strong>Per&iacute;odo: </strong> <?=$periodo?>
     </div>

@@ -229,7 +229,7 @@ if ( $count == 0 ) {
   <h1>Processo de Dispensa de Disciplina</h1>
   <h4>Sele&ccedil;&atilde;o da disciplina: Etapa 2/3</h4>
   <!--<strong>Identifica&ccedil;&atilde;o do aluno</strong>-->
-  <div class="box_geral"> <strong>Aluno: </strong>
+  <div class="panel"> <strong>Aluno: </strong>
     <?=$aluno_id?>
     -
     <?=$aluno_nome?>
@@ -247,7 +247,7 @@ if ( $count == 0 ) {
     <?=$campus_nome?>
   </div>
   <form name="form1" method="post" action="dispensa_disciplina_tipo.php">
-  <div class="box_geral"> <strong>Disciplinas dispon&iacute;veis para dispensa</strong> <br />( Di&aacute;rio - Disciplina / Curso  / Turma (Per&iacute;odo de oferta)) <br />
+  <div class="panel"> <strong>Disciplinas dispon&iacute;veis para dispensa</strong> <br />( Di&aacute;rio - Disciplina / Curso  / Turma (Per&iacute;odo de oferta)) <br />
     <br />
     <?=$DisciplinasNaoCursadas?>
   </div>

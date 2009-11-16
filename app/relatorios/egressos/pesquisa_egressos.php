@@ -49,7 +49,7 @@ $busca = new search('search','codigo_curso','searchlist', 'form1', '../curso_lis
 		onclick="history.back(-1);return false;" 
 		class="botao" />
 			
-	<div class="box_geral">
+	<div class="panel">
 		Cola&ccedil;&atilde;o de grau:<br />
 		De <input type="text" name="data_inicio" id="data_inicio" value="<?php echo date("d/m/Y");?>" size="10" />
 		<script language="JavaScript">

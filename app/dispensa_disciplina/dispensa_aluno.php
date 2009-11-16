@@ -116,7 +116,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
                 <h1>Processo de Dispensa de Disciplina</h1>
                 <h4>Identifica&ccedil;&atilde;o do Aluno e do Curso: Etapa 1/3</h4>
 
-                <div class="box_geral">
+                <div class="panel">
 
                     <!-- Entrada do Aluno-->
                     Selecione um aluno:<br>

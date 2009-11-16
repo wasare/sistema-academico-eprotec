@@ -93,7 +93,7 @@ if($_POST)
     </head>
     <body>
         <h1>Pesquisar Di&aacute;rio</h1>
-        <div class="box_geral" style="width:300px;">
+        <div class="panel" style="width:300px;">
             <form method="POST" action="matricula_avulsa_pesquisar.php">
                 Disciplina:<br />
                 <input type="text" name="disciplina" value="" size="30" />

@@ -68,7 +68,7 @@ $RsCidades = $conn->Execute("SELECT nome_campus, id FROM campus WHERE ref_empres
 		class="botao"
 		onclick="history.back(-1);return false;" />
 		
-	<div class="box_geral">
+	<div class="panel">
 		Este relat&oacute;rio pode levar algum tempo para exibir as informa&ccedil;&otilde;es e n&atilde;o esta apto a impress&atilde;o devido ao alto processamento e quantidade de dados retornados; 
 	    para dados mais espec&iacute;ficos acesse o relat&oacute;rio de <a href="../../../relatorios/pesquisa_alunos.php">alunos matriculados</a>.
 	    <br />

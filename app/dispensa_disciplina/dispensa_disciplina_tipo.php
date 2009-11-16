@@ -146,7 +146,7 @@ function escreve(request){
   <h1>Processo de Dispensa de Disciplina</h1>
   <h4>Tipo e informa&ccedil;&otilde;es sobre a dispensa: Etapa 3/3</h4>
   <!--<strong>Identifica&ccedil;&atilde;o do aluno</strong>-->
-  <div class="box_geral"> <strong>Aluno: </strong>
+  <div class="panel"> <strong>Aluno: </strong>
     <?=$aluno_id?>
     -
     <?=$aluno_nome?>
@@ -164,7 +164,7 @@ function escreve(request){
     <?=$campus_nome?>
   </div>
   <form name="dispensa_frm" id="dispensa_frm" method="post" action="dispensa_disciplina.post.php">
-  <div class="box_geral"> 
+  <div class="panel">
         <!-- FIXME: exibir informações da disciplina sendo dispensada -->
 				&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ( Di&aacute;rio - Disciplina  - Turma(Per&iacute;odo de oferta)) <br />
                  <strong>Disciplina a dispensar: </strong>&nbsp; <?=$nome_disciplina?> <br /> <br />

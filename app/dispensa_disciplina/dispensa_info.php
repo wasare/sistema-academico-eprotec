@@ -16,7 +16,7 @@ if( !in_array($opcao,$opcoes) )
 	die;
 
 ?>
-   <div class="box_geral">
+   <div class="panel">
     <strong>Detalhes da dispensa:</strong><br /><br />
 
 <?php

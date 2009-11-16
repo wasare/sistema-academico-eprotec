@@ -113,7 +113,7 @@ $RsPessoa = $conn->Execute($sql);
                 <br /><br />
             </div>
             <h2>Informa&ccedil;&otilde;es pessoais</h2>
-            <div class="box_geral">
+            <div class="panel">
 
                 <img src="<?=$BASE_URL?>core/pessoa_foto.php?id=<?=$RsPessoa->fields['id'];?>"
                      border="1"

@@ -64,7 +64,7 @@ $busca   = new search('search','codigo_curso','searchlist', 'form1', '../curso_l
 	class="botao" 
 	onclick="history.back(-1);return false;" />
 	
-    <div class="box_geral">
+    <div class="panel">
 	Per&iacute;odo:<br />
         <span id="sprytextfield1">
 	    <input name="periodo1" type="text" id="periodo1" size="10" onchange="ChangeCode('periodo1','periodo'); setPeriodo();" />

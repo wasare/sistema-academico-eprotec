@@ -53,7 +53,7 @@ $RsPapel = $conn->Execute('SELECT papel_id, descricao, nome FROM papel');
                 </tr>
             </table>
 
-            <div class="box_geral">
+            <div class="panel">
                 <strong>C&oacute;digo de pessoa:</strong><br />
                 <span id="sprytextfield1">
                     <input name="ref_pessoa" id="ref_pessoa" type="text" maxlenght="8" size="8" value="" />

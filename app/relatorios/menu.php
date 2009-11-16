@@ -22,7 +22,7 @@ require("../../app/setup.php");
 	class="botao" 
 	onclick="history.back(-1);return false;" />
 
-<div class="box_geral">
+<div class="panel">
 	<div class="box_menu_relatorio">
 	<a href="aprovados_reprovados/pesquisa_aprovados_reprovados.php" title="Alunos aprovados/reprovados" target="_self">
 		<img src="../../public/images/icons/lupa.png" />&nbsp;Alunos Aprovados/Reprovados

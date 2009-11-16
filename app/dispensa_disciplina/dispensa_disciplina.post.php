@@ -248,7 +248,7 @@ $cabecalho .= ">> <strong>Curso</strong>: $curso_id  - <strong>Per&iacute;odo</s
 <body>
 <div align="center">
   <h1>Processo de Dispensa de Disciplina</h1>
-  <div class="box_geral"> 
+  <div class="panel">
 	<?=$title?>
        <?=$cabecalho?>
     <?=$msg?>

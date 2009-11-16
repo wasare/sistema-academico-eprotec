@@ -65,7 +65,7 @@ $RsNome = $conn->Execute(iconv("utf-8","iso-8859-1",$sql));
                 <td width="60" align="center">Op&ccedil;&otilde;es</td>
             </tr>
             <?php
-			
+
             while(!$RsNome->EOF) {
 
                 if($RsNome->fields['ativado'] == 't') {
@@ -76,54 +76,48 @@ $RsNome = $conn->Execute(iconv("utf-8","iso-8859-1",$sql));
                     $cor_linha = '#DDDDDD';
                     $situacao = ' - <font color="#999999">Usu&aacute;rio desativado</font>';
                 }
-            ?>
+                ?>
             <tr bgcolor="<?=$cor_linha?>">
                 <td align="left">
                     <a href="../relatorios/pessoas/lista_pessoas.php?id_pessoa=<?=$RsNome->fields[2]?>"
                        target="blank"
                        alt="<?=$RsNome->fields['nome_pessoa']?>"
                        title="<?=$RsNome->fields['nome_pessoa']?>" >
-                       <?=$RsNome->fields[1]?>
+                               <?=$RsNome->fields[1]?>
                     </a>
-                    <?=$situacao?>
+                        <?=$situacao?>
                 </td>
                 <td align="left"><?=$RsNome->fields['nome_setor']?></td>
                 <td align="left">
-				<?php
+                        <?php
 
-				//Listagem das permissoes do usuario
+                        //Listagem das permissoes do usuario
 
-				$sqlPapel = "SELECT nome FROM papel, usuario_papel 
+                        $sqlPapel = "SELECT nome FROM papel, usuario_papel
 							WHERE ref_usuario = ".$RsNome->fields[0].
-							" AND ref_papel = papel_id";
-				
-				$RsPapel = $conn->Execute($sqlPapel);
-				
-				if($RsPapel->RecordCount() == 0) echo '<font color=grey>Nenhuma</font>';
-				
-				while(!$RsPapel->EOF) {
-					echo $RsPapel->fields[0] . '<br />';
-					$RsPapel->MoveNext();
-				}			
+                            " AND ref_papel = papel_id";
 
-				?>
-				</td>
+                        $RsPapel = $conn->Execute($sqlPapel);
+
+                        if($RsPapel->RecordCount() == 0) echo '<font color=grey>Nenhuma</font>';
+
+                        while(!$RsPapel->EOF) {
+                            echo $RsPapel->fields[0] . '<br />';
+                            $RsPapel->MoveNext();
+                        }
+
+                        ?>
+                </td>
                 <td align="center">
                     <a href="alterar.php?id_usuario=<?=$RsNome->fields[0]?>">
-                        <img src="../../public/images/icons/edit.png" 
-							alt="Alterar Usu&aacute;rio"
-							title="Alterar Usu&aacute;rio" />
-                    </a>
-					
-                    &nbsp;&nbsp;
-                    <a href="excluir_action.php?id_usuario=<?=$RsNome->fields[0]?>" 
-						onclick="return confirm('Deseja realmente excluir?')">
+                        <img src="../../public/images/icons/edit.png" alt="Alterar Usu&aacute;rio" title="Alterar Usu&aacute;rio" />
+                    </a>&nbsp;&nbsp;
+                    <a href="excluir_action.php?id_usuario=<?=$RsNome->fields[0]?>" onclick="return confirm('Deseja realmente excluir?')">
                         <img src="../../public/images/icons/delete.png" alt="Excluir" />
-                    </a>
-					
+                    </a>		
                 </td>
             </tr>
-            <?php
+                <?php
                 $RsNome->MoveNext();
             }
             ?>

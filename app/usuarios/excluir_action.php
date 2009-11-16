@@ -19,9 +19,9 @@ $conn->Execute("DELETE FROM usuario WHERE id=$id_usuario");
     </head>
     <body>
         <h2>Excluir usu&aacute;rio</h2>
-		<font color="green">Usu&aacute;rio excluido com sucesso!</font>
-		<p>
-			<a href="index.php">Voltar para o controle de usu&aacute;rios</a>
-		</p>
-	</body>
+        <font color="green">Usu&aacute;rio excluido com sucesso!</font>
+        <p>
+            <a href="index.php">Voltar para o controle de usu&aacute;rios</a>
+        </p>
+    </body>
 </html>

@@ -22,7 +22,7 @@ WHERE
     u.id = '.$id_usuario;
 
 $RsUsuario = $conn->Execute($sqlUsuario);
-
+$conn->Execute($sql);
 $RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
 
 ?>
@@ -85,7 +85,7 @@ $RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
                 </tr>
             </table>
 
-            <div class="box_geral">
+            <div class="panel">
                 <strong>Pessoa:</strong><br />
                 <?=$RsUsuario->fields[3]?> - <?=$RsUsuario->fields[4]?><br />
                 <strong>Setor:</strong><br />
@@ -122,25 +122,25 @@ $RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
                     <select name="permissao[]" id="permissao[]" multiple="multiple" size="4">
                         <?php
 
-						//Permissoes de usuario
+                        //Permissoes de usuario
 
-						$sqlPapelUsuario =  'SELECT ref_papel '.
-											'FROM usuario_papel '.
-											'WHERE ref_usuario = '.$RsUsuario->fields[0];
-					
-						$arr_papel_usuario = $conn->adodb->GetCol($sqlPapelUsuario);
+                        $sqlPapelUsuario =  'SELECT ref_papel '.
+                            'FROM usuario_papel '.
+                            'WHERE ref_usuario = '.$RsUsuario->fields[0];
 
-						$arr_papel = $conn->adodb->GetAll('SELECT papel_id, descricao, nome FROM papel');
+                        $arr_papel_usuario = $conn->adodb->GetCol($sqlPapelUsuario);
 
-						foreach($arr_papel as $papel){
-							if(in_array($papel['papel_id'],$arr_papel_usuario)){
-								echo '<option value="'.$papel['papel_id'].'" selected="selected" >';
-		                        echo $papel['nome']."</option>";
-							}else{
-								echo '<option value="'.$papel['papel_id'].'" >';
-		                      	echo $papel['nome']."</option>";
-							}
-						}
+                        $arr_papel = $conn->adodb->GetAll('SELECT papel_id, descricao, nome FROM papel');
+
+                        foreach($arr_papel as $papel) {
+                            if(in_array($papel['papel_id'],$arr_papel_usuario)) {
+                                echo '<option value="'.$papel['papel_id'].'" selected="selected" >';
+                                echo $papel['nome']."</option>";
+                            }else {
+                                echo '<option value="'.$papel['papel_id'].'" >';
+                                echo $papel['nome']."</option>";
+                            }
+                        }
                         ?>
                     </select>
                 </p>

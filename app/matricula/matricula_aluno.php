@@ -112,7 +112,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
                 <h1>Processo de Matrícula</h1>
                 <h4>Identifica&ccedil;&atilde;o do Per&iacute;odo e do Aluno: Etapa 1/2</h4>
 
-                <div class="box_geral">
+                <div class="panel">
 
                     <!-- Entrada do Periodo -->
                     Selecione um per&iacute;odo:<br />

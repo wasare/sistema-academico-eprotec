@@ -76,7 +76,7 @@ $Result3 = $conn->Execute("SELECT descricao, id FROM tipos_curso ORDER BY 1 DESC
 			class="botao"
 			onclick="history.back(-1);return false;" />
 		
-		<div class="box_geral">
+		<div class="panel">
 			Per&iacute;odo:<br />
 			<span id="sprytextfield1">
                 <input name="periodo1" type="text" id="periodo2" size="10" onchange="ChangeCode('periodo1','periodo')" />
