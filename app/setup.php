@@ -20,7 +20,7 @@ session::init($param_conn);
 /* 
  * Verifica a autenticacao do usuario
  */
-auth::check_login($BASE_URL, $SESS_TABLE, $LOGIN_LOG_FILE);
+//auth::check_login($BASE_URL, $SESS_TABLE, $LOGIN_LOG_FILE);
 
 /*
  * Dados do usuario autenticado
