@@ -93,12 +93,31 @@ class connection_factory {
         return $ResultSet;
     }
     /**
-     * 
+     * Realiza uma consulta retornando um vetor multidimensional
      * @param string $sql
      * @return array
      */
     public function get_all($sql){
         return $this->adodb->GetAll($sql);
+    }
+
+    /**
+     * Realiza uma consulta retornando um vetor unidimensional
+     * da primeira linha
+     * @param string $sql
+     * @return array
+     */
+    public function get_row($sql){
+        return $this->adodb->GetRow($sql);
+    }
+
+    /**
+     * Realiza uma consulta retornando o primeiro valor
+     * @param string $sql
+     * @return var
+     */
+    public function get_one($sql){
+        return $this->adodb->GetOne($sql);
     }
 }
 
