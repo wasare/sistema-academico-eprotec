@@ -34,6 +34,16 @@ class connection_factory {
         $this->open();
     }
 
+	/**
+	 * Exibe o erro na tela e interrompe a execução
+     */
+	public function show_error($error_msg) {
+
+		die('<h2 style="color: red">DB: Erro ao acessar o banco de dados</h2>'.
+                        '<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
+                        $error_msg .'</div>');
+	}
+
     /**
      * Abre a conexao com o banco de dados
      */
@@ -54,17 +64,13 @@ class connection_factory {
             if($this->conn_persistent) {
             // Conexao persistente
                 if(!$this->adodb->PConnect($conn_data)) {
-                    die('<h2 style="color: red">DB: Erro ao conectar com o banco de dados</h2>'.
-                        '<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
-                        $this->adodb->ErrorMsg() .'</div>');
+					$this->show_error($this->adodb->ErrorMsg());
                 }
             }
             else {
             // Conexao nao persistente
                 if(!$this->adodb->Connect($conn_data)) {
-                    die('<h2 style="color: red">DB: Erro ao conectar com o banco de dados</h2>'.
-                        '<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
-                        $this->adodb->ErrorMsg() .'</div>');
+					$this->show_error($this->adodb->ErrorMsg());
                 }
             }
         }
@@ -86,9 +92,7 @@ class connection_factory {
      */
     public function Execute($sql) {
         if (!$ResultSet = $this->adodb->Execute($sql)) {
-            die('<h2 style="color: red">DB: Erro ao executar consulta</h2>'.
-                '<div style="background-color: #ffffcc; padding:12px; margin:12px; font-size: 10px; width: 70%;">'.
-                $this->adodb->ErrorMsg() .'</div>'.'<pre>'. $sql .'</pre>');
+			$this->show_error($this->adodb->ErrorMsg() .'<br />'. $sql);
         }
         return $ResultSet;
     }
@@ -98,7 +102,11 @@ class connection_factory {
      * @return array
      */
     public function get_all($sql){
-        return $this->adodb->GetAll($sql);
+		$ret = $this->adodb->GetAll($sql);
+        if($ret === FALSE)
+			$this->show_error($this->adodb->ErrorMsg() .'<br />'. $sql);
+		else
+			return $ret;
     }
 
     /**
@@ -108,7 +116,11 @@ class connection_factory {
      * @return array
      */
     public function get_row($sql){
-        return $this->adodb->GetRow($sql);
+		$ret = $this->adodb->GetRow($sql);
+        if($ret === FALSE)
+			$this->show_error($this->adodb->ErrorMsg() .'<br />'. $sql);
+		else
+			return $ret;
     }
 
     /**
@@ -117,7 +129,11 @@ class connection_factory {
      * @return var
      */
     public function get_one($sql){
-        return $this->adodb->GetOne($sql);
+		$ret = $this->adodb->GetOne($sql);
+        if($ret === FALSE)
+			$this->show_error($this->adodb->ErrorMsg() .'<br />'. $sql);
+		else
+			return $ret;
     }
 }
 
