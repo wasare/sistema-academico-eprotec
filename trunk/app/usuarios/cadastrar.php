@@ -15,11 +15,11 @@ $RsPapel = $conn->Execute('SELECT papel_id, descricao, nome FROM papel');
         <title>SA</title>
         <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
         <script src="../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
-        <script src="../../lib/SpryAssets/passwordvalidation/SpryValidationPassword.js" type="text/javascript"></script>
-        <script src="../../lib/SpryAssets/confirmvalidation/SpryValidationConfirm.js" type="text/javascript"></script>
+        <script src="../../lib/Spry/widgets/passwordvalidation/SpryValidationPassword.js" type="text/javascript"></script>
+        <script src="../../lib/Spry/widgets/confirmvalidation/SpryValidationConfirm.js" type="text/javascript"></script>
         <link href="../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
-        <link href="../../lib/SpryAssets/passwordvalidation/SpryValidationPassword.css" rel="stylesheet" type="text/css" />
-        <link href="../../lib/SpryAssets/confirmvalidation/SpryValidationConfirm.css" rel="stylesheet" type="text/css" />
+        <link href="../../lib/Spry/widgets/passwordvalidation/SpryValidationPassword.css" rel="stylesheet" type="text/css" />
+        <link href="../../lib/Spry/widgets/confirmvalidation/SpryValidationConfirm.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <h2>Cadastrar usu&aacute;rio</h2>
