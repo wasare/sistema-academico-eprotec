@@ -47,10 +47,10 @@ if($_POST) {
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
         <title>SA</title>
         <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
-        <script src="../../lib/SpryAssets/passwordvalidation/SpryValidationPassword.js" type="text/javascript"></script>
-        <script src="../../lib/SpryAssets/confirmvalidation/SpryValidationConfirm.js" type="text/javascript"></script>
-        <link href="../../lib/SpryAssets/passwordvalidation/SpryValidationPassword.css" rel="stylesheet" type="text/css" />
-        <link href="../../lib/SpryAssets/confirmvalidation/SpryValidationConfirm.css" rel="stylesheet" type="text/css" />
+        <script src="../../lib/Spry/widgets/passwordvalidation/SpryValidationPassword.js" type="text/javascript"></script>
+        <script src="../../lib/Spry/widgets/confirmvalidation/SpryValidationConfirm.js" type="text/javascript"></script>
+        <link href="../../lib/Spry/widgets/passwordvalidation/SpryValidationPassword.css" rel="stylesheet" type="text/css" />
+        <link href="../../lib/Spry/widgets/confirmvalidation/SpryValidationConfirm.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <h2>Alterar senha do usu&aacute;rio "<?=$sa_usuario?>"</h2>
