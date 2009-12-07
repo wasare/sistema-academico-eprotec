@@ -9,7 +9,7 @@ require_once("../../../app/setup.php");
  */
 $conn = new connection_factory($param_conn);
 
-$resp  = '<strong>Entre com a turma do curso selecionado:</strong><br />';
+$resp  = '<strong>Selecione a turma:</strong><br />';
 
 $sql = "
 SELECT DISTINCT turma
