@@ -59,7 +59,7 @@ $desc_curso = $conn->get_row($sql_curso);
 /**
  * Conteudo da legenda
  */
-$sql_legenda = "
+/*$sql_legenda = "
 SELECT
     o.id AS diario,
     d.id,
@@ -80,21 +80,53 @@ WHERE
     o.turma = '".$turma."' AND
     o.ref_curso = ".$curso." AND
     is_cancelada = '0'
-ORDER BY d.descricao_disciplina ;";
+ORDER BY diario;";*/
+
+$sql_legenda = "
+SELECT
+    o.id AS diario,
+    d.id,
+    d.descricao_disciplina,
+    d.descricao_extenso,
+    d.carga_horaria,
+    p.id || ' - ' || p.nome AS prof,
+    o.fl_concluida,
+    o.fl_digitada
+FROM
+    disciplinas d, disciplinas_ofer o, disciplinas_ofer_prof dp, pessoas p
+WHERE
+    o.ref_periodo = '".$periodo."' AND
+    d.id = o.ref_disciplina AND
+    dp.ref_disciplina_ofer = o.id AND
+    dp.ref_professor IS NOT NULL AND
+    p.id = dp.ref_professor AND
+    o.id IN(
+            SELECT DISTINCT m.ref_disciplina_ofer
+            FROM contratos c, matricula m
+            WHERE
+                c.id = m.ref_contrato AND
+                c.ref_curso = $curso AND
+                c.turma = '$turma'
+        ) AND
+    o.ref_curso = ".$curso." AND
+    is_cancelada = '0'
+ORDER BY diario;";
+
 
 $arr_legenda = $conn->get_all($sql_legenda);
 
-if(count($arr_legenda) == 0) {
+/*if(count($arr_legenda) == 0) {
     echo '<script language="javascript">window.alert("Nenhum diario encontrado!");</script>';
-    echo '<meta http-equiv="refresh" content="0;url=index.php">';
+    //echo '<meta http-equiv="refresh" content="0;url=index.php">';
+    echo '<script language="javascript">window.close();</script>';
     exit;
 }
-
+*/
 
 /**
  * Consulta principal
  */
-$sql_rel = "
+/*$sql_rel = "
 SELECT * FROM (
     SELECT DISTINCT
         b.nome, b.id as matricula, a.nota_final, a.num_faltas, ref_disciplina_ofer
@@ -115,6 +147,36 @@ SELECT * FROM (
         a.ref_motivo_matricula = '0'
 ) AS T1
 ORDER BY lower(to_ascii(nome)), ref_disciplina_ofer";
+*/
+
+$sql_rel = "
+SELECT * FROM (
+    SELECT DISTINCT
+        b.nome, b.id as matricula, a.nota_final, a.num_faltas, ref_disciplina_ofer
+    FROM
+        matricula a, pessoas b
+    WHERE
+        (a.dt_cancelamento is null) AND
+        a.ref_disciplina_ofer IN (
+            SELECT
+                id from disciplinas_ofer
+            WHERE
+                fl_concluida = 't' AND
+                is_cancelada = '0' AND
+                ref_curso = $curso AND
+                ref_periodo = '$periodo'
+        ) AND
+        a.ref_pessoa = b.id AND
+        a.ref_pessoa IN(
+            SELECT DISTINCT ref_pessoa
+            FROM contratos
+            WHERE
+                ref_curso = $curso AND
+                turma = '$turma'
+        ) AND
+        a.ref_motivo_matricula = '0'
+) AS T1
+ORDER BY lower(to_ascii(nome)), ref_disciplina_ofer";
 
 
 $arr_rel = $conn->get_all($sql_rel);
@@ -130,6 +192,7 @@ foreach($arr_rel as $rel) {
 
 //Remove os valores duplicados
 $arr_diarios = array_unique($arr_diarios);
+sort($arr_diarios);
 
 //Remove os valores duplicados
 $arr_alunosid = array_unique($arr_alunosid);
@@ -277,7 +340,7 @@ $num_alunos  = count($arr_alunosid);
                             <?php
                             foreach($arr_rel as $rel) {
                                 if($alunoid === $rel['matricula'] AND $diario === $rel['ref_disciplina_ofer'])
-                                    echo $rel['nota_final'];
+                                    echo number_format($rel['nota_final'],2,',','.');
                             }
                             ?>&nbsp;
                 </td>

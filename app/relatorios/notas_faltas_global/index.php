@@ -36,7 +36,7 @@ $busca1  = new search('periodo','periodo_id','periodos_list', 'form1', '../perio
                 </a>
             </div>
             <div class="panel" style="height:300px;">
-                <h3>Filtro - Etapa 1 de 2</h3>
+                <h3>Etapa 1 de 2</h3>
                 Per&iacute;odo:<br />
                 <span class="comentario">Comece digitando o ano para listar os per&iacute;odos ou informe o c&oacute;digo do per&iacute;odo no primeiro campo.</span>
                 <br />
@@ -53,6 +53,7 @@ $busca1  = new search('periodo','periodo_id','periodos_list', 'form1', '../perio
                     <option value="<?=$campus['id']?>"><?=$campus['nome_campus']?></option>
                     <?php endforeach; ?>
                 </select>
+                <br /><br />
                 <p>
                     <input type="submit" value="Pr&oacute;ximo" />
                 </p>
