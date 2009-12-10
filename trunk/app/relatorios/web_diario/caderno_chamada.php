@@ -1,6 +1,6 @@
 <?php 
 
-require_once('../../setup.php');
+require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'core/date.php');
 require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
@@ -45,13 +45,11 @@ ica, sans-serif"><strong>Caderno de Chamada</strong></font></div></td>
   </tr>
 
 </table>
+<?=papeleta_header($diario_id)?>
 
+<br />
 
 <?php
-
-
-	echo papeleta_header($diario_id);
-	echo '<br />';
 
    $nr_pag = 1;
    $data = $data_em ;         //Data sugerida pelo usu?rio

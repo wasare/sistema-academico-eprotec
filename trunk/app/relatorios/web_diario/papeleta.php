@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../setup.php');
+require_once(dirname(__FILE__). '/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
 
 $conn = new connection_factory($param_conn);
@@ -149,7 +149,7 @@ if( $fl_digitada == 'f') {
     
 $sql_carga_horaria = "SELECT get_carga_horaria_realizada($diario_id), get_carga_horaria(get_disciplina_de_disciplina_of($diario_id));"; 
 
-$carga_horaria = $conn->adodb->getRow($sql_carga_horaria);
+$carga_horaria = $conn->get_row($sql_carga_horaria);
 
 $ch_prevista = $carga_horaria['get_carga_horaria'];
 $ch_realizada = $carga_horaria['get_carga_horaria_realizada'];

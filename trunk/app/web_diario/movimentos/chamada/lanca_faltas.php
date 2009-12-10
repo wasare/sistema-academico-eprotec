@@ -1,13 +1,33 @@
 <?php
 
-include_once('../../webdiario.conf.php');
+require_once(dirname(__FILE__) .'/../../../setup.php');
+require_once($BASE_DIR .'core/web_diario.php');
+
+$conn = new connection_factory($param_conn);
+
+$diario_id = (int) $_POST['diario_id'];
+$operacao = $_POST['operacao'];
+
+/*
+TODO: verifica o direito de acesso do usuário ao diário informado
+*/
+
+if (is_finalizado($diario_id)){
+
+    echo '<script language="javascript" type="text/javascript">';
+    echo 'alert("ERRO! Este diário está finalizado e não pode ser alterado!");';
+    echo 'window.close();';
+    echo '</script>';
+    exit;
+}
 
 
-$disciplina = $_POST['disc'];
-$getofer = $_POST['ofer'];
-$curso = $_POST['curso'];
-$periodo = $_SESSION['periodo'];
-$id = $_POST['id'];
+///$disciplina = $_POST['disc'];
+//$getofer = $_POST['ofer'];
+///$curso = $_POST['curso'];
+$periodo = $_SESSION['web_diario_periodo_id'];
+
+//$id = $_POST['id'];
 
 
 $oferecida = $getofer;
@@ -15,35 +35,35 @@ $oferecida = $getofer;
 $flag_falta = $_POST['flag_falta'];
 $_SESSION['flag_falta'] = $flag_falta;
 
-$aulatipo = $_POST['aulatipo'];
+$aula_tipo = $_POST['aula_tipo'];
 $conteudo = trim($_POST['conteudo']);
 
 $_SESSION['conteudo'] = $conteudo;
 
-$_SESSION['aulatipo'] = $aulatipo;
+$_SESSION['aula_tipo'] = $aula_tipo;
 
-$num_aulas = $aulatipo[strlen($aulatipo) - 1];
+$num_aulas = $aula_tipo[strlen($aula_tipo) - 1];
 
 
-if(!is_numeric($aulatipo) || (strlen($aulatipo) < 1 || strlen($aulatipo) > 8 ))
+if(!is_numeric($aula_tipo) || (strlen($aula_tipo) < 1 || strlen($aula_tipo) > 8 ))
 {
    echo '<script language=javascript> window.alert("Você deverá selecionar a quantidade de aulas para esta chamada.");     javascript:window.history.back(1);</script>';
    exit;
 	
 }
  
-if($_POST['selectdia'] == "")
+if($_POST['select_dia'] == "")
 {
-  echo '<font size=2><b>Voc&ecirc; n&atilde;o selecionou o DIA ! <a href="javascript:history.go(-1)
+	 echo '<font size=2><b>Voc&ecirc; n&atilde;o selecionou o DIA ! <a href="javascript:history.go(-1)
 ">Voltar</a>!</b></font>';
   exit;
 }
 else
 {
-  $selectdia = $_POST['selectdia'];
+  $select_dia = $_POST['select_dia'];
 }
 
-if($_POST['selectmes'] == "")
+if($_POST['select_mes'] == "")
 {
   echo '<font size=2><b>Voc&ecir;  n&atilde;o selecionou o M&Ecirc;S ! <a href="javascript:history.
 go(-1)">Voltar</a>!</b></font>';
@@ -51,22 +71,22 @@ go(-1)">Voltar</a>!</b></font>';
 }
 else
 {
-  $selectmes = $_POST['selectmes'];
+  $select_mes = $_POST['select_mes'];
 }
 
 
-if($_POST['selectano'] == "")
+if($_POST['select_ano'] == "")
 {
   echo '<font size=2><b>Voc&ecirc; n&atilde;o selecionou o ANO ! <a href"javascript:history.go(-1)">Voltar</a>!</b></font>';
   exit;
 }
 else
 {
-  $selectano = $_POST['selectano'];
+  $select_ano = $_POST['select_ano'];
 }
 
 
-//VALIDAR CONTEUDO AQUI
+// VALIDAR CONTEUDO AQUI
 
 if($conteudo == '')
 {
@@ -74,134 +94,78 @@ if($conteudo == '')
   exit;
 }
 
-
-$data_bd = $selectdia . '/' . $selectmes . '/'. $selectano;
-
-//$data_cons = $selectdia . '/' . $selectmes . '/'. $selectano;
-$data_cons = $selectano . '-' . $selectmes . '-'. $selectdia;
-
-
-$data_ok = $selectdia . "/" . $selectmes . '/'. $selectano;
-$data_chamada = $selectdia . "/" . $selectmes . '/'. $selectano;
-
-$datadehoje = date ("d/m/Y");
-
+$data_consulta = $select_ano . '-' . $select_mes . '-'. $select_dia;
+$data_chamada = $select_dia . "/" . $select_mes . '/'. $select_ano;
 
 /* SELECIONA A DATA PARA VERIFICA DUPLICADOS */
-$sqld1 = 'SELECT dia, flag 
+$sqld1 = "SELECT dia, flag 
 	  FROM
       diario_seq_faltas
       WHERE
-      dia = \''.$data_cons.'\' AND
-      periodo = \''.$periodo.'\' AND
-      ref_disciplina_ofer = '.$getofer.';';
-//
-//id_prof = \''.$id.'\' AND
-//disciplina = \''.$disciplina.'\' AND
-//echo $sqld1; die;
+      dia = '". $data_consulta ."' AND
+      periodo = '" . $periodo ."' AND
+      ref_disciplina_ofer = ". $diario_id .";";
+
+$seq_faltas = $conn->get_row($sqld1);
 
 
-$res = consulta_sql($sqld1);
+$dia = $seq_faltas['dia'];
+$flag = $seq_faltas['flag'];
 
-if(!is_string($res))
-{
-    while($linha = pg_fetch_array($res))
-    {
-        $dia = $linha['dia'];
-        $flag = $linha['flag'];
-    }
-}
-else
-{
-	echo $res;
-    exit;
-}
-			
+
 if((@$flag > '0') AND (@$flag <= '8'))
 {
 
-	echo '<script language=javascript> window.alert("Já existe chamada realizada para esta data.");   javascript:window.history.back(1); </script>';
-	//msgJaExiste();
-	 die;
+	die('<script language=javascript> window.alert("Já existe chamada realizada para esta data.");   javascript:window.history.back(1); </script>');
 }
 else {
 
 	// NÃO HOUVE FALTAS PARA A CHAMADA
 	if($flag_falta === 'F') {
 
-		include_once('registra_faltas.php');
+		require_once('registra_faltas.php');
 		exit;
 	}
 }
 	
-
+ // PREPARA FORMULARIO PARA LANCAMENTO DE FALTAS
                
 $sql1 = "SELECT
   matricula.ordem_chamada,
   pessoas.nome,
   pessoas.id,
-  pessoas.ra_cnec
+  matricula.ref_pessoa
 FROM
   matricula
   INNER JOIN pessoas ON (matricula.ref_pessoa = pessoas.id)
 WHERE
   (matricula.ref_periodo = '$periodo') AND
-  (matricula.ref_disciplina_ofer = '$oferecida') AND 
+  (matricula.ref_disciplina_ofer = $diario_id) AND 
   (matricula.dt_cancelamento is null) AND
   (matricula.ref_motivo_matricula = 0)
 ORDER BY
    lower(to_ascii(pessoas.nome));"; 
   
-  //echo $sql1;
-  //die;
-  
 
-$query1 = pg_exec($dbconnect, $sql1);
+$alunos = $conn->get_all($sql1);
 
 
-$sqlCurso = "SELECT DISTINCT
-             d.ref_curso
-         FROM
-          disciplinas_ofer d
-        WHERE
-          d.ref_periodo = '$periodo' AND
-          d.id = '$oferecida' AND
-          d.is_cancelada = '0';";
-//d.ref_disciplina = '$disciplina' AND
-
-
-$qryCurso = consulta_sql($sqlCurso);
-
-if(is_string($qryCurso))
-{
-   echo $qryCurso;
-   exit;
-}
-else
-{
-    while ( $linha = pg_fetch_array($qryCurso) )
-    {
-        $curso = $linha['ref_curso'];
-     }
-}
-
-
+$curso = get_curso($diario_id);
+//$disciplina = get_disciplina($diario_id);
 
 ?>
 
 
 <html>
 <head>
-<a name="topo">
-<title>Diario</title>
+<title><?=$IEnome?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link rel="stylesheet" href="<?php echo $CSS_DIR.'forms.css'; ?>" type="text/css">
-
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
 
 <script language="JavaScript" type="text/JavaScript">
 <!--
 function validate(field) {
-	var valid = "0" + "<?php echo $aulatipo;?>"
+	var valid = "0" + "<?=$aula_tipo?>"
 	var ok = "yes";
 	var temp;
 	for (var i=0; i<field.value.length; i++) {
@@ -210,9 +174,9 @@ function validate(field) {
 	}
 	
 	if (ok == "no") {
-		alert("Você não pode lançar " + field.value + " faltas para uma chamada de " + <?php echo $num_aulas; ?> + " aulas !");
+		alert("Você não pode lançar " + field.value + " faltas para uma chamada de " + <?=$num_aulas?> + " aulas !");
 		//field.focus();
-		field.value = "<? echo $num_faltas; ?>";
+		field.value = "<?=$num_faltas?>";
 		field.select();
    }
 }
@@ -248,111 +212,84 @@ function autoTab(input,len, e) {
 
         return true;
 
-        /* Usando no formulario
-
-
-        <input onKeyUp="return autoTab(this, 3, event);" size="4" maxlength="3">
-
-
+        /* 
+			Usando no formulario
+				<input onKeyUp="return autoTab(this, 3, event);" size="4" maxlength="3">
         */
 
 }
 
 //-->
 </script>
-
-
-<script src="../js/event-listener.js" type="text/javascript"></script>
-<script src="../js/enter-as-tab.js" type="text/javascript"></script>
-
 </head>
 <body onLoad="javascript:document.form1.reset()">
 
-<table width="90%" height="73" border="0">
-  <tr>
-    <td width="471"><div align="center"><font color="#990000" size="4" face="Verdana, Arial, Helvet
-ica, sans-serif"><strong>Lan&ccedil;amento de Faltas</strong></font></div></td>
-  </tr>
-
-</table>
+<div align="left" class="titulo">
+  <h3>Lan&ccedil;amento de faltas da chamada</h3>
+</div>
 <br />
-<?php 
-   print('<form name="form1" method="post" action="registra_faltas.php">');
-   
-   echo '<input type="hidden" name="id" id="id" value="' .$id.'">';
-   echo '<input type="hidden" name="periodo" id="periodo" value="' . $periodo.'">';
-   echo '<input type="hidden" name="disciplina" id="disc" value="' .$disciplina.'">';
-   echo '<input type="hidden" name="oferecida" id="ofer" value="' . $oferecida.'">';
-   echo '<input type="hidden" name="curso" id="curso" value="' . $curso.'">'; 
-   echo '<input type="hidden" name="aulatipo" id="aulatipo" value="' . $aulatipo.'">';
-   echo '<input type="hidden" name="num_aulas" id="num_aulas" value="' . $num_aulas.'">';
-   echo '<input type="hidden" name="data_chamada" id="data_chamada" value="' . $data_chamada.'">';
-   
-  echo getHeaderDisc($oferecida);   
+<?=papeleta_header($diario_id)?>
 
-  echo '<h3>';
-  echo 'Data da Chamada:<font color="blue"> '.$data_chamada.'</font>' ;
-  echo '<br />Quantidade de Aulas: <font color="brown"> '.$num_aulas.'</font>';
-  echo '</h3><a href="chamadas.php?id='.$id.'&getperiodo='. $periodo.'&disc='.$disciplina.'&ofer='.$oferecida.'">Alterar a Data e/ou Quantidade de Aulas</a><br />';
+<form name="envia_faltas" id="envia_faltas" method="post" action="<?=$BASE_URL .'app/web_diario/movimentos/chamada/registra_faltas.php'?>">
+    <input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">
+    <input type="hidden" name="operacao" id="operacao" value="<?=$operacao?>">
+	<input type="hidden" name="aula_tipo" id="aula_tipo" value="<?=$aula_tipo?>">
+    <input type="hidden" name="num_faltas" id="operacao" value="<?=$num_faltas?>">
+    <input type="hidden" name="data_chamada" id="data_chamada" value="<?=$data_chamada?>">
 
-						 
-?>
+  <h3>
+  Data da Chamada: <font color="blue"> <?=$data_chamada?></font>
+  <br />Quantidade de Aulas: <font color="brown"> <?=$num_aulas?></font>
+  </h3>
+	<a href="<?=$BASE_URL .'app/web_diario/requisita.php?do='. $operacao .'&id=' . $diario_id?>"><strong>Alterar a data e/ou quantidade de aulas</strong></a><br />
+
 <br />
 <div align="justify"><font color="#0000CC" size="1,5" face="Verdana, Arial, Helvetica, sans-serif">Informe a quantidade de faltas, quando houver, para cada aluno:</font></div> <br />
 
-<table width="92%" border="0">
-  <tr bgcolor="#666666">
-                                          
-    <td width="6%" align="center"><font color="#FFFFFF"><strong>Faltas</strong></font></td>
-    <td width="6%" align="center"><font color="#FFFFFF"><b>&nbsp;Registro</b></font></td>
-    <td width="88%"><font color="#FFFFFF"><b>&nbsp;Nome</b></font></td>
+<table cellspacing="0" cellpadding="0" class="papeleta">
+  <tr bgcolor="#cccccc">
+    
+	<td align="center"><b>N&ordm; ordem</b></td>                                      
+    <td align="center"><strong>Faltas</strong></td>
+    <td align="center"><b>&nbsp;Matr&iacute;cula</b></font></td>
+    <td><b>&nbsp;Nome do aluno</b></td>
   </tr>
   
 <?php 
 
 $st = '';
-	
-while($linha1 = pg_fetch_array($query1)) 
-{
-   $result2 = $linha1["ra_cnec"];
-   $result3 = $linha1["ordem_chamada"];
-   $result = $linha1["nome"];
-   
-   if($st == '#F3F3F3') 
-   {
-      $st = '#E3E3E3';
-   } 
-   else 
-   {
-      $st ='#F3F3F3';
-   } 
-   print (' <tr bgcolor="' . $st . '">
-            <td align="center">
-            <input type="text" name="faltas['.$result2.']" value="" maxlength="1" size="1" onblur="validate(this);" onkeyup="return autoTab(this, 1, event);"/>
-            </td>
-            <td align="center"> ' . $result2 . ' </td>
-            <td> ' . $result . ' </td>
-            </tr>');
-}
 
+$ordem = 1;
+	
+	foreach($alunos as $aluno) :
+
+		$matricula = $aluno['ref_pessoa'];
+		$nome = $aluno['nome'];
+   
+		$st = ($st == '#F3F3F3') ? '#E3E3E3' : '#F3F3F3'; 
+?>
+	<tr bgcolor="<?=$st?>">
+		<td align="center"><?=$ordem?></td>
+		<td align="center">
+        <input type="text" name="faltas[<?=$matricula?>]" value="" maxlength="1" size="1" onblur="validate(this);" onkeyup="return autoTab(this, 1, event);"/>
+        </td>
+        <td align="center"><?=$matricula?></td>
+        <td><?=$nome?></td>
+        </tr>
+<?php
+		$ordem++;
+
+	endforeach;
 ?>
 </table>
 <br />
 
 
-  <input type="submit" name="Submit" value="Salvar Chamada -->">
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="button" name="cancelar" value="Voltar" onClick="javascript:window.history.back(1);" />
-  <input type="hidden" name="faltas_ok" value="<?php echo $_SESSION['flag_falta']; ?>" />
+  <input type="submit" name="Submit" value="Salvar">
+  &nbsp;&nbsp;ou&nbsp;
+    <a href="#" onclick="javascript:window.close();">cancelar chamada</a>
+  <input type="hidden" name="faltas_ok" value="<?=$_SESSION['flag_falta']?>" />
 </form>
-
-      <script type="text/javascript">
-//<![CDATA[
-
-      enterAsTab();
-
-//]]>
-      </script>
-      
+<br />      
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../../app/setup.php');
+require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'core/date.php');
 require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
@@ -31,28 +31,34 @@ if(isset($_POST['ok']) AND $_POST['ok'] == 'OK1')
     
     if($q === FALSE)
     {
-		envia_erro($sql1);
+		envia_erro($sql1 ."\n". $conn->ErrorMsg());
         exit;
     }
 
-   print ('<script type="text/javascript"> 
-   window.alert("Conteudo de aula alterado com sucesso !! ");
-   self.location.href = "'. $BASE_URL .'app/relatorios/web_diario/conteudo_aula.php?diario_id='.$_POST['diario_id'].'"</script>');
+	echo '<script type="text/javascript">  window.alert("Conteudo de aula alterado com sucesso! ");';
+	if(isset($_SESSION['web_diario_do']))
+		echo 'self.location.href = "'. $BASE_URL .'app/web_diario/requisita.php?do='. $_SESSION['web_diario_do'] .'&id='.$_POST['diario_id'];
+	else
+		echo 'self.location.href = "'. $BASE_URL .'app/relatorios/web_diario/conteudo_aula.php?diario_id='.$_POST['diario_id'];
+	
+	echo '"</script>';
 }
-
-$sql1 = "SELECT 
+else
+{
+	$sql1 = "SELECT 
 		conteudo
                FROM
                diario_seq_faltas
                WHERE
                id = $flag;";
 			   
-$conteudo = $conn->adodb->getOne($sql1);
+	$conteudo = $conn->adodb->getOne($sql1);
 
-if($conteudo === FALSE)
-{
-	envia_erro(__FILE__ . "\n" . $sql1);
-    exit;
+	if($conteudo === FALSE)
+	{
+		envia_erro(__FILE__ . "\n" . $sql1 ."\n". $conn->ErrorMsg());
+		exit;
+	}
 }
 
 ?>
