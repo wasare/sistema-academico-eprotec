@@ -1,8 +1,6 @@
 <?php
 
-//require_once('../webdiario.conf.php');
-
-require_once('../../setup.php');
+require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
 

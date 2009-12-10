@@ -9,7 +9,9 @@
 
 require_once(dirname(__FILE__) .'/../app/setup.php');
 
-$conn = new connection_factory($param_conn);
+
+// CONEXAO ABERTA PARA TRABALHAR COM TRANSACAO (NÃO PERSISTENTE)
+$conn = new connection_factory($param_conn,FALSE);
 
 
 
@@ -21,85 +23,122 @@ function papeleta_header($diario_id)
           a.id || ' - ' || a.descricao as cdesc,
           b.id || ' - ' || b.descricao_extenso || '  ' || '(' || d.id || ')' as descricao_extenso,
           c.descricao as perdesc,
+          g.nome_campus,
           d.ref_curso,
           f.nome
          FROM
-          cursos a LEFT OUTER JOIN disciplinas_ofer d ON (a.id = d.ref_curso) LEFT OUTER JOIN disciplinas b ON (d.ref_disciplina = b.id) LEFT OUTER JOIN periodos c ON (c.id = d.ref_periodo) LEFT OUTER JOIN disciplinas_ofer_prof e ON (e.ref_disciplina_ofer = d.id) LEFT OUTER JOIN pessoas f ON (e.ref_professor = f.id)
+          cursos a LEFT OUTER JOIN disciplinas_ofer d ON (a.id = d.ref_curso) LEFT OUTER JOIN disciplinas b ON (d.ref_disciplina = b.id) LEFT OUTER JOIN periodos c ON (c.id = d.ref_periodo) LEFT OUTER JOIN disciplinas_ofer_prof e ON (e.ref_disciplina_ofer = d.id) LEFT OUTER JOIN pessoas f ON (e.ref_professor = f.id)  LEFT OUTER JOIN campus g ON (d.ref_campus =  g.id)
         WHERE
           d.id = $diario_id AND
           d.is_cancelada = '0'
         ORDER BY f.nome;";
 
-    $qry9 = $conn->adodb->getAll($sql9);
+    $qry9 = $conn->get_all($sql9);
 
 	$profs = count($qry9);
 	
 	foreach( $qry9 as $linha9 )
     {
-        $Disc['curso'] = $linha9["cdesc"];
-        $Disc['disc']  = $linha9["descricao_extenso"];
-        $Disc['periodo']   = $linha9["perdesc"];
-        $Disc['ref_curso']   = $linha9["ref_curso"];
-        $Disc['prof'][]   = $linha9["nome"];
+        $curso = $linha9["cdesc"];
+        $disciplina  = $linha9["descricao_extenso"];
+        $periodo   = $linha9["perdesc"];
+        $ref_curso   = $linha9["ref_curso"];
+        $prof[]   = $linha9["nome"];
+        $campus = $linha9['nome_campus'];
     }
 
 	$ret = '';
-    $ret .= '<input type="hidden" name="curso" id="curso" value="'.$Disc['ref_curso'].'" />';
+    $ret .= '<input type="hidden" name="curso" id="curso" value="'. $ref_curso .'" />';
 
-    $ret = 'Curso: <b>'.$Disc['curso'].'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
-    $ret .= 'Disciplina: <b>'.$Disc['disc'].'</b><br>';
-    $ret .= 'Per&iacute;odo: <b>'.$Disc['periodo'].'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
+    $ret = 'Curso: <b>'. $curso .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
+    $ret .= 'Disciplina: <b>'. $disciplina .'</b><br>';
+    $ret .= 'Per&iacute;odo: <b>'. $periodo .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
+	$ret .= 'Campus: <b>'. $campus .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
     $ret .= 'Professor(a): ';
 
-    for($p = 0 ; $p < $profs; $p++) {
+	$i = 1;
+    foreach($prof as $p) {
 
-        $ret .= '&nbsp;&nbsp;<b>'.$Disc['prof'][$p].'</b><br />';
+        $ret .= '<b>'. $p .'</b><br />';
 
-        if(($profs - 1) > $p) {
-            $ret .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        if($profs != $i) {
+            $ret .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';//&nbsp;';
+
         }
+		$i++;
     }
-
     return $ret;	
-
 } 
 
-function getCurso($p,$d,$o) {
+function get_curso($diario_id) {
 
 	global $conn;
  
 	$sql9 = "SELECT
              d.ref_curso
              FROM
-              cursos a,
-              disciplinas b,
-              periodos c,
               disciplinas_ofer d  where
-              d.ref_periodo = '$p' AND
-              b.id = '$d' AND
-              c.id = '$p' AND
-              d.id = '$o' AND
-              a.id = d.ref_curso;";
+              d.id = $diario_id;";
 
-    return $conn->adodb->getOne($sql9);
+    return $conn->get_one($sql9);
 }
 
-
-function is_inicializado($ofer) {
+function get_curso_tipo($diario_id) {
 
 	global $conn;
 
-    $grupo = ("%-%-%-" . $ofer);
+    // CONSULTA O NIVEL DO CURSO
+    $sql = 'SELECT
+                ref_tipo_curso
+                        FROM
+                            cursos c, disciplinas_ofer d
+                        WHERE
+                             c.id = ref_curso AND
+                         d.id = '. $diario_id .';';
+
+    return $conn->get_one($sql);
+
+}
+
+function get_disciplina($diario_id) {
+
+    global $conn;
+
+    $sql9 = "SELECT
+             d.ref_disciplina
+             FROM
+              disciplinas_ofer d  where
+              d.id = $diario_id;";
+
+    return $conn->get_one($sql9);
+}
+
+function get_ano_periodo($periodo) {
+
+	global $conn;
+
+    $qry1 = "SELECT
+					 to_char(dt_inicial, 'YYYY'), to_char(dt_final, 'YYYY')
+                FROM 
+					periodos WHERE id = '". $periodo ."';";
+
+    return array_unique($conn->get_row($qry1));
+}
+
+
+function is_inicializado($diario_id) {
+
+	global $conn;
+
+    $grupo = ("%-%-%-" . $diario_id);
 
     $sql1 = "SELECT
-         grupo
+         COUNT(grupo)
          FROM diario_formulas
          WHERE
          grupo ILIKE '$grupo';";
 
-    $qry1 = $conn->adodb->getCol($sql1);
-
-	$num_reg = count($qry1);
+    $num_reg = $conn->get_one($sql1);
 
     if ($num_reg == 6)
         return TRUE;
@@ -107,7 +146,25 @@ function is_inicializado($ofer) {
         return FALSE;
 }
 
-function inicializaDiario($ofer) {
+function is_finalizado($diario_id) {
+
+	global $conn;
+  	$sql = 'SELECT
+                  fl_digitada
+                     FROM
+                        disciplinas_ofer d
+                     WHERE
+                        d.id = '. $diario_id .';';
+
+  	$diario = $conn->get_one($sql);
+
+    if ($diario == 't')
+        return TRUE;
+    else
+        return FALSE;
+}
+
+function ini_diario($ofer) {
 
 	global $conn;
 	
@@ -148,7 +205,7 @@ function inicializaDiario($ofer) {
     $grupo = ($prof . "-" . $periodo . "-" . $disc . "-" . $ofer);
     $grupo_novo = ("%-%-%-" . $ofer); 
     
-    $curso = getCurso($periodo,$disc,$ofer);
+    $curso = get_curso($ofer);
 
     $ret = TRUE;
 
@@ -215,7 +272,7 @@ function inicializaDiario($ofer) {
         ORDER BY
                 id_ref_pessoas;';
 
-	$qry = $conn->adodb->getAll($qryNotas);
+	$qry = $conn->get_all($qryNotas);
 
     $qryDiario = "BEGIN;";
 
@@ -249,6 +306,42 @@ function inicializaDiario($ofer) {
 	return $ret;
 }
 
+// function adiciona/exclui falta
+function falta($ref_pessoa, $diario_id, $qtde, $par1, $qry='BEGIN;')
+{
+	global $conn;
+
+	$sqlf = "SELECT
+                    count(ra_cnec) AS num_faltas
+                FROM
+                    diario_chamadas a
+                WHERE
+                    (a.ref_disciplina_ofer = $diario_id) AND
+                    (ra_cnec = '$ref_pessoa');";
+
+
+   $total_faltas = $conn->get_one($sqlf);
+
+
+   if($par1 == "SOMA")
+      $total_faltas = $total_faltas + $qtde;
+
+   if($par1 == "SUB")
+      $total_faltas = $total_faltas - $qtde;
+
+   $sqlfalta = $qry . "UPDATE
+                  matricula
+               SET
+                  num_faltas = $total_faltas
+               WHERE
+                  ref_pessoa = $ref_pessoa AND
+                  ref_disciplina_ofer = $diario_id;";
+
+	$sqlfalta .= 'COMMIT;';
+
+   $conn->Execute($sqlfalta);
+
+}
 
 
 

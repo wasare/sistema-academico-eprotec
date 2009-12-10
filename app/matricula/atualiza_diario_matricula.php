@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../setup.php');
+require_once(dirname(__FILE__) .'/../setup.php');
 
 $conn = new connection_factory($param_conn);
 
@@ -8,8 +8,9 @@ $conn = new connection_factory($param_conn);
 function envia_erro($msg) {
 
 	// ENVIA EMAIL PARA O ADMINISTRADOR
-    $mail_header = "FROM: webmaster@cefetbambui.edu.br";
-    @mail( 'webmaster@cefetbambui.edu.br', '[ Erro ao atualizar diario ] ', $msg, $mail_header);
+	// TODO: buscar o email do administrador dos parametros
+    $mail_header = "FROM: gti.bambui@ifmg.edu.br";
+    @mail( 'gti.bambui@ifmg.edu.br', '[ Erro ao atualizar diario ] ', $msg, $mail_header);
 
 }
 
@@ -31,16 +32,7 @@ function sa_getCurso($p,$d,$o) {
 	d.id = $o AND
 	a.id = d.ref_curso;";
 
-	$curso = $conn->adodb->getOne($sql9);
-
-	if($curso === FALSE) {
-
-		envia_erro($curso);
-		exit;
-	}
-
-	return $curso;
-
+	return $conn->get_one($sql9);
 }
 
 
@@ -57,13 +49,7 @@ function sa_calcNotaReavaliacao($o,$nd,$ne) {
                      c.id = ref_curso AND
                      d.id = '.$o.';';
 
-	$CursoTipo = $conn->adodb->getOne($sqlCursoTipo);
-
-	if($CursoTipo === FALSE)
-	{
-		envia_erro($sqlCursoTipo);
-		exit;
-	}
+	$CursoTipo = $conn->get_one($sqlCursoTipo);
 
 	/*
 	 1     Tecnico
@@ -104,28 +90,20 @@ function atualiza_matricula($aluno,$getofer){
 				 o.id = prof.ref_disciplina_ofer ;";
 
 
-	$diario_info = $conn->adodb->getAll($qryDisc);
+	$diario_info = $conn->get_all($qryDisc);
 
-	if($diario_info === FALSE) {
+	// A DISCIPLINA EXISTE
 
-		envia_erro($qryDisc);
-		exit;
-	}
-	else {
+	if(count($diario_info) > 0) {
 
-		// A DISCIPLINA EXISTE
+		foreach($diario_info as $linha)
+		{
+			$getdisciplina = @$linha['ref_disciplina'];
+			$getperiodo = @$linha['ref_periodo'];
+			$id = @$linha['ref_professor'];
+		}
 
-		if(count($diario_info) > 0) {
-
-			foreach($diario_info as $linha)
-			{
-				$getdisciplina = @$linha['ref_disciplina'];
-				$getperiodo = @$linha['ref_periodo'];
-				$id = @$linha['ref_professor'];
-			}
-
-		} // ^ A DISCIPLINA EXISTE
-	}
+	} // ^ A DISCIPLINA EXISTE
 
 	$grupo = ($id . "-" . $getperiodo . "-" . $getdisciplina . "-" . $getofer);
 
@@ -147,13 +125,7 @@ function atualiza_matricula($aluno,$getofer){
 	grupo ILIKE '$grupo_novo';";
 
 
-	$num_formula = $conn->adodb->getOne($sql1);
-
-	if($num_formula === FALSE)
-	{
-		envia_erro($sql1);
-		exit;
-	}
+	$num_formula = $conn->get_one($sql1);
 
 	if($num_formula == 6) {
 
@@ -179,13 +151,7 @@ function atualiza_matricula($aluno,$getofer){
 			    (m.ref_motivo_matricula = 0)
 	        ORDER BY id_ref_pessoas;';
 
-		$alunos_sem_registro_notas = $conn->adodb->getAll($qryNotas);
-
-		if($alunos_sem_registro_notas === FALSE)
-		{
-			envia_erro($qryNotas);
-			exit;
-		}
+		$alunos_sem_registro_notas = $conn->get_all($qryNotas);
 
 		$num_registros = count($alunos_sem_registro_notas);
 
@@ -251,13 +217,13 @@ function atualiza_matricula($aluno,$getofer){
 		FULL OUTER JOIN
 		(
 		SELECT
-		CAST(a.ra_cnec AS INTEGER) AS registro_id, count(a.ra_cnec) AS faltas_diario
+		CAST(a.ra_cnec AS INTEGER) AS registro_id, count(CAST(a.ra_cnec AS INTEGER)) AS faltas_diario
 		FROM
 		diario_chamadas a
 		WHERE
 		(a.ref_periodo = '$getperiodo') AND
 		(a.ref_disciplina_ofer = $getofer) AND
-		a.ra_cnec = $aluno
+		a.ra_cnec = '$aluno'
 		GROUP BY ra_cnec
 		) AS T4
 
@@ -268,14 +234,7 @@ function atualiza_matricula($aluno,$getofer){
 		WHERE
 		(num_faltas <> faltas_diario);";
 
-		$diario_faltas = $conn->adodb->getAll($sqlDiarioFaltas);
-
-
-		if($diario_faltas === FALSE)
-		{
-			envia_erro($sqlDiarioFaltas);
-			exit;
-		}
+		$diario_faltas = $conn->get_all($sqlDiarioFaltas);
 
 		$numFalta = count($diario_faltas);
 
@@ -319,7 +278,7 @@ function atualiza_matricula($aluno,$getofer){
 		b.ra_cnec = c.ra_cnec AND
 		c.d_ref_disciplina_ofer = $getofer AND
 		a.ref_pessoa = b.id AND
-		b.ra_cnec = $aluno  AND
+		b.ra_cnec = '$aluno'  AND
 		ref_diario_avaliacao < 7
 		GROUP BY b.id
 		) AS T1
@@ -335,7 +294,7 @@ function atualiza_matricula($aluno,$getofer){
 		b.ra_cnec = c.ra_cnec AND
 		c.d_ref_disciplina_ofer = $getofer AND
 		a.ref_pessoa = b.id AND
-		b.ra_cnec = $aluno  AND
+		b.ra_cnec = '$aluno'  AND
 		ref_diario_avaliacao = 7
 		) AS T2
 
@@ -358,13 +317,7 @@ function atualiza_matricula($aluno,$getofer){
 		WHERE
 		nota_diario <> nota_final;";
 
-		$diario_notas = $conn->adodb->getAll($sqlNotas);
-
-		if($diario_faltas === FALSE)
-		{
-			envia_erro($sqlNotas);
-			exit;
-		}
+		$diario_notas = $conn->get_all($sqlNotas);
 
 		$numNotas = count($diario_notas);
 
@@ -431,9 +384,8 @@ function atualiza_matricula($aluno,$getofer){
 			$qryDiario .= "COMMIT;";
 
 			// GRAVA AS ALTERACOES
-			$res = $conn->Execute($qryDiario);
-                        // echo $qryDiario;
-
+			$conn->Execute($qryDiario);
+/*
 			if($res === FALSE) {
 
 				// MENSAGEM DE ERRO AO GRAVAR AS ALTERACOES OU ENVIA EMAIL AVISANDO ALGUEM
@@ -448,7 +400,7 @@ function atualiza_matricula($aluno,$getofer){
 				$msg_sucesso = "";
 				//^ MENSAGEM PENDENCIAS RESOLVIDAS COM SUCESSO
 			}
-
+*/
 		}
 		else {
 

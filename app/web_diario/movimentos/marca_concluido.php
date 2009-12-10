@@ -1,10 +1,12 @@
 <?php
 
-include_once('../webdiario.conf.php');
-	
+require_once(dirname(__FILE__) .'/../../setup.php');
+require_once($BASE_DIR .'core/web_diario.php');
 
-$getofer = $_GET['ofer'];
+$conn = new connection_factory($param_conn);
 
+$diario_id = (int) $_GET['id'];
+$operacao = $_GET['do'];
 
 // INVERTE A MARCACAO DE ESTADO DO DIARIO
 $sql1 = "SELECT
@@ -12,26 +14,14 @@ $sql1 = "SELECT
 		 FROM
 			disciplinas_ofer
          WHERE
-            id = $getofer;";
+            id = $diario_id;";
 
-$qry1 = consulta_sql($sql1);
+$fl_concluida = $conn->get_one($sql1);
 
-if(is_string($qry1))
-{
-    echo $qry1;
-    exit;
-}
-else {
-
-   $fl_concluida = pg_fetch_result($qry1,0);
-
-   if($fl_concluida === 'f') {
-		$flag = 't';
-   }
-   else {
-		$flag = 'f';
-   }	
-}
+if($fl_concluida === 'f') 
+	$flag = 't';
+else
+	$flag = 'f';
 
 
 // MARCA/DESMARCA O DIARIO COMO CONCLUIDO
@@ -40,25 +30,8 @@ $sql2 = "UPDATE
          SET
             fl_concluida = '$flag' 
          WHERE  
-            id = $getofer;";
+            id = $diario_id;";
 
-//echo $sql2; die;
+$conn->Execute($sql2);
 
-$res = consulta_sql($sql2);
-
-if(is_string($res))
-{
-	echo $res;
-	exit;
-}
-else {
-
-    //	echo '<script language=javascript>  window.alert(\'Diário marcado/desmarcado com sucesso!\'); javascript:window.history.back(1); </script>';
-	
-	echo '<script language=javascript>javascript:window.history.back(1); </script>';
-	
-	exit;
-}
-
-	
 ?>

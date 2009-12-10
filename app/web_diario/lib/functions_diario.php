@@ -289,20 +289,6 @@ function falta($ref_periodo, $ra_cnec, $ref_disciplina, $ref_disciplina_ofer, $q
    global $dbconnect, $error_msg;
    global $host, $database, $user, $password;
 
-    // abrir tabela de matricula e selecionar as faltas
-  /*
-   $sqlaluno = "SELECT id FROM pessoas WHERE ra_cnec = '$ra_cnec';";
-
-   echo $sqlaluno.'<br />';
-
-   $queryaluno = pg_exec($dbconnect, $sqlaluno);
-
-   while($row1 = pg_fetch_array($queryaluno))
-   {
-      $ref_pessoa = $row1["id"];
-   }
-   */
-
    $ref_pessoa = $ra_cnec;
 
    $sqlf = "SELECT num_faltas
@@ -361,13 +347,6 @@ function falta($ref_periodo, $ra_cnec, $ref_disciplina, $ref_disciplina_ofer, $q
       $totfaltas = $totfaltas - $qtde;
    }
 
-	// $totfaltas = $totfaltas + $qtde;
-
-
-  // echo '$totfaltas:'.$totfaltas.'<br />';
-   //echo '$qtde:'.$qtde.'<br />';
-   //die;
-
    $sqlfalta = $qry . "UPDATE
                   matricula
                SET
@@ -376,11 +355,8 @@ function falta($ref_periodo, $ra_cnec, $ref_disciplina, $ref_disciplina_ofer, $q
                   ref_periodo = '$ref_periodo' AND
                   ref_pessoa = '$ref_pessoa' AND
                   ref_disciplina_ofer = $ref_disciplina_ofer;";
-  // --ref_disciplina = '$ref_disciplina' AND
-   $sqlfalta .= 'COMMIT;';
-
-   //echo $sqlfalta.'<br />'; //die;
-
+   
+	$sqlfalta .= 'COMMIT;';
 
    $qryfalta = consulta_sql($sqlfalta);
 

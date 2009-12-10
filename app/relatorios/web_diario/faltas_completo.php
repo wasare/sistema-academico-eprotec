@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../setup.php');
+require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'core/date.php');
 require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
@@ -54,7 +54,7 @@ SELECT DISTINCT dia FROM diario_seq_faltas WHERE ref_disciplina_ofer = $diario_i
 ORDER BY dia;";
 
 
-$alunos_diario = $conn->adodb->getAll($sql4);
+$alunos_diario = $conn->get_all($sql4);
 
 if($alunos_diario === FALSE)
 {
@@ -62,7 +62,7 @@ if($alunos_diario === FALSE)
     exit;
 }
 
-$num_chamadas = $conn->adodb->getAll($sql3);
+$num_chamadas = $conn->get_all($sql3);
 
 if($num_chamadas === FALSE)
 {
@@ -89,12 +89,9 @@ else {
 
 <div align="center"><font color="#990000" size="4" face="Verdana, Arial, Helvetica, sans-serif"><strong>Relat&oacute;rio de Faltas</strong></font></div>
 
-<?php
-	
-echo papeleta_header($diario_id);
+<?=papeleta_header($diario_id)?>
 
-?>
-</font>
+<br />
 <table cellspacing="0" cellpadding="0" class="papeleta">
 	<tr bgcolor="#cccccc">
 		<td><strong>N&ordm;</strong></td>
