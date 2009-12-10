@@ -136,6 +136,35 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                             <li><a class="MenuBarItemSubmenu" href="#">Cadastros</a>
                                 <ul>
                                     <li>
+                                        <a href="#" class="MenuBarItemSubmenu">Gen&eacute;rico</a>
+                                        <ul>
+                                            <li>
+                                                <a href="sagu/generico/paises_inclui.phtml"
+                                                   target="frame2">Pa&iacute;ses</a>
+                                            </li>
+                                            <li>
+                                                <a href="sagu/generico/consulta_inclui_estados.phtml"
+                                                   target="frame2">Estados</a>
+                                            </li>
+                                            <li>
+                                                <a href="sagu/generico/consulta_cidades.phtml"
+                                                   target="frame2">Cidades</a>
+                                            </li>
+                                            <li>
+                                                <a href="sagu/generico/configuracao_empresa.phtml"
+                                                   target="frame2">Empresas</a>
+                                            </li>
+                                            <li>
+                                                <a href="sagu/generico/campus_inclui.phtml"
+                                                   target="frame2">Campus</a>
+                                            </li>
+                                            <li>
+                                                <a href="sagu/generico/consulta_inclui_instituicoes.phtml"
+                                                   target="frame2">Institui&ccedil;&otilde;es</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
                                         <a href="sagu/academico/consulta_inclui_pessoa.phtml" 
                                            target="frame2">Pessoas F&iacute;sicas</a>
                                     </li>
@@ -148,7 +177,9 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                                            target="frame2">Cola&ccedil;&atilde;o de grau</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_inclui_professores.phtml" 
+                                        <!-- <a href="sagu/academico/consulta_inclui_professores.phtml"
+                                           target="frame2">Professores</a> -->
+                                        <a href="professores/index.php"
                                            target="frame2">Professores</a>
                                     </li>
                                     <li>
@@ -160,33 +191,16 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                                            target="frame2">Setores</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="MenuBarItemSubmenu">Gen&eacute;rico</a>
-                                        <ul>
-                                            <li>
-                                                <a href="sagu/generico/paises_inclui.phtml" 
-                                                   target="frame2">Pa&iacute;ses</a>
-                                            </li>
-                                            <li>
-                                                <a href="sagu/generico/consulta_inclui_estados.phtml" 
-                                                   target="frame2">Estados</a>
-                                            </li>
-                                            <li>
-                                                <a href="sagu/generico/consulta_cidades.phtml" 
-                                                   target="frame2">Cidades</a>
-                                            </li>
-                                            <li>
-                                                <a href="sagu/generico/configuracao_empresa.phtml" 
-                                                   target="frame2">Empresas</a>
-                                            </li>
-                                            <li>
-                                                <a href="sagu/generico/campus_inclui.phtml" 
-                                                   target="frame2">Campus</a>
-                                            </li>
-                                            <li>
-                                                <a href="sagu/generico/consulta_inclui_instituicoes.phtml" 
-                                                   target="frame2">Institui&ccedil;&otilde;es</a>
-                                            </li>
-                                        </ul>
+                                        <a href="cargo/index.php"
+                                           target="frame2">Cargos</a>
+                                    </li>
+                                    <li>
+                                        <a href="motivos/index.php"
+                                           target="frame2">Motivos</a>
+                                    </li>
+                                    <li>
+                                        <a href="salas/index.php"
+                                           target="frame2">Salas</a>
                                     </li>
                                 </ul>
                             </li>

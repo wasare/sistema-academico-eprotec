@@ -1,17 +1,17 @@
 <?php
 /*
  * Arquivo com as configuracoes iniciais
- */
+*/
 require_once("../../app/setup.php");
 
 /*
  * Estancia a classe de conexao e abre
- */
+*/
 $conn = new connection_factory($param_conn);
 
 /*
  * Executa uma instrucao SQL no banco de dados
- */
+*/
 $conn->Execute('DELETE FROM setor WHERE id='.$_GET['id']);
 
 ?>

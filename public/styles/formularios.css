@@ -92,6 +92,10 @@ td {
     clear:left;
 }
 
+.panel a {
+    text-decoration:underline;
+    color:blue;
+}
 /** Tabela de Formulario */
 .grid {
     font-family: Verdana, Arial, Helvetica, sans-serif;
