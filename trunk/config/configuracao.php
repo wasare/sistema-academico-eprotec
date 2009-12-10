@@ -41,6 +41,11 @@ $aluno_password = '@1srv27';
 $aluno_port     = '';
 
 /**
+ * HTML Padrao
+ */
+$DOC_TYPE       = '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">';
+
+/**
  * Variaveis do sistema
  */
 $BASE_URL       = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/wanderson/dev/sistema-academico/';
@@ -50,6 +55,7 @@ $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';
 $PATH_IMAGES    = $BASE_URL."public/images/";
 $REVISAO 		= @file_get_contents ('../VERSAO.TXT');
 $SESS_TABLE     = 'sessao';
+
 
 /*
    ALGUNS PARAMETROS DO SISTEMA ACADEMICO
