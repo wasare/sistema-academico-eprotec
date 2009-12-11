@@ -1,15 +1,17 @@
 <?php
 /*
  * Arquivo com as configuracoes iniciais
- */
+*/
 require_once("../../app/setup.php");
 
 /*
  * Estancia a classe de conexao e abre
- */
+*/
 $conn = new connection_factory($param_conn);
 
 $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
+
+$arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -17,6 +19,7 @@ $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
         <?=$DOC_TYPE?>
         <title>SA</title>
         <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+        <script src="../../lib/prototype.js" type="text/javascript"></script>
         <script src="../../lib/Spry/widgets/textfieldvalidation/SpryValidationTextField.js" type="text/javascript"></script>
         <script src="../../lib/Spry/widgets/passwordvalidation/SpryValidationPassword.js" type="text/javascript"></script>
         <script src="../../lib/Spry/widgets/confirmvalidation/SpryValidationConfirm.js" type="text/javascript"></script>
@@ -25,7 +28,24 @@ $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
         <link href="../../lib/Spry/widgets/passwordvalidation/SpryValidationPassword.css" rel="stylesheet" type="text/css" />
         <link href="../../lib/Spry/widgets/confirmvalidation/SpryValidationConfirm.css" rel="stylesheet" type="text/css" />
         <link href="../../lib/Spry/widgets/selectvalidation/SpryValidationSelect.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript">
 
+            function verifica(id,obj) {
+                var parametro = null;
+                var objAjax = null;
+                var carregando = null;
+                parametro = parametro + '&id=' + id;
+                carregando = '&nbsp;Verificando...';
+                $('span_usuario').innerHTML = carregando;
+                objAjax = new Ajax.Request('verifica.php', {method: 'post', parameters: parametro, onComplete: exibeStatusUsuario});
+            }
+
+            function exibeStatusUsuario(resposta){
+                var s = unescape(resposta.responseText);
+                // Mostra o HTML recebido
+                $('span_usuario').innerHTML = s;
+            }
+        </script>
     </head>
     <body>
         <h2>Cadastrar professor</h2>
@@ -43,10 +63,9 @@ $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
                 </a>
             </div>
             <div class="panel">
-                Pessoa:<br />
+                C&oacute;digo de pessoa f&iacute;sica:<br />
                 <span id="sprytextfield1">
                     <input type="text" id="id_pessoa" name="id_pessoa" />
-                    <a href="#">Buscar</a>
                     <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
                     <span class="textfieldInvalidFormatMsg">Somente n&uacute;mero inteiro.</span>
                 </span>
@@ -63,40 +82,39 @@ $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
                     <span class="selectRequiredMsg">Selecione um item.</span>
                 </span>
                 <br />
-                Data de entrada:
+                Data de ingresso:
                 <br />
                 <span id="date1">
                     <input type="text" name="data" id="data" />
                     <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio.</span>
                     <span class="textfieldInvalidFormatMsg">Formato inv&aacute;lido.</span>
                 </span>
-                <p>
-                    <strong>Web Di&aacute;rio</strong>
-                </p>
+                <h3>Acesso ao Web Di&aacute;rio</h3>
                 <p>
                     Usu&aacute;rio:
                     <br />
                     <span id="sprytextfield2">
-                        <input type="text" id="user" name="user" /> 
-                        <a href="#">Verificar</a>
+                        <input type="text" id="user" name="user"
+                               onkeyup="javascript:this.value=this.value.toLowerCase();
+                                   verifica(this.value,'span_usuario');" />
+                        &nbsp;<span id="span_usuario"></span>
                         <input type="hidden" id="flg_user" name="flg_user" value="">
                         <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
                     </span>
                     <br />
-                    Senha:
+                    Setor:
                     <br />
-                    <span id="sprypassword1">
-                        <input type="password" name="password" id="password" />
-                        <span class="passwordRequiredMsg">Valor obrigat&oacute;rio.</span>
+                    <span id="validsel2">
+                        <select name="setor" id="setor" tabindex="1">
+                            <option value="">Selecione o setor do usu&aacute;rio</option>
+                            <?php foreach($arr_setor as $setor): ?>
+                            <option value="<?=$setor['id']?>"><?=$setor['nome_setor']?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <span class="selectRequiredMsg">Selecione um item.</span>
                     </span>
                     <br />
-                    Confirme a senha:
-                    <br/>
-                    <span id="spryconfirm1">
-                        <input type="password" name="confirm" id="confirm" />
-                        <span class="confirmRequiredMsg">Valor obrigat&oacute;rio.</span>
-                        <span class="confirmInvalidMsg">As senhas n&atilde;o conferem.</span>
-                    </span>
+                    <input name="ativar" type="checkbox" id="ativar" checked="checked"/>                    
                 </p>
             </div>
         </form>
@@ -104,10 +122,11 @@ $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
             <!--
             var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1","integer");
             var validsel1 = new Spry.Widget.ValidationSelect("validsel1", {validateOn:["change"]});
+            var validsel2 = new Spry.Widget.ValidationSelect("validsel2", {validateOn:["change"]});
             var date1 = new Spry.Widget.ValidationTextField("date1", "date", {format:"dd/mm/yyyy", hint:"dd/mm/yyyy", validateOn:["blur", "change"], useCharacterMasking:true});
             var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
-            var sprypassword1 = new Spry.Widget.ValidationPassword("sprypassword1");
-            var spryconfirm1 = new Spry.Widget.ValidationConfirm("spryconfirm1", "sprypassword1");
+            //var sprypassword1 = new Spry.Widget.ValidationPassword("sprypassword1");
+            //var spryconfirm1 = new Spry.Widget.ValidationConfirm("spryconfirm1", "sprypassword1");
             //-->
         </script>
     </body>

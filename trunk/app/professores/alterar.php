@@ -1,15 +1,32 @@
 <?php
 /*
  * Arquivo com as configuracoes iniciais
- */
+*/
 require_once("../../app/setup.php");
 
 /*
  * Estancia a classe de conexao e abre
- */
+*/
 $conn = new connection_factory($param_conn);
 
+$sql_professores = "
+    SELECT
+        p.ref_departamento,
+        p.dt_ingresso,
+        u.nome as login,
+        u.ativado,
+        u.ref_setor
+    FROM professores p, usuario u
+    WHERE
+        p.ref_professor = $id AND
+        p.ref_professor = u.ref_pessoa";
+
+//$arr_professores = $conn->get_row($sql_professor);
+
 $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
+
+$arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -28,7 +45,7 @@ $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
 
     </head>
     <body>
-        <h2>Cadastrar professor</h2>
+        <h2>Alterar professor</h2>
         <form id="form1" name="form1" method="post" action="cadastrar_action.php" >
             <div class="btn_action">
                 <label class="btn_action">
@@ -43,10 +60,9 @@ $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
                 </a>
             </div>
             <div class="panel">
-                Pessoa:<br />
+                C&oacute;digo de pessoa f&iacute;sica:<br />
                 <span id="sprytextfield1">
-                    <input type="text" id="id_pessoa" name="id_pessoa" />
-                    <a href="#">Buscar</a>
+                    <input type="text" id="id_pessoa" name="id_pessoa" value="<?=$id?>" />
                     <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
                     <span class="textfieldInvalidFormatMsg">Somente n&uacute;mero inteiro.</span>
                 </span>
@@ -63,34 +79,47 @@ $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
                     <span class="selectRequiredMsg">Selecione um item.</span>
                 </span>
                 <br />
-                Data de entrada:
+                Data de ingresso:
                 <br />
                 <span id="date1">
                     <input type="text" name="data" id="data" />
                     <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio.</span>
                     <span class="textfieldInvalidFormatMsg">Formato inv&aacute;lido.</span>
                 </span>
-                <p>
-                    <strong>Web Di&aacute;rio</strong>
-                </p>
+                <h3>Acesso ao Web Di&aacute;rio</h3>
                 <p>
                     Usu&aacute;rio:
                     <br />
                     <span id="sprytextfield2">
-                        <input type="text" id="user" name="user" />
+                        <input type="text" id="user" name="user" value="<?=$arr_professores['login']?>" />
                         <a href="#">Verificar</a>
                         <input type="hidden" id="flg_user" name="flg_user" value="">
                         <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
                     </span>
                     <br />
-                    Senha:
+                    Setor:
+                    <br />
+                    <span id="validsel2">
+                        <select name="setor" id="setor" tabindex="1">
+                            <option value="">Selecione o setor do usu&aacute;rio</option>
+                            <?php foreach($arr_setor as $setor): ?>
+                            <option value="<?=$setor['id']?>"><?=$setor['nome_setor']?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <span class="selectRequiredMsg">Selecione um item.</span>
+                    </span>
+                    <br />
+                    <input name="ativar" type="checkbox" id="ativar" checked="checked"/>
+                    <br />
+                    <br />
+                    Nova senha:
                     <br />
                     <span id="sprypassword1">
                         <input type="password" name="password" id="password" />
                         <span class="passwordRequiredMsg">Valor obrigat&oacute;rio.</span>
                     </span>
                     <br />
-                    Confirme a senha:
+                    Confirme a nova senha:
                     <br/>
                     <span id="spryconfirm1">
                         <input type="password" name="confirm" id="confirm" />
@@ -104,6 +133,7 @@ $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
             <!--
             var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1","integer");
             var validsel1 = new Spry.Widget.ValidationSelect("validsel1", {validateOn:["change"]});
+            var validsel2 = new Spry.Widget.ValidationSelect("validsel2", {validateOn:["change"]});
             var date1 = new Spry.Widget.ValidationTextField("date1", "date", {format:"dd/mm/yyyy", hint:"dd/mm/yyyy", validateOn:["blur", "change"], useCharacterMasking:true});
             var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
             var sprypassword1 = new Spry.Widget.ValidationPassword("sprypassword1");

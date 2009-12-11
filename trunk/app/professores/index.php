@@ -17,7 +17,7 @@ SELECT
     p.nome as "Nome",
     to_char(o.dt_ingresso,\'DD/MM/YYYY\') as "Data de entrada",
     d.descricao as "Departamento"
-    '. $grid->options('p.id', 'alterar.php','excluir_action.php') .'
+    '. $grid->options('p.id', 'alterar.php') .'
 FROM
     professores o, pessoas p, departamentos d
 WHERE

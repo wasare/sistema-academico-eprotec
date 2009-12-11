@@ -48,8 +48,8 @@ $DOC_TYPE       = '<meta http-equiv="Content-Type" content="text/html; charset=I
 /**
  * Variaveis do sistema
  */
-$BASE_URL       = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/wanderson/dev/sistema-academico/';
-$BASE_DIR       = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/wanderson/dev/sistema-academico/';
+$BASE_URL       = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/santiago/sistema-academico/';
+$BASE_DIR       = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/santiago/sistema-academico/';
 $LOGIN_URL      = $BASE_URL .'index.php';
 $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';
 $PATH_IMAGES    = $BASE_URL."public/images/";

@@ -27,7 +27,7 @@ if($_POST) {
 
             $msg = '<font color="green">Senha alterada com sucesso!</font>';
 
-			$message = 'SA - Senha do usuário "'.$sa_usuario.'" alterada para: '.$senha;
+			$message = 'SA - Senha do usu&aacute;rio "'.$sa_usuario.'" alterada para: '.$senha;
 
             if(mail($RsPessoa->fields[1], 'SA - Senha alterada', $message, 'From: SA')) {
                 $msg .= '<p><font color=green>A nova senha foi enviada para o seu email.</font></p>';
