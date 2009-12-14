@@ -11,6 +11,11 @@ $conn = new connection_factory($param_conn);
 
 $diario_id = $_GET['diario_id'];
 
+/*
+TODO: verifica o direito de acesso do usuário ao diárioi, no caso de professor ou coordenador informado
+*/
+
+
 if(!is_numeric($diario_id))
 {
 
@@ -833,8 +838,8 @@ echo '<meta http-equiv="refresh" content="0;url='. $url_arquivo .'">';
  <form name="myform" action="" >
    <p align="center">
      <input type="button" name="botao2" value="Imprimir novamente" onClick="location='<?=$url_arquivo?>'">
-	 &nbsp;&nbsp;&nbsp;
-	 <input type="button" name="fechar" id="fechar" value="Fechar" onclick="javascript:window.close();" />
+	 &nbsp;&nbsp;ou&nbsp;
+	<a href="#" onclick="javascript:window.close();">fechar</a>
    </p>
   </form>
 </body>

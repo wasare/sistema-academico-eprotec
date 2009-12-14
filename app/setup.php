@@ -1,5 +1,5 @@
 <?php
-
+// die('<h2>Sistema em manuten&ccedil;&atilde;o</h2>');
 /**
  * Inclui arquivo com as configuracoes do sistema
  */

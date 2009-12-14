@@ -7,6 +7,12 @@ $conn = new connection_factory($param_conn);
 
 $diario_id = $_GET['diario_id'];
 
+
+/*
+TODO: verifica o direito de acesso do usuário ao diárioi, no caso de professor ou coordenador informado
+*/
+
+
 if(!is_numeric($diario_id))
 {
 
@@ -229,8 +235,8 @@ print("<br />ASSINATURA(S):");
 <br /><br />
 <div class="nao_imprime">
 <input type="button" value="Imprimir" onClick="window.print()">
-&nbsp;&nbsp;&nbsp;
-<input type="button" name="fechar" id="fechar" value="Fechar" onclick="javascript:window.close();" />
+&nbsp;&nbsp;ou&nbsp;
+<a href="#" onclick="javascript:window.close();">fechar</a>
 </div>
 <br /><br />
 </body>

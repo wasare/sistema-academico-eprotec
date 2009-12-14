@@ -10,6 +10,11 @@ $conn = new connection_factory($param_conn);
 
 $diario_id = $_GET['diario_id'];
 
+/*
+TODO: verifica o direito de acesso do usuário ao diárioi, no caso de professor ou coordenador informado
+*/
+
+
 if(!is_numeric($diario_id))
 {
     echo '<script language="javascript">
@@ -31,7 +36,7 @@ $sql1 ="SELECT id,
                ORDER BY dia desc;";
 
 
-$conteudos = $conn->adodb->getAll($sql1);
+$conteudos = $conn->get_all($sql1);
 
 if($conteudos === FALSE)
 {
@@ -62,17 +67,17 @@ else {
   </tr>
   <tr> 
   <td>
-<?php
-
-echo papeleta_header($diario_id);
-						   
-?>
+<?=papeleta_header($diario_id)?>
+   <br />
   </td>
   </tr>
   <tr>
     <td><div align="left"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>*Para alterar o conte&uacute;do de aula clique na data da chamada!</strong></font></div></td>
   </tr>
 </table>
+
+
+
 <table cellspacing="0" cellpadding="0" class="papeleta">
   <tr bgcolor="#666666"> 
     <td align="center">
@@ -112,7 +117,7 @@ foreach($conteudos as $linha1)
 </table>
 <br><br>
 <input type="button" value="Imprimir" onClick="window.print()">
-&nbsp;&nbsp;&nbsp;
-<input type="button" name="fechar" id="fechar" value="Fechar" onclick="javascript:window.close();" />
+&nbsp;&nbsp;ou&nbsp;
+<a href="#" onclick="javascript:window.close();">fechar</a>
 </body>
 </html>
