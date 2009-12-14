@@ -279,7 +279,7 @@ function enviar(action) {
 </div>
 
 
-<script type="text/javascript">
+<script language="javascript" type="text/javascript">
 var thePane = new TabbedPane('web_guias',
     {
         'pane1': 'lista_diarios.php',

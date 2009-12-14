@@ -1,26 +1,35 @@
 <?php
 
-include_once('../../webdiario.conf.php');
+require_once(dirname(__FILE__) .'/../../../setup.php');
+require_once($BASE_DIR .'core/web_diario.php');
+require_once($BASE_DIR .'core/date.php');
 
-//altera_faltas.php?flag=146025&data=05/02/2007&chamada=146025&id=2472&getperiodo=0701&disc=107001&ofer=1715
+$conn = new connection_factory($param_conn);
 
-$disciplina = $_GET['disc'];
-$getofer = $_GET['ofer'];
-//$curso = $_GET['curso'];
-$periodo = $_SESSION['periodo'];
-$id = $_GET['id'];
+// altera_faltas.php?chamada=521005&flag=2
+$diario_id = (int) $_GET['diario_id'];
+$chamada_id = (int) $_GET['chamada'];
+$num_aulas = $num_faltas = $flag = (int) $_GET['flag'];
 
-$oferecida = $getofer;
+$operacao = $_POST['operacao'];
 
-$num_aulas = $_GET['chamada'];
+/*
+TODO: verifica o direito de acesso do usuário ao diário informado
+*/
 
-$num_faltas = $num_aulas;
+if (is_finalizado($diario_id)){
+
+    echo '<script language="javascript" type="text/javascript">';
+    echo 'alert("ERRO! Este diário está finalizado e não pode ser alterado!");';
+    echo 'window.close();';
+    echo '</script>';
+    exit;
+}
 
 $aulatipo = '';
-
 for($i = 1; $i <= $num_aulas; $i++) { $aulatipo .= "$i"; }
 
-$flag = $_GET['flag'];
+$flag = $num_aulas;
 
 
 $data_bd = $selectdia . '/' . $selectmes . '/'.$selectano;
@@ -32,55 +41,33 @@ $datadehoje = date ("d/m/Y");
 
 if($flag_falta === 'F') {
 
-	include_once('registra_faltas.php');
+	require_once($BASE_DIR .'app/web_diario/movimentos/chamada/registra_faltas.php');
 	exit;
 }
 	
-$sqlChamada = "SELECT DISTINCT
+$sql_chamada = "SELECT DISTINCT
               dia
          FROM
           diario_seq_faltas d
         WHERE
-          d.id = '$flag';";
+          d.id = $chamada_id;";
 
-$qryChamada = consulta_sql($sqlChamada);
-
-if(is_string($qryChamada))
-{
-   echo $qryChamada;
-   exit;
-}
-else
-{
-    while ( $linha = pg_fetch_array($qryChamada) )
-    {
-        $data_chamada = $linha['dia'];
-    }
-}
+$data_chamada = $conn->get_one($sql_chamada);
 
 
-$sqlFalta = " SELECT
+$sql_falta = " SELECT
   a.ra_cnec, count(a.ra_cnec) as faltas
   FROM
     diario_chamadas a
 	WHERE
-	  (a.ref_periodo = '$periodo') AND
-	    (a.ref_disciplina_ofer = '$oferecida') AND
+	    (a.ref_disciplina_ofer = $diario_id) AND
 		  (a.data_chamada = '$data_chamada')
 		  GROUP BY ra_cnec;";
 
 
 //echo $sqlFalta; die;
 
-$qryFalta = consulta_sql($sqlFalta);
-
-if(is_string($qryFalta))
-{
-   echo $qryFalta;
-   exit;
-}
-
-$qryFaltas = pg_fetch_all($qryFalta);
+$faltas_chamada = $conn->get_all($sql_falta);
 
 $sql1 ="SELECT DISTINCT
   p.nome,
@@ -90,23 +77,14 @@ FROM
   matricula m
   INNER JOIN pessoas p ON (m.ref_pessoa = p.id)
 WHERE
-  (m.ref_periodo = '$periodo') AND
-  (m.ref_disciplina_ofer = '$getofer') AND
+  (m.ref_disciplina_ofer = $diario_id) AND
   (m.dt_cancelamento is null)
 ORDER BY
   p.nome; ";
 
 //echo $sql1; die;
 
-
-$query1 = consulta_sql($sql1);
-
-if(is_string($query1))
-{
-   echo $query1;
-   exit;
-}
-
+$alunos = $conn->get_all($sql1);
 
 ?>
 
@@ -114,15 +92,14 @@ if(is_string($query1))
 <html>
 <head>
 <a name="topo">
-<title>Diario</title>
+<title><?=$IEnome?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link rel="stylesheet" href="../../css/forms.css" type="text/css">
-
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
 
 <script language="JavaScript" type="text/JavaScript">
 <!--
 function validate(field) {
-	var valid = "0" + "<?php echo $aulatipo;?>"
+	var valid = "0" + "<?=$aulatipo?>"
 	var ok = "yes";
 
 	var temp;
@@ -132,7 +109,7 @@ function validate(field) {
 	}
 	
 	if (ok == "no") {
-		alert("Você não pode lançar " + field.value + " faltas para uma chamada de " + <?php echo $num_aulas; ?> + " aulas !");
+		alert("Você não pode lançar " + field.value + " faltas para uma chamada de " + <?=$num_aulas?> + " aulas !");
 		//field.focus();
 		//field.value = nota;
 		field.select();
@@ -183,43 +160,34 @@ function autoTab(input,len, e) {
 //-->
 </script>
 
-
 <script src="../js/event-listener.js" type="text/javascript"></script>
 <script src="../js/enter-as-tab.js" type="text/javascript"></script>
 
 </head>
-<body onLoad="javascript:document.form1.reset()">
+<body>
 
-<table width="90%" height="73" border="0">
-  <tr>
-    <td width="471"><div align="center"><font color="#990000" size="4" face="Verdana, Arial, Helvet
-ica, sans-serif"><strong>Lan&ccedil;amento de Faltas - Altera&ccedil;&atilde;o</strong></font></div></td>
-  </tr>
-
-</table>
+<div align="left" class="titulo">
+  <h3>Lan&ccedil;amento de Faltas - Altera&ccedil;&atilde;o</h3>
+</div>
 <br />
-<?php 
-   print('<form name="form1" method="post" action="registra_alt_faltas.php">');
-   
-   echo '<input type="hidden" name="id" id="id" value="' .$id.'">';
-   echo '<input type="hidden" name="periodo" id="periodo" value="' . $periodo.'">';
-   echo '<input type="hidden" name="disciplina" id="disc" value="' .$disciplina.'">';
-   echo '<input type="hidden" name="oferecida" id="ofer" value="' . $oferecida.'">';
-   echo '<input type="hidden" name="num_aulas" id="num_aulas" value="' . $num_aulas.'">';
-   echo '<input type="hidden" name="aulatipo" id="aulatipo" value="' . $aulatipo.'">';
-   echo '<input type="hidden" name="data_chamada" id="data_chamada" value="' . $data_chamada.'">';
-   
-  echo getHeaderDisc($oferecida);   
+<?=papeleta_header($diario_id)?>
+<br />
+<br />
 
-  echo '<h3>';
-  echo 'Data da Chamada:<font color="blue"> '.$data_chamada.'</font>' ;
-  echo '<br />Quantidade de Aulas: <font color="brown"> '.$num_aulas.'</font>';
-  echo '</h3>';
-								
-						 
-?>
+<form name="altera_faltas" id="altera_faltas" method="post" action="registra_alt_faltas.php"
+	<input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">
+    <!--<input type="hidden" name="operacao" id="operacao" value="<\?=$operacao?>">-->
+	<input type="hidden" name="num_aulas" id="num_aulas" value="<?=$num_aulas?>">
+	<input type="hidden" name="aulatipo" id="aulatipo" value="<?=$aulatipo?>">
+    <input type="hidden" name="data_chamada" id="data_chamada" value="<?=$data_chamada?>">
 
-<div align="justify"><font color="#0000CC" size="1,5" face="Verdana, Arial, Helvetica, sans-serif">Informe ou altere a quantidade de faltas para cada aluno:</font></div>
+  <h3>Data da Chamada:<font color="blue"><?=$data_chamada?></font>
+  <br />Quantidade de Aulas: <font color="brown"><?=$num_aulas?></font>
+  </h3>
+
+<div align="justify">
+<font color="#0000CC" size="1,5" face="Verdana, Arial, Helvetica, sans-serif">Informe ou altere a quantidade de faltas para cada aluno:</font>
+</div>
 <br />
 <table width="92%" border="0">
   <tr bgcolor="#666666">
@@ -233,21 +201,21 @@ ica, sans-serif"><strong>Lan&ccedil;amento de Faltas - Altera&ccedil;&atilde;o</
 
 $st = '';
 	
-while($linha1 = pg_fetch_array($query1)) 
+foreach($alunos as $aluno) 
 {
-   $result = $linha1['ra_cnec'];
-   $result2 = $linha1['nome'];
+	$aluno_id = $aluno['ra_cnec'];
+	$nome_aluno = $linha1['nome'];
 
-  	$result3 = '';
+	$faltas = '';
 
-	@reset($qryFaltas);
+	@reset($faltas_chamadas);
 
 
-	while(list($key, $value) = @each($qryFaltas)) {
+	while(list($key, $value) = @each($faltas_chamadas)) {
 
-       if($value['ra_cnec'] == $result) {
+       if($value['ra_cnec'] == $aluno_id) {
           
-          $result3 = $value['faltas'];
+          $faltas = $value['faltas'];
           break;
 	   }
  
@@ -263,10 +231,10 @@ while($linha1 = pg_fetch_array($query1))
    } 
    print (' <tr bgcolor="' . $st . '">
             <td align="center">
-            <input type="text" name="faltas['.$result.']" value="'.$result3.'" maxlength="1" size="1" onblur="validate(this);" onkeyup="return autoTab(this, 1, event);"/>
+            <input type="text" name="faltas['. $aluno_id .']" value="'. $faltas .'" maxlength="1" size="1" onblur="validate(this);" onkeyup="return autoTab(this, 1, event);"/>
             </td>
-            <td align="center"> ' . $result . ' </td>
-            <td> ' . $result2 . ' </td>
+            <td align="center"> ' . $aluno_id . ' </td>
+            <td> ' . $nome_aluno . ' </td>
             </tr>');
 }
 
