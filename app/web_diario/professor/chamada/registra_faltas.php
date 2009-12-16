@@ -70,11 +70,13 @@ function set_faltas($ref_pessoa, $diario_id, $qtde_faltas, $op, $qry, $dt, $qtde
 
 function showNovaChamada()
 {
-  global $id, $periodo, $disciplina, $oferecida;
+	global $BASE_URL, $diario_id, $operacao;
   
-  echo '<br /> <br /> CHAMADA REALIZADA!<br /> *Verifique se n&atilde;o ocorreu nenhum erro no processo de incluir faltas*<br /> <br />';
-  echo '<link rel="stylesheet" href="../css/gerals.css" type="text/css"> <center> <a href="chamadas.php?id='.$id.'&getperiodo='. $periodo.'&disc='.$disciplina.'&ofer='.$oferecida.'" >Fazer nova chamada</a> | <a href="../prin.php?y=2007" target="_self">HOME</a></center>';
+    echo '<br /> <br /> <strong>CHAMADA REALIZADA!</strong><br /><br /> * Verifique acima se n&atilde;o ocorreu nenhum erro no processo de incluir faltas *<br /> <br />';
 
+	echo '<br /> <br />';
+	echo '<a href="' .$BASE_URL .'app/web_diario/requisita.php?do='. $operacao .'&id=' . $diario_id .'">Fazer nova chamada</a>';
+	echo '&nbsp;&nbsp;ou&nbsp;&nbsp;<a href="#" onclick="javascript:window.close();">fechar</a>';
 }
 
 function regLog($sql,$status="")
@@ -86,7 +88,7 @@ function regLog($sql,$status="")
   
   $sqllog = $sql;
 
-  $sqllog .= '(\''.$sql_store.'\',\''.getTime(0).'\',\''.getTime(1).'\','."'$ip','$pagina','$status','')";
+  $sqllog .= '(\''.$sql_store.'\',\''. date("Y-m-d") .'\',\''. date("H:i:s") .'\','."'$ip','$pagina','$status','')";
   
   $conn->Execute($sqllog);
 
@@ -96,8 +98,8 @@ function regLog($sql,$status="")
 function processaFaltas($Nomes, $f, $sql1, $sql2)
 {
 
-  global $conn, $data_chamada, $id, $periodo, $curso , $disciplina, $oferecida, $sem_faltas;
-
+  global $conn, $data_chamada, $id, $periodo, $curso , $disciplina, $diario_id, $sem_faltas;
+/*
   $res = consulta_sql($sql1);
 
   if(is_string($res))
@@ -105,10 +107,10 @@ function processaFaltas($Nomes, $f, $sql1, $sql2)
         echo $res;
         exit;
   }
-
+*/
   $resposta = '<div align="center"><font color="#990000" size="4" face="Verdana, Arial, Helvetica, sans-serif"><strong>Lan&ccedil;amento de Chamada/Faltas</strong></font></div> <br />';
 
-  $resposta .=  papeleta_header($oferecida);
+  $resposta .=  papeleta_header($diario_id);
 
   $resposta .= $sem_faltas;
 
@@ -133,10 +135,10 @@ function processaFaltas($Nomes, $f, $sql1, $sql2)
 		for ($i = 1; $i <= $num_faltas; $i++)
 		{
 			$sqlFaltas .= $sql2;
-	        $sqlFaltas .= " ('$reg_aluno','$data_chamada','$id','$periodo','$curso','$disciplina','$i','N',$oferecida);";
+	        $sqlFaltas .= " ('$reg_aluno','$data_chamada','$id','$periodo','$curso','$disciplina','$i','N',$diario_id);";
 		}
       
-		$resposta .= set_faltas($periodo, $reg_aluno, $disciplina, $oferecida, $num_faltas, 'SOMA', $sqlFaltas, $data_chamada,"<strong>$num_faltas</strong>");
+		$resposta .= set_faltas($periodo, $reg_aluno, $disciplina, $diario_id, $num_faltas, 'SOMA', $sqlFaltas, $data_chamada,"<strong>$num_faltas</strong>");
 
 	  }
 
@@ -156,7 +158,7 @@ $qryLog = 'BEGIN; INSERT INTO diario_log (usuario, data, hora, ip_acesso, pagina
 $status = 'FALTA REGISTRADA ';
 
 
-$qryChamada = $qrySeqChamada." ('$id','$periodo','$curso','$disciplina','$data_chamada','$conteudo', '$num_aulas', $oferecida);COMMIT;";
+$qryChamada = $qrySeqChamada." ('$id','$periodo','$curso','$disciplina','$data_chamada','$conteudo', '$num_aulas', $diario_id);COMMIT;";
 
 processaFaltas($nomes,$num_aulas,$qryChamada,$qryFaltas);
 

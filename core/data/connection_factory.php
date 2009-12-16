@@ -135,6 +135,19 @@ class connection_factory {
 		else
 			return $ret;
     }
+
+	/**
+     * Realiza uma consulta retornando a primeira coluna em um array
+     * @param string $sql
+     * @return var
+     */
+    public function get_col($sql){
+        $ret = $this->adodb->GetCol($sql);
+        if($ret === FALSE)
+            $this->show_error($this->adodb->ErrorMsg() .'<br />'. $sql);
+        else
+            return $ret;
+    }
 }
 
 ?>

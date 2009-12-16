@@ -128,7 +128,7 @@ else
 
 ?>
 <br />
-    <form name="envia_nota" id="envia_nota" method="post" action="<?=$BASE_URL .'app/web_diario/movimentos/notas/informa_notas.php'?>">
+    <form name="envia_nota" id="envia_nota" method="post" action="<?=$BASE_URL .'app/web_diario/professor/notas/informa_notas.php'?>">
       <div align="left">Lan&ccedil;amento referente à :
 
 			<input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">

@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(__FILE__) .'/../../app/setup.php');
+require_once(dirname(__FILE__) .'/../../setup.php');
 
-if(empty($_SESSION['web_diario_periodo_id']))
+if(empty($_SESSION['web_diario_periodo_coordena_id']))
 {
         echo '<script language="javascript">
                 window.alert("ERRO! Primeiro informe um período!");
@@ -13,30 +13,14 @@ if(empty($_SESSION['web_diario_periodo_id']))
 
 $conn = new connection_factory($param_conn);
 
-
 // RECUPERA INFORMACOES SOBRE DO PROFESSOR E SEUS PERIODOS
-$qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, disciplinas_ofer_prof dp, periodos p WHERE dp.ref_professor = '. $sa_ref_pessoa .' AND o.id = dp.ref_disciplina_ofer AND p.id = o.ref_periodo ORDER BY ref_periodo DESC;';
+$qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, periodos p WHERE  o.ref_periodo = p.id AND o.ref_curso IN (SELECT DISTINCT ref_curso FROM coordenadores WHERE ref_professor = '. $sa_ref_pessoa .') ORDER BY ref_periodo DESC;';
 
 $periodos = $conn->get_all($qry_periodos);
-
-if($periodos === FALSE || !is_array($periodos))
-{
-    die('Falha ao efetuar a consulta: '. $conn->adodb->ErrorMsg());
-}
-
-list($periodo_id,$periodo_descricao) = $periodos[0];
-
-// $_SESSION['web_diario_periodos'] = $periodos;
-// $_SESSION['web_diario_periodo_id'] = $periodo_id;
-
 // ^ RECUPERA INFORMACOES SOBRE O PROFESSOR E SEUS PERIODOS ^ //
 
-$qry_periodo = 'SELECT id, descricao FROM periodos WHERE id = \''. $_SESSION['web_diario_periodo_id'].'\';';
+$qry_periodo = 'SELECT id, descricao FROM periodos WHERE id = \''. $_SESSION['web_diario_periodo_coordena_id'].'\';';
 $periodo = $conn->get_row($qry_periodo);
-if($periodo === FALSE)
-{
-    die('Falha ao efetuar a consulta: '. $conn->adodb->ErrorMsg());
-}
 
 ?>
 
@@ -56,7 +40,7 @@ if($periodo === FALSE)
   
 <strong>
 			<font size="4" face="Verdana, Arial, Helvetica, sans-serif">
-				Per&iacute;odo corrente: 
+				Per&iacute;odo de coordena&ccedil;&atilde;o ativo: 
 				<font color="red" size="4" face="Verdana, Arial, Helvetica, sans-serif"><?=$periodo['descricao']?></font>
 			</font>
 </strong>
@@ -68,12 +52,13 @@ if($periodo === FALSE)
 <?php
 	foreach($periodos as $p)
 	{
-		echo '<a href="index.php?periodo_id='. $p['ref_periodo'] .'" title="Per&iacute;odo '. $p['descricao'] .'" alt="Per&iacute;odo '. $p['descricao'] .'">'. $p['descricao'] .'</a><br />';
+		echo '<a href="#" title="Per&iacute;odo '. $p['descricao'] .'" alt="Per&iacute;odo '. $p['descricao'] .'" onclick="set_periodo(\'periodo_coordena_id='. $p['ref_periodo'] .'\');">'. $p['descricao'] .'</a><br />';
 	}
 
 ?>
 <br /><br />
 </form>
+
 </body>
 </head>
 </html>

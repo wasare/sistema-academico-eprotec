@@ -2,87 +2,67 @@
 
 require_once(dirname(__FILE__) .'/../setup.php');	
 
+$conn = new connection_factory($param_conn);
+
 unset($_SESSION['conteudo']);
 unset($_SESSION['flag_falta']);
 
-$conn = new connection_factory($param_conn);
+$is_coordenador = FALSE;
+$is_professor = FALSE;
 
-// RECUPERA INFORMACOES SOBRE DO PROFESSOR E SEUS PERIODOS
-if(isset($_GET['periodo_id']) && !empty($_GET['periodo_id']))
+// RECUPERA INFORMACOES SOBRE OS PERIODOS DO PROFESSOR
+$qry_periodo = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, disciplinas_ofer_prof dp, periodos p WHERE dp.ref_professor = '. $sa_ref_pessoa .' AND o.id = dp.ref_disciplina_ofer AND p.id = o.ref_periodo ORDER BY ref_periodo DESC LIMIT 1;';
+
+$periodo = $conn->get_row($qry_periodo);
+
+if(!empty($periodo))
 {
-	$_SESSION['web_diario_periodo_id'] = $_GET['periodo_id'];
+	$_SESSION['web_diario_periodo_id'] = isset($_SESSION['web_diario_periodo_id']) ? $_SESSION['web_diario_periodo_id'] : $periodo['ref_periodo'];
+	$is_professor = TRUE;
 }
-else
+// ^ RECUPERA INFORMACOES SOBRE OS PERIODOS DO PROFESSOR ^ //
+
+
+// RECUPERA INFORMACOES SOBRE OS PERIODOS DO COORDENADOR
+$qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, periodos p WHERE  o.ref_periodo = p.id AND o.ref_curso IN (SELECT DISTINCT ref_curso FROM coordenadores WHERE ref_professor = '. $sa_ref_pessoa .') ORDER BY ref_periodo DESC LIMIT 1;';
+
+$periodo = $conn->get_row($qry_periodo);
+
+if(!empty($periodo))
 {
-	$qry_periodo = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, disciplinas_ofer_prof dp, periodos p WHERE dp.ref_professor = '. $sa_ref_pessoa .' AND o.id = dp.ref_disciplina_ofer AND p.id = o.ref_periodo ORDER BY ref_periodo DESC LIMIT 1;';
-
-	$periodo = $conn->get_row($qry_periodo);
-
-	if(empty($periodo))
-	{
-		die('Falha ao efetuar a consulta: per&iacute;odo n&atilde;o localizado!');
-	}
-
-	$_SESSION['web_diario_periodo_id'] = $periodo['ref_periodo'];
+    $_SESSION['web_diario_periodo_coordena_id'] = isset($_SESSION['web_diario_periodo_coordena_id']) ? $_SESSION['web_diario_periodo_coordena_id'] : $periodo['ref_periodo'];
+	$is_coordenador = TRUE;
 }
 
-// ^ RECUPERA INFORMACOES SOBRE O PROFESSOR E SEUS PERIODOS ^ //
+if ($is_coordenador === TRUE) {
+	
+	// ^ RECUPERA INFORMACOES SOBRE OS PERIODOS DO COORDENADOR ^ //
 
 
-// RECUPERA INFORMACOES SOBRE OS PERIODOS E CURSOS DO COORDENADOR
-$sql_coordena = 'SELECT DISTINCT ref_curso
+	// RECUPERA INFORMACOES SOBRE OS CURSOS DO COORDENADOR
+	$sql_coordena = 'SELECT DISTINCT ref_curso
                     FROM coordenadores
                     WHERE
                     ref_professor = '. $sa_ref_pessoa .';';
 
-$cursos_coordenacao = $conn->adodb->getCol($sql_coordena);
+	$cursos_coordenacao = $conn->get_col($sql_coordena);
 
-if($cursos_coordenacao === FALSE)
-{
-	die('Falha ao efetuar a consulta: '. $conn->adodb->ErrorMsg());
+	if(count($cursos_coordenacao) > 0)
+	{
+		$is_coordenador = TRUE;
+		$_SESSION['web_diario_cursos_coordenacao'] = $cursos_coordenacao;	
+	}
+
+	// ^ RECUPERA INFORMACOES SOBRE OS PERIODOS E CURSOS DO COORDENADOR ^ //
 }
 
-$is_coordenador = FALSE;
+$class_periodos = $class_coordenacao = '';
 
-if(count($cursos_coordenacao) > 0)
-{
-	$is_coordenador = TRUE;
-	$_SESSION['web_diario_cursos_coordenacao'] = $cursos_coordenacao;
-}
+if (!$is_professor && $is_coordenador)
+    $class_coordenacao = ' class="active"';
+else
+	$class_diarios = ' class="active"';
 
-// ^ RECUPERA INFORMACOES SOBRE OS PERIODOS E CURSOS DO COORDENADOR ^ //
-
-/*
-	if (isset($_GET['id']) AND $_GET['acao'] === "10")
-    {
-		
-		
-        echo '<script language="javascript"> 
-		
-	      	function jsConcluido(id)
-			{
-   				if (! id == "") {
-    				if (! confirm(\'Você deseja marcar/desmarcar como concluído o diário \' + id + \'?\' + \'\n Como concluído o diário poderá ser "Fechado" pela coordenação ficando\n bloqueado para alterações!\'))      
-					{
-                        javascript:window.history.back(1);                     
-         				return false;
-      				} 
-					else {
-         				self.location = "movimentos/marca_concluido.php?ofer=" + id;
-         				return true;
-      				}
-   				}
-   				else {
-					javascript:window.history.back(1);
-					return false;
-				}
-			}
-					
-			jsConcluido('.$diario['1'].');</script>';
-		exit;
-
-    }
-*/
 ?>
 
 <html>
@@ -93,7 +73,6 @@ if(count($cursos_coordenacao) > 0)
 
 <script type="text/javascript" src="<?=$BASE_URL .'lib/prototype.js'?>"> </script>
 <script type="text/javascript" src="<?=$BASE_URL .'lib/tabbed_pane.js'?>"> </script>
-
 
 <script language="javascript" type="text/javascript">
 
@@ -138,32 +117,6 @@ function concluido(diario_id) {
     }
 }
 
-
-function setthetab(sentobject)
-{
-	var speciallink = "index.php#NamedLink";
-	var sURL1 = document.location.href;
-	var x1 = sURL1.substring(sURL1.length-speciallink.length,sURL1.length);
-	if(x1==speciallink)
-	{
-		thePane.load_page('pane2');
-	}
-}
-
-
-function altera_periodo() {
-
-	$('pane1').removeClassName('active');
-	$('pane2').addClassName('active');
-
-}
-
-
-function setOpcao() {
-
-    document.getElementById("acao").options[0].selected;
-}
-
 function enviar(action) {
 
     var undefined;
@@ -184,7 +137,6 @@ function enviar(action) {
                 break;
             }
         }
-
     }
 
     if (lst == -1) {
@@ -232,7 +184,7 @@ function enviar(action) {
 
 </head>
 
-<body bgcolor="#FFFFFF" text="#000000" >
+<body bgcolor="#FFFFFF" text="#000000">
 
 <div align="center">
 
@@ -247,25 +199,33 @@ function enviar(action) {
     &nbsp;&nbsp;
     <img src="<?=$BASE_URL .'public/images/gti.jpg'?>" alt="Ger&ecirc;ncia TI" title="Ger&ecirc;ncia de TI" width="50" height="34" />
     <?php
-		if ($_SERVER['HTTP_HOST'] == 'devv.cefetbambui.edu.br' || $host != '192.168.0.234')
+		if ($_SERVER['HTTP_HOST'] == 'dev.cefetbambui.edu.br' || $host != '192.168.0.234')
 			echo '&nbsp;&nbsp;&nbsp;&nbsp;<strong>Servidor de BD: </strong>'. $host;
     ?>
     </td>
     </tr>
 </table>
 
-<br /><br />
+<br />
+<br />
 
 <div class="tabbed-pane" align="center">
-    <ol class="tabs">
-        <li><a href="#" class="active" id="pane1">Meus di&aacute;rios</a></li>
-		<li><a href="#" id="pane2">Per&iacute;odos</a></li>
+    <ol class="guias">
 		<?php
-            if($is_coordenador === TRUE)
-                echo '<li><a href="#" id="pane3">Coordena&ccedil;&atilde;o</a></li>';
+			if($is_professor === TRUE) {
+				echo '<li><a href="#" '. $class_diarios .' id="pane_diarios">Meus di&aacute;rios</a></li>';
+			}
+			
+            if($is_coordenador === TRUE) {
+                echo '<li><a href="#" '. $class_coordenacao .' id="pane_coordenacao">Coordena&ccedil;&atilde;o</a></li>';
+			}			
         ?>
-        <li><a href="#" id="pane4">Ferramentas</a></li>
-		<li><a href="<?=$BASE_URL .'index.php'?>" style="background-color: #ffe566;">Sair</a></li>
+        
+		<li><a href="#" id="pane_ferramentas">Ferramentas</a></li>
+        <li><a href="#" id="pane_periodos_professor">Per&iacute;odos professor</a></li>
+        <li><a href="#" id="pane_periodos_coordenacao">Períodos coordenação</a></li>
+
+		<li><a href="<?=$BASE_URL .'index.php'?>" style="background-color: #ffe566;" id="pane_sair">Sair</a></li>
     </ol>
    
     <div id="pane_container" class="tabbed-container">
@@ -280,15 +240,20 @@ function enviar(action) {
 
 
 <script language="javascript" type="text/javascript">
+
 var thePane = new TabbedPane('web_guias',
     {
-        'pane1': 'lista_diarios.php',
-		'pane2': 'lista_periodos.php',
-		<?php
-            if($is_coordenador === TRUE)
-				echo  "'pane3': 'secretaria/lista_diarios_secretaria.php?periodo_id=0901&periodo=&curso_id=107&curso=Superior+de+Tecnologia+em+Inform%E1tica&diario_id=&lista_diarios=Listar+di%E1rios',";
+        <?php
+			if($is_professor === TRUE) {
+                echo "'pane_diarios': 'professor/diarios_professor.php',";
+				echo "'pane_periodos_professor': 'professor/periodos_professor.php',";
+            }
+            if($is_coordenador === TRUE) {
+                echo "'pane_coordenacao': 'coordenacao/cursos_coordenacao.php',";
+			    echo "'pane_periodos_coordenacao': 'coordenacao/periodos_coordenacao.php',";
+			}
         ?>
-		'pane4': 'ferramentas.php',
+        'pane_ferramentas': 'ferramentas.php',
     },
     {
         onClick: function(e) {
@@ -299,18 +264,37 @@ var thePane = new TabbedPane('web_guias',
             $('pane_overlay').hide();
         }
     });
+$('pane_periodos_professor').hide();
+$('pane_periodos_coordenacao').hide();
 
-function load_periodos()
-{
+load_periodos = function(pane) {
 	$('pane_overlay').show();
-	thePane.load_page('pane2');
-	$('pane1').removeClassName('active');
-    $('pane2').addClassName('active');
+	thePane.load_page('pane_periodos_' + pane);
 	$('pane_overlay').hide();
 }
 
+set_periodo = function(data,pane) {
+    var parametro = data;
+    var objAjax = new Ajax.Request('seleciona_periodo.php', {method: 'post', evalJS: true, parameters: parametro, onSuccess: reload_pane});
+}
+
+
+String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
+
+reload_pane = function(resposta) {
+    var pane = unescape(resposta.responseText);
+
+	$('pane_overlay').show();
+
+	if (pane.trim() == 'pane_diarios')	
+		thePane.load_page('pane_diarios');
+
+	if (pane.trim() == 'pane_coordenacao')  
+        thePane.load_page('pane_coordenacao');
+
+    $('pane_overlay').hide();
+}
 </script>
 
 </body>
-</head>
 </html>

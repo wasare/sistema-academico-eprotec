@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../app/setup.php');
+require_once(dirname(__FILE__) .'/../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
 
 $conn = new connection_factory($param_conn);
@@ -30,30 +30,30 @@ echo 'Meus di&aacute;rios  | Per&iacute;odos  | Coordena&ccedil;&atilde;o  | Fer
 
 
 // OPERACOES COM ALTERACAO DE DADOS
-if($operacao == 'chamada') {
-    require_once($BASE_DIR .'app/web_diario/movimentos/chamada/chamadas.php');
+if($operacao == 'notas') {
+    require_once($BASE_DIR .'app/web_diario/professor/notas/lanca_notas.php');
     exit;
 }
 
-if($operacao == 'notas') {
-    require_once($BASE_DIR .'app/web_diario/movimentos/notas/lanca_notas.php');
+if($operacao == 'chamada') {
+    require_once($BASE_DIR .'app/web_diario/professor/chamada/chamadas.php');
     exit;
 }
 
 if($operacao == 'altera_chamada') {
-    require_once($BASE_DIR .'app/web_diario/movimentos/faltas/faltas.php');
+    require_once($BASE_DIR .'app/web_diario/professor/chamada/faltas.php');
     exit;
 }
 
 
 if($operacao == 'exclui_chamada') {
-    require_once($BASE_DIR .'app/web_diario/movimentos/chamada/exclui_chamada.php');
+    require_once($BASE_DIR .'app/web_diario/professor/chamada/exclui_chamada.php');
     exit;
 }
 
 if($operacao == 'marca_diario') {
 	echo papeleta_header($diario_id);
-    require_once($BASE_DIR .'app/web_diario/movimentos/marca_concluido.php');
+    require_once($BASE_DIR .'app/web_diario/professor/marca_concluido.php');
 	echo '<br />';
 	echo '<script language="javascript" type="text/javascript"> 
 			alert(\'Diario marcado / desmarcado com sucesso!\');
@@ -61,6 +61,12 @@ if($operacao == 'marca_diario') {
 			setTimeout("self.close()",450); </script>';
     exit;
 }
+
+if($operacao == 'troca_senha') {
+    require_once($BASE_DIR .'app/usuarios/alterar_senha.php');
+    exit;
+}
+
 // ^ OPERACOES COM ALTERACAO DE DADOS   ^ //
 
 

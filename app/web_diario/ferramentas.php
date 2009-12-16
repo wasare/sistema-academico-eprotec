@@ -57,8 +57,9 @@ $conn = new connection_factory($param_conn);
 <br />
 		
 <div class="tabbed-pane" align="center">
-    <ol class="tabs">
+    <ol class="guias">
         <li><a href="#" id="ferramentas_pane1">Consultar alunos</a></li>
+	    <li><a href="#" style="background-color: #ffe566;" id="trocar_senha" onclick="abrir('<?=$IEnome?>' + '- web diário', 'requisita.php?do=troca_senha');">Trocar senha</a></li>
         <li><a href="#" id="ferramentas_pane2">Trocar senha</a></li>
 		<li><a href="#" class="active" id="ferramentas_pane3">Log de acesso</a></li>
 		<li><a href="#" id="ferramentas_pane4">Programas</a></li>
@@ -74,12 +75,11 @@ $conn = new connection_factory($param_conn);
 
 </div>
 
-
 <script type="text/javascript">
 new TabbedPane('web_guias_ferramentas',
     {
         'ferramentas_pane1': 'consultas/alunos.php',
-        'ferramentas_pane2': 'movimentos/senhas/senha_1.php',
+        'ferramentas_pane2': '<?=$BASE_URL ."app/usuarios/alterar_senha.php"?>',
 		'ferramentas_pane3': 'consultas/log_acesso.php',
 		'ferramentas_pane4': 'programas.php'
     },
