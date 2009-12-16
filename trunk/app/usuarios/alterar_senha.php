@@ -1,23 +1,22 @@
 <?php
 
-require_once("../../app/setup.php");
+require_once(dirname(__FILE__) .'/../setup.php');
 
 $conn = new connection_factory($param_conn);
 
 $RsPessoa = $conn->Execute("SELECT nome, email FROM pessoas WHERE id = $sa_ref_pessoa");
 
-
 $msg = '';
 
-if($_POST) {
+if(isset($_POST['confirm1'])) {
 
+	$senha_ok = FALSE;
     $senha_atual = $_POST['senha_atual'];
 
-    $sqlSenhaAtual = "SELECT senha FROM usuario WHERE id = $sa_usuario_id  AND senha = '".
+    $sqlSenhaAtual = "SELECT COUNT(senha) FROM usuario WHERE id = $sa_usuario_id  AND senha = '".
         hash('sha256',$senha_atual)."';";
-    $RsSenhaAtual = $conn->Execute($sqlSenhaAtual);
 
-    if($RsSenhaAtual->RecordCount() != 1) {
+    if($conn->get_one($sqlSenhaAtual) != 1) {
         $msg = 'A senha atual n&atilde;o confere!';
     }else {
         $senha = $_POST['senha'];
@@ -27,10 +26,12 @@ if($_POST) {
 
             $msg = '<font color="green">Senha alterada com sucesso!</font>';
 
-			$message = 'SA - Senha do usu&aacute;rio "'.$sa_usuario.'" alterada para: '.$senha;
+			$message = 'Sistema Acadêmico - usu&aacute;rio: "'.$sa_usuario;
+
+			$senha_ok = TRUE;
 
             if(mail($RsPessoa->fields[1], 'SA - Senha alterada', $message, 'From: SA')) {
-                $msg .= '<p><font color=green>A nova senha foi enviada para o seu email.</font></p>';
+                $msg .= '<p><font color="green">A nova senha foi enviada para o seu email.</font></p>';
             }else {
                 $msg .= '<p>Erro ao enviar email com a nova senha!</p>';
             }
@@ -38,6 +39,18 @@ if($_POST) {
             $msg = 'Ocorreu alguma falha ao alterar a senha!';
         }
     }
+
+	if($_POST['operacao'] == 'troca_senha') {
+
+		if($senha_ok === TRUE) {
+			// FECHA A JANELA AUTOMATICAMENTE	
+			echo '<br />';
+			echo '<script language="javascript" type="text/javascript"> 
+            setTimeout("self.close()", 8000); </script>';
+		}
+		else
+			$operacao = $_POST['operacao'];
+	}
 }
 
 ?>
@@ -54,7 +67,8 @@ if($_POST) {
     </head>
     <body>
         <h2>Alterar senha do usu&aacute;rio "<?=$sa_usuario?>"</h2>
-        <form id="form1" name="form1" method="post" action="alterar_senha.php">
+		<br />
+        <form id="form1" name="form1" method="post" action="<?=$BASE_URL .'app/usuarios/alterar_senha.php'?>">
             <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                     <td width="60">
@@ -69,20 +83,35 @@ if($_POST) {
                     </td>
                     <td width="60">
                         <div align="center">
-                            <a href="javascript:history.back();"
-                               class="bar_menu_texto">
-                                <img src="../../public/images/icons/back.png"
-                                     alt="Voltar"
+							<?php
+								if($_POST['operacao'] == 'troca_senha' || $operacao == 'troca_senha'):
+									$btn_txt = 'Fechar';
+									$btn_img = 'close.png';							
+							?>
+								<a href="javascript:window.close();"
+							<?php 
+								else: 
+									$btn_txt = 'Voltar';
+									$btn_img = 'back.png';
+							?>
+							     <a href="javascript:history.back();"
+							<?php
+								endif;
+							?>
+								class="bar_menu_texto">
+                                <img src="../../public/images/icons/<?=$btn_img?>"
+                                     alt="<?=$btn_txt?>"
+									 title="<?=$btn_txt?>"
                                      width="20"
                                      height="20" />
-                                <br />Voltar
+                                <br /><?=$btn_txt?>
                             </a>
                         </div>
                     </td>
                 </tr>
             </table>
             <div class="panel">
-                <strong>Pessoa:</strong><br />
+                <strong>Seu nome:</strong><br />
                 <?=$RsPessoa->fields[0]?><br />
                 <p>
                     <span id="sprypassword1">
@@ -108,6 +137,7 @@ if($_POST) {
             <p>
                 <font color="red"><strong><?php echo $msg;?></strong></font>
             </p>
+			    <input type="hidden" name="operacao" id="operacao" value="<?=$operacao?>" />
         </form>
         <script type="text/javascript">
             <!--

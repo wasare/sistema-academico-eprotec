@@ -58,24 +58,24 @@ table.papeleta {
 .tabbed-pane {
 	/*width: 960px;*/
 }
-.tabbed-pane .tabs {
+.tabbed-pane .guias {
 	list-style: none;
 	clear: both;
 	float: left;
 	margin-bottom: -1px;
 }
 
-.tabbed-pane .tabs li a.active {
+.tabbed-pane .guias li a.active {
 	background: white;
 	border-bottom: 1px solid white;
 }
 
-.tabbed-pane .tabs li {
+.tabbed-pane .guias li {
 	float: left;
 	margin: 0 0.35em 0 0;
 }
 
-.tabbed-pane .tabs li a {
+.tabbed-pane .guias li a {
 	color: #336699;
 	display: block;
 	padding: 10px;

@@ -16,29 +16,27 @@ Notas sobre a instalação
 
 Requisitos de Sistema:
 
-- Apache versão:
-- PostgreSQL versão:
-- PHP5
+- Apache 2.x:
+- PostgreSQL 8.x:
+- PHP 5.x
 
 Configurações necessárias:
 
 - Apache:
+
 - PHP5: 
 
 
 Arquivos a serem alterados:
 
-- configuracao.php (dados de conexão)
-- configs/config.php
-- app/sagu/fatalerror.phtml  * caminho da imagem
-- app/wediario/conf/wediario.conf.php
+- config/configuracao.php - dados de conexão e caminhos
 
 ------------------------------------------------------------
 Desenvolvedores
 ------------------------------------------------------------
-Santiago Silva Pereira - santiago@cefetbambui.edu.br
-Wanderson Santiago dos Reis - wanderson@cefetbambui.edu.br
+Santiago Silva Pereira - santiago.pereira@ifmg.edu.br
+Wanderson Santiago dos Reis - wanderson.reis@ifmg.edu.br
 
 ------------------------------------------------------------
-Copyright 2009 - CEFET-Bambuí
+Copyright 2008-2010 - Instituto Federal de Minas Gerais - Campus Bambuí
 Todos os direitos reservados

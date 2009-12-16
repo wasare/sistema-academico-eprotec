@@ -47,7 +47,7 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
 <?=papeleta_header($diario_id)?>
 <br />
 
-<form name="envia_chamada" id="envia_chamada" method="post" action="<?=$BASE_URL .'app/web_diario/movimentos/chamada/lanca_faltas.php'?>">
+<form name="envia_chamada" id="envia_chamada" method="post" action="<?=$BASE_URL .'app/web_diario/professor/chamada/lanca_faltas.php'?>">
     <input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">
     <input type="hidden" name="operacao" id="operacao" value="<?=$operacao?>">
 
@@ -72,7 +72,7 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
 	$mes_atual = date("m");
     foreach($meses as $m => $descricao) {
 		$selected = ($mes_atual == $m) ? ' selected="selected"' : ' ';
-        echo '<option value="'. ($m + 1) .'"'. $selected .'>'. $descricao .'</option>';
+        echo '<option value="'. str_pad(($m + 1), 2, "0", STR_PAD_LEFT) .'"'. $selected .'>'. $descricao .'</option>';
     }
 ?>
 	</select>

@@ -88,8 +88,8 @@ foreach( $chamadas as $aula ) {
 	echo '<tr bgcolor="'. $st .'"> <td align="center">'. date::convert_date($data_chamada) .'</td>';
 	echo '<td align="center">'. $aulas .'</td>';
     echo '<td align="left"> '. $conteudo .'</td> ';
-
-	echo '<td> <a href="'. $BASE_URL .'app/web_diario/movimentos/faltas/altera_faltas.php?chamada='. $chamada_id .'&flag='. $aulas .'&diario_id='. $diario_id .'" target="_blank">Alterar faltas</a> </td>';
+ // TODO: acessar via requisita.php
+	echo '<td> <a href="'. $BASE_URL .'app/web_diario/professor/chamada/altera_faltas.php?chamada='. $chamada_id .'&flag='. $aulas .'&diario_id='. $diario_id .'">Alterar faltas</a> </td>';
     
 	echo '</tr>';
 }

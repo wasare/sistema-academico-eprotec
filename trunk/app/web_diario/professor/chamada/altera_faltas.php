@@ -41,7 +41,7 @@ $datadehoje = date ("d/m/Y");
 
 if($flag_falta === 'F') {
 
-	require_once($BASE_DIR .'app/web_diario/movimentos/chamada/registra_faltas.php');
+	require_once($BASE_DIR .'app/web_diario/professor/chamada/registra_faltas.php');
 	exit;
 }
 	

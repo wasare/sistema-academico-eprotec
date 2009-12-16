@@ -186,7 +186,7 @@ function MM_validateForm() { //v4.0
 </div></td>
   </tr>
 </table>
-<form name="form1" method="post" action="<?=$BASE_URL .'app/web_diario/movimentos/notas/grava_notas.php'?>">
+<form name="form1" method="post" action="<?=$BASE_URL .'app/web_diario/professor/notas/grava_notas.php'?>">
 
 	<input type="hidden" name="codprova" id="codprova" value="<?=$prova?>">
 	<input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">

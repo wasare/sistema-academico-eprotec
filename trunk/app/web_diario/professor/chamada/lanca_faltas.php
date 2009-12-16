@@ -21,14 +21,7 @@ if (is_finalizado($diario_id)){
     exit;
 }
 
-
-///$disciplina = $_POST['disc'];
-//$getofer = $_POST['ofer'];
-///$curso = $_POST['curso'];
 $periodo = $_SESSION['web_diario_periodo_id'];
-
-//$id = $_POST['id'];
-
 
 $oferecida = $getofer;
 
@@ -148,10 +141,7 @@ ORDER BY
   
 
 $alunos = $conn->get_all($sql1);
-
-
 $curso = get_curso($diario_id);
-//$disciplina = get_disciplina($diario_id);
 
 ?>
 
@@ -222,7 +212,7 @@ function autoTab(input,len, e) {
 //-->
 </script>
 </head>
-<body onLoad="javascript:document.form1.reset()">
+<body>
 
 <div align="left" class="titulo">
   <h3>Lan&ccedil;amento de faltas da chamada</h3>
@@ -230,7 +220,7 @@ function autoTab(input,len, e) {
 <br />
 <?=papeleta_header($diario_id)?>
 
-<form name="envia_faltas" id="envia_faltas" method="post" action="<?=$BASE_URL .'app/web_diario/movimentos/chamada/registra_faltas.php'?>">
+<form name="envia_faltas" id="envia_faltas" method="post" action="<?=$BASE_URL .'app/web_diario/professor/chamada/registra_faltas.php'?>">
     <input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">
     <input type="hidden" name="operacao" id="operacao" value="<?=$operacao?>">
 	<input type="hidden" name="aula_tipo" id="aula_tipo" value="<?=$aula_tipo?>">

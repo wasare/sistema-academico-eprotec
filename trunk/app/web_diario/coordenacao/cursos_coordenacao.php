@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(__FILE__) .'/../setup.php');
+require_once(dirname(__FILE__) .'/../../setup.php');
 
-if(empty($_SESSION['web_diario_periodo_id']))
+if(empty($_SESSION['web_diario_periodo_coordena_id']))
 {
         echo '<script language="javascript">
                 window.alert("ERRO! Primeiro informe um período!");
@@ -13,16 +13,12 @@ if(empty($_SESSION['web_diario_periodo_id']))
 
 $conn = new connection_factory($param_conn);
 
-//ini_set("display_errors",1);
-
 unset($_SESSION['conteudo']);
 unset($_SESSION['flag_falta']);
 
-
-//$_SESSION['periodo'] = $_GET['periodo'];
+print_r($_SESSION['web_diario_cursos_coordenacao']);
 
 $diario = @explode("|", $_GET['diario']);
-
 
 if(isset($_GET['id']) AND ( !is_numeric($diario['0']) OR !is_numeric($diario['1'])) )
 {
@@ -31,8 +27,6 @@ if(isset($_GET['id']) AND ( !is_numeric($diario['0']) OR !is_numeric($diario['1'
 	 		window.alert("ERRO! Primeiro selecione um diário!"); javascript:window.history.back(1);
 	 </script>';
 
-	 //header("Location: diarios.php?periodo=". $_SESSION['periodo']);
-	 
       exit;
 
 }
@@ -47,50 +41,12 @@ else
 
       exit;
     }
-/*
-	if (isset($_GET['id']) AND $_GET['acao'] === "10")
-    {
-		
-		
-        echo '<script language="javascript"> 
-		
-	      	function jsConcluido(id)
-			{
-   				if (! id == "") {
-    				if (! confirm(\'Você deseja marcar/desmarcar como concluído o diário \' + id + \'?\' + \'\n Como concluído o diário poderá ser "Fechado" pela coordenação ficando\n bloqueado para alterações!\'))      
-					{
-                        javascript:window.history.back(1);                     
-         				return false;
-      				} 
-					else {
-         				self.location = "movimentos/marca_concluido.php?ofer=" + id;
-         				return true;
-      				}
-   				}
-   				else {
-					javascript:window.history.back(1);
-					return false;
-				}
-			}
-					
-			jsConcluido('.$diario['1'].');</script>';
-		exit;
-
-    }
-*/
-	
 }
 
 
-$qryPeriodo = 'SELECT id, descricao FROM periodos WHERE id = \''. $_SESSION['web_diario_periodo_id'].'\';';
+$qryPeriodo = 'SELECT id, descricao FROM periodos WHERE id = \''. $_SESSION['web_diario_periodo_coordena_id'].'\';';
 
 $periodo = $conn->get_row($qryPeriodo);
-
-if($periodo === FALSE)
-{
-    die('Falha ao efetuar a consulta: '. $conn->adodb->ErrorMsg());
-}
-
 
 $sql3 = 'SELECT DISTINCT
                 d.id,
@@ -103,7 +59,7 @@ $sql3 = 'SELECT DISTINCT
                 WHERE
                 f.ref_professor = '. $sa_ref_pessoa .' AND
                 o.id = f.ref_disciplina_ofer AND
-                o.ref_periodo = \''.$_SESSION['web_diario_periodo_id'].'\' AND
+                o.ref_periodo = \''.$_SESSION['web_diario_periodo_coordena_id'].'\' AND
                 o.is_cancelada = \'0\' AND
                 d.id = o.ref_disciplina;';  
 
@@ -136,17 +92,17 @@ $sql3 = 'SELECT DISTINCT
   
 <strong>
 			<font size="4" face="Verdana, Arial, Helvetica, sans-serif">
-				Per&iacute;odo: 
+				Per&iacute;odo de coordenação: 
 				<font color="red" size="4" face="Verdana, Arial, Helvetica, sans-serif"><?=$periodo['descricao']?></font>
 			</font>
 </strong>
 &nbsp;&nbsp;
-<span><a href="#" title="alterar o per&iacute;odo" alt="alterar o per&iacute;odo" onclick="load_periodos();">alterar</a></span>
+<span><a href="#" title="alterar o per&iacute;odo" alt="alterar o per&iacute;odo" onclick="load_periodos('coordenacao');">alterar</a></span>
 <br /> <br /> <br />
 
 <h3>Marque o di&aacute;rio desejado e selecione uma op&ccedil;&atilde;o:</h3>
 <br />
-<form id="lista_diarios" name="lista_diarios" method="get" action="lista_diarios.php">
+<form id="lista_cursos" name="lista_cursos" method="get" action="cursos_coordenacao.php">
 <input type="hidden" name="id" id="id" value="<?=$_SESSION['id']?>" />
 
 <table cellspacing="0" cellpadding="0" class="papeleta">

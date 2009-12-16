@@ -1,4 +1,475 @@
 ------------------------------------------------------------------------
+r167 | wanderson | 2009-12-14 16:31:47 -0200 (Seg, 14 Dez 2009) | 3 lines
+
+- alterações diversas para a nova versão do web diário, refs #228
+
+
+------------------------------------------------------------------------
+r166 | wanderson | 2009-12-14 16:29:51 -0200 (Seg, 14 Dez 2009) | 3 lines
+
+- alterações diversas para a nova versão do web diário, refs #228
+
+
+------------------------------------------------------------------------
+r165 | santiago | 2009-12-11 17:01:46 -0200 (Sex, 11 Dez 2009) | 1 line
+
+Desenvolvimento do controle de Professores; finalizado o cadastro e a exibição de professores utilizando a tabela paginada; alteração em andamento.
+------------------------------------------------------------------------
+r164 | santiago | 2009-12-10 10:06:51 -0200 (Qui, 10 Dez 2009) | 1 line
+
+Link no menu principal para os modulos Cargo, Salas e Motivos. Criação do Grid paginado extendido de ADODB usado inicialmente no controle de pessoas. Criação da variável de configuração DOC_TYPE contendo as informações de entities HTML. Em desenvolvimento do controle de Professores.
+------------------------------------------------------------------------
+r163 | wanderson | 2009-12-10 09:17:22 -0200 (Qui, 10 Dez 2009) | 3 lines
+
+alterações diversas relacionadas ao web diário, refs #228
+
+
+------------------------------------------------------------------------
+r162 | santiago | 2009-12-07 09:39:41 -0200 (Seg, 07 Dez 2009) | 1 line
+
+Aprimoramento do relatório de notas e faltas no periodo.
+------------------------------------------------------------------------
+r161 | santiago | 2009-11-27 10:09:10 -0200 (Sex, 27 Nov 2009) | 1 line
+
+Relatório de notas e faltas de curso por período. Inclusão da biblioteca Spry Framework versão 1.6.1. fecha #33
+------------------------------------------------------------------------
+r160 | wanderson | 2009-11-23 11:01:00 -0200 (Seg, 23 Nov 2009) | 2 lines
+
+implementa o tratamento e exibição de erros em consultas usando a classe connection_factory.
+
+------------------------------------------------------------------------
+r159 | santiago | 2009-11-23 09:21:40 -0200 (Seg, 23 Nov 2009) | 1 line
+
+Criação de novas funções na classe connection_factory.
+------------------------------------------------------------------------
+r158 | rogeriofga | 2009-11-17 14:44:29 -0200 (Ter, 17 Nov 2009) | 1 line
+
+inclui cadastro de salas fecha #246
+------------------------------------------------------------------------
+r157 | rbcardoso | 2009-11-17 14:39:11 -0200 (Ter, 17 Nov 2009) | 1 line
+
+Inclui cadastro de cargos. fecha #247 
+------------------------------------------------------------------------
+r156 | roger | 2009-11-17 14:34:31 -0200 (Ter, 17 Nov 2009) | 1 line
+
+Inclui cadastro de motivos. fecha #248
+------------------------------------------------------------------------
+r155 | santiago | 2009-11-16 08:10:06 -0200 (Seg, 16 Nov 2009) | 1 line
+
+Alteração no nome de estilo de formularios. Criação do módulo setor.
+------------------------------------------------------------------------
+r154 | santiago | 2009-11-04 14:35:26 -0200 (Qua, 04 Nov 2009) | 1 line
+
+No cadastro de pessoas não exibe foto do aluno nem a foto padrão. Ao gravar ou atualizar dados no cadastro de pessoas físicas ocorre um erro inesperado. De acordo com o diagnóstico o problema ocorre para palavras com apóstofro. fecha #245, #135
+------------------------------------------------------------------------
+r152 | santiago | 2009-11-03 11:02:35 -0200 (Ter, 03 Nov 2009) | 1 line
+
+Na listagem de usuário exibir o texto "nenhuma" (com destaque) quando o usuário não possuir nenhuma permissão/papel atribuído a ele. Na tela de edição do usuário marcar as permissões (papéis) que já forem atribuídas ao usuário. fecha #242
+------------------------------------------------------------------------
+r151 | santiago | 2009-11-03 09:02:02 -0200 (Ter, 03 Nov 2009) | 1 line
+
+Enviar um aviso por email para o usuário quando o mesmo trocar a senha. Na tela de troca de senha do usuário substituir o texto "Senha:" por "Nova senha:". fecha #241
+------------------------------------------------------------------------
+r150 | santiago | 2009-11-03 08:47:40 -0200 (Ter, 03 Nov 2009) | 1 line
+
+Na tela de recuperação de senha (esqueci a senha), permitir que o usuário informe o login e/ou o e-mail. Na mensagem enviada ao usuário com a nova senha informar também qual é o login do mesmo. fecha #240
+------------------------------------------------------------------------
+r149 | santiago | 2009-10-27 07:29:06 -0200 (Ter, 27 Out 2009) | 1 line
+
+Sistema de autenticação de usuários, filtros e aprimoramentos do CRUD.
+------------------------------------------------------------------------
+r148 | wanderson | 2009-10-26 16:55:35 -0200 (Seg, 26 Out 2009) | 3 lines
+
+- corrigi verificação de pré-requisito durante a matrícula, refs #237
+
+
+------------------------------------------------------------------------
+r147 | santiago | 2009-10-26 16:50:07 -0200 (Seg, 26 Out 2009) | 1 line
+
+Sistema de autenticação de usuários, filtros e aprimoramentos do CRUD.
+------------------------------------------------------------------------
+r145 | santiago | 2009-10-26 09:12:23 -0200 (Seg, 26 Out 2009) | 1 line
+
+Aprimoramento alterar senha de usuário autenticado fecha#239
+------------------------------------------------------------------------
+r144 | santiago | 2009-10-21 14:33:55 -0200 (Qua, 21 Out 2009) | 1 line
+
+Bug no css do menu principal. Bug no help/docs.
+------------------------------------------------------------------------
+r143 | santiago | 2009-10-21 14:31:17 -0200 (Qua, 21 Out 2009) | 1 line
+
+Alterar senha do usuario autenticado. Bug no css do menu principal.
+------------------------------------------------------------------------
+r142 | santiago | 2009-10-20 07:46:13 -0200 (Ter, 20 Out 2009) | 1 line
+
+Recuperar senha fecha #227. Desenvolvimento controle usuários e papéis.
+------------------------------------------------------------------------
+r141 | santiago | 2009-10-15 13:56:36 -0300 (Qui, 15 Out 2009) | 1 line
+
+Implentação da classe ACL; Desenvolvimento do CRUD Papéis e Usuários
+------------------------------------------------------------------------
+r140 | wanderson | 2009-10-05 16:21:29 -0300 (Seg, 05 Out 2009) | 3 lines
+
+- corrigi bug do arquivo auth.php introduzido na revisao r139 (Agora vai funcionar!)
+
+
+------------------------------------------------------------------------
+r139 | wanderson | 2009-10-05 15:14:45 -0300 (Seg, 05 Out 2009) | 2 lines
+
+- corrigi bug introduzido na revisao 138
+
+------------------------------------------------------------------------
+r138 | santiago | 2009-10-05 14:38:24 -0300 (Seg, 05 Out 2009) | 1 line
+
+Desenvolvimento de classe de verificação de urls e controle de pessoas. Alterações no setup.php. 
+------------------------------------------------------------------------
+r137 | wanderson | 2009-10-05 08:27:25 -0300 (Seg, 05 Out 2009) | 4 lines
+
+- exibe as notas distribuídas na papeleta completa do web diário, fecha #224
+- adequa o web diário ao novo sistema de controle de acesso do SA, refs #228
+
+
+------------------------------------------------------------------------
+r136 | wanderson | 2009-10-02 09:30:21 -0300 (Sex, 02 Out 2009) | 3 lines
+
+- integra módulo do web diário da secretaria ao SA, fecha #37
+
+
+------------------------------------------------------------------------
+r135 | wanderson | 2009-10-02 08:17:56 -0300 (Sex, 02 Out 2009) | 3 lines
+
+- integra módulo do web diário da secretaria ao SA, refs #37
+
+
+------------------------------------------------------------------------
+r134 | wanderson | 2009-10-02 08:10:24 -0300 (Sex, 02 Out 2009) | 4 lines
+
+- integra módulo do web diário da secretaria ao SA, refs #37
+
+
+
+------------------------------------------------------------------------
+r133 | wanderson | 2009-10-02 08:09:22 -0300 (Sex, 02 Out 2009) | 5 lines
+
+- padroniza o filtro de seleção do campus nos relatórios de cursos e de diários em andamento
+- integra módulo do web diário da secretaria ao SA, refs #37
+
+
+
+------------------------------------------------------------------------
+r132 | santiago | 2009-09-23 16:46:54 -0300 (Qua, 23 Set 2009) | 1 line
+
+Desenvolvimento de controle de usuários do SA e relatório de pessoa.
+------------------------------------------------------------------------
+r131 | santiago | 2009-09-17 07:07:25 -0300 (Qui, 17 Set 2009) | 1 line
+
+Novo sistema de autenticacao de usuarios para o SA baseado em tabela, fecha #208
+------------------------------------------------------------------------
+r129 | wanderson | 2009-09-16 17:36:35 -0300 (Qua, 16 Set 2009) | 5 lines
+
+- adiciona a opção de lançamento de 5 aulas no web diário, refs #222
+- corrigi criação de acessos dos alunos a área do aluno durante o cadastro de um novo contrato, refs #217
+- corrigi a exibição das dispensas na ficha acadêmica, refs #219
+
+
+------------------------------------------------------------------------
+r128 | santiago | 2009-09-15 16:03:10 -0300 (Ter, 15 Set 2009) | 1 line
+
+Desenvolvimento da autenticacao do usuario e tela de login do usuario.
+------------------------------------------------------------------------
+r127 | wanderson | 2009-09-09 15:34:22 -0300 (Qua, 09 Set 2009) | 4 lines
+
+
+- adiciona arquivo app/setup.php e o inclui nos arquivos ao invés do arquivo configuracao.php, renomeia pasta configs para config e renomeia arquivo app/inicio.php para app/index.php
+
+
+------------------------------------------------------------------------
+r126 | wanderson | 2009-09-09 14:33:46 -0300 (Qua, 09 Set 2009) | 4 lines
+
+ - adiciona controle de sessão baseado no banco de dados, fecha #210, adequa diversos arquivos para o novo sistema, inclusive o connection_factory.php para reutilizar a conexão caso seja idêntica a anterior
+ - libera dispensa em disciplinas cursadas anteriormente desde que não seja para o mesmo contrato, refs #214
+
+
+------------------------------------------------------------------------
+r124 | wanderson | 2009-09-09 09:59:55 -0300 (Qua, 09 Set 2009) | 2 lines
+
+- corrigi o arquivo check_login.php para forçar a exclusão de sessões duplicadas, refs #210
+
+------------------------------------------------------------------------
+r123 | wanderson | 2009-09-08 19:18:02 -0300 (Ter, 08 Set 2009) | 4 lines
+
+- corrigi a verificação de sessão do usuário, refs #210
+- adequa ao sistema a usar a função "explode" ao invés da "split" que está sendo descontinuada pelo core do PHP.
+
+
+------------------------------------------------------------------------
+r122 | santiago | 2009-09-08 16:21:38 -0300 (Ter, 08 Set 2009) | 1 line
+
+Classe de autenticacao de usuario.
+------------------------------------------------------------------------
+r121 | wanderson | 2009-09-08 15:15:42 -0300 (Ter, 08 Set 2009) | 2 lines
+
+adiciona novo sistema de controle de sessão, refs #210
+
+------------------------------------------------------------------------
+r120 | wanderson | 2009-09-02 15:06:43 -0300 (Qua, 02 Set 2009) | 3 lines
+
+- atualiza as bibliotecas para versões mais recentes, fecha #212
+
+
+------------------------------------------------------------------------
+r119 | wanderson | 2009-09-02 15:00:20 -0300 (Qua, 02 Set 2009) | 4 lines
+
+- atualiza as bibliotecas para versões mais recentes, refs #212
+
+
+
+------------------------------------------------------------------------
+r117 | wanderson | 2009-09-01 18:16:48 -0300 (Ter, 01 Set 2009) | 4 lines
+
+- corrigi exibição de endereço no cadastro de alunos do web diário, fecha #190 (aplicada na revisão r108)
+- corrigi verificação de pré-requisitos durante a matrícula, refs #211
+
+
+------------------------------------------------------------------------
+r116 | santiago | 2009-09-01 09:45:11 -0300 (Ter, 01 Set 2009) | 1 line
+
+Refinamento relatórios e correção de consulta em alunos matriculados fecha #176,#192.
+------------------------------------------------------------------------
+r113 | wanderson | 2009-08-31 13:45:47 -0300 (Seg, 31 Ago 2009) | 3 lines
+
+- corrigi exibição do caderno de chamada no web diário que não era gerado corretamente algumas vezes, refs #207
+
+
+------------------------------------------------------------------------
+r111 | santiago | 2009-08-31 11:00:45 -0300 (Seg, 31 Ago 2009) | 1 line
+
+Alteração de identação da classe de conexao e estilo da classe search.
+------------------------------------------------------------------------
+r110 | santiago | 2009-08-31 10:58:59 -0300 (Seg, 31 Ago 2009) | 1 line
+
+Caminho de arquivos de relatórios.
+------------------------------------------------------------------------
+r109 | santiago | 2009-08-31 10:56:36 -0300 (Seg, 31 Ago 2009) | 1 line
+
+Relatório de pessoas matriculadas adaptado para o connection factory e css.
+------------------------------------------------------------------------
+r108 | wanderson | 2009-08-31 08:31:48 -0300 (Seg, 31 Ago 2009) | 8 lines
+
+- corrigi exibição do endereço do aluno na consulta de cadastro do web diário, fecha #181
+- corrigi exibição de diários sem professor no web diário do coordenador, fecha #182
+- exclui o array turnos de config.php e substitui pelas informações da tabela turno (tabela renomeada), fecha #194
+- exclui tabelas, funções e sequências não utilizadas da base de dados, fecha #25, (revisão r106)
+- exclui o arquivo configs/config.php, fecha #198
+- exclui tabelas tipos_cobr, historicos, horarios, locais_pgto, regime_disciplinas e origens, fecha #195,#196
+
+
+------------------------------------------------------------------------
+r106 | wanderson | 2009-08-26 17:18:08 -0300 (Qua, 26 Ago 2009) | 6 lines
+
+- corrigi pesquisa de áreas de ensino na tela de inclusão de disciplinas em cursos, refs #205
+- renomeia tabelas sagu_setores, sagu_usuarios, aux_cargos, aux_cidades, aux_estados e aux_paises, fecha #197
+- inclui scripts para atualização do banco da versão 0.1.0 para a versão 0.2.0
+
+
+
+------------------------------------------------------------------------
+r105 | wanderson | 2009-08-26 11:24:39 -0300 (Qua, 26 Ago 2009) | 6 lines
+
+- exclui array status_matricula do arquivo config.php, fecha #193
+- renomeia tabela AcessoAluno para acesso_aluno, refs #197
+- adequa acesso/login da área do aluno, fecha #204
+- corrigi exibição do extrato da conta acadêmica na área do aluno, refs #203 (silas)
+
+
+------------------------------------------------------------------------
+r103 | santiago | 2009-08-26 09:33:30 -0300 (Qua, 26 Ago 2009) | 1 line
+
+Alteração no extrato conta academica.
+------------------------------------------------------------------------
+r102 | santiago | 2009-08-25 16:42:48 -0300 (Ter, 25 Ago 2009) | 1 line
+
+Alteração na estrutura dos relatórios.
+------------------------------------------------------------------------
+r101 | santiago | 2009-08-24 07:35:35 -0300 (Seg, 24 Ago 2009) | 1 line
+
+Aperfeiçoamento de relatórios.
+------------------------------------------------------------------------
+r100 | wanderson | 2009-08-19 18:30:15 -0300 (Qua, 19 Ago 2009) | 6 lines
+
+- corrigi recuperação de senha do web diário, refs #188
+- corrigi alteração de senha dentro do web diário, refs #189
+- corrigi o cálculo no percentual de faltas na ficha acadêmica, refs #186
+- implementa a mesma ficha acadêmica no web diário, fecha #187
+
+
+------------------------------------------------------------------------
+r98 | santiago | 2009-08-19 11:10:46 -0300 (Qua, 19 Ago 2009) | 1 line
+
+Alteração na estrutura de pastas de relatórios.
+------------------------------------------------------------------------
+r96 | wanderson | 2009-08-18 18:04:21 -0300 (Ter, 18 Ago 2009) | 4 lines
+
+- corrigi edição das informações de filiação da pessoa física, refs #161
+- corrigi exibição de disciplina sem chamada lançada na ficha acadêmica, refs #185
+
+
+------------------------------------------------------------------------
+r94 | santiago | 2009-08-18 16:53:22 -0300 (Ter, 18 Ago 2009) | 1 line
+
+Alteração no search de cursos em relatorios.
+------------------------------------------------------------------------
+r93 | santiago | 2009-08-18 16:07:33 -0300 (Ter, 18 Ago 2009) | 1 line
+
+Relatorio de alunos matriculados; CSS e classe sql2Excel.
+------------------------------------------------------------------------
+r92 | santiago | 2009-08-18 08:44:55 -0300 (Ter, 18 Ago 2009) | 1 line
+
+Mover arquivos para a pasta matriculados
+------------------------------------------------------------------------
+r91 | santiago | 2009-08-18 08:32:33 -0300 (Ter, 18 Ago 2009) | 1 line
+
+Alteração na estrutura de relatorio de alunos matriculados.
+------------------------------------------------------------------------
+r90 | wanderson | 2009-08-18 07:08:01 -0300 (Ter, 18 Ago 2009) | 6 lines
+
+- substitui arquivo common.php por configuracao.php e move arquivo common.php para app/sagu, refs #179
+- renomeia a pasta app/acessowebdiario para app/acesso_web_diario para manter consistente o padrão de nomes
+- corrigi acesso ao web diário para coordenadores de curso que não estejam lecionando
+- exibe os professores na listagem de diários do módulo do coordenador, refs #182
+
+
+------------------------------------------------------------------------
+r89 | santiago | 2009-08-17 14:59:24 -0300 (Seg, 17 Ago 2009) | 1 line
+
+Alteração na estrutura de pastas de relatorios. Melhoria no relatorio de alunos dispensados.
+------------------------------------------------------------------------
+r88 | santiago | 2009-08-17 09:12:32 -0300 (Seg, 17 Ago 2009) | 1 line
+
+Pasta aprovados_reprovados
+------------------------------------------------------------------------
+r87 | santiago | 2009-08-17 07:40:29 -0300 (Seg, 17 Ago 2009) | 1 line
+
+Aprimoramento do relatorio aprovados / reprovados.
+------------------------------------------------------------------------
+r86 | wanderson | 2009-08-17 07:08:04 -0300 (Seg, 17 Ago 2009) | 9 lines
+
+- corrigi exibição de aluno reprovado por falta na ficha acadêmica, fecha #180
+- corrigi duplicidade de barra no caminho da URL
+- corrigi link quebrado para o manual do web diário (módulo professor)
+- corrigi e adequa o login do web diário ao SA, de acordo com o novo esquema de configuração
+- adiciona configuração de conexão ao banco de dados para o web diário no arquivo configuracao.php, fecha #183
+- adiciona opção de ativar o debug na classe connection factory
+- libera acesso do web diário ao 2º semestre de 2009 configuração
+
+
+------------------------------------------------------------------------
+r84 | santiago | 2009-08-14 16:23:40 -0300 (Sex, 14 Ago 2009) | 1 line
+
+Alteracao na classe header
+------------------------------------------------------------------------
+r83 | santiago | 2009-08-14 08:42:21 -0300 (Sex, 14 Ago 2009) | 1 line
+
+Alterarcoes em estilos e adaptacao em relatorios.
+------------------------------------------------------------------------
+r82 | santiago | 2009-08-14 08:40:53 -0300 (Sex, 14 Ago 2009) | 1 line
+
+Alteracao em nos estilos de formularios
+------------------------------------------------------------------------
+r80 | santiago | 2009-08-12 16:54:12 -0300 (Qua, 12 Ago 2009) | 1 line
+
+Alteracao menu.
+------------------------------------------------------------------------
+r79 | santiago | 2009-08-12 16:53:42 -0300 (Qua, 12 Ago 2009) | 1 line
+
+Alteracao relatorios
+------------------------------------------------------------------------
+r78 | santiago | 2009-08-12 16:20:36 -0300 (Qua, 12 Ago 2009) | 1 line
+
+Relatorios.
+------------------------------------------------------------------------
+r77 | santiago | 2009-08-12 15:34:27 -0300 (Qua, 12 Ago 2009) | 1 line
+
+Relatorios
+------------------------------------------------------------------------
+r76 | santiago | 2009-08-12 11:03:46 -0300 (Qua, 12 Ago 2009) | 1 line
+
+Modificações diversas em estrutura, correções de bugs e alterações em relatorios.
+------------------------------------------------------------------------
+r75 | wanderson | 2009-08-11 18:38:41 -0300 (Ter, 11 Ago 2009) | 2 lines
+
+Diversas mudanças para substituição do arquivo common.php pelo arquivo configuracao.php, refs #179
+
+------------------------------------------------------------------------
+r74 | santiago | 2009-08-11 14:21:35 -0300 (Ter, 11 Ago 2009) | 1 line
+
+Remover pasta consultas diversas.
+------------------------------------------------------------------------
+r73 | wanderson | 2009-08-11 13:21:51 -0300 (Ter, 11 Ago 2009) | 2 lines
+
+Atualização de arquivos para utilização da rotina em core/login/check_login.php, exclusão do arquivo core/login/login.php, refs #179
+
+------------------------------------------------------------------------
+r72 | wanderson | 2009-08-11 09:01:18 -0300 (Ter, 11 Ago 2009) | 2 lines
+
+Move arquivo lib/aluno.inc.php para core/situacao_academica.php, corrigi exibição da revisão na página do diagrama, fecha #178
+
+------------------------------------------------------------------------
+r71 | wanderson | 2009-08-11 07:07:35 -0300 (Ter, 11 Ago 2009) | 2 lines
+
+Move arquivo properties.php para app/sagu e elimina dependência do boletim com relação ao properties.php, fecha #177
+
+------------------------------------------------------------------------
+r70 | santiago | 2009-08-10 13:27:54 -0300 (Seg, 10 Ago 2009) | 1 line
+
+Alteração da arquitetura de pastas e arquivos do SA.
+------------------------------------------------------------------------
+r69 | santiago | 2009-08-10 10:23:14 -0300 (Seg, 10 Ago 2009) | 1 line
+
+Arquitetura de pastas do sistema. Criacao de classes para o core do sistema.
+------------------------------------------------------------------------
+r68 | santiago | 2009-08-10 10:18:11 -0300 (Seg, 10 Ago 2009) | 1 line
+
+Relatorios de egressos. Aplicacao da fabrica de conexao, cabecalho e carimbo do relatorio de egressos, declaracao de matricula.
+------------------------------------------------------------------------
+r67 | wanderson | 2009-07-31 15:20:40 -0300 (Sex, 31 Jul 2009) | 2 lines
+
+Corrigi bug de exibição da nota distribuída no lançamento de notas do web diário, fecha #171
+
+------------------------------------------------------------------------
+r66 | wanderson | 2009-07-31 11:42:21 -0300 (Sex, 31 Jul 2009) | 2 lines
+
+Corrigi bug de edição de usuário do sistema, fecha #151
+
+------------------------------------------------------------------------
+r65 | santiago | 2009-07-28 11:07:17 -0300 (Ter, 28 Jul 2009) | 1 line
+
+Erro de encoding.
+------------------------------------------------------------------------
+r64 | santiago | 2009-07-28 10:47:22 -0300 (Ter, 28 Jul 2009) | 2 lines
+
+Criação da classe search pra elaborar um campo com pesquisa instantanea.
+Correção de sintaxes em todo o código.
+------------------------------------------------------------------------
+r63 | santiago | 2009-07-22 14:54:44 -0300 (Qua, 22 Jul 2009) | 1 line
+
+Criação da classe carimbo em /lib/carimbo.php e a adaptação dos relatorios de egressos e declaração de matrícula.
+------------------------------------------------------------------------
+r62 | wanderson | 2009-07-17 18:13:52 -0300 (Sex, 17 Jul 2009) | 2 lines
+
+Corrigi a exibição dos logs de acesso do web diário, centraliza configurações do banco de dados em um único arquivo, exclui diversos arquivos não utilizados pelo web diário, #33, fecha #154,#155
+
+------------------------------------------------------------------------
+r61 | wanderson | 2009-07-17 10:09:59 -0300 (Sex, 17 Jul 2009) | 2 lines
+
+Corrigi bug introduzido pela revisão 60, fecha #153 
+
+------------------------------------------------------------------------
+r60 | wanderson | 2009-07-17 09:54:34 -0300 (Sex, 17 Jul 2009) | 2 lines
+
+Corrigi erro de validação de campo, fecha #153
+
+------------------------------------------------------------------------
 r59 | wanderson | 2009-07-07 14:36:25 -0300 (Ter, 07 Jul 2009) | 2 lines
 
 Melhoria na exibição do relatório de egressos (#148 - incompleto), retorno do relatório de alunos matriculados (todos) e inclusão de processo para ajuste de notas de faltas, fecha #149

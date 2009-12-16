@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../app/setup.php");
+require_once(dirname(__FILE__) ."/../setup.php");
 
 $conn = new connection_factory($param_conn);
 
