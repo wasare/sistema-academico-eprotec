@@ -180,6 +180,29 @@ function enviar(action) {
 	}
 }
 
+set_periodo = function(data,pane) {
+    var parametro = data;
+    var objAjax = new Ajax.Request('seleciona_periodo.php', {method: 'post', evalJS: true, parameters: parametro, onSuccess: reload_pane});
+}
+
+
+String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
+
+reload_pane = function(resposta) {
+    var pane = unescape(resposta.responseText);
+
+    $('pane_overlay').show();
+
+    if (pane.trim() == 'pane_diarios')  
+        thePane.load_page('pane_diarios');
+
+    if (pane.trim() == 'pane_coordenacao')  
+        thePane.load_page('pane_coordenacao');
+
+    $('pane_overlay').hide();
+}
+
+
 </script>
 
 </head>
@@ -215,17 +238,17 @@ function enviar(action) {
 			if($is_professor === TRUE) {
 				echo '<li><a href="#" '. $class_diarios .' id="pane_diarios">Meus di&aacute;rios</a></li>';
 			}
-			
+
             if($is_coordenador === TRUE) {
                 echo '<li><a href="#" '. $class_coordenacao .' id="pane_coordenacao">Coordena&ccedil;&atilde;o</a></li>';
 			}			
         ?>
         
 		<li><a href="#" id="pane_ferramentas">Ferramentas</a></li>
-        <li><a href="#" id="pane_periodos_professor">Per&iacute;odos professor</a></li>
-        <li><a href="#" id="pane_periodos_coordenacao">Períodos coordenação</a></li>
 
 		<li><a href="<?=$BASE_URL .'index.php'?>" style="background-color: #ffe566;" id="pane_sair">Sair</a></li>
+		<?=$sa_usuario?>
+		<a href="<?=$BASE_URL .'index.php'?>" style="background-color: #ffe566;" id="pane_sair">Sair</a>
     </ol>
    
     <div id="pane_container" class="tabbed-container">
@@ -246,11 +269,9 @@ var thePane = new TabbedPane('web_guias',
         <?php
 			if($is_professor === TRUE) {
                 echo "'pane_diarios': 'professor/diarios_professor.php',";
-				echo "'pane_periodos_professor': 'professor/periodos_professor.php',";
             }
             if($is_coordenador === TRUE) {
                 echo "'pane_coordenacao': 'coordenacao/cursos_coordenacao.php',";
-			    echo "'pane_periodos_coordenacao': 'coordenacao/periodos_coordenacao.php',";
 			}
         ?>
         'pane_ferramentas': 'ferramentas.php',
@@ -264,8 +285,6 @@ var thePane = new TabbedPane('web_guias',
             $('pane_overlay').hide();
         }
     });
-$('pane_periodos_professor').hide();
-$('pane_periodos_coordenacao').hide();
 
 load_periodos = function(pane) {
 	$('pane_overlay').show();
@@ -273,27 +292,6 @@ load_periodos = function(pane) {
 	$('pane_overlay').hide();
 }
 
-set_periodo = function(data,pane) {
-    var parametro = data;
-    var objAjax = new Ajax.Request('seleciona_periodo.php', {method: 'post', evalJS: true, parameters: parametro, onSuccess: reload_pane});
-}
-
-
-String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
-
-reload_pane = function(resposta) {
-    var pane = unescape(resposta.responseText);
-
-	$('pane_overlay').show();
-
-	if (pane.trim() == 'pane_diarios')	
-		thePane.load_page('pane_diarios');
-
-	if (pane.trim() == 'pane_coordenacao')  
-        thePane.load_page('pane_coordenacao');
-
-    $('pane_overlay').hide();
-}
 </script>
 
 </body>

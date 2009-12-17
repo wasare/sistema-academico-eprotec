@@ -67,6 +67,16 @@ if($operacao == 'troca_senha') {
     exit;
 }
 
+if($operacao == 'lista_diarios_coordenacao') {
+	unset($_GET['diario_id']);
+    unset($_POST['diario_id']);
+	$_GET['curso_id'] = $diario_id;
+	$_GET['periodo_id'] = $_SESSION['web_diario_periodo_coordena_id']; 
+    require_once($BASE_DIR .'app/web_diario/secretaria/lista_diarios_secretaria.php');
+    exit;
+}
+
+
 // ^ OPERACOES COM ALTERACAO DE DADOS   ^ //
 
 

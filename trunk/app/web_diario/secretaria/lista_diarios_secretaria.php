@@ -1,7 +1,7 @@
 <?php
 
 //echo hash('sha256','');
-require_once('../../../app/setup.php');
+require_once(dirname(__FILE__). '/../../setup.php');
 
 if(empty($_GET['periodo_id']) OR empty($_GET['curso_id']))
 {
@@ -14,6 +14,10 @@ if(empty($_GET['periodo_id']) OR empty($_GET['curso_id']))
 		exit;
 	}
 }
+
+/*
+ TODO: verifica o direito de acesso do usuário aos dados, principalmente o coordenador
+*/
 
 $conn = new connection_factory($param_conn);
 
@@ -29,8 +33,8 @@ else
 }
 
 
-$curso = $conn->adodb->getRow($qryCurso);
-$periodo = $conn->adodb->getRow($qryPeriodo);
+$curso = $conn->get_row($qryCurso);
+$periodo = $conn->get_row($qryPeriodo);
 
 
 	$sql =  " SELECT id as idof, " . 
@@ -63,7 +67,7 @@ $periodo = $conn->adodb->getRow($qryPeriodo);
 			$sql = 'SELECT * from ('. $sql .') AS T1 ORDER BY lower(to_ascii(descricao_extenso));';
 
 
-   $diarios = $conn->adodb->getAll($sql);
+   $diarios = $conn->get_all($sql);
 
    if(count($diarios) == 0) 
    {
@@ -121,7 +125,7 @@ function finaliza_todos(curso,periodo)
   </tr>
 </table>
   ');
-echo '<h4><strong>Curso: </strong><font color="blue">'. $curso['nome'].' - '. $curso['id'] .'</font></h4>';
+echo '<h4><strong>Curso: </strong><font color="blue">'. $curso['id'] .' - '. $curso['nome'] .'</font></h4>';
 echo '<p><h3>Passe o ponteiro do mouse sobre o di&aacute;rio desejado e selecione a op&ccedil;&atilde;o:</h3></p>';
 echo '<form id="change_acao" name="change_acao" method="get" action="diarios_coordenacao.php">';
 echo '<input type="hidden" name="id" id="id" value="' . $_SESSION['select_prof'] . '" />';
@@ -214,15 +218,16 @@ foreach($diarios as $row3)
 
         if($fl_digitada == 't') {
             $fl_situacao = '<font color="red"><b>Finalizado</b></font>';
-			$opcoes_diario .= '<a href="'. $BASE_URL .'app/web_diario/secretaria/marca_aberto.php?diario_id='. $idof .'">abre para lan&ccedil;amentos</a><br />';
-
+			if(!isset($operacao)) {
+				$opcoes_diario .= '<a href="'. $BASE_URL .'app/web_diario/secretaria/marca_aberto.php?diario_id='. $idof .'">abre para lan&ccedil;amentos</a><br />';
+				$fl_opcoes = 1;
+			}
             $fl_encerrado = 1;
 			$fl_opcoes = 1;
         }
-		else
-		{
-			$opcoes_diario .= '<a href="'. $BASE_URL .'app/web_diario/coordenacao/marca_finalizado.php?diario_id='. $idof .'">finaliza para lan&ccedil;amentos</a><br />';
-		    $fl_opcoes = 1;
+        else {
+				$opcoes_diario .= '<a href="'. $BASE_URL .'app/web_diario/coordenacao/marca_finalizado.php?diario_id='. $idof .'">finaliza para lan&ccedil;amentos</a><br />';
+				$fl_opcoes = 1;
 		}
     }
 	
@@ -259,8 +264,9 @@ echo '</table> <br />';
 	echo '</p>';
 */
 ?>
-&nbsp;&nbsp;
-<input type="button" name="fechar" id="fechar" value="Fechar" onclick="javascript:window.close();" />
+<input type="button" value="finaliza todos os diários concluídos" />
+&nbsp;&nbsp;ou&nbsp;&nbsp;
+<a href="#" onclick="javascript:window.close();">fechar</a>
 </form>
 </body>
 </head>
