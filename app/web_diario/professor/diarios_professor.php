@@ -73,12 +73,11 @@ $sql3 = 'SELECT DISTINCT
         exit;
    }
 
-// RECUPERA INFORMACOES SOBRE DO PROFESSOR E SEUS PERIODOS
+
+// RECUPERA INFORMACOES SOBRE OS PERIODOS DO PROFESSOR
 $qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, disciplinas_ofer_prof dp, periodos p WHERE dp.ref_professor = '. $sa_ref_pessoa .' AND o.id = dp.ref_disciplina_ofer AND p.id = o.ref_periodo ORDER BY ref_periodo DESC;';
-
-$periodos_professor = $conn->get_all($qry_periodos);
-
-// ^ RECUPERA INFORMACOES SOBRE O PROFESSOR E SEUS PERIODOS ^ //
+$periodos = $conn->get_all($qry_periodos);
+// ^ RECUPERA INFORMACOES SOBRE OS PERIODOS DO PROFESSOR ^ //
 
 ?>
 
@@ -89,6 +88,7 @@ $periodos_professor = $conn->get_all($qry_periodos);
 <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
 
 <script type="text/javascript" src="<?=$BASE_URL .'lib/prototype.js'?>"> </script>
+
 
 </head>
 
@@ -105,9 +105,26 @@ $periodos_professor = $conn->get_all($qry_periodos);
 			</font>
 </strong>
 &nbsp;&nbsp;
-<span><a href="#" title="alterar o per&iacute;odo" alt="alterar o per&iacute;odo" onclick="load_periodos('professor');">alterar</a></span>
 
-<br /> <br />
+<span><a href="#" title="alterar o per&iacute;odo" alt="alterar o per&iacute;odo" id="periodos_professor">alterar</a></span>
+<br />
+<br />
+<div id="periodos_professor_pane" style="display:none; border: 0.0015em solid; width:200px; text-align:center;">
+<br />
+
+<h4>clique no per&iacute;odo:</h4>
+<br />
+<?php
+    foreach($periodos as $p)
+    {
+        echo '<a href="#" title="Per&iacute;odo '. $p['descricao'] .'" alt="Per&iacute;odo '. $p['descricao'] .'" onclick="set_periodo(\'periodo_id='. $p['ref_periodo'] .'\');">'. $p['descricao'] .'</a><br />';
+    }
+
+?>
+<br />
+</div>
+
+<br />
 
 <h3>Marque o di&aacute;rio desejado e selecione uma op&ccedil;&atilde;o:</h3>
 <br />
@@ -207,6 +224,11 @@ foreach($diarios as $row3)
 <br /><br />
 </form>
 
+<script language="javascript" type="text/javascript">
+
+	$('periodos_professor').observe('click', function() { $('periodos_professor_pane').toggle(); });
+
+</script>
+
 </body>
-</head>
 </html>

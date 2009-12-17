@@ -16,62 +16,47 @@ $conn = new connection_factory($param_conn);
 unset($_SESSION['conteudo']);
 unset($_SESSION['flag_falta']);
 
-print_r($_SESSION['web_diario_cursos_coordenacao']);
-
-$diario = @explode("|", $_GET['diario']);
-
-if(isset($_GET['id']) AND ( !is_numeric($diario['0']) OR !is_numeric($diario['1'])) )
-{
-	
-     echo '<script language="javascript">
-	 		window.alert("ERRO! Primeiro selecione um diário!"); javascript:window.history.back(1);
-	 </script>';
-
-      exit;
-
-}
-else
-{
-
-	if($diario['2'] === '1' && in_array($_GET['acao'], $Movimento) ) {
- 
-     echo '<script language="javascript">
-            window.alert("ERRO! Este diário está fechado e não pode ser alterado!"); javascript:window.history.back(1);
-     </script>';
-
-      exit;
-    }
-}
-
-
 $qryPeriodo = 'SELECT id, descricao FROM periodos WHERE id = \''. $_SESSION['web_diario_periodo_coordena_id'].'\';';
 
 $periodo = $conn->get_row($qryPeriodo);
 
-$sql3 = 'SELECT DISTINCT
-                d.id,
-                d.descricao_disciplina,
-                d.descricao_extenso,
-                o.id as idof,
-				o.fl_digitada,
-                o.fl_concluida
-                FROM disciplinas_ofer_prof f, disciplinas_ofer o, disciplinas d
-                WHERE
-                f.ref_professor = '. $sa_ref_pessoa .' AND
-                o.id = f.ref_disciplina_ofer AND
-                o.ref_periodo = \''.$_SESSION['web_diario_periodo_coordena_id'].'\' AND
-                o.is_cancelada = \'0\' AND
-                d.id = o.ref_disciplina;';  
+$cursos = '';
+$cont = 1;
+foreach($_SESSION['web_diario_cursos_coordenacao'] as $c) {
+	$cursos .= $c;
+    if(count($_SESSION['web_diario_cursos_coordenacao']) > $cont)
+		$cursos .= ',';
+	$cont++;
+}
 
-	$diarios = $conn->get_all($sql3);
+$sql_cursos = " SELECT DISTINCT
+    a.ref_curso || ' - ' || c.descricao AS curso, a.ref_curso, ref_tipo_curso
+      FROM
+          disciplinas_ofer a, disciplinas_ofer_prof b, cursos c
+            WHERE
+                a.ref_periodo = '". $_SESSION['web_diario_periodo_coordena_id'] ."' AND
+                a.ref_curso IN (". $cursos .") AND
+                    a.id = b.ref_disciplina_ofer AND
+                        c.id = a.ref_curso 
+            ORDER BY ref_tipo_curso;";
 
-   if(count($diarios) == 0)
-   {
-        echo '<script language="javascript">
-                window.alert("Nenhum diário encontrado para o filtro selecionado!");
+
+$cursos = $conn->get_all($sql_cursos);
+
+if(count($cursos) == 0)
+{
+    echo '<script language="javascript">
+                window.alert("Nenhum curso encontrado!");
         </script>';
         exit;
-   }
+}
+
+// RECUPERA INFORMACOES SOBRE DO PROFESSOR E SEUS PERIODOS
+$qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, periodos p WHERE  o.ref_periodo = p.id AND o.ref_curso IN (SELECT DISTINCT ref_curso FROM coordenadores WHERE ref_professor = '. $sa_ref_pessoa .') ORDER BY ref_periodo DESC;';
+
+$periodos = $conn->get_all($qry_periodos);
+// ^ RECUPERA INFORMACOES SOBRE O PROFESSOR E SEUS PERIODOS ^ //
+
 
 ?>
 
@@ -89,114 +74,65 @@ $sql3 = 'SELECT DISTINCT
 <center>
 <div align="left">
 <br />
-  
 <strong>
-			<font size="4" face="Verdana, Arial, Helvetica, sans-serif">
-				Per&iacute;odo de coordenação: 
-				<font color="red" size="4" face="Verdana, Arial, Helvetica, sans-serif"><?=$periodo['descricao']?></font>
-			</font>
+            <font size="4" face="Verdana, Arial, Helvetica, sans-serif">
+                Per&iacute;odo de coordenação: 
+                <font color="red" size="4" face="Verdana, Arial, Helvetica, sans-serif"><?=$periodo['descricao']?></font>
+            </font>
 </strong>
 &nbsp;&nbsp;
-<span><a href="#" title="alterar o per&iacute;odo" alt="alterar o per&iacute;odo" onclick="load_periodos('coordenacao');">alterar</a></span>
-<br /> <br /> <br />
 
-<h3>Marque o di&aacute;rio desejado e selecione uma op&ccedil;&atilde;o:</h3>
+<span><a href="#" title="alterar o per&iacute;odo" alt="alterar o per&iacute;odo" id="periodos_coordenacao">alterar</a></span>
+<br /><br />
+<div id="periodos_coordenacao_pane" style="display:none; border: 0.0015em solid; width: 200px; text-align:center;">
 <br />
-<form id="lista_cursos" name="lista_cursos" method="get" action="cursos_coordenacao.php">
-<input type="hidden" name="id" id="id" value="<?=$_SESSION['id']?>" />
 
-<table cellspacing="0" cellpadding="0" class="papeleta">
-    <tr bgcolor="#cccccc">
-	    <td> &nbsp; &nbsp; </td>
-        <td align="center"><b>Di&aacute;rio</b></td>
-        <td align="center"><b>Descri&ccedil;&atilde;o</b></td>
-		<td align="center"><b>Situa&ccedil;&atilde;o</b></td>
-    </tr>
+<h4>clique no per&iacute;odo:</h4>
+<br />
 <?php
-
-//print_r($_SESSION['web_diario_peridos']);	
-	
-$i = 0;
-
-$r1 = '#FFFFFF';
-$r2 = '#FFFFCC';
- 
-// $curso = $_GET["getcurso"];
-foreach($diarios as $row3)
-{
-	$nc = $row3["descricao_extenso"];
-    $idnc = $row3["id"];
-    $idof = $row3["idof"];
-	$fl_digitada = $row3['fl_digitada'];
-	$fl_concluida = $row3['fl_concluida'];
-
-    $fl_encerrado = 0;
-	
-	if($fl_digitada == 'f' && $fl_concluida == 'f') {  
-		$fl_situacao = '<font color="green"><b>Aberto</b></font>';  
-	} 
-	else { 
-		if($fl_concluida == 't') {
-        	$fl_situacao = '<font color="blue"><b>Conclu&iacute;do</b></font>';
-    	}
-
-		if($fl_digitada == 't') {
-            $fl_situacao = '<font color="red"><b>Finalizado</b></font>';
-            $fl_encerrado = 1;
-        }        
-	}
-
-    if ( ($i % 2) == 0)
-   	{
-      $rcolor = $r1;
+    foreach($periodos as $p)
+    {
+        echo '<a href="#" title="Per&iacute;odo '. $p['descricao'] .'" alt="Per&iacute;odo '. $p['descricao'] .'" onclick="set_periodo(\'periodo_coordena_id='. $p['ref_periodo'] .'\');">'. $p['descricao'] .'</a><br />';
     }
-   	else
-   	{
-      $rcolor = $r2;
-   	}
-
-   	echo '<tr bgcolor="'.$rcolor.'">';
-	echo '<td width="3%" align="center"><input  type="radio" name="diario" id="diario" value="'.$idnc.'|'.$idof.'|'.$fl_encerrado.'" /></td>';
-   	echo ' <td width="16%" align="center">'.$idof.'</td> <td>'.$nc.'</td> ';		
-	echo ' <td width="6%" align="center">'.$fl_situacao.'</td> ';
-	echo '</tr> ';
-
-   	$i++;
-}
 
 ?>
-</table>
+
+<br />
+</div>
+<br /><br />
+<strong>
+            <font size="4" face="Verdana, Arial, Helvetica, sans-serif">
+                Cursos desta coordenação 
+            </font>
+</strong>
+<br /> <br /> 
+
+<h5>clique no curso para acessar os diários</h5>
+<br />
+
+<?php
+    foreach($cursos as $c)
+    {
+		$onclick = 'onclick="abrir(\''. $IEnome .' - web diário\', \'requisita.php?do=lista_diarios_coordenacao&id='. $c['ref_curso'] .'\');"';
+        echo '<a href="#" title="Curso '. $c['curso'] .'" alt="Curso '. $c['curso'] .'" '. $onclick .'>'. $c['curso'] .'</a><br />';
+    }
+
+?>
 
 <br /><br />
-<p>
 
-   &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<input type="button" id="notas" name="notas" value="Notas" onclick="enviar('notas');"/> &nbsp; &nbsp; &nbsp;
-
-<input type="button" id="chamada" name="chamada" value="Chamada" onclick="enviar('chamada');"/> &nbsp; &nbsp; &nbsp;
-<input type="button" id="papeleta" name="papeleta" value="Papeleta" onclick="enviar('papeleta');" /> &nbsp; &nbsp; &nbsp;
-<input type="button" id="conteudo" name="conteudo" value="Conte&uacute;do de aula" onclick="enviar('conteudo_aula');" /> &nbsp; &nbsp;  &nbsp; &nbsp;
-
-<select name="relatorio_acao" id="relatorio_acao" class="select" onchange="enviar(this.value);">
-    <option value="0">---  relat&oacute;rios     ---</option>
-    <option value="papeleta">Papeleta</option>
-    <option value="papeleta_completa">Papeleta Completa</option>
-	<option value="conteudo_aula">Conte&uacute;do de aula</option>
-    <option value="faltas_completo">Relat&oacute;rio de faltas completo</option>
-    <option value="caderno_chamada">Imprimir caderno de chamada</option>
-</select>
-
-&nbsp;&nbsp;&nbsp; &nbsp;
-
-<select name="outras_acoes" id="outras_acoes" class="select" onchange="enviar(this.value);">
-  	<option value="0">---  outras   op&ccedil;&otilde;es     ---</option>
-	<option value="marca_diario">Marcar / desmarcar como conclu&iacute;do</option>
-	<option value="altera_chamada">Alterar faltas nas chamadas</option>
-    <option value="exclui_chamada">Excluir chamada</option>
-</select>
-	</p></form>
-<br /><br />
-<br /><br />
+<form name="acessa_diario" id="acesso_diario" method="post">
+<strong>Acesso rápido</strong> <br />
+Código do diário:
+<input type="text" name="diario_id" id="diario_id" />
 </form>
+<br />
+</div>
+<script language="javascript" type="text/javascript">
+
+    $('periodos_coordenacao').observe('click', function() { $('periodos_coordenacao_pane').toggle(); });
+
+</script>
+
 </body>
-</head>
 </html>
