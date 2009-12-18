@@ -2,6 +2,7 @@
 
 require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
+require_once($BASE_DIR .'core/number.php');
 require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
 
 $conn = new connection_factory($param_conn);
@@ -25,7 +26,7 @@ if(!is_numeric($diario_id))
 //  INICIALIZA O DIARIO CASO NECESSARIO
 if(!is_inicializado($diario_id)) 
 {
-    if(!inicializaDiario($diario_id))
+    if(!ini_diario($diario_id))
     {
         echo '<script type="text/javascript">  window.alert("Falha ao inicializar o diário!!!!!!!"); </script>';
         envia_erro('Falha ao inicializar o diário '. $diario_id .'!!!!!!!');
@@ -327,13 +328,7 @@ foreach($matriculas as $row3)
     $i = 0;
 
 	$sql_notas_distribuidas = 'SELECT nota_distribuida FROM diario_formulas WHERE grupo ilike \'%-'. $diario_id .'\' order by prova;';
-$notas_distribuidas = $conn->adodb->getAll($sql_notas_distribuidas);
-
-	if($notas_distribuidas === FALSE)
-	{
-		envia_erro($sql_notas_distribuidas);
-		exit;
-	}
+	$notas_distribuidas = $conn->get_all($sql_notas_distribuidas);
 
 ?>
 	<h4>Notas distribu&iacute;das</h4>
@@ -345,17 +340,21 @@ $notas_distribuidas = $conn->adodb->getAll($sql_notas_distribuidas);
         <td align="center"><b>N4</b></td>
         <td align="center"><b>N5</b></td>
         <td align="center"><b>N6</b></td>
+		<td align="center"><b>Total</b></td>
     </tr>
 
     <tr bgcolor="#ffffff">
         <?php
+			$total_distribuido = 0;
             foreach($notas_distribuidas as $nota)
 			{
-				$nota_d = number_format($nota['nota_distribuida'],'1',',','.');
+				$nota_d = number::numeric2decimal_br($nota['nota_distribuida'],'1');
 				if($nota_d == 0 || empty($nota_d))
 					$nota_d = '-';
 				echo '<td align="center">'. $nota_d .'</td>';
+				$total_distribuido += $nota['nota_distribuida'];
 			}
+			echo '<td align="center">'. number::numeric2decimal_br($total_distribuido,1) .'</td>';
         ?>
     </tr>
 </table>
@@ -448,8 +447,8 @@ $notas_distribuidas = $conn->adodb->getAll($sql_notas_distribuidas);
 <br /><br />
 <div class="nao_imprime">
 <input type="button" value="Imprimir" onClick="window.print()">
-&nbsp;&nbsp;ou&nbsp;
-<a href="#" onclick="javascript:window.close();">fechar</a>
+&nbsp;&nbsp;
+<a href="#" onclick="javascript:window.close();">Fechar</a>
 </div>
 <br /><br />
 </body>
