@@ -235,8 +235,8 @@ print("<br />ASSINATURA(S):");
 <br /><br />
 <div class="nao_imprime">
 <input type="button" value="Imprimir" onClick="window.print()">
-&nbsp;&nbsp;ou&nbsp;
-<a href="#" onclick="javascript:window.close();">fechar</a>
+&nbsp;&nbsp;
+<a href="#" onclick="javascript:window.close();">Fechar</a>
 </div>
 <br /><br />
 </body>

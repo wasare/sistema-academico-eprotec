@@ -838,8 +838,8 @@ echo '<meta http-equiv="refresh" content="0;url='. $url_arquivo .'">';
  <form name="myform" action="" >
    <p align="center">
      <input type="button" name="botao2" value="Imprimir novamente" onClick="location='<?=$url_arquivo?>'">
-	 &nbsp;&nbsp;ou&nbsp;
-	<a href="#" onclick="javascript:window.close();">fechar</a>
+	 &nbsp;&nbsp;
+	<a href="#" onclick="javascript:window.close();">Fechar</a>
    </p>
   </form>
 </body>
