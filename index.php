@@ -5,21 +5,56 @@ require_once('core/data/connection_factory.php');
 require_once('core/login/session.php');
 require_once('core/login/auth.php');
 
-session::init($param_conn);
+$sessao = new session($param_conn);
 
-if($_POST) {
+// INICIA UM NOVO PROCESSO DE LOGIN
+if(isset($_POST['modulo'])) {
+  
     $conn = new connection_factory($param_conn);
-    exit(auth::login($_POST['uid'],$_POST['pwd'],$_POST['modulo'], $conn));
+
+    $autentica = new auth($BASE_URL);
+    $autentica->log_file($BASE_DIR .'logs/login.log');
+    
+    if($autentica->login(trim($_POST['uid']),trim($_POST['pwd']),$_POST['modulo'], $conn) === TRUE) {
+
+      // REDIRECIONA DE ACORDO COM O MODULO SELECIONADO
+      switch ($_SESSION['sa_modulo']) {
+        case 'sa_login':
+          exit(header('Location: '. $BASE_URL .'app/'));
+          break;
+        case 'web_diario_login':
+          exit(header('Location: '. $BASE_URL .'app/web_diario/'));
+          break;
+        case 'aluno_login':
+          exit(header('Location: '. $BASE_URL .'app/aluno'));
+          break;
+        default:
+          exit(header('Location: '. $BASE_URL .'index.php?sa_msg=Sessão inválida'));
+       }
+    }
+    else {
+      exit(header('Location: '. $BASE_URL .'index.php?sa_msg=Senha ou usuário inválido'));
+    }
+}
+else {
+	// FAZ O PROCESSO DE LOGOUT EXCLUINDO A SESSAO DO BANCO
+	list($sa_usuario,$sa_senha,$sa_usuario_id,$sa_ref_pessoa) = explode(":",$_SESSION['sa_auth']);
+    $cont = 0;
+    while(isset($_SESSION['sa_auth'])) {
+      @$sessao->clear_session($sa_usuario, NULL);
+      @$sessao->destroy();
+      if($cont == 2) break;
+      $cont++;
+    }
 }
 
-session::destroy();
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>SA</title>
+        <title><?=$IEnome?> - Sistema Acad&ecirc;mico</title>
         <link href="public/images/favicon.ico" rel="shortcut icon" />
         <link href="public/styles/style.css" rel="stylesheet" type="text/css" />
         <style>
