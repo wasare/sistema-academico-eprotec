@@ -5,15 +5,33 @@
  * @author wanderson
  *
  */
+require_once(dirname(__FILE__).'/../../lib/adodb5/session/adodb-cryptsession2.php');
 
 class session {
 
-    private function __construct() {}
+    function __construct($conn_options, $persist = TRUE, $debug = FALSE, $sess_table = 'sessao') {
+      
+      $ret = FALSE;
+
+        list($host, $database, $user, $password, $port) = array_values($conn_options);
+
+        $options['table'] = $sess_table;
+
+        ADOdb_Session::config('postgres',$host,$user,$password,$database,$options);
+        // adodb_sess_open(false,false,$connectMode = $persist);
+        ADODB_Session::open(false,false,$connectMode = $persist);
+
+        if(isset($GLOBALS['ADODB_SESS_CONN']) && is_object($GLOBALS['ADODB_SESS_CONN'])) {
+            ADOdb_session::Persist($connectMode = $persist);
+            $GLOBALS['ADODB_SESS_CONN']->debug = $debug;            
+            @session_start();
+         }
+    }
 
 
     public static function refresh() {
-
-        if ((rand()%10) == 0) adodb_session_regenerate_id();
+        $random = rand(1,2);
+        if (($random % 2) == 0) adodb_session_regenerate_id();
     }
 
     public static function destroy() {
@@ -21,39 +39,24 @@ class session {
         session_destroy();
     }
 
-    public static function init($info_connection, $persist = TRUE, $debug = FALSE, $table = 'sessao') {
-
-        require_once(dirname(__FILE__).'/../../lib/adodb5/session/adodb-cryptsession2.php');
-
-        $ret = FALSE;
-
-        list($host, $database, $user, $password, $port) = array_values($info_connection);
-
-        $options['table'] = $table;
-
-        ADOdb_Session::config('postgres',$host,$user,$password,$database,$options);
-        adodb_sess_open(false,false,$connectMode = $persist);
-
-        if(isset($GLOBALS['ADODB_SESS_CONN']) && is_object($GLOBALS['ADODB_SESS_CONN']))
-            $ret = TRUE;
-
-        if($ret == TRUE) {
-            ADOdb_session::Persist($connectMode = $persist);
-            $GLOBALS['ADODB_SESS_CONN']->debug = $debug;
-            session::refresh();
-        }
-
-        @session_start();
-
-    }
-
     // forca eliminacao da sessao do usuario no banco
-    // TODO: limpar outras sessoes expiradas (?), redirecionar o usuario para uma pagina com aviso de sessao expirada
+    // TODO: redirecionar o usuario para uma pagina com aviso de sessao expirada
     public static function clear_session($expireref, $sesskey) {
 
         if(is_object($GLOBALS['ADODB_SESS_CONN'])) {
             $GLOBALS['ADODB_SESS_CONN']->Execute("DELETE FROM sessao WHERE expireref = '". $expireref ."';");
+            // limpa outras sessoes expiradas e inativas por mais de 15 minutos (900 segundos)
+            ADODB_Session::gc(900);
         }
+    }
+
+    public static function resume() {
+
+      if(isset($GLOBALS['ADODB_SESS_CONN']) && is_object($GLOBALS['ADODB_SESS_CONN'])) {
+            ADOdb_session::Persist($connectMode = $persist);
+            $GLOBALS['ADODB_SESS_CONN']->debug = $debug;
+            @session_start();
+        }       
     }
 }
 

@@ -1,8 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__).'/../app/setup.php');
-
-list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
+require_once(dirname(__FILE__).'/setup.php');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -261,7 +259,7 @@ list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
                     <td width="193" class="menu">
                         <span class="texto1">
                             <img src="../public/images/icons/bola_verde.gif" width="10" height="10" /> 
-                            <strong><?=$uid?></strong>&nbsp;&nbsp;
+                            <strong><?=$sa_usuario?></strong>&nbsp;&nbsp;
                         </span> 
                         <a href="usuarios/alterar_senha.php" target="frame2">Alterar senha</a>
                     </td>

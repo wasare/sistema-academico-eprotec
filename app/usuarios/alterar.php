@@ -22,7 +22,6 @@ WHERE
     u.id = '.$id_usuario;
 
 $RsUsuario = $conn->Execute($sqlUsuario);
-$conn->Execute($sql);
 $RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
 
 ?>

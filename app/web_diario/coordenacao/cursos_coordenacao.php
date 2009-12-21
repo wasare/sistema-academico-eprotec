@@ -52,7 +52,7 @@ if(count($cursos) == 0)
 }
 
 // RECUPERA INFORMACOES SOBRE DO PROFESSOR E SEUS PERIODOS
-$qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, periodos p WHERE  o.ref_periodo = p.id AND o.ref_curso IN (SELECT DISTINCT ref_curso FROM coordenadores WHERE ref_professor = '. $sa_ref_pessoa .') ORDER BY ref_periodo DESC;';
+$qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, periodos p WHERE  o.ref_periodo = p.id AND o.ref_curso IN (SELECT DISTINCT ref_curso FROM coordenador WHERE ref_professor = '. $sa_ref_pessoa .') ORDER BY ref_periodo DESC;';
 
 $periodos = $conn->get_all($qry_periodos);
 // ^ RECUPERA INFORMACOES SOBRE O PROFESSOR E SEUS PERIODOS ^ //

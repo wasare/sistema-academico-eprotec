@@ -8,18 +8,23 @@ $conn = new connection_factory($param_conn);
 $diario_id = (int) $_GET['id'];
 $operacao = $_GET['do'];
 
-/*
-TODO: verifica o direito de acesso do usuário ao diário informado
-*/
+// VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+	exit('<script language="javascript" type="text/javascript"> 
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+}
 
 if(!is_inicializado($diario_id)) 
 {
     if (ini_diario($diario_id))
-        echo '<script type="text/javascript">  window.alert("Diario iniciado com sucesso!"); </script>';
+        // TODO: recarregar a página aqui ou fechá-la
+        echo '<script type="text/javascript">window.alert("Diario iniciado com sucesso!"); </script>';
     else
     {
         // FIXME: informar ao administrador/desenvolvedor quando ocorrer erro
-        echo '<script language=javascript>  window.alert("Falha ao inicializar o diario!"); </script>';
+        echo '<script language=javascript> window.alert("Falha ao inicializar o diario!"); </script>';
         exit;   
     }
 } 
@@ -148,8 +153,8 @@ else
 
 
 &nbsp;&nbsp;<input type="submit" name="Submit" value="Lan&ccedil;ar notas">
-&nbsp;&nbsp;ou&nbsp;
-<a href="#" onclick="javascript:window.close();">cancelar</a>
+&nbsp;&nbsp;
+<a href="#" onclick="javascript:window.close();">Cancelar</a>
         </div>
     </form>
 <h3>INSTRU&Ccedil;&Otilde;ES</h3>

@@ -16,6 +16,9 @@ ALTER TABLE acesso_aluno RENAME COLUMN "cvSenha" TO senha;
 -- setor
 ALTER TABLE sagu_setores RENAME TO setor;
 
+-- coordenador
+ALTER TABLE coordenadores RENAME TO coordenador;
+
 -- usuario
 ALTER TABLE sagu_usuarios RENAME TO usuario;
 ALTER TABLE seq_sagu_usuarios RENAME TO usuario_id_seq;

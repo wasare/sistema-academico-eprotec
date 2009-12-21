@@ -32,7 +32,6 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
 
 <html>
 <head>
-<a name="topo">
 <title><?=$IEnome?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
@@ -51,7 +50,7 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
     <input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">
     <input type="hidden" name="operacao" id="operacao" value="<?=$operacao?>">
 
-<p><font color="#0000CC" size="1,5" face="Verdana, Arial, Helvetica, sans-serif">Data da chamada:</font>&nbsp; 
+<p><font face="Verdana, Arial, Helvetica, sans-serif"><strong>Data da chamada:</strong></font>&nbsp; 
 
 	<select name="select_dia" id="select_dia" style="width:50px">
    
@@ -146,8 +145,8 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
 	<br />
 
     <input type="submit" name="Submit" value="Prosseguir">
-	&nbsp;&nbsp;ou&nbsp;
-	<a href="#" onclick="javascript:window.close();">cancelar</a>
+	&nbsp;&nbsp;
+	<a href="#" onclick="javascript:window.close();">Cancelar</a>
 
   <br />
   

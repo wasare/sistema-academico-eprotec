@@ -11,7 +11,7 @@ $ref_professor = $_GET['ref_professor'];
 $conn = new Connection;
 $conn->Open();
 
-$sql = "delete from coordenadores 
+$sql = "delete from coordenador 
 		where 
 		ref_campus = '$ref_campus' and 
 		ref_curso = '$ref_curso' and 

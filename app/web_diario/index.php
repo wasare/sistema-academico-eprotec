@@ -24,7 +24,7 @@ if(!empty($periodo))
 
 
 // RECUPERA INFORMACOES SOBRE OS PERIODOS DO COORDENADOR
-$qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, periodos p WHERE  o.ref_periodo = p.id AND o.ref_curso IN (SELECT DISTINCT ref_curso FROM coordenadores WHERE ref_professor = '. $sa_ref_pessoa .') ORDER BY ref_periodo DESC LIMIT 1;';
+$qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, periodos p WHERE  o.ref_periodo = p.id AND o.ref_curso IN (SELECT DISTINCT ref_curso FROM coordenador WHERE ref_professor = '. $sa_ref_pessoa .') ORDER BY ref_periodo DESC LIMIT 1;';
 
 $periodo = $conn->get_row($qry_periodo);
 
@@ -41,7 +41,7 @@ if ($is_coordenador === TRUE) {
 
 	// RECUPERA INFORMACOES SOBRE OS CURSOS DO COORDENADOR
 	$sql_coordena = 'SELECT DISTINCT ref_curso
-                    FROM coordenadores
+                    FROM coordenador
                     WHERE
                     ref_professor = '. $sa_ref_pessoa .';';
 
@@ -181,6 +181,7 @@ function enviar(action) {
 }
 
 set_periodo = function(data,pane) {
+	$('pane_overlay').show();
     var parametro = data;
     var objAjax = new Ajax.Request('seleciona_periodo.php', {method: 'post', evalJS: true, parameters: parametro, onSuccess: reload_pane});
 }
@@ -191,15 +192,21 @@ String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
 reload_pane = function(resposta) {
     var pane = unescape(resposta.responseText);
 
-    $('pane_overlay').show();
-
     if (pane.trim() == 'pane_diarios')  
         thePane.load_page('pane_diarios');
 
     if (pane.trim() == 'pane_coordenacao')  
         thePane.load_page('pane_coordenacao');
+}
 
-    $('pane_overlay').hide();
+reload_pane1 = function(pane) {
+    $('pane_overlay').show();
+    
+    if (pane.trim() == 'pane_diarios')
+        thePane.load_page('pane_diarios');
+
+    if (pane.trim() == 'pane_coordenacao')
+        thePane.load_page('pane_coordenacao');
 }
 
 
@@ -247,8 +254,8 @@ reload_pane = function(resposta) {
 		<li><a href="#" id="pane_ferramentas">Ferramentas</a></li>
 
 		<li><a href="<?=$BASE_URL .'index.php'?>" style="background-color: #ffe566;" id="pane_sair">Sair</a></li>
-		<?=$sa_usuario?>
-		<a href="<?=$BASE_URL .'index.php'?>" style="background-color: #ffe566;" id="pane_sair">Sair</a>
+		<?=$sa_usuario?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="<?=$BASE_URL .'index.php'?>" style="background-color: #ffe566;" id="pane_sair">encerrar a sessão</a>
     </ol>
    
     <div id="pane_container" class="tabbed-container">
@@ -283,14 +290,12 @@ var thePane = new TabbedPane('web_guias',
        
         onSuccess: function(e) {
             $('pane_overlay').hide();
-        }
+            e = unescape(e.responseText);
+            
+        },
+        contentType: 'text/html',
+        encoding: 	'UTF-8'
     });
-
-load_periodos = function(pane) {
-	$('pane_overlay').show();
-	thePane.load_page('pane_periodos_' + pane);
-	$('pane_overlay').hide();
-}
 
 </script>
 

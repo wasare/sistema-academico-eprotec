@@ -12,6 +12,15 @@ $periodo = $_SESSION['web_diario_periodo_id'];
 $operacao = $_POST['operacao'];
 $valor_avaliacao = $_POST['valor_avaliacao'];
 
+// VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript"> 
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+}
+
+
 if (is_finalizado($diario_id)){
 
     echo '<script language="javascript" type="text/javascript">';
@@ -180,8 +189,8 @@ $conexao->Execute($sqllog);
 <br />
 
 <div align="left">
-<a href="<?=$BASE_URL . 'app/web_diario/requisita.php?do='. $operacao .'&id='. $diario_id?>" target="_self">Continuar a lan&ccedil;ar notas</a>&nbsp;&nbsp;ou&nbsp;
-<a href="#" onclick="javascript:window.close();">cancelar</a>
+<a href="<?=$BASE_URL . 'app/web_diario/requisita.php?do='. $operacao .'&id='. $diario_id?>" target="_self">Continuar a lan&ccedil;ar notas</a>&nbsp;&nbsp;ou&nbsp;&nbsp;
+<a href="#" onclick="javascript:window.close();">Fechar</a>
 
 </div>
 </body>

@@ -10,6 +10,15 @@ $diario_id = (int) $_POST['diario_id'];
 $periodo = $_SESSION['web_diario_periodo_id'];
 $operacao = $_POST['operacao'];
 
+// VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript"> 
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+}
+
+
 
 $curso = $_POST['curso'];
 $prova = $_POST['getprova'];
@@ -173,13 +182,13 @@ function MM_validateForm() { //v4.0
     <td>
     	<div align="left">
         <h3>
-		   Lan&ccedil;amento / Altera&ccedil;&atilde;o da Nota
+		   Lan&ccedil;amento / Altera&ccedil;&atilde;o da 
         <?php
 		if($prova == 7) { 
-			echo '<font color="blue"> Nota Extra</font> <font color="red" size="2">(Utilize apenas quando houver reavalia&ccedil;&atilde;o/recupera&ccedil;&atilde;o)</font>.' ;		  
+			echo '<font color="blue"> Nota Extra</font> <font color="red" size="2"><br /> Utilize apenas quando houver reavalia&ccedil;&atilde;o e/ou recupera&ccedil;&atilde;o final</font>' ;		  
 		}
 		else{	
-			echo '<font color="blue"> P'. $prova .'</font>.'; 
+			echo ' Nota<font color="blue"> P'. $prova .'</font>.'; 
 		}
 		echo '</h3>';
 ?>
@@ -266,8 +275,8 @@ function MM_validateForm() { //v4.0
   </tr>
  </table>
   <input type="submit" name="Submit" value="Gravar notas">
-&nbsp;&nbsp;ou&nbsp;
-<a href="#" onclick="javascript:window.close();">cancelar</a>
+&nbsp;&nbsp;
+<a href="#" onclick="javascript:window.close();">Cancelar</a>
 </form>
 <br />
 <br />
