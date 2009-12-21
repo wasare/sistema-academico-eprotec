@@ -15,19 +15,20 @@ require_once($BASE_DIR .'core/login/auth.php');
 /*
  * Inicia a sessao
  */
-session::init($param_conn);
-
-/* 
- * Verifica a autenticacao do usuario
- */
-auth::check_login($BASE_URL, $SESS_TABLE, $LOGIN_LOG_FILE);
+$sessao = new session($param_conn);
 
 /*
  * Dados do usuario autenticado
  */
-list( $sa_usuario,
-      $sa_senha,
-      $sa_usuario_id,
-      $sa_ref_pessoa) = explode(":",$_SESSION['sa_auth']);
+list($sa_usuario,$sa_senha,$sa_usuario_id,$sa_ref_pessoa) = explode(":",$_SESSION['sa_auth']);
+
+/* 
+ * Verifica a autenticacao do usuario
+ */
+$sa_verifica_login = new auth($BASE_URL);
+$sa_verifica_login->log_file($BASE_DIR .'logs/login.log');
+$sa_verifica_login->check_login($sessao);
+
+
 ?>
 

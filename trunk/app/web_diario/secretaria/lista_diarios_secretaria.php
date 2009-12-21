@@ -265,8 +265,8 @@ echo '</table> <br />';
 */
 ?>
 <input type="button" value="finaliza todos os diários concluídos" />
-&nbsp;&nbsp;ou&nbsp;&nbsp;
-<a href="#" onclick="javascript:window.close();">fechar</a>
+&nbsp;&nbsp;
+<a href="#" onclick="javascript:window.close();">Fechar</a>
 </form>
 </body>
 </head>

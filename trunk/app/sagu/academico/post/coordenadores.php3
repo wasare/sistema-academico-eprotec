@@ -16,7 +16,7 @@ $conn = new Connection;
 
 $conn->Open();
 
-$sql = " insert into coordenadores ( " .
+$sql = " insert into coordenador ( " .
        "        ref_professor," .
        "        ref_campus," .
        "        ref_curso)" . 

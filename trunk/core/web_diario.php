@@ -343,6 +343,31 @@ function falta($ref_pessoa, $diario_id, $qtde, $par1, $qry='BEGIN;')
 
 }
 
+// VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR 
+function acessa_diario($diario_id,$sa_ref_pessoa) {
 
+	global $conn;
+   
+	$sql = 'SELECT 
+				(
+					SELECT count(*) 
+							FROM coordenador 
+							WHERE ref_professor = '. $sa_ref_pessoa .' AND
+								  ref_curso = '. get_curso($diario_id) .'
+				) + (
+					  SELECT COUNT(*) 
+							FROM disciplinas_ofer_prof 
+							WHERE ref_disciplina_ofer = '. $diario_id .' AND
+								  ref_professor = '. $sa_ref_pessoa .'
+					) AS acesso;';						
+		
+	$acesso = $conn->get_one($sql);
+	
+	if($acesso > 0 && $acesso <= 2)
+		return TRUE;
+	else
+		return FALSE;
+
+}
 
 ?>

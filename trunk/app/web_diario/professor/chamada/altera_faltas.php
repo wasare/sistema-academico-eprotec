@@ -91,7 +91,6 @@ $alunos = $conn->get_all($sql1);
 
 <html>
 <head>
-<a name="topo">
 <title><?=$IEnome?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">

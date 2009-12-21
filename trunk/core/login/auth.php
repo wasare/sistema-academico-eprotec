@@ -12,80 +12,76 @@
  */
 class auth {
 
-/**
- * Efetua a autenticação do usuário em um módulo do SA
- * @param Login
- * @param Senha
- * @param Módulo que vai acessar no SA
- * @param conexao com banco de dados
- * @return efetuado ou rejeitado
- */
+	protected $redirect_url, $base_url, $sess_table, $log_file;
+
+	function __construct($base_url,$log_file='login.log',$sess_table='sessao') {
+
+        $this->base_url = $base_url;
+        $this->sess_table = $sess_table;
+
+        // TODO: melhorar tratamento de logs
+        $this->log_file = $log_file;
+  
+        $this->redirect_url = $base_url;        
+	}
+
+
+	/**
+	* Efetua a autenticação do usuário em um módulo do SA
+	* @param Login
+	* @param Senha
+	* @param Módulo que vai acessar no SA
+	* @param conexao com banco de dados
+	* @return boolean
+	*/
     public function login($login, $senha, $modulo, $conn) {
+        
+        $ret = FALSE;
+        
         $log_msg = $_SERVER['REMOTE_ADDR'] .' - ['. date("d/m/Y H:i:s") .'] - ';
 
-        if($login == '' OR empty($senha)) {
-            exit(header('Location: '. $BASE_URL .'index.php?sa_msg=Nome de usuário e senha não preenchidos.'));
+        if(empty($login) || empty($senha)) {
+            exit(header('Location: '. $this->base_url .'index.php?sa_msg=Nome de usuário e senha não preenchidos.'));
         }
         else {
 
-            $sql = "SELECT id, ref_pessoa FROM usuario
+            $sql = "SELECT id,ref_pessoa FROM usuario
                     WHERE nome = '$login' AND
                     senha = '". hash('sha256',trim($senha)) ."' AND
                     ativado = 'TRUE'; ";
 
-            $usuario = $conn->adodb->getRow($sql);
-            
-			// retorna o primeiro valor da consulta
-            if($usuario === TRUE || !empty($usuario)) {
+            $usuario = $GLOBALS['ADODB_SESS_CONN']->getAll($sql);
 
-                $log_msg .= $login .' - *** LOGIN ACEITO (host='.
-                    $param_conn['host'] .',db='.
-                    $param_conn['database'] .',uid='.
-                    $login .',pwd=) ***'."\n";
+       	    // retorna o primeiro valor da consulta
+            if(count($usuario) == 1) {
 
-                error_log($log_msg,3,$LOGIN_LOG_FILE);
+                list($usuario) = $usuario;
 
-                $GLOBALS['USERID'] = trim($login);
+                // CONFIGURA OS PARAMETRO DE TRATAMENTO DE EXPIRACAO DA SESSAO
+                $GLOBALS['USERID'] = $login;
                 $GLOBALS['ADODB_SESSION_EXPIRE_NOTIFY'] = array('USERID','session::clear_session');
 
-                $_SESSION['sa_auth'] = trim($login) .':'.
-                                       hash('sha256',trim($senha)).':'.
-                                       $usuario['id'].':'.
-                                       $usuario['ref_pessoa'];
-
+                // CONFIGURA AS VARIAVEIS DA SESSAO DE LOGIN
+                $_SESSION['sa_auth'] = $login .':'. hash('sha256',$senha) .':'. $usuario['id'] .':'. $usuario['ref_pessoa'];
                 $_SESSION['sa_modulo'] = $modulo;
 
-                switch ($modulo) {
-                    case 'sa_login':
-                        exit(header('Location: '. $BASE_URL .'app/index.php'));
-                        break;
-                    case 'web_diario_login':
-						exit(header('Location: '. $BASE_URL .'app/web_diario/'));
-                        break;
-                    case 'aluno_login':
-                        exit(header('Location: '. $BASE_URL .'app/aluno'));
-                        break;
-                }
-            }
-            else {
-                $log_msg .=  $login .' - *** LOGIN RECUSADO (host='.
-                    $param_conn['host'] .',db='.
-                    $param_conn['database'] .',uid='.
-                    $login .',pwd=) ***'."\n";
+                adodb_session_regenerate_id();
 
-                error_log($log_msg,3,$LOGIN_LOG_FILE);
+                $log_msg .= $login .' - *** LOGIN ACEITO ***'."\n";         
 
-                if ($modulo == 'sa_login') {
-                    exit(header('Location: '. $BASE_URL .'index.php?sa_msg=Senha ou usuário inválido'));
-                }
-                if ($modulo == 'web_diario_login') {
-                    exit(header('Location: '. $BASE_URL .'index.php?sa_msg=Senha ou usuário inválido'));
-                }
-                if ($modulo == 'aluno_login') {
-                    exit(header('Location: '. $BASE_URL .'index.php?sa_msg=Senha ou usuário inválido'));
-                }
+                error_log($log_msg,3,$this->log_file);
+
+                $ret = TRUE;
+              }
+              else {
+                $log_msg .=  $login .' - *** LOGIN RECUSADO ***'."\n";
+
+                error_log($log_msg,3,$this->log_file);              
             }
         }
+
+        return $ret;
+
     }
 
 
@@ -93,63 +89,91 @@ class auth {
      * Checa a autenticação do usuário
      * @return void
      */
-    public function check_login($BASE_URL, $SESS_TABLE, $LOGIN_LOG_FILE) {
+    public function check_login($sessao) {
+      
+        $sessao->resume();
+        
+        list($sa_usuario,$sa_senha,$sa_usuario_id,$sa_ref_pessoa) = explode(":",$_SESSION['sa_auth']);
+        $sa_modulo = $_SESSION['sa_modulo'];
 
-        if($_SESSION['sa_modulo'] == 'aluno_login') {
-        //Redirecionamento de alunos
+        if($sa_modulo == 'aluno_login') {
+			// Redirecionamento de alunos
             $redirecionamento = '';
         }
-        else {
-            $redirecionamento = $BASE_URL .'index.php?sa_msg=';
+        else {            
+            $redirecionamento = $this->redirect_url .'index.php?sa_msg=';
         }
 
-        if(!isset($_SESSION['sa_auth']) OR empty($_SESSION['sa_auth'])) {
-            exit(header('Location: '. $redirecionamento .'Sem permissão ou sua sessao expirou.'));
+        if(!isset($_SESSION['sa_auth']) || empty($_SESSION['sa_auth'])) {
+            exit(header('Location: '. $redirecionamento .'Sem permissão de acesso ou sessão expirada'));
         }
         else {
-            list($uid, $pwd) = explode(":",$_SESSION['sa_auth']);
-
-            // verifica e desconecta usuario com duas sessoes simultaneas
-            $sql = "SELECT COUNT(*)
-                    FROM $SESS_TABLE 
-                    WHERE expireref = '". $uid ."';";
-
-            $cont_sess = $GLOBALS['ADODB_SESS_CONN']->getOne($sql);
-
             $log_msg = $_SERVER['REMOTE_ADDR'] .' - ['. date("d/m/Y H:i:s") .'] - ';
 
+            // verifica e desconecta usuario com mais de uma sessao simultanea
+            $sql = "SELECT COUNT(*)
+                    FROM $this->sess_table
+                    WHERE expireref = '". $sa_usuario ."';";
+
+            $cont_sess = $GLOBALS['ADODB_SESS_CONN']->getOne($sql);            
+            
             if($cont_sess > 1) {
-                session::clear_session($uid, NULL);
-                session::destroy();
+                
+                $sessao->clear_session($sa_usuario, NULL);
+                $sessao->destroy();
 
-                $log_msg .= $param_conn['user'] .' - *** LOGIN DUPLICADO (host='.
-                    $param_conn['host'] .',db='.
-                    $param_conn['database'] .',uid='.
-                    $param_conn['user'] .',pwd=) ***'."\n";
+                $log_msg .= $sa_usuario .' - *** LOGIN DUPLICADO ***'."\n";
 
-                error_log( $log_msg,3,$LOGIN_LOG_FILE);
+                error_log( $log_msg,3,$this->log_file);
 
-                exit(header('Location: '. $redirecionamento .'Sessao expirada por duplicidade de acesso.'));
+                exit(header('Location: '. $redirecionamento .'Sessão expirada por duplicidade de acesso.'));
             }
             elseif($cont_sess == 1) {
-                $GLOBALS['USERID'] = $uid;
+                // CONFIGURA OS PARAMETRO DE TRATAMENTO DE EXPIRACAO DA SESSAO
+                $GLOBALS['USERID'] = $sa_usuario;
                 $GLOBALS['ADODB_SESSION_EXPIRE_NOTIFY'] = array('USERID','session::clear_session');
+
+                // CONFIGURA AS VARIAVEIS DA SESSAO DE LOGIN
+                $_SESSION['sa_auth'] = $sa_usuario .':'. $sa_senha .':'. $sa_usuario_id .':'. $sa_ref_pessoa;
+                $_SESSION['sa_modulo'] = $sa_modulo;
             }
-            else {
-                unset($_SESSION['sa_auth']);
+            else {               
+                $sessao->clear_session($sa_usuario, NULL);
+                $sessao->destroy();
 
-                $log_msg .= $param_conn['user'] .' - *** FALHA AO VERIFICAR LOGIN (host='.
-                    $param_conn['host'] .',db='.
-                    $param_conn['database'] .',uid='.
-                    $param_conn['user'] .',pwd=) ***'."\n";
+                $log_msg .= $sa_usuario .' - *** FALHA AO VERIFICAR LOGIN ***'."\n";
 
-                error_log( $log_msg,3,$LOGIN_LOG_FILE);
+                error_log($log_msg,3,$this->log_file);
 
                 exit(header('Location: '. $redirecionamento .'Sessão expirada ou inexistente.'));
             }
         }
     }
 
+	/**
+     * Configura a URL raiz do sistema
+     * @return void
+     */
+    public function base_url($url) {
+        $this->base_url = $url;
+    }
+
+
+	/**
+     * Configura a URL de redirecionamento
+     * @return void
+     */
+    public function redirect_url($url) {
+		$this->redirect_url = $url;
+	}
+
+    /**
+     * Configura o caminho para o arquivo de log
+     * @return void
+     */
+    public function log_file($path) {
+		$this->log_file = $path;
+	}
 }
 
 ?>

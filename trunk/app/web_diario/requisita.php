@@ -26,13 +26,35 @@ $_GET['diario_id'] = $diario_id;
 $_POST['diario_id'] = $diario_id;
 
 
-echo 'Meus di&aacute;rios  | Per&iacute;odos  | Coordena&ccedil;&atilde;o  | Ferramentas  | Sair <br /><br />';
+$menu_superior = '<div class="nao_imprime">';
 
+if(isset($_SESSION['web_diario_periodo_id']))
+	$menu_superior .= '<a href="#" onclick="window.opener.reload_pane1(\'pane_diarios\');window.close();">Meus di&aacute;rios</a>&nbsp;|&nbsp;';
+
+if(isset($_SESSION['web_diario_periodo_coordena_id']))
+	$menu_superior .= '<a href="#" onclick="window.opener.reload_pane1(\'pane_coordenacao\');window.close();">Coordena&ccedil;&atilde;o</a>&nbsp;|&nbsp;';
+
+$menu_superior .= '<a href="#" onclick="window.opener.location.href=\''. $BASE_URL .'\';window.close();">Sair</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+$menu_superior .= '<img src="'. $BASE_URL .'public/images/icons/bola_verde.gif" width="10" height="10" />&nbsp;' . $sa_usuario .'&nbsp;&nbsp;';
+
+$menu_superior .= '<br /><br /></div>';
+
+echo $menu_superior;
 
 // OPERACOES COM ALTERACAO DE DADOS
 if($operacao == 'notas') {
-    require_once($BASE_DIR .'app/web_diario/professor/notas/lanca_notas.php');
-    exit;
+  if(!is_inicializado($diario_id)) {
+    if (ini_diario($diario_id))
+      // TODO: recarregar a página aqui ou fechá-la
+      echo '<script type="text/javascript">window.alert("Diario iniciado com sucesso!"); </script>';
+    else {
+        // FIXME: informar ao administrador/desenvolvedor quando ocorrer erro
+        echo '<script language=javascript> window.alert("Falha ao inicializar o diario!"); </script>';
+        exit;
+    }
+  }
+  require_once($BASE_DIR .'app/web_diario/professor/notas/lanca_notas.php');
+  exit;
 }
 
 if($operacao == 'chamada') {
