@@ -7,13 +7,17 @@ $conexao = new connection_factory($param_conn,FALSE);
 
 require_once($BASE_DIR .'core/web_diario.php');
 
-
 $diario_id = (int) $_POST['diario_id'];
 $operacao = $_POST['operacao'];
 
-/*
-TODO: verifica o direito de acesso do usuÃ¡rio ao diÃ¡rio informado
-*/
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+}
+// ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
 if (is_finalizado($diario_id)){
 
@@ -70,13 +74,22 @@ function set_faltas($ref_pessoa, $diario_id, $qtde_faltas, $op, $qry, $dt, $qtde
 
 function showNovaChamada()
 {
-	global $BASE_URL, $diario_id, $operacao;
+	global $BASE_URL, $diario_id, $operacao, $IEnome;
+
+     echo' <html> <head>
+          <title>'. $IEnome .'</title>
+          <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+          <link rel="stylesheet" href="'. $BASE_URL .'public/styles/web_diario.css" type="text/css">
+          </head><body>';
   
     echo '<br /> <br /> <strong>CHAMADA REALIZADA!</strong><br /><br /> * Verifique acima se n&atilde;o ocorreu nenhum erro no processo de incluir faltas *<br /> <br />';
 
 	echo '<br /> <br />';
 	echo '<a href="' .$BASE_URL .'app/web_diario/requisita.php?do='. $operacao .'&id=' . $diario_id .'">Fazer nova chamada</a>';
 	echo '&nbsp;&nbsp;ou&nbsp;&nbsp;<a href="#" onclick="javascript:window.close();">fechar</a>';
+    
+    echo '</body></html>';
+
 }
 
 function regLog($sql,$status="")

@@ -22,11 +22,7 @@ if(isset($_GET['id']) AND ( !is_numeric($diario['0']) OR !is_numeric($diario['1'
 {
 	
      echo '<script language="javascript">
-	 		window.alert("ERRO! Primeiro selecione um diário!"); javascript:window.history.back(1);
-	 </script>';
-
-	 //header("Location: diarios.php?periodo=". $_SESSION['periodo']);
-	 
+	 		window.alert("ERRO! Primeiro selecione um diário!"); javascript:window.history.back(1);</script>';	 
       exit;
 
 }
@@ -140,8 +136,6 @@ $periodos = $conn->get_all($qry_periodos);
     </tr>
 <?php
 
-//print_r($_SESSION['web_diario_peridos']);	
-	
 $i = 0;
 
 $r1 = '#FFFFFF';
@@ -219,7 +213,7 @@ foreach($diarios as $row3)
 	<option value="altera_chamada">Alterar faltas nas chamadas</option>
     <option value="exclui_chamada">Excluir chamada</option>
 </select>
-	</p></form>
+	</p>
 <br /><br />
 <br /><br />
 </form>
@@ -229,6 +223,8 @@ foreach($diarios as $row3)
 	$('periodos_professor').observe('click', function() { $('periodos_professor_pane').toggle(); });
 
 </script>
+</div>
+</center>
 
 </body>
 </html>

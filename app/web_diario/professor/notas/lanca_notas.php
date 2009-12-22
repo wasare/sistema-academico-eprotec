@@ -19,12 +19,10 @@ if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
 if(!is_inicializado($diario_id)) 
 {
     if (ini_diario($diario_id))
-        // TODO: recarregar a página aqui ou fechá-la
         echo '<script type="text/javascript">window.alert("Diario iniciado com sucesso!"); </script>';
     else
     {
-        // FIXME: informar ao administrador/desenvolvedor quando ocorrer erro
-        echo '<script language=javascript> window.alert("Falha ao inicializar o diario!"); </script>';
+        echo '<script language=javascript> window.alert("Falha ao inicializar o diario!"); window.close();</script>';
         exit;   
     }
 } 

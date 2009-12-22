@@ -62,9 +62,10 @@ class auth {
                 $GLOBALS['ADODB_SESSION_EXPIRE_NOTIFY'] = array('USERID','session::clear_session');
 
                 // CONFIGURA AS VARIAVEIS DA SESSAO DE LOGIN
-                $_SESSION['sa_auth'] = $login .':'. hash('sha256',$senha) .':'. $usuario['id'] .':'. $usuario['ref_pessoa'];
+                $_SESSION['sa_auth'] = $login .':'. hash('sha256',$senha) .':'. $usuario[0] .':'. $usuario[1];
                 $_SESSION['sa_modulo'] = $modulo;
 
+                // força atualização da sessão recriando o ID da sessão
                 adodb_session_regenerate_id();
 
                 $log_msg .= $login .' - *** LOGIN ACEITO ***'."\n";         

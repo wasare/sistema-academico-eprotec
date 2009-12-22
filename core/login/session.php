@@ -9,6 +9,9 @@ require_once(dirname(__FILE__).'/../../lib/adodb5/session/adodb-cryptsession2.ph
 
 class session {
 
+    protected $session_life_time = 900; // 900 segundos = 15 minutos
+    protected $session_table;
+
     function __construct($conn_options, $persist = TRUE, $debug = FALSE, $sess_table = 'sessao') {
       
       $ret = FALSE;
@@ -16,19 +19,23 @@ class session {
         list($host, $database, $user, $password, $port) = array_values($conn_options);
 
         $options['table'] = $sess_table;
+        $this->session_table = $sess_table;
 
         ADOdb_Session::config('postgres',$host,$user,$password,$database,$options);
-        // adodb_sess_open(false,false,$connectMode = $persist);
         ADODB_Session::open(false,false,$connectMode = $persist);
 
         if(isset($GLOBALS['ADODB_SESS_CONN']) && is_object($GLOBALS['ADODB_SESS_CONN'])) {
             ADOdb_session::Persist($connectMode = $persist);
-            $GLOBALS['ADODB_SESS_CONN']->debug = $debug;            
+            $GLOBALS['ADODB_SESS_CONN']->debug = $debug;
+            // limpa outras sessoes expiradas e inativas por mais de 15 minutos (padrão)
+            $this->clear_expired_sessions();
             @session_start();
          }
     }
 
-
+    /*
+     * Gera um novo ID para sessão
+     */
     public static function refresh() {
         $random = rand(1,2);
         if (($random % 2) == 0) adodb_session_regenerate_id();
@@ -45,11 +52,12 @@ class session {
 
         if(is_object($GLOBALS['ADODB_SESS_CONN'])) {
             $GLOBALS['ADODB_SESS_CONN']->Execute("DELETE FROM sessao WHERE expireref = '". $expireref ."';");
-            // limpa outras sessoes expiradas e inativas por mais de 15 minutos (900 segundos)
-            ADODB_Session::gc(900);
         }
     }
 
+    /*
+     * Resume uma sessão criada anteriormente
+     */
     public static function resume() {
 
       if(isset($GLOBALS['ADODB_SESS_CONN']) && is_object($GLOBALS['ADODB_SESS_CONN'])) {
@@ -57,7 +65,23 @@ class session {
             $GLOBALS['ADODB_SESS_CONN']->debug = $debug;
             @session_start();
         }       
-    }
-}
+    }    
 
+    // forca eliminacao das sessões expiradas de acordo com o tempo definido por  $session_life_time
+    protected function clear_expired_sessions() {
+        if(is_object($GLOBALS['ADODB_SESS_CONN'])) {
+            $time = $GLOBALS['ADODB_SESS_CONN']->OffsetDate(-$this->session_life_time/24/3600,$GLOBALS['ADODB_SESS_CONN']->sysTimeStamp);
+            $GLOBALS['ADODB_SESS_CONN']->Execute("DELETE FROM ". $this->session_table ." WHERE expiry < ". $time .";");
+        }
+    }
+
+    /**
+     * Configura o tempo máximo de duração da sessão em segundos
+     * @return void
+     */
+    public function session_life_time($time) {
+		$this->session_life_time = $time;
+	}
+
+}
 ?>

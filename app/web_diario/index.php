@@ -199,14 +199,20 @@ reload_pane = function(resposta) {
         thePane.load_page('pane_coordenacao');
 }
 
-reload_pane1 = function(pane) {
+reload_parent_pane = function(pane) {
     $('pane_overlay').show();
     
-    if (pane.trim() == 'pane_diarios')
-        thePane.load_page('pane_diarios');
+    if (pane.trim() == 'pane_diarios') {
+        thePane.load_page('pane_diarios');        
+        $('pane_coordenacao').removeClassName('active');
+        $('pane_diarios').addClassName('active');
+    }
 
-    if (pane.trim() == 'pane_coordenacao')
+    if (pane.trim() == 'pane_coordenacao') {
         thePane.load_page('pane_coordenacao');
+        $('pane_diarios').removeClassName('active');
+        $('pane_coordenacao').addClassName('active');
+    }
 }
 
 

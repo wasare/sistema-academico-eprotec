@@ -11,6 +11,8 @@ $periodo = $_SESSION['web_diario_periodo_id'];
 $operacao = $_POST['operacao'];
 $valor_avaliacao = $_POST['valor_avaliacao'];
 
+$nota_distribuida = number::decimal_br2numeric($valor_avaliacao,1);
+
 // VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
 if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
 
@@ -28,7 +30,6 @@ if (is_finalizado($diario_id)){
 	exit;
 }
 
-//print_r($_POST); die;
 
 $periodo = $_SESSION['web_diario_periodo_id'];
 
@@ -39,6 +40,17 @@ $prova = $_POST['codprova'];
 $msg_registros = '';
 
 $sql_update = 'BEGIN;';
+
+foreach($notas as $n) {
+   if(number::decimal_br2numeric($n) > $nota_distribuida) {
+
+      exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não pode lançar uma nota ('. $n .') maior que a nota distribuída ('. $valor_avaliacao .')! \n\n Retorne e corrija!\');
+            window.history.back(1);</script>');
+      break;
+   }
+
+}
 
 ?>
 <html>
@@ -88,8 +100,6 @@ $sql12 .= "SELECT   DISTINCT
 
 $sql12 .= ') AS T1 INNER JOIN (';
 
-//AND d.rel_diario_formulas_grupo = '$grupo'
-// d.rel_diario_formulas_grupo = '$grupo' AND
 
 $sql12 .= "SELECT DISTINCT
                pessoas.id, d.nota AS notaatual
@@ -102,8 +112,6 @@ $sql12 .= "SELECT DISTINCT
             WHERE
                (matricula.ref_disciplina_ofer = $diario_id) AND (matricula.dt_cancelamento is null) AND (matricula.ref_motivo_matricula = 0)";
 
-
-// AND d.rel_diario_formulas_grupo = '$grupo'
 
 $sql12 .= ') AS T2 ON (T2.id = T1.id) INNER JOIN (';
 
@@ -119,75 +127,101 @@ $sql12 .= "SELECT DISTINCT
 								 d.d_ref_disciplina_ofer = $diario_id AND d.ref_diario_avaliacao = '7')
             WHERE
                (matricula.ref_disciplina_ofer = $diario_id) AND (matricula.dt_cancelamento is null) AND (matricula.ref_motivo_matricula = 0)";
-// AND d.rel_diario_formulas_grupo = '$grupo'
+
 $sql12 .= ') AS T3 ON (T3.ref_pessoa = T2.id) ORDER BY to_ascii(nome);';
 
-//echo $sql12;die;
 
 $qrynotas_parciais = $conexao->get_all($sql12);
 
 if($prova == 7) {
-
 	require_once('grava_nota_extra.php');
 	exit;
 }
 
-
-//while($aluno = list($index,$value) = each($notas))
-foreach($qrynotas_parciais as $aluno)
-{
-   /*
-   $flag_extra = 0;
-   $flag_diff = 0;
-   $flag_media = 0;
-   $flag_maior = 0;
-   $flag_grava = 0;
-   */
-   
-   //echo $i++;
-   $nota = $notas[$aluno['ref_pessoa']];
-   $nota = number::decimal_br2numeric($nota,1);
-
-   $aluno_id = $aluno['ref_pessoa'];
-   $nota_parcial = $aluno['notaparcial'];
-   $nota_atual = $aluno['notaatual'];
-   $nota_extra = $aluno['notaextra'];   
-   $nome_aluno = $aluno['nome'];
+/* INICIO NOTA DISTRIBUIDA */
+if(!is_numeric($nota_distribuida) || $nota_distribuida <= 0) { $flag_nota_distribuida = 1;} else { $flag_nota_distribuida = 0; }
 
 
-    if(!ereg("[0-9]*\.?[0-9]+$", $nota) || $nota == '') {
+$sql_total = "
+SELECT
+sum(nota_distribuida) as nota_distribuida
+FROM
+diario_formulas
+WHERE grupo ILIKE '%-$diario_id'  AND
+prova <> '$prova'";
 
-        	$nota = 0;
-    }
+$nota_distribuida_parcial = $conexao->get_one($sql_total);
 
+$total_nota_distribuida = $nota_distribuida_parcial + $nota_distribuida;
+
+if($total_nota_distribuida > 100) {
+  $msg_registros .= '<font color="red"><b>Erro: Não foi possível gravar, resultado do somatório das notas distribuídas superior a 100!</b></font>';
+  $flag_nota_distribuida_maior = 1;
+}
+else {  
+  $flag_nota_distribuida_maior = 0;
+}  /* FIM NOTA DISTRIBUIDA*/
+
+// SOMENTE PROCESSA AS NOTAS SE A NOTA DISTRIBUÍDA FOR VÁLIDA
+// E O SOMATÓRIO DAS NOTAS DISTRIBUÍDAS NÃO PASSAR DE 100
+if($flag_nota_distribuida == 0 && $flag_nota_distribuida_maior == 0) {
+
+   // SQL NOTA DISTRIBUIDA
+  $sql_update .= "UPDATE diario_formulas SET nota_distribuida = $nota_distribuida
+					WHERE grupo ILIKE '%-$diario_id' AND prova = '$prova';";
+
+  $msg_registros .= "<font color=\"brownn\" >Nota distribuída <font color=\"blue\">(<strong>". number::numeric2decimal_br($nota_distribuida,1) ." pontos</strong>)</font> registrada com sucesso!</b></font><br /><br />";
+  // ^ SQL NOTA DISTRIBUIDA ^
+
+  foreach($qrynotas_parciais as $aluno)
+  {
+    /*
+    $flag_extra = 0;
+    $flag_diff = 0;
+    $flag_media = 0;
+    $flag_maior = 0;
+    $flag_grava = 0;
+    $flag_nota_distribuida = 0;
+    $flag_nota_distribuida_maior = 0;
+    */
+
+    $nota = $notas[$aluno['ref_pessoa']];
+    $nota = number::decimal_br2numeric($nota,1);
+
+    $aluno_id = $aluno['ref_pessoa'];
+    $nota_parcial = $aluno['notaparcial'];
+    $nota_atual = $aluno['notaatual'];
+    $nota_extra = $aluno['notaextra'];
+    $nome_aluno = $aluno['nome'];
+
+
+    if(!ereg("[0-9]*\.?[0-9]+$", $nota) || $nota == '') { $nota = 0; }
+
+    // NOTA MAIOR QUE NOTA DISTRIBUIDA
+    if($nota > $nota_distribuida) { $flag_nota_distribuida_maior = 1;} else { $flag_nota_distribuida_maior = 0; }
+    
 	 // NOTA EXTRA
     if($nota_extra > -1) { $flag_extra = 1; } else { $flag_extra = 0; }
 
     // NOTA DIFERENTE
-	if($nota != $nota_atual) { $flag_diff = 1; } else { $flag_diff = 0; }
-
-   	// CALCULA NOTA TOTAL
-	//$NotaFinal = ($nota_parcial + $nota);
-
+	if($nota != $nota_atual) { $flag_diff = 1; } else { $flag_diff = 0; } 
 
    if($flag_diff == 1) { 
-	   //1 && $prova != 7) {
-
         $NotaFinal = ($nota_parcial + $nota);
    }
-   else {
-		
+   else {		
 		$NotaFinal = ($nota_parcial + $nota_atual);
    }
 
    if($NotaFinal > 100) { $flag_maior = 1;} else { $flag_maior = 0; }
 	  
-   $NotaReal = number::numeric2decimal_br($nota,1);
+   $NotaReal = number::numeric2decimal_br($nota,1);  
 
-		// SE NOTA EXTRA NÃO FOI LANCADA 
+		// SE NOTA EXTRA NÃO FOI LANCADA,
 		// E A NOTA FOR DIFERENTE DA ANTERIOR E NÃO FOR MAIOR QUE 100 GRAVA
-		if($flag_extra == 0 && $flag_diff == 1 && $flag_maior == 0) { 
-			
+        // E O SOMATÓRIO DAS NOTAS DISTRIBUIDA É MENOR/IGUAL A 100
+        // E A NOTA É MENOR/IGUAL O VALOR DA NOTA DISTRIBUIDA
+		if($flag_extra == 0 && $flag_diff == 1 && $flag_maior == 0 && $flag_nota_distribuida_maior == 0) {
 				$flag_grava = 1; 
 		}
 		else {  $flag_grava = 0; }
@@ -218,9 +252,7 @@ foreach($qrynotas_parciais as $aluno)
 					 
 			$msg_registros .= "<font color=\"#000000\" size=\"1\" face=\"Verdana, Arial, Helvetica, sans-serif\">Nota <font color=\"#FF0000\"><strong>$NotaReal</strong></font> registrada para o aluno(a) <strong>$nome_aluno</strong>($aluno_id)<br></font>";
       }
-      else { 
-		
-
+      else {
 		    if($flag_extra == 1) {
 
 					$msg_registros .= "<font color=\"#000000\" size=\"1\" face=\"Verdana, Arial, Helvetica, sans-serif\"><font color=\"blue\" ><strong>Nota $NotaReal n&atilde;o registrada, motivo: </strong></font><font color=\"#FF0000\"><strong>NOTA EXTRA J&Aacute; LAN&Ccedil;ADA!</strong></font>: aluno(a) <strong>$nome_aluno</strong>($aluno_id) <br></font>";	
@@ -231,11 +263,13 @@ foreach($qrynotas_parciais as $aluno)
 					$msg_registros .= "<font color=\"#000000\" size=\"1\" face=\"Verdana, Arial, Helvetica, sans-serif\"><font color=\"blue\" ><strong>Nota $NotaReal n&atilde;o registrada, causa: </strong></font><font color=\"#FF0000\"><strong>M&Eacute;DIA > 100 pontos</strong></font>: aluno(a) <strong>$nome_aluno</strong>($aluno_id) <br></font>";				
 				}
 				else {
-                
- 		        	if($flag_diff == 0) {
-                  		$msg_registros .= "<font color=\"#000000\" size=\"1\" face=\"Verdana, Arial, Helvetica, sans-serif\"><font color=\"blue\" ><strong>Nota $NotaReal Mantida</strong></font>: aluno(a) <strong>$nome_aluno</strong>($aluno_id) <br></font>";
+
+                    if($flag_nota_distribuida_maior == 1) {
+                  		$msg_registros .= "<font color=\"#000000\" size=\"1\" face=\"Verdana, Arial, Helvetica, sans-serif\"><font color=\"#cc0000\" ><strong>Nota $NotaReal n&atilde;o registrada, causa: </strong></font><font color=\"#FF0000\"><strong>NOTA > Nota Distribuída</strong></font>: aluno(a) <strong>$nome_aluno</strong>($aluno_id) <br></font>";
 					}
-				
+                    elseif($flag_diff == 0) {
+                  		$msg_registros .= "<font color=\"#000000\" size=\"1\" face=\"Verdana, Arial, Helvetica, sans-serif\"><font color=\"blue\" ><strong>Nota $NotaReal Mantida</strong></font>: aluno(a) <strong>$nome_aluno</strong>($aluno_id) <br></font>";
+					}				
         		}
       		}               
 
@@ -243,15 +277,16 @@ foreach($qrynotas_parciais as $aluno)
       // print ($sqlupdatematricula."<BR>");
 } // while  0
 
+}
+else
+   $msg_registros .= '<br /><font color="red"><b>Erro: Não foi possível gravar, nota distribuída inválida ou não informada!</b></font>';
+
 
 $sql_update .= 'COMMIT;';
 
 $conexao->Execute($sql_update);
 
 echo $msg_registros;
-
-echo  '<br /><br /><h4><font color="#000000" face="Verdana, Arial, Helvetica, sans-serif"><font color="green"><strong>Informa&ccedil;&otilde;es Alteradas com Sucesso!</strong></font></h4>';
-   
 
 // GRAVA LOG                  
 $ip = $_SERVER["REMOTE_ADDR"];
@@ -263,54 +298,6 @@ $sqllog = "INSERT INTO diario_log (usuario, data, hora, ip_acesso, pagina_acesso
 
 $conexao->Execute($sqllog);
 
-/* INICIO GRAVAR NOTA DISTRIBUIDA*/
-
-$nota_distribuida = number::decimal_br2numeric($valor_avaliacao,1);
-
-if (empty($nota_distribuida) OR !is_numeric($nota_distribuida))
-	$nota_distribuida = 0;
-   
-
-$sql_total = "
-SELECT 
-sum(nota_distribuida) as nota_distribuida 
-FROM 
-diario_formulas 
-WHERE grupo ILIKE '%-$diario_id'  AND 
-prova <> '$prova'";
-
-$nota_distribuida_parcial = $conexao->get_one($sql_total);
-
-	
-$total_nota_distribuida = $nota_distribuida_parcial + $nota_distribuida;
-	
-$msg_nota_distribuida = '';	
-
-if($total_nota_distribuida > 100)
-{
-   		$msg_nota_distribuida = '<font color="red"><b>Erro: Não foi possível gravar, resultado do somatório das notas superior a 100!</b></font>';
-}
-else
-{
-	// somente grava nota distribuida para valores válidos
-	if (!empty($nota_distribuida) AND is_numeric($nota_distribuida))
-	{
-		$sql_atualiza_nota_distribuida = "
-					UPDATE diario_formulas SET nota_distribuida = $nota_distribuida 
-					WHERE grupo ILIKE '%-$diario_id' AND prova = '$prova' ";
-		
-			$conexao->Execute($sql_atualiza_nota_distribuida);
-		
-				$msg_nota_distribuida = "<font color=\"green\" ><b>Nota distribuída alteradas com sucesso!</b></font><br>
-					Valor da Nota Distribuida: ". number::numeric2decimal_br($nota_distribuida,1) ." pontos";
-	}
-   //^ somente grava nota distribuida para valores válidos ^ //
-}
-	
-echo $msg_nota_distribuida;
-	
-
-/* FIM GRAVAR NOTA DISTRIBUIDA*/
 ?>
 <br />
 <br />
