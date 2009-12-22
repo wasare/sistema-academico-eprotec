@@ -8,9 +8,14 @@ $conn = new connection_factory($param_conn);
 $diario_id = (int) $_POST['diario_id'];
 $operacao = $_POST['operacao'];
 
-/*
-TODO: verifica o direito de acesso do usuário ao diário informado
-*/
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+}
+// ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
 if (is_finalizado($diario_id)){
 
@@ -47,8 +52,7 @@ if(!is_numeric($aula_tipo) || (strlen($aula_tipo) < 1 || strlen($aula_tipo) > 8 
  
 if($_POST['select_dia'] == "")
 {
-	 echo '<font size=2><b>Voc&ecirc; n&atilde;o selecionou o DIA ! <a href="javascript:history.go(-1)
-">Voltar</a>!</b></font>';
+	 echo '<font size=2><b>Voc&ecirc; n&atilde;o selecionou o DIA ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>';
   exit;
 }
 else
@@ -58,8 +62,7 @@ else
 
 if($_POST['select_mes'] == "")
 {
-  echo '<font size=2><b>Voc&ecir;  n&atilde;o selecionou o M&Ecirc;S ! <a href="javascript:history.
-go(-1)">Voltar</a>!</b></font>';
+  echo '<font size=2><b>Voc&ecir;  n&atilde;o selecionou o M&Ecirc;S ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>';
   exit;
 }
 else
@@ -70,7 +73,7 @@ else
 
 if($_POST['select_ano'] == "")
 {
-  echo '<font size=2><b>Voc&ecirc; n&atilde;o selecionou o ANO ! <a href"javascript:history.go(-1)">Voltar</a>!</b></font>';
+  echo '<font size=2><b>Voc&ecirc; n&atilde;o selecionou o ANO ! <a href"javascript:history.go(-1);">Voltar</a>!</b></font>';
   exit;
 }
 else
@@ -83,7 +86,7 @@ else
 
 if($conteudo == '')
 {
-  echo '<script language=javascript> window.alert("Você não informou o conteúdo da(s) aula(s)!"); javascript:window.history.back(1); </script>';
+  echo '<script language="javascript" type="text/javascript"> window.alert("Você não informou o conteúdo da(s) aula(s)!"); javascript:window.history.back(1); </script>';
   exit;
 }
 
@@ -109,7 +112,7 @@ $flag = $seq_faltas['flag'];
 if((@$flag > '0') AND (@$flag <= '8'))
 {
 
-	die('<script language=javascript> window.alert("Já existe chamada realizada para esta data.");   javascript:window.history.back(1); </script>');
+	die('<script language="javascript" type="text/javascript"> window.alert("Já existe chamada realizada para esta data.");   javascript:window.history.back(1); </script>');
 }
 else {
 
@@ -166,8 +169,9 @@ function validate(field) {
 	if (ok == "no") {
 		alert("Você não pode lançar " + field.value + " faltas para uma chamada de " + <?=$num_aulas?> + " aulas !");
 		//field.focus();
+        field.focus();
 		field.value = "<?=$num_faltas?>";
-		field.select();
+		
    }
 }
 
@@ -206,7 +210,6 @@ function autoTab(input,len, e) {
 			Usando no formulario
 				<input onKeyUp="return autoTab(this, 3, event);" size="4" maxlength="3">
         */
-
 }
 
 //-->

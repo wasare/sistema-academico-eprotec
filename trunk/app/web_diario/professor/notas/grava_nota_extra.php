@@ -36,7 +36,6 @@ $notas = (array) $_POST['notas'];
 $matriculas = (array) $_POST['matricula'];
 $prova = $_POST['codprova'];
 
-
 $curso_tipo = get_curso_tipo($diario_id);
 
 
@@ -51,7 +50,6 @@ foreach($qrynotas_parciais as $aluno)
    */
 
    $nota = $notas[$aluno['ref_pessoa']];
-   //$nota = number::decimal_br2numeric($nota);
 
    $aluno_id = $aluno['ref_pessoa'];
    $nota_parcial = $aluno['notaparcial'];
@@ -59,9 +57,7 @@ foreach($qrynotas_parciais as $aluno)
    $nota_extra = $aluno['notaextra'];   
    $nome_aluno = $aluno['nome'];
 
-   if(!ereg("[0-9]*\.?[0-9]+$", $nota) || $nota == '') {
-	   	$nota = -1;
-   }
+   if(!ereg("[0-9]*\.?[0-9]+$", $nota) || $nota == '') { $nota = -1; }
    else
 		$nota = number::decimal_br2numeric($nota,1);
 
@@ -73,6 +69,7 @@ foreach($qrynotas_parciais as $aluno)
 	
    // CALCULA NOTA TOTAL
 
+   // TODO: Selecionar método de cálculo da nota final com base em parâmetros do sistema
    // SE FOR NOTA DE RECUPERACAO / REAVALIACAO CALCULA CONFORME CRITERIOS DE CADA CURSO
    if($nota != -1) {
       if( $curso_tipo == 2 || $curso_tipo == 4 || $curso_tipo == 5 || $curso_tipo == 6 || $curso_tipo == 10 ) {
@@ -84,8 +81,7 @@ foreach($qrynotas_parciais as $aluno)
       	$NotaFinal = $nota;
       }
    }
-   else {
-	   
+   else {	   
 	    $NotaFinal = $nota_parcial;
    }
     
@@ -146,7 +142,7 @@ foreach($qrynotas_parciais as $aluno)
 		}
 		else {
 	
-		 // A NOTA DO ALUNO ULTRAPASSOU 100 OU Jï¿½ FOI LANï¿½ADA A NOTA EXTRA
+		 // A NOTA DO ALUNO ULTRAPASSOU 100 OU JA FOI LANCADA A NOTA EXTRA
 		 if($nota != -1) {			 
 
         	if($flag_maior == 1 ) {
@@ -171,7 +167,6 @@ $sql_update .= 'COMMIT;';
 $conexao->Execute($sql_update);
 
 echo $msg_registros;
-echo  '<br /><br /><h4><font color="#000000" face="Verdana, Arial, Helvetica, sans-serif"><font color="green"><strong>Informa&ccedil;&otilde;es Alteradas com Sucesso!</strong></font></h4> <br/>';
 
 
 // GRAVA LOG                  
