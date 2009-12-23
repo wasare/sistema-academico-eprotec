@@ -307,39 +307,43 @@ function ini_diario($ofer) {
 }
 
 // function adiciona/exclui falta
-function falta($ref_pessoa, $diario_id, $qtde, $par1, $qry='BEGIN;')
+//falta($ref_aluno, $diario_id, $qtde_faltas, "SOMA", $consulta_sql)
+function falta($ref_aluno, $diario_id, $num_faltas, $operacao, $consulta_sql='BEGIN;')
 {
 	global $conn;
 
-	$sqlf = "SELECT
+	$sql = "SELECT
                     count(ra_cnec) AS num_faltas
                 FROM
                     diario_chamadas a
                 WHERE
                     (a.ref_disciplina_ofer = $diario_id) AND
-                    (ra_cnec = '$ref_pessoa');";
+                    (ra_cnec = '$ref_aluno');";
 
 
-   $total_faltas = $conn->get_one($sqlf);
+   $total_faltas = $conn->get_one($sql);
 
 
-   if($par1 == "SOMA")
-      $total_faltas = $total_faltas + $qtde;
+   if($operacao == "SOMA")
+      $total_faltas = $total_faltas + $num_faltas;
 
-   if($par1 == "SUB")
-      $total_faltas = $total_faltas - $qtde;
+   if($operacao == "SUB")
+      $total_faltas = $total_faltas - $num_faltas;
 
-   $sqlfalta = $qry . "UPDATE
+   $sql_falta = $consulta_sql . "UPDATE
                   matricula
                SET
                   num_faltas = $total_faltas
                WHERE
-                  ref_pessoa = $ref_pessoa AND
+                  ref_pessoa = $ref_aluno AND
                   ref_disciplina_ofer = $diario_id;";
 
-	$sqlfalta .= 'COMMIT;';
+	$sql_falta .= 'COMMIT;';
 
-   $conn->Execute($sqlfalta);
+   //die($sql_falta);
+  $conn->Execute($sql_falta);
+
+  return TRUE;
 
 }
 
@@ -367,7 +371,26 @@ function acessa_diario($diario_id,$sa_ref_pessoa) {
 		return TRUE;
 	else
 		return FALSE;
+}
 
+// VERIFICA SE NAO EXISTE CHAMADA PARA ESTA DATA
+function existe_chamada($diario_id,$data_chamada) {
+
+	global $conn;
+
+    $sql = "SELECT COUNT(*)
+	  FROM
+      diario_seq_faltas
+      WHERE
+      dia = '". $data_chamada ."' AND
+      ref_disciplina_ofer = ". $diario_id .";";
+
+    $chamadas = $conn->get_one($sql);
+
+	if($chamadas > 0)
+		return TRUE;
+	else
+		return FALSE;
 }
 
 ?>

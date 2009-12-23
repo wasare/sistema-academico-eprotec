@@ -8,9 +8,14 @@ $conn = new connection_factory($param_conn);
 $diario_id = (int) $_GET['id'];
 $operacao = $_GET['do'];
 
-/*
-TODO: verifica o direito de acesso do usuário ao diário informado
-*/
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+}
+// ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
 if (is_finalizado($diario_id)){
 
@@ -37,10 +42,11 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
 <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
 </head>
 
-<body onLoad="javascript:document.form1.reset()">
+<body>
+<script type="text/javascript" src="<?=$BASE_URL .'lib/wz_tooltip.js'?>"> </script>
 
-<div align="left" class="titulo">
-  <h3>Lan&ccedil;amento de chamadas</h3>
+<div align="left" class="titulo1">
+  Lan&ccedil;amento de chamadas
 </div>
 <br />
 <?=papeleta_header($diario_id)?>
@@ -56,12 +62,11 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
    
 <?php
   
-    $dia = date("d");
-	
-	echo '<option value="'. $dia .'" selected="selected">'. $dia .'</option>';
+    $dia_hoje = date("d");
 	for($d = 1; $d <= 31; $d++) {
-		$dia = str_pad($d, 2, "0", STR_PAD_LEFT);
-		echo '<option value="'. $dia .'">'. $dia .'</option>';
+      $selected_dia = ($dia_hoje == $d) ? ' selected="selected"' : ' ';
+      $dia = str_pad($d, 2, "0", STR_PAD_LEFT);
+      echo '<option value="'. $dia .'" '. $selected_dia .'>'. $dia .'</option>';
     } 
 ?>
 	</select> 
@@ -88,9 +93,10 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
 	
 ?>
 	</select>
+  &nbsp; <a href="javascript:void(0);" onmouseover="TagToTip('instrucoes', ABOVE, true,PADDING, 9, TITLE, 'Ajuda - Lan&ccedil;amento de chamadas', CLOSEBTN, true,STICKY, true,FONTSIZE, '0.8em', COPYCONTENT, false, BGCOLOR, '#FFFFFF' )" onmouseout="UnTip()">ajuda</a>
 </p>
 
-<table width="90%" height="73" border="0">
+<table border="0">
   <tr> 
     <td height="18"> 
       <div align="justify"><font color="#0000CC" size="1,5" face="Verdana, Arial, Helvetica, sans-serif">Selecione para quantas Aulas ser&aacute; efetuada a chamada :</font></div></td>
@@ -126,15 +132,8 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
  </table>
 
  <br />
-    <?php
-		if($_SESSION['flag_falta'] == 'F') {
 
-			echo '<input type="checkbox" class="checkbox" name="flag_falta" value="F" checked="checked" />';
-		}
-		else {
-			echo '<input type="checkbox" class="checkbox" name="flag_falta" value="F">';
-		}
-	?>
+    <input type="checkbox" class="checkbox" name="flag_falta" id="flag_falta" value="F" />
 	<font color="brown"><b>N&atilde;o houve faltas neste dia <br /><span style="font-size: 0.8em">(marque esta op&ccedil;&atilde;o caso n&atilde;o exista faltas neste dia)</span></b></font>
 
 	<br /> <br /> 
@@ -152,11 +151,14 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
   
 </form>
 
+<div id="instrucoes">
 <h3>INSTRU&Ccedil;&Otilde;ES</h3>
 <font color="#330099">
 * As op&ccedil;&otilde;es com mais de uma aula se referem &agrave; aulas seguidas.<br />
 * N&atilde;o pode haver mais de uma chamada no mesmo dia para o mesmo di&aacute;rio.<br />
 <br />
-
+</font>
+</div>
+<br /><br />
 </body>
 </html>

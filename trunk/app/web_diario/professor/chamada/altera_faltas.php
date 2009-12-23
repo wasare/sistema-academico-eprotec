@@ -13,9 +13,14 @@ $num_aulas = $num_faltas = $flag = (int) $_GET['flag'];
 
 $operacao = $_POST['operacao'];
 
-/*
-TODO: verifica o direito de acesso do usuário ao diário informado
-*/
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+}
+// ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
 if (is_finalizado($diario_id)){
 
@@ -30,7 +35,6 @@ $aulatipo = '';
 for($i = 1; $i <= $num_aulas; $i++) { $aulatipo .= "$i"; }
 
 $flag = $num_aulas;
-
 
 $data_bd = $selectdia . '/' . $selectmes . '/'.$selectano;
 $data_cons = $selectdia . '/' . $selectmes . '/'.$selectano;
@@ -64,9 +68,6 @@ $sql_falta = " SELECT
 		  (a.data_chamada = '$data_chamada')
 		  GROUP BY ra_cnec;";
 
-
-//echo $sqlFalta; die;
-
 $faltas_chamada = $conn->get_all($sql_falta);
 
 $sql1 ="SELECT DISTINCT
@@ -82,7 +83,6 @@ WHERE
 ORDER BY
   p.nome; ";
 
-//echo $sql1; die;
 
 $alunos = $conn->get_all($sql1);
 
@@ -200,47 +200,37 @@ function autoTab(input,len, e) {
 
 $st = '';
 	
-foreach($alunos as $aluno) 
-{
+foreach($alunos as $aluno) :
 	$aluno_id = $aluno['ra_cnec'];
-	$nome_aluno = $linha1['nome'];
+	$nome_aluno = $aluno['nome'];
 
 	$faltas = '';
 
 	@reset($faltas_chamadas);
 
-
 	while(list($key, $value) = @each($faltas_chamadas)) {
 
-       if($value['ra_cnec'] == $aluno_id) {
-          
+       if($value['ra_cnec'] == $aluno_id) {          
           $faltas = $value['faltas'];
           break;
-	   }
- 
+	   } 
 	} 
 
-   if($st == '#F3F3F3') 
-   {
-      $st = '#E3E3E3';
-   } 
-   else 
-   {
-      $st ='#F3F3F3';
-   } 
-   print (' <tr bgcolor="' . $st . '">
-            <td align="center">
-            <input type="text" name="faltas['. $aluno_id .']" value="'. $faltas .'" maxlength="1" size="1" onblur="validate(this);" onkeyup="return autoTab(this, 1, event);"/>
-            </td>
-            <td align="center"> ' . $aluno_id . ' </td>
-            <td> ' . $nome_aluno . ' </td>
-            </tr>');
-}
+   if($st == '#F3F3F3') $st = '#E3E3E3'; else $st ='#F3F3F3';
+?>
 
+  <tr bgcolor="<?=$st?>">
+    <td align="center">
+      <input type="text" name="faltas[<?=$aluno_id?>]" value="<?=$faltas?>" maxlength="1" size="1" onblur="validate(this);" onkeyup="return autoTab(this, 1, event);"/>
+    </td>
+    <td align="center"><?=$aluno_id?></td>
+    <td><?=$nome_aluno?></td>
+  </tr>
+<?php
+  endforeach;
 ?>
 </table>
 <br />
-
 
   <input type="submit" name="Submit" value="Salvar Faltas -->" />
   &nbsp;&nbsp;&nbsp;&nbsp;

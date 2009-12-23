@@ -196,11 +196,10 @@ function validate_nota(field) {
 </head>
 
 <body>
-<table cellspacing="0" cellpadding="0">
-  <tr>
-    <td>
-    	<div align="left">
-        <h3>
+
+<br />
+
+  <div align="left" class="titulo1">
 		   Lan&ccedil;amento / Altera&ccedil;&atilde;o da 
         <?php
 		if($prova == 7) { 
@@ -210,19 +209,16 @@ function validate_nota(field) {
 			echo ' Nota<font color="blue"> P'. $prova .'</font>.'; 
 		}		
         ?>
-       </h3>
-</div></td>
-  </tr>
-</table>
+</div>
+ <br />
+ <?=papeleta_header($diario_id)?>
+ <br />
+
 <form name="informa_notas" id="informa_notas" method="post" action="<?=$BASE_URL .'app/web_diario/professor/notas/grava_notas.php'?>">
 
 	<input type="hidden" name="codprova" id="codprova" value="<?=$prova?>">
 	<input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">
 	<input type="hidden" name="operacao" id="operacao" value="<?=$operacao?>">
-
-<?=papeleta_header($diario_id)?>
-
-<br />
 
 <?php
 	if($prova != 7) :

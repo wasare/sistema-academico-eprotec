@@ -11,9 +11,14 @@ $operacao = $_GET['do'];
 
 $sa_ref_periodo = $_SESSION['web_diario_periodo_id'];
 
-/*
-TODO: verifica o direito de acesso do usuário ao diário informado
-*/
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+}
+// ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
 if (is_finalizado($diario_id)){
 
@@ -27,6 +32,8 @@ if (is_finalizado($diario_id)){
 if(isset($_POST['exclui_ok']) && $_POST['exclui_ok'] === 'exclui_chamada') {
 
 	// EXCLUI TODAS AS FALTAS ANTERIORES PARA A CHAMADA
+
+    // TODO: registrar no log a operação de exclusão de chamada
 
 	$sql_faltas = " SELECT id, ra_cnec
                      FROM
@@ -97,9 +104,10 @@ function jsConfirm(dia)
 
 <body>
 
-<div align="left" class="titulo">
-	  <h3>Exclus&atilde;o de Chamada</h3>
+<div align="left" class="titulo1">
+  Exclus&atilde;o de Chamada
 </div>
+
 <p style="font-size:0.9em; font-face:Verdana, Arial, Helvetica, sans-serif; font-weight:bold; color:red;"> 
         Este processo exclui a chamada do dia selecionado! <br /> O professor dever&aacute; refazer a chamada posteriormente, caso seja necess&aacute;rio.</p>
 <br />
@@ -107,21 +115,15 @@ function jsConfirm(dia)
 <br />
 <?php
 
- $sql4 = "SELECT DISTINCT
-                 id,
-                 id_prof,
-                 periodo,
-                 curso,
-                 disciplina,
-                 dia,
-                 ref_disciplina_ofer as idof
+ $sql4 = "SELECT DISTINCT(dia)
                  FROM
                  diario_seq_faltas
                  WHERE
                  ref_disciplina_ofer = $diario_id ORDER BY dia DESC; ";
 
  $chamadas = $conn->get_all($sql4);
-?>
+
+ ?>
 
 
 <form name="exclui_chamada" id="exclui_chamada" action="" method="post">
@@ -136,14 +138,12 @@ function jsConfirm(dia)
 
 <?php
 	
-	foreach($chamadas as $data) {
-
+	foreach($chamadas as $data)
 		echo '<option value="'. date::convert_date($data['dia']) .'">'. date::convert_date($data['dia']) .'</option>';
-	}
 ?>	
 	</select>
 
-&nbsp;&nbsp;ou&nbsp;
+&nbsp;&nbsp;&nbsp;
 <a href="#" onclick="javascript:window.close();">fechar</a>
 </form>
 </body>

@@ -8,13 +8,14 @@ $conn = new connection_factory($param_conn);
 $diario_id = (int) $_GET['id'];
 $operacao = $_GET['do'];
 
-// VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
 if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
 
-	exit('<script language="javascript" type="text/javascript"> 
+    exit('<script language="javascript" type="text/javascript">
             alert(\'Você não tem direito de acesso a estas informações!\');
             window.close();</script>');
 }
+// ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
 if(!is_inicializado($diario_id)) 
 {
@@ -86,8 +87,9 @@ else
 </head>
 
 <body>
-<div align="left" class="titulo">
-  <h3>Lan&ccedil;amento / Altera&ccedil;&atilde;o de Notas</h3>
+<br />
+<div align="left" class="titulo1">
+   Lan&ccedil;amento / Altera&ccedil;&atilde;o de Notas
 </div>
 <br />
 <?=papeleta_header($diario_id)?>

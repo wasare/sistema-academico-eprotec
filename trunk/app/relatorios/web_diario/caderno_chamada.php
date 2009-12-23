@@ -9,21 +9,20 @@ require_once($BASE_DIR .'lib/pslib.php');
   
 $conn = new connection_factory($param_conn);
 
-$diario_id = $_GET['diario_id'];
-
-/*
-TODO: verifica o direito de acesso do usuário ao diárioi, no caso de professor ou coordenador informado
-*/
-
+$diario_id = (int) $_GET['diario_id'];
 
 if(!is_numeric($diario_id))
-{
+    exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');
 
-    echo '<script language="javascript">
-                window.alert("ERRO! Diario invalido!");
-                window.close();
-    </script>';
-    exit;
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
+  if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+  }
+  // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 }
 
 
@@ -39,17 +38,17 @@ $campus_id = 'undefined';
 <html>
 <head>
     <title><?=$IEnome?> - Caderno de Chamada</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
 </head>
 <body  bgcolor="#FFFFFF">
+<div align="left" class="titulo1">
+  Caderno de Chamada
+</div>
+
+  <br /><br />
 
 
-<table width="90%" height="73" border="0">
-  <tr>
-    <td width="471"><div align="center"><font color="#990000" size="4" face="Verdana, Arial, Helvet
-ica, sans-serif"><strong>Caderno de Chamada</strong></font></div></td>
-  </tr>
-
-</table>
 <?=papeleta_header($diario_id)?>
 
 <br />
@@ -836,7 +835,7 @@ echo '<meta http-equiv="refresh" content="0;url='. $url_arquivo .'">';
 ?>
       
  <form name="myform" action="" >
-   <p align="center">
+   <p align="left">
      <input type="button" name="botao2" value="Imprimir novamente" onClick="location='<?=$url_arquivo?>'">
 	 &nbsp;&nbsp;
 	<a href="#" onclick="javascript:window.close();">Fechar</a>

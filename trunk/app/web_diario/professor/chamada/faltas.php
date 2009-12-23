@@ -9,14 +9,19 @@ $conn = new connection_factory($param_conn);
 $diario_id = (int) $_POST['diario_id'];
 $operacao = $_POST['operacao'];
 
-/*
-TODO: verifica o direito de acesso do usu√°rio ao di√°rio informado
-*/
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'VocÍ n„o tem direito de acesso a estas informaÁıes!\');
+            window.close();</script>');
+}
+// ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
 if (is_finalizado($diario_id)){
 
     echo '<script language="javascript" type="text/javascript">';
-    echo 'alert("ERRO! Este di√°rio est√° finalizado e n√£o pode ser alterado!");';
+    echo 'alert("ERRO! Este di·rio est· finalizado e n„o pode ser alterado!");';
     echo 'window.close();';
     echo '</script>';
     exit;
@@ -45,13 +50,14 @@ $chamadas = $conn->get_all($sql1);
 
 <body>
 
-<div align="left" class="titulo">
+<div align="left" class="titulo1">
   <h3>Altera&ccedil;&atilde;o de Faltas</h3>
 </div>
+ <br />
 <?=papeleta_header($diario_id)?>
-
+<br />
 <div align="left" class="titulo">
-  <h4>Chamadas Realizadas</h3>
+  <h4>Chamadas Realizadas</h4>
 </div>
 <a href="<?=$BASE_URL .'app/relatorios/web_diario/faltas_completo.php?diario_id='. $diario_id  ?>" target="_blank">Exibir relat&oacute;rio Completo de Faltas Lan&ccedil;adas</a>
 <br />
@@ -76,19 +82,15 @@ foreach( $chamadas as $aula ) {
     $chamada_id = $aula["id"];
     $aulas = $aula["flag"];
 	
-	if ( $st == '#F3F3F3') 
-	{
+	if ( $st == '#F3F3F3')
 		$st = '#E3E3E3';
-	} 
 	else 
-	{	
 		$st ='#F3F3F3';
-	} 
 
 	echo '<tr bgcolor="'. $st .'"> <td align="center">'. date::convert_date($data_chamada) .'</td>';
 	echo '<td align="center">'. $aulas .'</td>';
     echo '<td align="left"> '. $conteudo .'</td> ';
- // TODO: acessar via requisita.php
+    // TODO: acessar via requisita.php
 	echo '<td> <a href="'. $BASE_URL .'app/web_diario/professor/chamada/altera_faltas.php?chamada='. $chamada_id .'&flag='. $aulas .'&diario_id='. $diario_id .'">Alterar faltas</a> </td>';
     
 	echo '</tr>';
@@ -99,7 +101,7 @@ foreach( $chamadas as $aula ) {
 <br />
 <div>
 <input type="button" value="Imprimir" onClick="window.print()">
-&nbsp;&nbsp;ou&nbsp;
+&nbsp;&nbsp;&nbsp;
 <a href="#" onclick="javascript:window.close();">fechar</a>
 </div>
 

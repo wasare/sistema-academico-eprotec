@@ -44,88 +44,43 @@ $num_aulas = $aula_tipo[strlen($aula_tipo) - 1];
 
 
 if(!is_numeric($aula_tipo) || (strlen($aula_tipo) < 1 || strlen($aula_tipo) > 8 ))
-{
-   echo '<script language=javascript> window.alert("Você deverá selecionar a quantidade de aulas para esta chamada.");     javascript:window.history.back(1);</script>';
-   exit;
-	
-}
+   die('<script language="javascript" type="text/javascript"> window.alert("Você deverá selecionar a quantidade de aulas para esta chamada."); window.history.back(1);</script>');
  
-if($_POST['select_dia'] == "")
-{
-	 echo '<font size=2><b>Voc&ecirc; n&atilde;o selecionou o DIA ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>';
-  exit;
-}
+if(empty($_POST['select_dia']))
+  die('<font size=2><b>Voc&ecirc; n&atilde;o selecionou o DIA ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>');
 else
-{
   $select_dia = $_POST['select_dia'];
-}
 
-if($_POST['select_mes'] == "")
-{
-  echo '<font size=2><b>Voc&ecir;  n&atilde;o selecionou o M&Ecirc;S ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>';
-  exit;
-}
+if(empty($_POST['select_mes']))
+  die('<font size=2><b>Voc&ecir;  n&atilde;o selecionou o M&Ecirc;S ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>');
 else
-{
   $select_mes = $_POST['select_mes'];
-}
 
 
-if($_POST['select_ano'] == "")
-{
-  echo '<font size=2><b>Voc&ecirc; n&atilde;o selecionou o ANO ! <a href"javascript:history.go(-1);">Voltar</a>!</b></font>';
-  exit;
-}
+if(empty($_POST['select_ano']))
+  die('<font size=2><b>Voc&ecirc; n&atilde;o selecionou o ANO ! <a href"javascript:history.go(-1);">Voltar</a>!</b></font>');
 else
-{
   $select_ano = $_POST['select_ano'];
-}
 
-
-// VALIDAR CONTEUDO AQUI
-
-if($conteudo == '')
-{
-  echo '<script language="javascript" type="text/javascript"> window.alert("Você não informou o conteúdo da(s) aula(s)!"); javascript:window.history.back(1); </script>';
-  exit;
-}
-
-$data_consulta = $select_ano . '-' . $select_mes . '-'. $select_dia;
 $data_chamada = $select_dia . "/" . $select_mes . '/'. $select_ano;
 
-/* SELECIONA A DATA PARA VERIFICA DUPLICADOS */
-$sqld1 = "SELECT dia, flag 
-	  FROM
-      diario_seq_faltas
-      WHERE
-      dia = '". $data_consulta ."' AND
-      periodo = '" . $periodo ."' AND
-      ref_disciplina_ofer = ". $diario_id .";";
+// VALIDAR CONTEUDO AQUI
+if(empty($conteudo))
+  die('<script language="javascript" type="text/javascript"> window.alert("Você não informou o conteúdo da(s) aula(s)!");window.history.back(1); </script>');
 
-$seq_faltas = $conn->get_row($sqld1);
+// VERIFICA SE EXISTE CHAMADA NESTA DATA
+if(existe_chamada($diario_id, $data_chamada))
+	die('<script language="javascript" type="text/javascript"> window.alert("Já existe chamada realizada para esta data.");window.history.back(1); </script>');
+// ^ VERIFICA SE EXISTE CHAMADA NESTA DATA ^ //
 
-
-$dia = $seq_faltas['dia'];
-$flag = $seq_faltas['flag'];
-
-
-if((@$flag > '0') AND (@$flag <= '8'))
-{
-
-	die('<script language="javascript" type="text/javascript"> window.alert("Já existe chamada realizada para esta data.");   javascript:window.history.back(1); </script>');
+// NÃO HOUVE FALTAS PARA A CHAMADA
+if($flag_falta === 'F') {
+	require_once('registra_faltas.php');
+	exit;
 }
-else {
 
-	// NÃO HOUVE FALTAS PARA A CHAMADA
-	if($flag_falta === 'F') {
-
-		require_once('registra_faltas.php');
-		exit;
-	}
-}
 	
- // PREPARA FORMULARIO PARA LANCAMENTO DE FALTAS
-               
+// PREPARA FORMULARIO PARA LANCAMENTO DE FALTAS               
 $sql1 = "SELECT
   matricula.ordem_chamada,
   pessoas.nome,
@@ -168,10 +123,8 @@ function validate(field) {
 	
 	if (ok == "no") {
 		alert("Você não pode lançar " + field.value + " faltas para uma chamada de " + <?=$num_aulas?> + " aulas !");
-		//field.focus();
         field.focus();
-		field.value = "<?=$num_faltas?>";
-		
+		field.value = "<?=$num_faltas?>";	
    }
 }
 
@@ -217,8 +170,8 @@ function autoTab(input,len, e) {
 </head>
 <body>
 
-<div align="left" class="titulo">
-  <h3>Lan&ccedil;amento de faltas da chamada</h3>
+<div align="left" class="titulo1">
+  Lan&ccedil;amento de faltas da chamada
 </div>
 <br />
 <?=papeleta_header($diario_id)?>
@@ -227,7 +180,7 @@ function autoTab(input,len, e) {
     <input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">
     <input type="hidden" name="operacao" id="operacao" value="<?=$operacao?>">
 	<input type="hidden" name="aula_tipo" id="aula_tipo" value="<?=$aula_tipo?>">
-    <input type="hidden" name="num_faltas" id="operacao" value="<?=$num_faltas?>">
+    <input type="hidden" name="num_aulas" id="num_aulas" value="<?=$num_aulas?>">
     <input type="hidden" name="data_chamada" id="data_chamada" value="<?=$data_chamada?>">
 
   <h3>
@@ -244,7 +197,7 @@ function autoTab(input,len, e) {
     
 	<td align="center"><b>N&ordm; ordem</b></td>                                      
     <td align="center"><strong>Faltas</strong></td>
-    <td align="center"><b>&nbsp;Matr&iacute;cula</b></font></td>
+    <td align="center"><b>&nbsp;Matr&iacute;cula</b></td>
     <td><b>&nbsp;Nome do aluno</b></td>
   </tr>
   
@@ -279,7 +232,7 @@ $ordem = 1;
 
 
   <input type="submit" name="Submit" value="Salvar">
-  &nbsp;&nbsp;ou&nbsp;
+  &nbsp;&nbsp;&nbsp;
     <a href="#" onclick="javascript:window.close();">cancelar chamada</a>
   <input type="hidden" name="faltas_ok" value="<?=$_SESSION['flag_falta']?>" />
 </form>

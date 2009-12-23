@@ -1,11 +1,12 @@
 <?php
 
 require_once(dirname(__FILE__) .'/../../../setup.php');
+require_once($BASE_DIR .'core/web_diario.php');
 
 // CONEXAO ABERTA PARA TRABALHAR COM TRANSACAO (N√ÉO PERSISTENTE)
-$conexao = new connection_factory($param_conn,FALSE);
+$conn = new connection_factory($param_conn,FALSE);
 
-require_once($BASE_DIR .'core/web_diario.php');
+//die(print_r($_POST));
 
 $diario_id = (int) $_POST['diario_id'];
 $operacao = $_POST['operacao'];
@@ -22,77 +23,60 @@ if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
 if (is_finalizado($diario_id)){
 
     echo '<script language="javascript" type="text/javascript">';
-    echo 'alert("ERRO! Este di√°rio est√° finalizado e n√£o pode ser alterado!");';
+    echo 'alert("ERRO! Este di·rio est· finalizado e n„o pode ser alterado!");';
     echo 'window.close();';
     echo '</script>';
     exit;
 }
 
+$periodo = $_SESSION['web_diario_periodo_id'];
+$conteudo = $_SESSION['conteudo'];
+
+$aula_tipo = $_POST['aula_tipo'];
+
+if(!isset($_POST['num_aulas']) || empty($_POST['num_aulas']))
+  $num_aulas = $aula_tipo[strlen($aula_tipo) - 1];
+else
+  $num_aulas = $_POST['num_aulas'];
+
+$alunos_faltas = (isset($_POST['faltas'])) ? $_POST['faltas'] : '';
+
+if(!isset($_POST['data_chamada']) || empty($_POST['data_chamada'])) {
+
+  if(empty($_POST['select_dia']))
+    die('<font size=2><b>Voc&ecirc; n&atilde;o selecionou o DIA ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>');
+  else
+    $select_dia = $_POST['select_dia'];
+
+  if(empty($_POST['select_mes']))
+    die('<font size=2><b>Voc&ecir;  n&atilde;o selecionou o M&Ecirc;S ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>');
+  else
+    $select_mes = $_POST['select_mes'];
+
+  if(empty($_POST['select_ano']))
+    die('<font size=2><b>Voc&ecirc; n&atilde;o selecionou o ANO ! <a href"javascript:history.go(-1);">Voltar</a>!</b></font>');
+  else
+    $select_ano = $_POST['select_ano'];
+}
+else
+  $data_chamada = $_POST['data_chamada'];
+
+
+// VERIFICA SE NAO EXISTE CHAMADA NESTA DATA
+if(existe_chamada($diario_id, $data_chamada))
+	die('<script language="javascript" type="text/javascript"> window.alert("J· existe chamada realizada para esta data.");window.history.back(1); </script>');
+// ^ VERIFICA SE NAO EXISTE CHAMADA NESTA DATA ^ //
 
 $sem_faltas = '';
 
 // HOUVE FALTAS PARA A CHAMADA
-if(isset($_POST['faltas_ok']) && $_POST['faltas_ok'] != 'F') {
-
-	$aula_tipo = $_POST['aula_tipo'];
-	$num_aulas = $_POST['num_aulas'];
-	$data_chamada = $_POST['data_chamada'];
-}
-else {
-	$sem_faltas = '<h3><font color="blue"><b>Nenhum aluno faltou &agrave;(s) '. $num_aulas .' aula(s)  do dia '. $data_chamada .'</b></font></h4>';
-}
+$sem_faltas = (isset($_POST['flag_falta']) && $_POST['flag_falta'] == 'F') ? '<h3><font color="blue"><b>Nenhum aluno faltou &agrave;(s) '. $num_aulas .' aula(s)  do dia '. $data_chamada .'</b></font></h4>' : '';
 
 
-if(isset($_POST['faltas'])) $nomes = $_POST['faltas']; else $nomes = '';
+$curso = get_curso($diario_id);
+$disciplina = get_disciplina($diario_id);
 
-$periodo = $_SESSION['web_diario_periodo_id'];
-
-$conteudo = $_SESSION['conteudo'];
-$id = $_SESSION['id'];
-
-
-
-function set_faltas($ref_pessoa, $diario_id, $qtde_faltas, $op, $qry, $dt, $qtde="")
-{
-	global $conn;
-
-	$sqlsel = "SELECT nome FROM pessoas WHERE id = $ref_pessoa;";
-	$aluno = $conn->get_one($sqlsel);
-
-    $aluno = '<font color="red"><b>'. $aluno .' ('. $ref_pessoa .')</b></font>';
-  
-	if(falta($ref_pessoa, $diario_id, $qtde, "$op", $qry))
-	{
-		return $qtde . " Falta(s) registrada(s) para $aluno no dia $dt<br>";
-	}
-	else
-	{
-		return '<font color="orange"><b>Ocorreu um erro ao registrar falta</b></font> para '.$aluno.' no dia '.$dt.'<br />';
-	}
-}
-
-
-function showNovaChamada()
-{
-	global $BASE_URL, $diario_id, $operacao, $IEnome;
-
-     echo' <html> <head>
-          <title>'. $IEnome .'</title>
-          <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-          <link rel="stylesheet" href="'. $BASE_URL .'public/styles/web_diario.css" type="text/css">
-          </head><body>';
-  
-    echo '<br /> <br /> <strong>CHAMADA REALIZADA!</strong><br /><br /> * Verifique acima se n&atilde;o ocorreu nenhum erro no processo de incluir faltas *<br /> <br />';
-
-	echo '<br /> <br />';
-	echo '<a href="' .$BASE_URL .'app/web_diario/requisita.php?do='. $operacao .'&id=' . $diario_id .'">Fazer nova chamada</a>';
-	echo '&nbsp;&nbsp;ou&nbsp;&nbsp;<a href="#" onclick="javascript:window.close();">fechar</a>';
-    
-    echo '</body></html>';
-
-}
-
-function regLog($sql,$status="")
+function reg_log($sql,$status="")
 {
   global $conn, $sa_usuario;
   $ip = $_SERVER["REMOTE_ADDR"];
@@ -108,62 +92,42 @@ function regLog($sql,$status="")
 }
 
 
-function processaFaltas($Nomes, $f, $sql1, $sql2)
+function processa_faltas($alunos_faltas, $num_aulas, $qry_chamada, $qry_faltas)
 {
+  global $conn, $data_chamada, $sa_ref_pessoa, $periodo, $diario_id, $sem_faltas, $curso, $disciplina;
 
-  global $conn, $data_chamada, $id, $periodo, $curso , $disciplina, $diario_id, $sem_faltas;
-/*
-  $res = consulta_sql($sql1);
-
-  if(is_string($res))
-  {
-        echo $res;
-        exit;
-  }
-*/
-  $resposta = '<div align="center"><font color="#990000" size="4" face="Verdana, Arial, Helvetica, sans-serif"><strong>Lan&ccedil;amento de Chamada/Faltas</strong></font></div> <br />';
-
-  $resposta .=  papeleta_header($diario_id);
+  // registra a chamada no banco de dados
+  $conn->Execute($qry_chamada);
 
   $resposta .= $sem_faltas;
+	
+  if(is_array($alunos_faltas)  && count($alunos_faltas) > 0) {
 
+    reset($alunos_faltas);
 	
-  if($Nomes != '')
-  {
-    
-    reset($Nomes);
-	
-    echo '<br /><br /><br />';
-	
-    while($array_cell = each($Nomes))
-    {
-	
+    foreach($alunos_faltas as $reg_aluno => $num_faltas) {
+
 	  $sqlFaltas = 'BEGIN;';
-	  
-      $reg_aluno = $array_cell['key'];
-	  $num_faltas = $array_cell['value'];
      
-	  if($num_faltas > 0 && $num_faltas <= $f) 
-	  {
-		for ($i = 1; $i <= $num_faltas; $i++)
-		{
-			$sqlFaltas .= $sql2;
-	        $sqlFaltas .= " ('$reg_aluno','$data_chamada','$id','$periodo','$curso','$disciplina','$i','N',$diario_id);";
+	  if($num_faltas > 0 && $num_faltas <= $num_aulas) {
+		for ($i = 1; $i <= $num_faltas; $i++) {
+			$sqlFaltas .= $qry_faltas;
+	        $sqlFaltas .= " ('$reg_aluno','$data_chamada','$sa_ref_pessoa','$periodo','$curso','$disciplina','$i','N',$diario_id);";
 		}
-      
-		$resposta .= set_faltas($periodo, $reg_aluno, $disciplina, $diario_id, $num_faltas, 'SOMA', $sqlFaltas, $data_chamada,"<strong>$num_faltas</strong>");
 
+        $aluno = $conn->get_one("SELECT nome FROM pessoas WHERE id = $reg_aluno;");
+        $aluno = '<font color="red"><b>'. $aluno .' ('. $reg_aluno .')</b></font>';
+
+        if(falta($reg_aluno, $diario_id, $num_faltas, "SOMA", $sqlFaltas) === TRUE)
+            $resposta .= '<strong>'. $num_faltas . '</strong> Falta(s) registrada(s) para '. $aluno .' no dia '. $data_chamada .'<br />';        
 	  }
-
     }
   }
-
   echo $resposta;
 }
 
 
 $datadehoje = date ("d/m/Y");
-
 
 $qrySeqChamada = 'BEGIN; INSERT INTO diario_seq_faltas (id_prof, periodo, curso, disciplina, dia, conteudo, flag, ref_disciplina_ofer) VALUES ';
 $qryFaltas = 'INSERT INTO diario_chamadas (ra_cnec, data_chamada, ref_professor, ref_periodo, ref_curso, ref_disciplina, aula, abono, ref_disciplina_ofer) VALUES ';
@@ -171,14 +135,37 @@ $qryLog = 'BEGIN; INSERT INTO diario_log (usuario, data, hora, ip_acesso, pagina
 $status = 'FALTA REGISTRADA ';
 
 
-$qryChamada = $qrySeqChamada." ('$id','$periodo','$curso','$disciplina','$data_chamada','$conteudo', '$num_aulas', $diario_id);COMMIT;";
-
-processaFaltas($nomes,$num_aulas,$qryChamada,$qryFaltas);
+$qryChamada = $qrySeqChamada." ('$sa_ref_pessoa','$periodo','$curso','$disciplina','$data_chamada','$conteudo', '$num_aulas', $diario_id);COMMIT;";
 
 $st = $status . $aula_tipo;
-regLog($qryLog,$st);
-
-showNovaChamada();
-
 
 ?>
+
+<html>
+  <head>
+  <title><?=$IEnome?></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
+</head>
+<body>
+<br />
+<div align="left" class="titulo1">
+  Lan&ccedil;amento de Chamada / Faltas
+</div>
+  
+<br /><br />
+
+<?=papeleta_header($diario_id)?>
+<br />
+<?=processa_faltas($alunos_faltas,$num_aulas,$qryChamada,$qryFaltas)?>
+
+<?=reg_log($qryLog,$st)?>
+
+<br />
+<strong>CHAMADA REALIZADA!</strong><br /><br /> * Verifique acima se n&atilde;o ocorreu nenhum erro no processo de incluir faltas *<br /> <br />
+
+<a href="<?=$BASE_URL .'app/web_diario/requisita.php?do='. $operacao .'&id=' . $diario_id?>">Fazer nova chamada</a>
+&nbsp;&nbsp;ou&nbsp;&nbsp;<a href="#" onclick="javascript:window.close();">fechar</a>
+<br /><br />
+</body>
+</html>

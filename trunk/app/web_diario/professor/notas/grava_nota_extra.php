@@ -168,7 +168,6 @@ $conexao->Execute($sql_update);
 
 echo $msg_registros;
 
-
 // GRAVA LOG                  
 $ip = $_SERVER["REMOTE_ADDR"];
 $pagina = $_SERVER["PHP_SELF"];
