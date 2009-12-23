@@ -123,4 +123,11 @@ a:hover, a:active{ color: #c61a1a; text-decoration: underline;}
    font-style: italic;
 }
 
+.titulo1 {
+  font-family: "Verdana, Arial, Helvetica, sans-serif";
+  font-size: 1.25em;
+  font-weight: bold;
+  color: #990000;
+}
+
 

@@ -5,20 +5,33 @@ require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'core/date.php');
 require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
 
+$conn = new connection_factory($param_conn);
 
 $flag = $_GET['flag'];
-$diario_id = $_GET['diario_id'];
 $data_chamada = $_GET['data_chamada'];
 
-$conn = new connection_factory($param_conn);
+$diario_id = (int) $_GET['diario_id'];
+
+if(!is_numeric($diario_id))
+    exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');
+
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
+  if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+  }
+  // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
+}
 
 if(!is_numeric($flag) || !is_numeric($diario_id) AND !isset($_POST['ok']))
 {
-    echo '<script language="javascript">
+    exit('<script language="javascript">
                 window.alert("ERRO! Conteudo de aula invalido!");
                 window.close();
-    </script>';
-    exit;
+    </script>');
 }
 
 
@@ -72,20 +85,22 @@ else
 </head>
 <body>
 
-<form name="conteudo_aula" id="conteudo_aula" method="post" action="altera_conteudo_aula.php">
-
+<br />
+<div align="left" class="titulo1">
+        Altera&ccedil;&atilde;o de conte&uacute;do de aula
+</div>
+<br />
 <?=papeleta_header($diario_id)?>
+<br />
+
+<form name="conteudo_aula" id="conteudo_aula" method="post" action="altera_conteudo_aula.php">
 <table cellspacing="0" cellpadding="0" class="papeleta">
 
 <input type="hidden" name="flag" value="<?=$flag?>" />
 <input type="hidden" name="ok" value="OK1" />
 
 <input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">
-	 
 
-  <tr>
-    <td colspan="3"><div align="center"><font color="blue" size="4" face="Verdana, Arial, Helvetica, sans-serif"><strong>Altera&ccedil;&atilde;o de conte&uacute;do de aula</strong></font></div></td>
-  </tr>
   <tr>
     <td colspan="3"><strong>Data chamada: <?=$data_chamada?></strong></td>
   </tr>
@@ -102,7 +117,7 @@ else
         <div align="center">
           <input type="submit" name="atualizar" id="atualizar" value="Atualizar">
 		  &nbsp;&nbsp;&nbsp;
-		  <input type="button" name="voltar" id="voltar" value="Voltar" onclick="javascript:history.back();" />
+          <a href="#" onclick="javascript:history.back();">Cancelar</a>
         </div>
       </td>
     <td>&nbsp;</td>

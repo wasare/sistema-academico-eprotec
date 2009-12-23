@@ -117,7 +117,7 @@ function finaliza_todos(curso,periodo)
 <script type="text/javascript" src="<?=$BASE_URL .'lib/wz_tooltip.js'?>"> </script>
 
 <center>
-<div align="left"><br>
+<div align="left"><br />
 <?php
    print(' <table cellpadding="0" cellspacing="0" class="papeleta">
   <tr>
@@ -268,6 +268,8 @@ echo '</table> <br />';
 &nbsp;&nbsp;
 <a href="#" onclick="javascript:window.close();">Fechar</a>
 </form>
+</center>
+</div>
 </body>
 </head>
 </html>

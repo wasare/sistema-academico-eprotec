@@ -7,20 +7,20 @@ require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
 
 $conn = new connection_factory($param_conn);
 
-$diario_id = $_GET['diario_id'];
-
-/*
-TODO: verifica o direito de acesso do usuário ao diárioi, no caso de professor ou coordenador informado
-*/
-
+$diario_id = (int) $_GET['diario_id'];
 
 if(!is_numeric($diario_id))
-{
-    echo '<script language="javascript">
-                window.alert("ERRO! Diario invalido!");
-                window.close();
-    </script>';
-    exit;
+    exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');
+
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
+  if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+  }
+  // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 }
 
 //  INICIALIZA O DIARIO CASO NECESSARIO
@@ -59,7 +59,7 @@ $qryNotas = 'SELECT
         ORDER BY
                 id_ref_pessoas;';
 
-$qry = $conn->adodb->getAll($qryNotas);
+$qry = $conn->get_all($qryNotas);
 
 foreach($qry as $registro)
 {
@@ -84,7 +84,7 @@ $sql3 = 'SELECT
 			lower(to_ascii(nome)), ref_diario_avaliacao;';
 
 
-$matriculas = $conn->adodb->getAll($sql3);
+$matriculas = $conn->get_all($sql3);
 
 if($matriculas === FALSE)
 {
@@ -105,7 +105,7 @@ $sql5 = " SELECT fl_digitada, fl_concluida
             WHERE
                id = $diario_id;";
 
-$qry5 = $conn->adodb->getRow($sql5);
+$qry5 = $conn->get_row($sql5);
 
 $fl_digitada = $qry5['fl_digitada'];
 $fl_concluida = $qry5['fl_concluida'];
@@ -126,7 +126,7 @@ $sql_dispensas = "SELECT COUNT(*)
                     a.ref_pessoa = b.id AND
                     a.ref_motivo_matricula IN (2,3,4) ;" ;
 
-$dispensas = $conn->adodb->getOne($sql_dispensas);
+$dispensas = $conn->get_one($sql_dispensas);
 
 if ($dispensas > 0 ) {
     if($dispensas == 1)
@@ -221,7 +221,7 @@ if( $fl_digitada == 'f') {
 
 $sql_carga_horaria = "SELECT get_carga_horaria_realizada($diario_id), get_carga_horaria(get_disciplina_de_disciplina_of($diario_id));";
 
-$carga_horaria = $conn->adodb->getRow($sql_carga_horaria);
+$carga_horaria = $conn->get_row($sql_carga_horaria);
 
 $ch_prevista = $carga_horaria['get_carga_horaria'];
 $ch_realizada = $carga_horaria['get_carga_horaria_realizada'];
@@ -253,7 +253,7 @@ foreach($matriculas as $row3)
 		
 		if($row3['nota_final'] != 0)
 		{    
-			$nota = number_format($row3['nota_final'],'1',',','.');
+			$nota = number::numeric2decimal_br($row3['nota_final'],1);
 		}
 		else 
 		{ 
@@ -290,7 +290,7 @@ foreach($matriculas as $row3)
    
     if($N > 0) 
 	{ 
-		$N = number_format($N,'1',',','.');
+		$N = number::numeric2decimal_br($N,1);
     }
     //somatorio nota web diario
     $total_nota_webdiario += $N;
@@ -401,7 +401,7 @@ foreach($matriculas as $row3)
         $motivo_matricula = $row3['ref_motivo_matricula'];
 
 		if($row3['nota_final'] != 0) {
-			$nota = number_format($row3['nota_final'],'1',',','.');
+			$nota = number::numeric2decimal_br($row3['nota_final'],1);
 		}
 		else {
 			$nota = $row3['nota_final'];

@@ -63,8 +63,11 @@ foreach($notas as $n) {
 <body>
 <table width="90%" height="73" border="0">
   <tr>
-    <td width="471"><div align="left"><font color="#990000" size="4" face="Verdana, Arial, Helvet
-ica, sans-serif"><strong>Lan&ccedil;amento / Altera&ccedil;&atilde;o da <?php if($prova == 7) { echo '<font color="blue"> Nota Extra</font>.'; } else { echo 'Nota <font color="blue"> P'.$prova.'</font>.';} ?></strong></font></div>
+    <td width="471">
+      <div align="left" class="titulo1">
+        Lan&ccedil;amento / Altera&ccedil;&atilde;o da
+        <?php if($prova == 7) { echo '<font color="blue"> Nota Extra</font>.'; } else { echo 'Nota <font color="blue"> P'.$prova.'</font>.';} ?>
+      </div>
 </td>
   </tr>
 </table>

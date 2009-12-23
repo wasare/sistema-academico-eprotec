@@ -12,9 +12,6 @@ print_r($_SESSION);
 
 if(isset($_POST['faltas_ok']) && $_POST['faltas_ok'] == 'F') {
 
-
-    //print_r($_POST);
-
 	$disciplina = $_POST['disciplina'];
 	$getofer = $_POST['oferecida'];
 	$num_aulas = $_POST['num_aulas'];

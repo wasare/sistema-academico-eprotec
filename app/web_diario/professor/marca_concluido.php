@@ -5,8 +5,21 @@ require_once($BASE_DIR .'core/web_diario.php');
 
 $conn = new connection_factory($param_conn);
 
-$diario_id = (int) $_GET['id'];
+$diario_id = (int) $_GET['diario_id'];
 $operacao = $_GET['do'];
+
+if(!is_numeric($diario_id))
+    exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');
+
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
+  if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+  }
+  // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
+}
 
 // INVERTE A MARCACAO DE ESTADO DO DIARIO
 $sql1 = "SELECT

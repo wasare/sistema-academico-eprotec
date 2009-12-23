@@ -8,20 +8,20 @@ require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
 
 $conn = new connection_factory($param_conn);
 
-$diario_id = $_GET['diario_id'];
-
-/*
-TODO: verifica o direito de acesso do usuÃ¡rio ao diÃ¡rioi, no caso de professor ou coordenador informado
-*/
-
+$diario_id = (int) $_GET['diario_id'];
 
 if(!is_numeric($diario_id))
-{
-    echo '<script language="javascript">
-                window.alert("ERRO! Diario invalido!");
-                window.close();
-    </script>';
-    exit;
+    exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');
+
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
+  if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+  }
+  // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 }
 
 
@@ -61,20 +61,20 @@ else {
 <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
 
 <body>
-<table cellspacing="0" cellpadding="0" border="0">
-  <tr> 
-    <td><div align="center"><font color="#990000" size="4" face="Verdana, Arial, Helvetica, sans-serif"><strong>Conte&uacute;do de Aula</strong></font></div></td>
-  </tr>
-  <tr> 
-  <td>
+
+<div align="left" class="titulo1">
+   Conte&uacute;do de Aula
+</div>
+<br /><br />
 <?=papeleta_header($diario_id)?>
-   <br />
-  </td>
-  </tr>
-  <tr>
-    <td><div align="left"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>*Para alterar o conte&uacute;do de aula clique na data da chamada!</strong></font></div></td>
-  </tr>
-</table>
+
+<br />
+
+<div align="left">
+  <font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">
+    <strong>*Para alterar o conte&uacute;do de aula clique na data da chamada!</strong>
+  </font>
+</div>
 
 
 

@@ -248,13 +248,11 @@ reload_parent_pane = function(pane) {
 <div class="tabbed-pane" align="center">
     <ol class="guias">
 		<?php
-			if($is_professor === TRUE) {
+			if($is_professor === TRUE)
 				echo '<li><a href="#" '. $class_diarios .' id="pane_diarios">Meus di&aacute;rios</a></li>';
-			}
 
-            if($is_coordenador === TRUE) {
+            if($is_coordenador === TRUE)
                 echo '<li><a href="#" '. $class_coordenacao .' id="pane_coordenacao">Coordena&ccedil;&atilde;o</a></li>';
-			}			
         ?>
         
 		<li><a href="#" id="pane_ferramentas">Ferramentas</a></li>
@@ -280,12 +278,11 @@ reload_parent_pane = function(pane) {
 var thePane = new TabbedPane('web_guias',
     {
         <?php
-			if($is_professor === TRUE) {
+			if($is_professor === TRUE)
                 echo "'pane_diarios': 'professor/diarios_professor.php',";
-            }
-            if($is_coordenador === TRUE) {
+
+            if($is_coordenador === TRUE)
                 echo "'pane_coordenacao': 'coordenacao/cursos_coordenacao.php',";
-			}
         ?>
         'pane_ferramentas': 'ferramentas.php',
     },

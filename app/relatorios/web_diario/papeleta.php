@@ -2,25 +2,24 @@
 
 require_once(dirname(__FILE__). '/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
+require_once($BASE_DIR .'core/number.php');
 
 $conn = new connection_factory($param_conn);
 
-$diario_id = $_GET['diario_id'];
-
-
-/*
-TODO: verifica o direito de acesso do usuÃ¡rio ao diÃ¡rioi, no caso de professor ou coordenador informado
-*/
-
+$diario_id = (int) $_GET['diario_id'];
 
 if(!is_numeric($diario_id))
-{
+    exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');
 
-	echo '<script language="javascript">
-                window.alert("ERRO! Diario invalido!");
-                window.close();
-    </script>';
-    exit; 
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
+  if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+  }
+  // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 }
 
 
@@ -37,7 +36,7 @@ $sql3 = "SELECT
          ORDER BY lower(to_ascii(nome));" ;
 
 
-$qry3 = $conn->adodb->getAll($sql3);
+$qry3 = $conn->get_all($sql3);
 
 $matriculas = count($qry3);
 
@@ -47,7 +46,7 @@ $sql5 = " SELECT fl_digitada, fl_concluida
             WHERE
                id = $diario_id;";
 		   
-$qry5 = $conn->adodb->getRow($sql5);
+$qry5 = $conn->get_row($sql5);
 
 $fl_digitada = $qry5['fl_digitada'];
 $fl_concluida = $qry5['fl_concluida'];
@@ -67,7 +66,7 @@ $sql_dispensas = "SELECT COUNT(*)
             		a.ref_pessoa = b.id AND 
             		a.ref_motivo_matricula IN (2,3,4) ;" ;
 
-$dispensas = $conn->adodb->getOne($sql_dispensas);
+$dispensas = $conn->get_one($sql_dispensas);
 
 if ($dispensas > 0 ) {
 	if($dispensas == 1)
@@ -186,7 +185,7 @@ foreach($qry3 as $row3)
    if($falta > $FaltaMax) $falta = "<font color=\"red\"><b>$falta</b></font>";
    
     if($row3['nota_final'] != 0) { 
-		$nota = number_format($row3['nota_final'],'1',',','.');
+		$nota = number::numeric2decimal_br($row3['nota_final'],1);
 	}
 	else { 
 		$nota = $row3['nota_final'];
