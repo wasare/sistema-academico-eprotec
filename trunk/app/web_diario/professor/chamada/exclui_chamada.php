@@ -29,49 +29,63 @@ if (is_finalizado($diario_id)){
     exit;
 }
 
-if(isset($_POST['exclui_ok']) && $_POST['exclui_ok'] === 'exclui_chamada') {
+// TODO: registrar no log a operação de exclusão de chamada
+if(isset($_POST['exclui_ok']) && $_POST['exclui_ok'] === 'exclui_chamada') {    
+	
+    $sql_exclui_chamada = 'BEGIN;';
 
-	// EXCLUI TODAS AS FALTAS ANTERIORES PARA A CHAMADA
+    // EXCLUI TODAS AS FALTAS DA CHAMADA
+    $sql_exclui_chamada .= "DELETE FROM diario_chamadas
+                                      WHERE
+                                          (ref_disciplina_ofer = ". $_POST['diario_id'] ." ) AND
+                                          (data_chamada = '". $_POST['select_data_chamada'] ."');";
 
-    // TODO: registrar no log a operação de exclusão de chamada
+    // EXCLUI A CHAMADA
+    $sql_exclui_chamada .= "DELETE
+         FROM
+            diario_seq_faltas
+         WHERE
+            ref_disciplina_ofer = ". $_POST['diario_id'] ." AND
+            dia = '". $_POST['select_data_chamada'] ."';";
 
-	$sql_faltas = " SELECT id, ra_cnec
+    // ATUALIZA O TOTAL DE FALTAS (tabela matricula)
+    $sql_ausentes_chamada = " SELECT DISTINCT(ra_cnec)
                      FROM
                         diario_chamadas a
                     WHERE
                         a.ref_disciplina_ofer = ". $_POST['diario_id'] ." AND
                         a.data_chamada = '". $_POST['select_data_chamada'] ."';";
 
-	$faltas = $conn->get_all($sql_faltas);
 
-	if(count($faltas) > 0) {
+    $ausentes_chamada  = $conn->get_all($sql_ausentes_chamada);
 
-    	foreach( $faltas as $f )
-    	{
-        	$valor = $f['id'];
-        	$ref_pessoa = $f['ra_cnec'];
+    if(count($ausentes_chamada) > 0) {
 
-        	// DELETA A FALTA DO DIARIO
-        	$sql1 = " BEGIN; DELETE FROM diario_chamadas WHERE id = $valor;";
+        foreach($ausentes_chamada as $aluno_ausente) {
 
-        	falta($ref_pessoa, $_POST['diario_id'], 1, 'SUB', $sql1);
-   		}
-	}
+        $sql_faltas_update = "SELECT
+                    count(ra_cnec) AS num_faltas
+                FROM
+                    diario_chamadas a
+                WHERE
+                    (a.ref_disciplina_ofer = ". $_POST['diario_id'] .") AND
+                    (ra_cnec = '". $aluno_ausente['ra_cnec'] ."')";
 
+        $sql_exclui_chamada .=  "UPDATE
+                  matricula
+               SET
+                  num_faltas = ( $sql_faltas_update )
+               WHERE
+                  ref_pessoa = ". $aluno_ausente['ra_cnec'] ." AND
+                  ref_disciplina_ofer = ". $_POST['diario_id'] .";";
+        }
+    }
 
-	$sql1 = "DELETE 
-         FROM 
-            diario_seq_faltas 
-         WHERE  
-            ref_disciplina_ofer = ". $_POST['diario_id'] ." AND   
-            dia = '". $_POST['select_data_chamada'] ."';";
+    $sql_exclui_chamada .= 'COMMIT;';
 
-	$conn->Execute($sql1);
+    $conn->Execute($sql_exclui_chamada);
 
-
-	echo '<script language="javascript" type="text/javascript">  window.alert(\'Foram excluídos com sucesso \n os registros referente ao dia ' . $_POST['select_data_chamada'] . '\'); javascript:window.history.back(1); </script>';
-	exit;
-
+	exit('<script language="javascript" type="text/javascript">  window.alert(\'Foram excluídos com sucesso \n os registros referente ao dia ' . $_POST['select_data_chamada'] . '\'); javascript:window.history.back(1); </script>');
 }
 
 ?>
@@ -108,7 +122,7 @@ function jsConfirm(dia)
   Exclus&atilde;o de Chamada
 </div>
 
-<p style="font-size:0.9em; font-face:Verdana, Arial, Helvetica, sans-serif; font-weight:bold; color:red;"> 
+<p style="font-size:0.9em; font-family: Verdana, Arial, Helvetica, sans-serif; font-weight:bold; color:red;">
         Este processo exclui a chamada do dia selecionado! <br /> O professor dever&aacute; refazer a chamada posteriormente, caso seja necess&aacute;rio.</p>
 <br />
 <?=papeleta_header($diario_id)?>

@@ -306,41 +306,54 @@ function ini_diario($ofer) {
 	return $ret;
 }
 
-// function adiciona/exclui falta
-//falta($ref_aluno, $diario_id, $qtde_faltas, "SOMA", $consulta_sql)
-function falta($ref_aluno, $diario_id, $num_faltas, $operacao, $consulta_sql='BEGIN;')
+// function registra as faltas da chamada e alterações destas faltas
+function registra_faltas($ref_aluno, $diario_id, $num_faltas, $data_chamada, $professor,$altera=FALSE)
 {
 	global $conn;
 
-	$sql = "SELECT
+    $sql_falta = 'BEGIN;';
+    
+    $consulta_faltas = 'INSERT INTO
+                              diario_chamadas (ra_cnec, data_chamada,
+                                               ref_professor, ref_periodo,
+                                               ref_curso, ref_disciplina, aula,
+                                               abono, ref_disciplina_ofer) VALUES ';
+    $sql_faltas_update = "SELECT
                     count(ra_cnec) AS num_faltas
                 FROM
                     diario_chamadas a
                 WHERE
                     (a.ref_disciplina_ofer = $diario_id) AND
-                    (ra_cnec = '$ref_aluno');";
+                    (ra_cnec = '$ref_aluno')";
 
+    if($altera == TRUE) {
+      // EXCLUI TODAS AS FALTAS ANTERIORES PARA A CHAMADA
+      $sql_falta .= "DELETE FROM diario_chamadas
+                                      WHERE
+                                          (ref_disciplina_ofer = $diario_id) AND
+                                          (data_chamada = '$data_chamada') AND
+                                          (ra_cnec = '$ref_aluno');";
+      // ^ EXCLUI TODAS AS FALTAS ANTERIORES PARA A CHAMADA ^ //
+    }
 
-   $total_faltas = $conn->get_one($sql);
+    // INCLUI AS FALTAS NA CHAMADA (tabela diario_chamadas)
+    for ($i = 1; $i <= abs($num_faltas); $i++) {
+      $sql_falta .= $consulta_faltas." ('$ref_aluno','$data_chamada','$professor',";
+      $sql_falta .= " periodo_disciplina_ofer($diario_id), curso_disciplina_ofer($diario_id),";
+      $sql_falta .= " get_disciplina_de_disciplina_of($diario_id),'$i','N',$diario_id);";
+    }	
 
-
-   if($operacao == "SOMA")
-      $total_faltas = $total_faltas + $num_faltas;
-
-   if($operacao == "SUB")
-      $total_faltas = $total_faltas - $num_faltas;
-
-   $sql_falta = $consulta_sql . "UPDATE
+    // ATUALIZA O TOTAL DE FALTA (tabela matricula)
+    $sql_falta .=  "UPDATE
                   matricula
                SET
-                  num_faltas = $total_faltas
+                  num_faltas = ( $sql_faltas_update )
                WHERE
                   ref_pessoa = $ref_aluno AND
                   ref_disciplina_ofer = $diario_id;";
 
 	$sql_falta .= 'COMMIT;';
 
-   //die($sql_falta);
   $conn->Execute($sql_falta);
 
   return TRUE;
@@ -392,5 +405,20 @@ function existe_chamada($diario_id,$data_chamada) {
 	else
 		return FALSE;
 }
+
+// GRAVA LOG NO BANCO DE DADOS
+function reg_log($pagina,$status) {
+
+  global $conn, $sa_usuario,$sa_senha;
+
+  $ip = $_SERVER["REMOTE_ADDR"];
+  $sql_store = htmlspecialchars("$sa_usuario");
+  $sql_log = 'BEGIN; INSERT INTO diario_log (usuario, data, hora, ip_acesso, pagina_acesso, status, senha_acesso) VALUES ';
+  $sql_log .= '(\''.$sql_store.'\',\''. date("Y-m-d") .'\',\''. date("H:i:s") .'\','."'$ip','$pagina','$status','$sa_senha')";
+
+  $conn->Execute($sql_log);
+
+}
+
 
 ?>

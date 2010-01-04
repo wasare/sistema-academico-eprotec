@@ -3,8 +3,6 @@
 require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'core/date.php');
-require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
-
 
 $conn = new connection_factory($param_conn);
 
@@ -38,19 +36,8 @@ $sql1 ="SELECT id,
 
 $conteudos = $conn->get_all($sql1);
 
-if($conteudos === FALSE)
-{
-    envia_erro($sql1);
-    exit;
-}
-else {
-    if(count($conteudos) == 0) {
-
-        echo '<script language="javascript">window.alert("Nenhuma conteudo registrado para este diario!"); javascript:window.close(); </script>';
-      exit;
-    }
-
-}
+if(count($conteudos) == 0) 
+  exit('<script language="javascript" type="text/javascript">window.alert("Nenhuma conteudo registrado para este diario!");window.close(); </script>');
 
 
 ?>
@@ -90,28 +77,26 @@ else {
 
 $st = '';
 	
-foreach($conteudos as $linha1) 
-{
-	// $result2 = br_date($linha1["dia"]);
+foreach($conteudos as $linha1) :
+  
 	$data_chamada = $linha1["dia"];
 	$conteudo = $linha1["conteudo"];
 	$chamada_id = $linha1["id"];
 	$aulas = $linha1["flag"];
-	if ( $st == '#F3F3F3') 
-	{
-		$st = '#E3E3E3';
-	} 
-	else 
-	{	
-		$st ='#F3F3F3';
-	} 
 
-	print ('<tr bgcolor="'.$st.'">
-                <td align="center"><a href="'. $BASE_URL .'app/web_diario/professor/altera_conteudo_aula.php?flag='. $chamada_id .'&diario_id='. $diario_id .'&data_chamada='. date::convert_date($data_chamada) .'" title="clique para alterar" alt="clique para alterar">'. date::convert_date($data_chamada) .'</a></td>
-				<td align="center">'.$aulas.'</td> 
-				<td>'.$conteudo.'</td>
-			</tr>');
-	}
+	if ( $st == '#F3F3F3') $st = '#E3E3E3'; else  $st ='#F3F3F3'; 
+?>
+
+  <tr bgcolor="<?=$st?>">
+    <td align="center">
+      <a href="<?=$BASE_URL?>app/web_diario/professor/altera_conteudo_aula.php?flag=<?=$chamada_id?>&diario_id=<?=$diario_id?>&data_chamada=<?=date::convert_date($data_chamada)?>" title="clique para alterar" alt="clique para alterar"><?=date::convert_date($data_chamada)?></a>
+    </td>
+    <td align="center"><?=$aulas?></td>
+	<td><?=$conteudo?></td>
+  </tr>
+
+<?php
+   endforeach;
 ?>
 
 </table>
