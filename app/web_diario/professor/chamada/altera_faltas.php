@@ -6,12 +6,9 @@ require_once($BASE_DIR .'core/date.php');
 
 $conn = new connection_factory($param_conn);
 
-// altera_faltas.php?chamada=521005&flag=2
 $diario_id = (int) $_GET['diario_id'];
 $chamada_id = (int) $_GET['chamada'];
-$num_aulas = $num_faltas = $flag = (int) $_GET['flag'];
-
-$operacao = $_POST['operacao'];
+$num_aulas = $flag = (int) $_GET['flag'];
 
 //  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
 if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
@@ -31,20 +28,19 @@ if (is_finalizado($diario_id)){
     exit;
 }
 
-$aulatipo = '';
-for($i = 1; $i <= $num_aulas; $i++) { $aulatipo .= "$i"; }
+$aul_atipo = '';
+for($i = 1; $i <= $num_aulas; $i++) { $aula_tipo .= "$i"; }
 
 $flag = $num_aulas;
-
+/*
 $data_bd = $selectdia . '/' . $selectmes . '/'.$selectano;
 $data_cons = $selectdia . '/' . $selectmes . '/'.$selectano;
 $data_ok = $selectdia . "/" . $selectmes . '/'.$selectano;
 $data_chamada =  $selectdia . "/" . $selectmes . '/'.$selectano;
 $datadehoje = date ("d/m/Y");
-
+*/
 
 if($flag_falta === 'F') {
-
 	require_once($BASE_DIR .'app/web_diario/professor/chamada/registra_faltas.php');
 	exit;
 }
@@ -95,10 +91,10 @@ $alunos = $conn->get_all($sql1);
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
 
-<script language="JavaScript" type="text/JavaScript">
+<script language="javascript" type="text/javascript">
 <!--
 function validate(field) {
-	var valid = "0" + "<?=$aulatipo?>"
+	var valid = "0" + "<?=$aula_tipo?>"
 	var ok = "yes";
 
 	var temp;
@@ -110,8 +106,8 @@ function validate(field) {
 	if (ok == "no") {
 		alert("Você não pode lançar " + field.value + " faltas para uma chamada de " + <?=$num_aulas?> + " aulas !");
 		//field.focus();
-		//field.value = nota;
-		field.select();
+		field.value = "";
+		field.focus();
    }
 }
 
@@ -147,58 +143,51 @@ function autoTab(input,len, e) {
         return true;
 
         /* Usando no formulario
-
-
         <input onKeyUp="return autoTab(this, 3, event);" size="4" maxlength="3">
-
-
         */
-
 }
 
 //-->
 </script>
 
-<script src="../js/event-listener.js" type="text/javascript"></script>
-<script src="../js/enter-as-tab.js" type="text/javascript"></script>
-
 </head>
-<body>
 
-<div align="left" class="titulo">
-  <h3>Lan&ccedil;amento de Faltas - Altera&ccedil;&atilde;o</h3>
+<body>
+<br />
+<div align="left" class="titulo1">
+  Lan&ccedil;amento de Faltas - Altera&ccedil;&atilde;o
 </div>
 <br />
 <?=papeleta_header($diario_id)?>
 <br />
-<br />
 
-<form name="altera_faltas" id="altera_faltas" method="post" action="registra_alt_faltas.php"
+<form name="altera_faltas" id="altera_faltas" method="post" action="<?=$BASE_URL .'app/web_diario/professor/chamada/registra_alteracao_faltas.php'?>">
 	<input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">
-    <!--<input type="hidden" name="operacao" id="operacao" value="<\?=$operacao?>">-->
 	<input type="hidden" name="num_aulas" id="num_aulas" value="<?=$num_aulas?>">
-	<input type="hidden" name="aulatipo" id="aulatipo" value="<?=$aulatipo?>">
+	<input type="hidden" name="aula_tipo" id="aula_tipo" value="<?=$aula_tipo?>">
     <input type="hidden" name="data_chamada" id="data_chamada" value="<?=$data_chamada?>">
 
-  <h3>Data da Chamada:<font color="blue"><?=$data_chamada?></font>
-  <br />Quantidade de Aulas: <font color="brown"><?=$num_aulas?></font>
+  <h3>
+    Data da Chamada:&nbsp;<font color="blue"><?=date::convert_date($data_chamada)?></font>
+    <br />Quantidade de Aulas:&nbsp;<font color="brown"><?=$num_aulas?></font>
   </h3>
 
 <div align="justify">
 <font color="#0000CC" size="1,5" face="Verdana, Arial, Helvetica, sans-serif">Informe ou altere a quantidade de faltas para cada aluno:</font>
 </div>
 <br />
-<table width="92%" border="0">
+<table cellspacing="0" cellpadding="0" class="papeleta">
   <tr bgcolor="#666666">
-                                          
-    <td width="6%" align="center"><font color="#FFFFFF"><strong>Faltas</strong></font></td>
-    <td width="6%" align="center"><font color="#FFFFFF"><b>&nbsp;Registro</b></font></td>
-    <td width="88%"><font color="#FFFFFF"><b>&nbsp;Nome</b></font></td>
+    <td align="center"><font color="#FFFFFF"><strong>N&ordm; ordem</strong></font></td>
+    <td align="center"><font color="#FFFFFF"><strong>Faltas</strong></font></td>
+    <td align="center"><font color="#FFFFFF"><b>&nbsp;Matr&iacute;cula</b></font></td>
+    <td><font color="#FFFFFF"><b>&nbsp;Nome do aluno</b></font></td>
   </tr>
   
 <?php 
 
 $st = '';
+$ordem = 1;
 	
 foreach($alunos as $aluno) :
 	$aluno_id = $aluno['ra_cnec'];
@@ -206,20 +195,23 @@ foreach($alunos as $aluno) :
 
 	$faltas = '';
 
-	@reset($faltas_chamadas);
+	if(is_array($faltas_chamada) && count($faltas_chamada) > 0) {
+      
+        reset($faltas_chamada);
 
-	while(list($key, $value) = @each($faltas_chamadas)) {
+        foreach($faltas_chamada as $aluno_chamada) {
+          if($aluno_chamada['ra_cnec'] == $aluno_id) {
+            $faltas = $aluno_chamada['faltas'];
+            break;
+          }
+        }
+      }
 
-       if($value['ra_cnec'] == $aluno_id) {          
-          $faltas = $value['faltas'];
-          break;
-	   } 
-	} 
-
-   if($st == '#F3F3F3') $st = '#E3E3E3'; else $st ='#F3F3F3';
+      if($st == '#F3F3F3') $st = '#E3E3E3'; else $st ='#F3F3F3';
 ?>
 
   <tr bgcolor="<?=$st?>">
+    <td align="center"><?=$ordem?></td>
     <td align="center">
       <input type="text" name="faltas[<?=$aluno_id?>]" value="<?=$faltas?>" maxlength="1" size="1" onblur="validate(this);" onkeyup="return autoTab(this, 1, event);"/>
     </td>
@@ -227,26 +219,26 @@ foreach($alunos as $aluno) :
     <td><?=$nome_aluno?></td>
   </tr>
 <?php
+
+    $ordem++;
   endforeach;
 ?>
 </table>
-<br />
+<br /><br />
 
-  <input type="submit" name="Submit" value="Salvar Faltas -->" />
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <input type="button" name="cancelar" value="Voltar" onclick="javascript:window.history.back(1);" />
+  <input type="submit" name="Submit" value="Salvar faltas" />
+  &nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="javascript:window.history.back(1);">Voltar</a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="javascript:window.close();">Cancelar</a>
+  
 
+  
   <input type="hidden" name="faltas_ok" value="F" />
 	  
 </form>
-
-      <script type="text/javascript">
-//<![CDATA[
-
-      enterAsTab();
-
-//]]>
-      </script>
+<br />
+<br />
       
 </body>
 </html>

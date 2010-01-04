@@ -8,10 +8,20 @@ date_default_timezone_set('America/Sao_Paulo');
 /**
  * Banco de dados
  */
-$host     = '192.168.0.234';
+$host     = '200.131.50.5';
 $database = 'sa';
-$user     = 'usrsagu';
-$password = 'x6S8YzrJBs';
+$user     = 'pgmaster';
+$password = 'mamulengo';
+
+$host     = 'localhost';
+$database = 'sa-latin1';
+$user     = 'pgmaster';
+$password = 'dbmasterbi';
+// select to_ascii(encode(convert_to(c,'LATIN9'),'escape'),'LATIN9') from chartest;
+/*
+ * select nome from pessoas a, professores b where a.id = b.ref_professor and lower(to_ascii(encode(convert_to(nome,'LATIN9'),'escape'),'LATIN9'))  SIMILAR TO '%u%' order by lower(to_ascii(encode(convert_to(nome,'LATIN9'),'escape'),'LATIN9'))
+ */
+
 
 /**
  * Variaveis de acesso a dados - SA 
@@ -36,8 +46,8 @@ $webdiario_port     = $param_conn['port'];
  */
 $aluno_host     = $param_conn['host'];
 $aluno_database = $param_conn['database'];
-$aluno_user     = 'aluno';
-$aluno_password = '@1srv27';
+$aluno_user     = 'pgmaster';
+$aluno_password = 'dbmasterbi';
 $aluno_port     = '';
 
 /**
@@ -48,8 +58,8 @@ $DOC_TYPE       = '<meta http-equiv="Content-Type" content="text/html; charset=I
 /**
  * Variaveis do sistema
  */
-$BASE_URL       = 'https://'. $_SERVER['SERVER_NAME'] .'/desenvolvimento/wanderson/dev/sistema-academico/';
-$BASE_DIR       = '/var/www/dev.cefetbambui.edu.br/desenvolvimento/wanderson/dev/sistema-academico/';
+$BASE_URL       = 'http://'. $_SERVER['SERVER_NAME'] .'/~wasare/dev/netbeans-php/sistema-academico/';
+$BASE_DIR       = '/home/wasare/public_html/dev/netbeans-php/sistema-academico/';
 $LOGIN_URL      = $BASE_URL .'index.php';
 $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';
 $PATH_IMAGES    = $BASE_URL."public/images/";

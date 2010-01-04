@@ -184,8 +184,8 @@ function autoTab(input,len, e) {
     <input type="hidden" name="data_chamada" id="data_chamada" value="<?=$data_chamada?>">
 
   <h3>
-  Data da Chamada: <font color="blue"> <?=$data_chamada?></font>
-  <br />Quantidade de Aulas: <font color="brown"> <?=$num_aulas?></font>
+    Data da Chamada:&nbsp;<font color="blue"><?=$data_chamada?></font>
+    <br />Quantidade de Aulas:&nbsp; <font color="brown"> <?=$num_aulas?></font>
   </h3>
 	<a href="<?=$BASE_URL .'app/web_diario/requisita.php?do='. $operacao .'&id=' . $diario_id?>"><strong>Alterar a data e/ou quantidade de aulas</strong></a><br />
 

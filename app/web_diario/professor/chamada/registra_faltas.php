@@ -2,11 +2,10 @@
 
 require_once(dirname(__FILE__) .'/../../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
+require_once($BASE_DIR .'core/date.php');
 
 // CONEXAO ABERTA PARA TRABALHAR COM TRANSACAO (NÃO PERSISTENTE)
 $conn = new connection_factory($param_conn,FALSE);
-
-//die(print_r($_POST));
 
 $diario_id = (int) $_POST['diario_id'];
 $operacao = $_POST['operacao'];
@@ -72,32 +71,15 @@ $sem_faltas = '';
 // HOUVE FALTAS PARA A CHAMADA
 $sem_faltas = (isset($_POST['flag_falta']) && $_POST['flag_falta'] == 'F') ? '<h3><font color="blue"><b>Nenhum aluno faltou &agrave;(s) '. $num_aulas .' aula(s)  do dia '. $data_chamada .'</b></font></h4>' : '';
 
-
 $curso = get_curso($diario_id);
 $disciplina = get_disciplina($diario_id);
 
-function reg_log($sql,$status="")
-{
-  global $conn, $sa_usuario;
-  $ip = $_SERVER["REMOTE_ADDR"];
-  $pagina = $_SERVER["PHP_SELF"];
-  $sql_store = htmlspecialchars("$usuario");
+function processa_chamada($alunos_faltas, $num_aulas, $sql_chamada) {
   
-  $sqllog = $sql;
-
-  $sqllog .= '(\''.$sql_store.'\',\''. date("Y-m-d") .'\',\''. date("H:i:s") .'\','."'$ip','$pagina','$status','')";
-  
-  $conn->Execute($sqllog);
-
-}
-
-
-function processa_faltas($alunos_faltas, $num_aulas, $qry_chamada, $qry_faltas)
-{
-  global $conn, $data_chamada, $sa_ref_pessoa, $periodo, $diario_id, $sem_faltas, $curso, $disciplina;
+  global $conn, $data_chamada, $sa_ref_pessoa, $periodo, $diario_id, $sem_faltas;
 
   // registra a chamada no banco de dados
-  $conn->Execute($qry_chamada);
+  $conn->Execute($sql_chamada);
 
   $resposta .= $sem_faltas;
 	
@@ -110,15 +92,11 @@ function processa_faltas($alunos_faltas, $num_aulas, $qry_chamada, $qry_faltas)
 	  $sqlFaltas = 'BEGIN;';
      
 	  if($num_faltas > 0 && $num_faltas <= $num_aulas) {
-		for ($i = 1; $i <= $num_faltas; $i++) {
-			$sqlFaltas .= $qry_faltas;
-	        $sqlFaltas .= " ('$reg_aluno','$data_chamada','$sa_ref_pessoa','$periodo','$curso','$disciplina','$i','N',$diario_id);";
-		}
 
         $aluno = $conn->get_one("SELECT nome FROM pessoas WHERE id = $reg_aluno;");
         $aluno = '<font color="red"><b>'. $aluno .' ('. $reg_aluno .')</b></font>';
 
-        if(falta($reg_aluno, $diario_id, $num_faltas, "SOMA", $sqlFaltas) === TRUE)
+        if(registra_faltas($reg_aluno, $diario_id, abs($num_faltas), $data_chamada, $sa_ref_pessoa) === TRUE)
             $resposta .= '<strong>'. $num_faltas . '</strong> Falta(s) registrada(s) para '. $aluno .' no dia '. $data_chamada .'<br />';        
 	  }
     }
@@ -129,15 +107,12 @@ function processa_faltas($alunos_faltas, $num_aulas, $qry_chamada, $qry_faltas)
 
 $datadehoje = date ("d/m/Y");
 
-$qrySeqChamada = 'BEGIN; INSERT INTO diario_seq_faltas (id_prof, periodo, curso, disciplina, dia, conteudo, flag, ref_disciplina_ofer) VALUES ';
-$qryFaltas = 'INSERT INTO diario_chamadas (ra_cnec, data_chamada, ref_professor, ref_periodo, ref_curso, ref_disciplina, aula, abono, ref_disciplina_ofer) VALUES ';
-$qryLog = 'BEGIN; INSERT INTO diario_log (usuario, data, hora, ip_acesso, pagina_acesso, status, senha_acesso) VALUES ';
+$sql_chamada = 'BEGIN; INSERT INTO diario_seq_faltas (id_prof, periodo, curso, disciplina, dia, conteudo, flag, ref_disciplina_ofer) VALUES ';
+$sql_chamada .= " ('$sa_ref_pessoa','$periodo','$curso','$disciplina','$data_chamada','$conteudo', '$num_aulas', $diario_id);COMMIT;";
+
 $status = 'FALTA REGISTRADA ';
 
-
-$qryChamada = $qrySeqChamada." ('$sa_ref_pessoa','$periodo','$curso','$disciplina','$data_chamada','$conteudo', '$num_aulas', $diario_id);COMMIT;";
-
-$st = $status . $aula_tipo;
+$status .= $aula_tipo;
 
 ?>
 
@@ -157,9 +132,9 @@ $st = $status . $aula_tipo;
 
 <?=papeleta_header($diario_id)?>
 <br />
-<?=processa_faltas($alunos_faltas,$num_aulas,$qryChamada,$qryFaltas)?>
+<?=processa_chamada($alunos_faltas,$num_aulas,$sql_chamada)?>
 
-<?=reg_log($qryLog,$st)?>
+<?=reg_log($_SERVER["PHP_SELF"],$status)?>
 
 <br />
 <strong>CHAMADA REALIZADA!</strong><br /><br /> * Verifique acima se n&atilde;o ocorreu nenhum erro no processo de incluir faltas *<br /> <br />

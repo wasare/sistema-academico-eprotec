@@ -19,13 +19,13 @@ if(!is_numeric($diario_id) && !is_numeric($operacao))
     exit; 
 }
 
-
 //  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
-if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
-
+if($operacao != 'lista_diarios_coordenacao') {
+  if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
     exit('<script language="javascript" type="text/javascript">
             alert(\'Você não tem direito de acesso a estas informações!\');
             window.close();</script>');
+  }
 }
 // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
@@ -111,7 +111,7 @@ if($operacao == 'troca_senha') {
     require_once($BASE_DIR .'app/usuarios/alterar_senha.php');
     exit;
 }
-
+// OPERACAO DA COORDENACAO
 if($operacao == 'lista_diarios_coordenacao') {
 	unset($_GET['diario_id']);
     unset($_POST['diario_id']);

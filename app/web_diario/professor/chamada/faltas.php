@@ -7,7 +7,6 @@ require_once($BASE_DIR .'core/date.php');
 $conn = new connection_factory($param_conn);
 
 $diario_id = (int) $_POST['diario_id'];
-$operacao = $_POST['operacao'];
 
 //  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
 if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
@@ -75,26 +74,26 @@ $chamadas = $conn->get_all($sql1);
 
 $st = '';
 	
-foreach( $chamadas as $aula ) {
+  foreach( $chamadas as $aula ) :
 
 	$data_chamada = $aula["dia"];
     $conteudo = $aula["conteudo"];
     $chamada_id = $aula["id"];
     $aulas = $aula["flag"];
 	
-	if ( $st == '#F3F3F3')
-		$st = '#E3E3E3';
-	else 
-		$st ='#F3F3F3';
+	if ( $st == '#F3F3F3') $st = '#E3E3E3'; else $st ='#F3F3F3';
+  ?>
 
-	echo '<tr bgcolor="'. $st .'"> <td align="center">'. date::convert_date($data_chamada) .'</td>';
-	echo '<td align="center">'. $aulas .'</td>';
-    echo '<td align="left"> '. $conteudo .'</td> ';
-    // TODO: acessar via requisita.php
-	echo '<td> <a href="'. $BASE_URL .'app/web_diario/professor/chamada/altera_faltas.php?chamada='. $chamada_id .'&flag='. $aulas .'&diario_id='. $diario_id .'">Alterar faltas</a> </td>';
-    
-	echo '</tr>';
-}
+  <tr bgcolor="<?=$st?>">
+    <td align="center"><?=date::convert_date($data_chamada)?></td>
+	<td align="center"><?=$aulas?></td>
+    <td align="left"><?=$conteudo?></td>
+	<td> 
+      <a href="<?=$BASE_URL .'app/web_diario/professor/chamada/altera_faltas.php?chamada='. $chamada_id .'&flag='. $aulas .'&diario_id='. $diario_id?>">Alterar faltas</a>
+    </td>
+  </tr>
+<?php
+  endforeach;
 ?>
 </table>
 

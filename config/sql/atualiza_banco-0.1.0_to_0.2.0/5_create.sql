@@ -1,3 +1,4 @@
+-- tabela nova: sessao 
 CREATE TABLE sessao(
  sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
  expiry TIMESTAMP NOT NULL ,
@@ -18,3 +19,17 @@ GRANT INSERT,SELECT,UPDATE,DELETE,REFERENCES ON TABLE sessao TO "access";
 GRANT INSERT,SELECT,UPDATE,DELETE,REFERENCES ON TABLE sessao TO "admin";
 GRANT INSERT,SELECT,UPDATE,DELETE,REFERENCES ON TABLE sessao TO admin_matriz;
 
+-- função get_turno_
+CREATE FUNCTION get_turno_(character varying) RETURNS character varying
+    AS $_$select nome from turno where id = $1$_$
+    LANGUAGE sql;
+
+-- função get_turno
+CREATE FUNCTION get_turno(character varying) RETURNS character varying
+    AS $_$select case when strpos($1,'/') > 0 then trim(get_turno_(substr($1,0,strpos($1,'/'))) || '/' || get_turno(substr($1,strpos($1,'/')+1))) else trim(get_turno_($1)) end;$_$
+    LANGUAGE sql;
+
+-- função periodo_disciplina_ofer
+CREATE FUNCTION periodo_disciplina_ofer(integer) RETURNS character varying
+    AS $_$select ref_periodo from disciplinas_ofer where id = $1$_$
+    LANGUAGE sql;

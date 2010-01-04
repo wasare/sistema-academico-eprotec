@@ -122,7 +122,7 @@ function enviar(action) {
     var undefined;
     var lst = -1;
     var i;
-    var lista = document.lista_diarios.diario;
+    var lista = $('lista_diarios').getInputs('radio');
 
     if(lista.length == undefined) {
 
@@ -140,9 +140,10 @@ function enviar(action) {
     }
 
     if (lst == -1) {
-
-            alert("Primeiro selecione um diário!");
-            return false;
+       $('relatorio_acao').selectedIndex = 0;
+       $('outras_acoes').selectedIndex = 0;
+       alert("Primeiro selecione um diário!");
+       return false;
     }
     else {
 

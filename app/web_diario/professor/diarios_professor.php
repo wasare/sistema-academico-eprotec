@@ -94,9 +94,10 @@ $periodos = $conn->get_all($qry_periodos);
 </strong>
 &nbsp;&nbsp;
 
-<span><a href="#" title="alterar o per&iacute;odo" alt="alterar o per&iacute;odo" id="periodos_professor">alterar</a></span>
+<span><a href="#" title="alterar o per&iacute;odo" id="periodos_professor">alterar</a></span>
 <br />
 <br />
+<!-- panel para alteracao dos periodos do professor // inicio //-->
 <div id="periodos_professor_pane" style="display:none; border: 0.0015em solid; width:200px; text-align:center;">
 <br />
 
@@ -111,6 +112,7 @@ $periodos = $conn->get_all($qry_periodos);
 ?>
 <br />
 </div>
+<!-- panel para alteracao dos periodos do professor \\ fim \\ -->
 
 <br />
 
@@ -121,7 +123,7 @@ $periodos = $conn->get_all($qry_periodos);
 
 <table cellspacing="0" cellpadding="0" class="papeleta">
     <tr bgcolor="#cccccc">
-	    <td> &nbsp; &nbsp; </td>
+      <td> &nbsp; &nbsp; &nbsp; &nbsp;</td>
         <td align="center"><b>Di&aacute;rio</b></td>
         <td align="center"><b>Descri&ccedil;&atilde;o</b></td>
 		<td align="center"><b>Situa&ccedil;&atilde;o</b></td>
@@ -132,13 +134,12 @@ $i = 0;
 
 $r1 = '#FFFFFF';
 $r2 = '#FFFFCC';
- 
-// $curso = $_GET["getcurso"];
-foreach($diarios as $row3)
-{
-	$nc = $row3["descricao_extenso"];
-    $idnc = $row3["id"];
-    $idof = $row3["idof"];
+
+foreach($diarios as $row3) :
+  
+	$descricao_disciplina = $row3["descricao_extenso"];
+    $disciplina_id = $row3["id"];
+    $diario_id = $row3["idof"];
 	$fl_digitada = $row3['fl_digitada'];
 	$fl_concluida = $row3['fl_concluida'];
 
@@ -158,36 +159,48 @@ foreach($diarios as $row3)
         }        
 	}
 
-    if ( ($i % 2) == 0)
-   	{
-      $rcolor = $r1;
-    }
-   	else
-   	{
-      $rcolor = $r2;
-   	}
+    $rcolor = (($i % 2) == 0) ? $r1 : $r2;
+?>
 
-   	echo '<tr bgcolor="'.$rcolor.'">';
-	echo '<td width="3%" align="center"><input  type="radio" name="diario" id="diario" value="'.$idnc.'|'.$idof.'|'.$fl_encerrado.'" /></td>';
-   	echo ' <td width="16%" align="center">'.$idof.'</td> <td>'.$nc.'</td> ';		
-	echo ' <td width="6%" align="center">'.$fl_situacao.'</td> ';
-	echo '</tr> ';
+    <tr bgcolor="<?=$rcolor?>">
+      <td width="5%" align="center"><input  type="radio" name="diario" id="diario" value="<?=$disciplina_id .'|'. $diario_id .'|'. $fl_encerrado?>" />    
+      </td>
+      <td width="10%" align="center"><?=$diario_id?>
+      </td>
+      <td width="60%">
+        <a href="#" id="<?=$diario_id . '_pane'?>"><?=$descricao_disciplina?></a>
+            
+        <!-- panel com as opções do diário // inicio //-->
+          <div id="diario_<?=$diario_id?>_pane" style="display:none; border: 0.0015em solid; width:200px; text-align:center; margin: 1.2em; padding: 1em;">
+            <h4>opções do diário <?=$diario_id?>:</h4>
+            <br />
+            <input type="button" id="papeleta" name="papeleta" value="Papeleta" onclick="enviar_('papeleta',<?=$diario_id?>);" /><br />
+            <input type="button" id="conteudo" name="conteudo" value="Conte&uacute;do de aula" onclick="enviar_('conteudo_aula',<?=$diario_id?>);" />
+           <br />
+          </div>
+        <!-- panel com as opções do diário \\ fim \\ -->
+      </td>
+      <td width="10%"align="center"><?=$fl_situacao?></td>
+    </tr>
+
+<?php
 
    	$i++;
-}
 
+  endforeach;
 ?>
 </table>
 
 <br /><br />
 <p>
 
-   &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<input type="button" id="notas" name="notas" value="Notas" onclick="enviar('notas');"/> &nbsp; &nbsp; &nbsp;
+<input type="button" id="notas" name="notas" value="Notas" onclick="enviar('notas');"/> &nbsp; &nbsp;
 
-<input type="button" id="chamada" name="chamada" value="Chamada" onclick="enviar('chamada');"/> &nbsp; &nbsp; &nbsp;
-<input type="button" id="papeleta" name="papeleta" value="Papeleta" onclick="enviar('papeleta');" /> &nbsp; &nbsp; &nbsp;
-<input type="button" id="conteudo" name="conteudo" value="Conte&uacute;do de aula" onclick="enviar('conteudo_aula');" /> &nbsp; &nbsp;  &nbsp; &nbsp;
+<input type="button" id="chamada" name="chamada" value="Chamada" onclick="enviar('chamada');"/> &nbsp; &nbsp;
 
+<!--<input type="button" id="papeleta" name="papeleta" value="Papeleta" onclick="enviar('papeleta');" /> &nbsp; &nbsp;
+<input type="button" id="conteudo" name="conteudo" value="Conte&uacute;do de aula" onclick="enviar('conteudo_aula');" /> &nbsp; &nbsp;
+-->
 <select name="relatorio_acao" id="relatorio_acao" class="select" onchange="enviar(this.value);">
     <option value="0">---  relat&oacute;rios     ---</option>
     <option value="papeleta">Papeleta</option>
@@ -197,7 +210,7 @@ foreach($diarios as $row3)
     <option value="caderno_chamada">Imprimir caderno de chamada</option>
 </select>
 
-&nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp;
 
 <select name="outras_acoes" id="outras_acoes" class="select" onchange="enviar(this.value);">
   	<option value="0">---  outras   op&ccedil;&otilde;es     ---</option>
@@ -214,6 +227,14 @@ foreach($diarios as $row3)
 
 	$('periodos_professor').observe('click', function() { $('periodos_professor_pane').toggle(); });
 
+<?php
+    foreach($diarios as $row3) :
+      $diario_id = $row3['idof'];
+?>
+      $('<?=$diario_id . '_pane'?>').observe('click', function() { $('diario_<?=$diario_id?>_pane').toggle(); });
+<?php
+   endforeach;
+?>
 </script>
 </div>
 </center>

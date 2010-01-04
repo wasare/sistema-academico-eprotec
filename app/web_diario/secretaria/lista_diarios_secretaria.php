@@ -3,6 +3,23 @@
 //echo hash('sha256','');
 require_once(dirname(__FILE__). '/../../setup.php');
 
+$conn = new connection_factory($param_conn);
+/*
+ TODO: verificar se é coordenador quando acessando do web diário
+//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
+if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
+
+
+  if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
+
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+  }
+  // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
+}
+*/
+
 if(empty($_GET['periodo_id']) OR empty($_GET['curso_id']))
 {
 	if(empty($_GET['diario_id']))
@@ -14,20 +31,15 @@ if(empty($_GET['periodo_id']) OR empty($_GET['curso_id']))
 		exit;
 	}
 }
-
 /*
- TODO: verifica o direito de acesso do usuário aos dados, principalmente o coordenador
-*/
+ * TODO: fazer que os acesso as opções de cada diário possa ser realizada pelo teclado (javascript não obstrutivo)
+ */
 
-$conn = new connection_factory($param_conn);
-
-if(!is_numeric($_GET['diario_id']))
-{
+if(!is_numeric($_GET['diario_id'])) {
 	$qryCurso = 'SELECT DISTINCT id, descricao as nome FROM cursos WHERE id = '. $_GET['curso_id'].';';
 	$qryPeriodo = 'SELECT id, descricao FROM periodos WHERE id = \''. $_GET['periodo_id'].'\';';
 }
-else
-{
+else {
 	$qryCurso = 'SELECT c.id, c.descricao as nome FROM cursos c, disciplinas_ofer d WHERE d.ref_curso = c.id AND d.id = '. $_GET['diario_id'].';';
 	$qryPeriodo = 'SELECT p.id, p.descricao FROM periodos p, disciplinas_ofer d WHERE d.ref_periodo = p.id AND d.id = '. $_GET['diario_id'].';';
 }
@@ -88,7 +100,7 @@ $periodo = $conn->get_row($qryPeriodo);
 
 <script type="text/javascript" src="<?=$BASE_URL .'lib/prototype.js'?>"> </script>
 
-<script language="javascript">
+<script language="javascript" type="text/javascript">
 
 function finaliza_todos(curso,periodo)
 {	
@@ -117,20 +129,27 @@ function finaliza_todos(curso,periodo)
 <script type="text/javascript" src="<?=$BASE_URL .'lib/wz_tooltip.js'?>"> </script>
 
 <center>
-<div align="left"><br />
-<?php
-   print(' <table cellpadding="0" cellspacing="0" class="papeleta">
+<br />
+<div align="left">
+
+<table cellpadding="0" cellspacing="0" class="papeleta">
   <tr>
-  <td><div align="center"><font color="#990000" size="4" face="Verdana, Arial, Helvetica, sans-serif"><strong><font color="red">Per&iacute;odo: '. $periodo['descricao'] .'</font></strong></font></div></td>
+  <td>
+    <div align="center">
+      <font color="#990000" size="4" face="Verdana, Arial, Helvetica, sans-serif">
+        <strong>
+          <font color="red">Per&iacute;odo: <?=$periodo['descricao']?></font>
+        </strong>
+      </font>
+    </div>
+  </td>
   </tr>
 </table>
-  ');
-echo '<h4><strong>Curso: </strong><font color="blue">'. $curso['id'] .' - '. $curso['nome'] .'</font></h4>';
-echo '<p><h3>Passe o ponteiro do mouse sobre o di&aacute;rio desejado e selecione a op&ccedil;&atilde;o:</h3></p>';
-echo '<form id="change_acao" name="change_acao" method="get" action="diarios_coordenacao.php">';
-echo '<input type="hidden" name="id" id="id" value="' . $_SESSION['select_prof'] . '" />';
-echo '<input type="hidden" name="vars" id="vars" value="' . $vars_b . '" />';
-?>   
+
+<h4><strong>Curso: </strong><font color="blue"><?=$curso['id'] .' - '. $curso['nome']?></font></h4>
+<h3>Passe o ponteiro do mouse sobre o di&aacute;rio desejado e selecione a op&ccedil;&atilde;o:</h3>
+
+<form id="change_acao" name="change_acao" method="get" action="">
 
 <table cellspacing="0" cellpadding="0" class="papeleta">
     <tr bgcolor="#cccccc">
@@ -142,6 +161,7 @@ echo '<input type="hidden" name="vars" id="vars" value="' . $vars_b . '" />';
 		<td align="center"><b>Professor(es)</b></td>
         <td align="center"><b>Situa&ccedil;&atilde;o</b></td>
     </tr>
+    
 <?php
 	
 $i = 0;
@@ -149,11 +169,11 @@ $i = 0;
 $r1 = '#FFFFFF';
 $r2 = '#FFFFCC';
  
-foreach($diarios as $row3)
-{
-	$nc = $row3["descricao_extenso"];
-    $idnc = $row3["idof"];
-    $idof = $row3["idof"];
+foreach($diarios as $row3) :
+  
+	$descricao_disciplina = $row3["descricao_extenso"];
+    $disciplina_id = $row3["idof"];
+    $diario_id = $row3["idof"];
 	$fl_digitada = $row3['fl_digitada'];
     $fl_concluida = $row3['fl_concluida'];
 	$professor = $row3['professor'];
@@ -181,28 +201,18 @@ foreach($diarios as $row3)
         }
     }
 
-    if ( ($i % 2) == 0)
-   	{
-      $rcolor = $r1;
-    }
-   	else
-   	{
-      $rcolor = $r2;
-   	}
+    $rcolor = (($i % 2) == 0) ? $r1 : $r2;
 
 	$fl_opcoes = 0;
-
 	$opcoes_diario = '';
 	
-    if($fl_professor === TRUE)
-	{
-		$opcoes_diario .= '<a href="'. $BASE_URL .'app/relatorios/web_diario/papeleta.php?diario_id='. $idof .'" target="_blank">papeleta</a><br />';
-		$opcoes_diario .= '<a href="'. $BASE_URL .'app/relatorios/web_diario/papeleta_completa.php?diario_id='. $idof .'" target="_blank">papeleta completa</a><br />';
-		$opcoes_diario .= '<a href="'. $BASE_URL .'app/relatorios/web_diario/faltas_completo.php?diario_id='. $idof .'" target="_blank">relat&oacute;rio de faltas completo</a><br />';
-		$opcoes_diario .= '<a href="'. $BASE_URL .'app/relatorios/web_diario/conteudo_aula.php?diario_id='. $idof .'" target="_blank">conte&uacute;do de aula</a><br />';
-		$opcoes_diario .= '<a href="'. $BASE_URL .'app/relatorios/web_diario/caderno_chamada.php?diario_id='. $idof .'" target="_blank">caderno de chamada</a><br />';
-	    $fl_opcoes = 1;
-	
+    if($fl_professor === TRUE) {
+		$opcoes_diario .= '<a href="'. $BASE_URL .'app/relatorios/web_diario/papeleta.php?diario_id='. $diario_id .'" target="_blank">papeleta</a><br />';
+		$opcoes_diario .= '<a href="'. $BASE_URL .'app/relatorios/web_diario/papeleta_completa.php?diario_id='. $diario_id .'" target="_blank">papeleta completa</a><br />';
+		$opcoes_diario .= '<a href="'. $BASE_URL .'app/relatorios/web_diario/faltas_completo.php?diario_id='. $diario_id .'" target="_blank">relat&oacute;rio de faltas completo</a><br />';
+		$opcoes_diario .= '<a href="'. $BASE_URL .'app/relatorios/web_diario/conteudo_aula.php?diario_id='. $diario_id .'" target="_blank">conte&uacute;do de aula</a><br />';
+		$opcoes_diario .= '<a href="'. $BASE_URL .'app/relatorios/web_diario/caderno_chamada.php?diario_id='. $diario_id .'" target="_blank">caderno de chamada</a><br />';
+	    $fl_opcoes = 1;	
 	}
 
 	if($fl_digitada == 'f' && $fl_concluida == 'f') {
@@ -219,57 +229,68 @@ foreach($diarios as $row3)
         if($fl_digitada == 't') {
             $fl_situacao = '<font color="red"><b>Finalizado</b></font>';
 			if(!isset($operacao)) {
-				$opcoes_diario .= '<a href="'. $BASE_URL .'app/web_diario/secretaria/marca_aberto.php?diario_id='. $idof .'">abre para lan&ccedil;amentos</a><br />';
+				$opcoes_diario .= '<a href="'. $BASE_URL .'app/web_diario/secretaria/marca_aberto.php?diario_id='. $diario_id .'">abre para lan&ccedil;amentos</a><br />';
 				$fl_opcoes = 1;
 			}
             $fl_encerrado = 1;
 			$fl_opcoes = 1;
         }
         else {
-				$opcoes_diario .= '<a href="'. $BASE_URL .'app/web_diario/coordenacao/marca_finalizado.php?diario_id='. $idof .'">finaliza para lan&ccedil;amentos</a><br />';
+				$opcoes_diario .= '<a href="'. $BASE_URL .'app/web_diario/coordenacao/marca_finalizado.php?diario_id='. $diario_id .'">finaliza para lan&ccedil;amentos</a><br />';
 				$fl_opcoes = 1;
 		}
     }
 	
 	
-	if($fl_opcoes == 0)
-		$sem_opcoes = '<font color="red">Nenhuma op&ccedil;&atilde;o dispon&iacute;vel.</font>';			
-	else
-		$sem_opcoes = '';
+	$sem_opcoes = ($fl_opcoes == 0) ? '<font color="red">Nenhuma op&ccedil;&atilde;o dispon&iacute;vel.</font>' : '';
 
+?>
+    
+    <div id="diario_id-<?=$diario_id?>" class="opcoes_diario">
+      <?=$sem_opcoes . $opcoes_diario?>
+	</div>
 
-	echo '<div id="diario_id-'. $idof .'" class="opcoes_diario">';
-	echo $sem_opcoes . $opcoes_diario;
-	echo '</div>';
+    <?php 
+      $cont = $i + 1;
+    ?>
 
-    $cont = $i + 1;
-	echo "<tr bgcolor=\"$rcolor\">\n";
-    echo '<td align="center">'. $cont .'</td>';
+	<tr bgcolor="<?=$rcolor?>">
+      <td align="center"><?=$cont?></td>
+      <td align="center">
+        <a href="javascript:void(0);" onmouseover="TagToTip('diario_id-<?=$diario_id?>', ABOVE, true,PADDING, 9, TITLE, 'Op&ccedil;&otilde;es do di&aacute;rio - <?=$diario_id?>', CLOSEBTN, true,STICKY, true,FONTSIZE, '0.8em', COPYCONTENT, false, BGCOLOR, '#FFFFFF' )" onmouseout="UnTip()">
+          <?=$diario_id?>
+        </a>
+      </td>
+      <td>
+        <a href="javascript:void(0);" onmouseover="TagToTip('diario_id-<?=$diario_id?>', ABOVE, true,PADDING, 9, TITLE, 'Op&ccedil;&otilde;es do di&aacute;rio - <?=$diario_id?>', CLOSEBTN, true,STICKY, true,FONTSIZE, '0.8em', COPYCONTENT, false, BGCOLOR, '#FFFFFF' )" onmouseout="UnTip()">
+          <?=$descricao_disciplina?>
+        </a>
+      </td>
+      <td align="center"><?=$qtde_alunos?></td>
+      <td align="center"><?=$turma?></td>
+      <td><?=$professor?></td>
+      <td align="center"><?=$fl_situacao?></td>
+    </tr>
 
-    echo '<td align="center"><a href="javascript:void(0);" onmouseover="TagToTip(\'diario_id-'. $idof .'\', ABOVE, true,PADDING, 9, TITLE, \'Op&ccedil;&otilde;es do di&aacute;rio - '. $idof .'\', CLOSEBTN, true,STICKY, true,FONTSIZE, \'0.8em\', COPYCONTENT, false, BGCOLOR, \'#FFFFFF\' )" onmouseout="UnTip()">'. $idof .'</a></td>';
-	echo '<td><a href="javascript:void(0);" onmouseover="TagToTip(\'diario_id-'. $idof .'\', ABOVE, true,PADDING, 9, TITLE, \'Op&ccedil;&otilde;es do di&aacute;rio - '. $idof .'\', CLOSEBTN, true,STICKY, true,FONTSIZE, \'0.8em\', COPYCONTENT, false, BGCOLOR, \'#FFFFFF\' )" onmouseout="UnTip()">'. $nc .'</a></td>';
-	echo "<td align=\"center\">$qtde_alunos</td>\n";
-   	echo " <td align=\"center\">$turma</td>\n <td>$professor</td>\n ";
-    echo " <td align=\"center\">$fl_situacao</td>\n ";
-
-    echo "</tr>\n ";
+<?php
 
     $i++;
-}
 
-echo '</table> <br />';
-/*
+    endforeach;
+?>
+
+</table> <br />
+<!--
     echo '<p>';
     echo '<input type="button" id="finaliza_todos" name="finaliza_todos" value="Finaliza todos os di&aacute;rios conclu&iacute;dos" onclick="finaliza_todos('. $curso['id'] .',\''. $periodo['id'] .'\');"/> &nbsp; &nbsp; &nbsp;';
 	echo '</p>';
-*/
-?>
+-->
 <input type="button" value="finaliza todos os diários concluídos" />
 &nbsp;&nbsp;
 <a href="#" onclick="javascript:window.close();">Fechar</a>
 </form>
-</center>
 </div>
+</center>
 </body>
 </head>
 </html>
