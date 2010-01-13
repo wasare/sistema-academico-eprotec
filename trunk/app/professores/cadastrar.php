@@ -114,7 +114,7 @@ $arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
                         <span class="selectRequiredMsg">Selecione um item.</span>
                     </span>
                     <br />
-                    <input name="ativar" type="checkbox" id="ativar" checked="checked"/>                    
+                    <input name="ativar" type="checkbox" id="ativar" checked="checked"/> Ativar usu&aacute;rio.
                 </p>
             </div>
         </form>

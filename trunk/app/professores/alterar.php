@@ -3,6 +3,10 @@
  * Arquivo com as configuracoes iniciais
 */
 require_once("../../app/setup.php");
+require_once("../../core/date.php");
+
+
+$id = $_GET['id'];
 
 /*
  * Estancia a classe de conexao e abre
@@ -21,7 +25,12 @@ $sql_professores = "
         p.ref_professor = $id AND
         p.ref_professor = u.ref_pessoa";
 
-//$arr_professores = $conn->get_row($sql_professor);
+$arr_professores = $conn->get_row($sql_professores);
+
+$nome_pessoa = $conn->get_one("SELECT nome FROM pessoas WHERE id = $id");
+
+$date = new date();
+$data = $date->convert_date($arr_professores['dt_ingresso']);
 
 $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
 
@@ -42,11 +51,10 @@ $arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
         <link href="../../lib/Spry/widgets/passwordvalidation/SpryValidationPassword.css" rel="stylesheet" type="text/css" />
         <link href="../../lib/Spry/widgets/confirmvalidation/SpryValidationConfirm.css" rel="stylesheet" type="text/css" />
         <link href="../../lib/Spry/widgets/selectvalidation/SpryValidationSelect.css" rel="stylesheet" type="text/css" />
-
     </head>
     <body>
         <h2>Alterar professor</h2>
-        <form id="form1" name="form1" method="post" action="cadastrar_action.php" >
+        <form id="form1" name="form1" method="post" action="alterar_action.php" >
             <div class="btn_action">
                 <label class="btn_action">
                     <input name="save" type="image" src="../../public/images/icons/save.png" />
@@ -60,20 +68,23 @@ $arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
                 </a>
             </div>
             <div class="panel">
-                C&oacute;digo de pessoa f&iacute;sica:<br />
-                <span id="sprytextfield1">
-                    <input type="text" id="id_pessoa" name="id_pessoa" value="<?=$id?>" />
-                    <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
-                    <span class="textfieldInvalidFormatMsg">Somente n&uacute;mero inteiro.</span>
-                </span>
+                Pessoa f&iacute;sica: <strong><?=$id?> - <?=$nome_pessoa?></strong>
+                <input type="hidden" id="id_pessoa" name="id_pessoa" value="<?=$id?>" />
                 <br />
                 Departamento:
                 <br />
                 <span id="validsel1">
                     <select name="departamento" id="departamento" tabindex="1">
                         <option value="">Selecione o departamento</option>
+
                         <?php foreach($arr_departamentos as $departamento): ?>
+
+                        <?php if($departamento['id'] == $arr_professores['ref_departamento']):?>
+                        <option value="<?=$departamento['id']?>" selected="selected"><?=$departamento['descricao']?></option>
+                        <?php endif; ?>
+
                         <option value="<?=$departamento['id']?>"><?=$departamento['descricao']?></option>
+
                         <?php endforeach; ?>
                     </select>
                     <span class="selectRequiredMsg">Selecione um item.</span>
@@ -82,20 +93,14 @@ $arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
                 Data de ingresso:
                 <br />
                 <span id="date1">
-                    <input type="text" name="data" id="data" />
+                    <input type="text" name="data" id="data" value="<?=$data?>" />
                     <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio.</span>
                     <span class="textfieldInvalidFormatMsg">Formato inv&aacute;lido.</span>
                 </span>
                 <h3>Acesso ao Web Di&aacute;rio</h3>
                 <p>
-                    Usu&aacute;rio:
-                    <br />
-                    <span id="sprytextfield2">
-                        <input type="text" id="user" name="user" value="<?=$arr_professores['login']?>" />
-                        <a href="#">Verificar</a>
-                        <input type="hidden" id="flg_user" name="flg_user" value="">
-                        <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
-                    </span>
+                    Usu&aacute;rio: <strong><?=$arr_professores['login']?></strong>
+                    <input type="hidden" id="user" name="user" value="<?=$arr_professores['login']?>" />
                     <br />
                     Setor:
                     <br />
@@ -103,13 +108,18 @@ $arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
                         <select name="setor" id="setor" tabindex="1">
                             <option value="">Selecione o setor do usu&aacute;rio</option>
                             <?php foreach($arr_setor as $setor): ?>
+
+                            <?php if($setor['id'] == $arr_professores['ref_setor']):?>
+                            <option value="<?=$setor['id']?>" selected="selected"><?=$setor['nome_setor']?></option>
+                            <?php endif; ?>
+                            
                             <option value="<?=$setor['id']?>"><?=$setor['nome_setor']?></option>
                             <?php endforeach; ?>
                         </select>
                         <span class="selectRequiredMsg">Selecione um item.</span>
                     </span>
                     <br />
-                    <input name="ativar" type="checkbox" id="ativar" checked="checked"/>
+                    <input name="ativar" type="checkbox" id="ativar" checked="checked"/> Ativar usu&aacute;rio.
                     <br />
                     <br />
                     Nova senha:
