@@ -17,6 +17,10 @@ if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
 }
 // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
+if (!existe_chamada($diario_id)) {
+  exit('<script language="javascript" type="text/javascript">window.alert("Nenhuma chamada registrada para este diario!");window.close(); </script>');
+}
+
 if (is_finalizado($diario_id)){
 
     echo '<script language="javascript" type="text/javascript">';

@@ -133,7 +133,6 @@ else {
 									<option value="web_diario_login">Coordenador</option>
                                     <option value="web_diario_login">Professor</option>
                                     <option value="sa_login" selected>Secretaria</option>
-                                    <option value="aluno_login">Aluno</option>
                                 </select>
                             </td>
                         </tr>

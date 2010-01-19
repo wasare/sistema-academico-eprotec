@@ -36,6 +36,27 @@ $qryPeriodo = 'SELECT id, descricao FROM periodos WHERE id = \''. $_SESSION['web
 
 $periodo = $conn->get_row($qryPeriodo);
 
+$sql =  " SELECT o.id as idof, " .
+           "        ref_campus, " .
+           "        get_campus(ref_campus), " .
+           "        ref_curso, " .
+           "        curso_desc(ref_curso), " .
+           "		fl_digitada, fl_concluida, ".
+           "        descricao_disciplina(o.ref_disciplina) as descricao_extenso, " .
+           "        ref_disciplina, " .
+           "        get_num_matriculados(o.id) || '/' || num_alunos as qtde_alunos, " .
+           "        turma, " .
+           "        ref_periodo_turma " .
+           " FROM disciplinas_ofer o, disciplinas_ofer_prof p " .
+           " WHERE is_cancelada = '0' AND ".
+           "       p.ref_professor = '$sa_ref_pessoa' AND ".
+           "       o.id = p.ref_disciplina_ofer AND ".
+           "       o.ref_periodo = '". $_SESSION['web_diario_periodo_id'] ."'";
+
+$sql = 'SELECT * from ('. $sql .') AS T1 ORDER BY lower(to_ascii(descricao_extenso));';
+
+//   $diarios = $conn->get_all($sql);
+
 $sql3 = 'SELECT DISTINCT
                 d.id,
                 d.descricao_disciplina,
@@ -51,14 +72,13 @@ $sql3 = 'SELECT DISTINCT
                 o.is_cancelada = \'0\' AND
                 d.id = o.ref_disciplina;';  
 
-	$diarios = $conn->get_all($sql3);
+	$diarios = $conn->get_all($sql);
 
    if(count($diarios) == 0)
    {
-        echo '<script language="javascript">
+        exit('<script language="javascript">
                 window.alert("Nenhum diário encontrado para o filtro selecionado!");
-        </script>';
-        exit;
+        </script>');
    }
 
 
@@ -76,7 +96,6 @@ $periodos = $conn->get_all($qry_periodos);
 <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css">
 
 <script type="text/javascript" src="<?=$BASE_URL .'lib/prototype.js'?>"> </script>
-
 
 </head>
 
@@ -123,64 +142,91 @@ $periodos = $conn->get_all($qry_periodos);
 
 <table cellspacing="0" cellpadding="0" class="papeleta">
     <tr bgcolor="#cccccc">
-      <td> &nbsp; &nbsp; &nbsp; &nbsp;</td>
-        <td align="center"><b>Di&aacute;rio</b></td>
-        <td align="center"><b>Descri&ccedil;&atilde;o</b></td>
-		<td align="center"><b>Situa&ccedil;&atilde;o</b></td>
+        <th align="center"><strong>Ordem</strong></th>
+		<th align="center"><b>Di&aacute;rio</b></th>
+        <th align="center"><b>Descri&ccedil;&atilde;o</b></th>
+		<th align="center"><b>Alunos / Vagas</b></th>
+		<th align="center"><b>Turma</b></th>
+        <th align="center"><b>Situa&ccedil;&atilde;o</b></th>
+        <th align="center"><b>Op&ccedil;&otilde;es</b></th>
     </tr>
 <?php
 
-$i = 0;
+$i = 1;
 
-$r1 = '#FFFFFF';
-$r2 = '#FFFFCC';
+$r1 = '#FFFFFF';// '#ccccff';
+$r2 = '#FFFFFF';
 
 foreach($diarios as $row3) :
-  
-	$descricao_disciplina = $row3["descricao_extenso"];
-    $disciplina_id = $row3["id"];
+
+    $descricao_disciplina = $row3["descricao_extenso"];
+    $disciplina_id = $row3["idof"];
     $diario_id = $row3["idof"];
 	$fl_digitada = $row3['fl_digitada'];
-	$fl_concluida = $row3['fl_concluida'];
+    $fl_concluida = $row3['fl_concluida'];
+	$qtde_alunos = (!empty($row3['qtde_alunos'])) ? $row3['qtde_alunos'] : '-';
+	$turma = (!empty($row3['turma'])) ? $row3['turma'] : '-';
 
-    $fl_encerrado = 0;
-	
+
+    $fl_encerrado = ($fl_digitada == 't')  ? 1 : 0;
+
+    $opcoes_diario = '';
+    if ($fl_encerrado == 0) {
+      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'notas\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">nota</a><br />';
+      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'chamada\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">chamada</a><br />';
+      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'altera_chamada\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">altera faltas nas chamadas</a><br />';
+      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'exclui_chamada\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">excluir chamada</a><br />';
+      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'marca_diario\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">marca / desmarca conclu&iacute;do</a><br />';
+      $opcoes_diario .= '<br />';
+    }
+
+    $opcoes_diario .= '<strong>Relat&oacute;rios</strong><hr />';
+    $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'papeleta\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">papeleta</a><br />';
+    $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'papeleta_completa\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">papeleta completa</a><br />';
+	$opcoes_diario .= '<a href="#" onclick="enviar_diario(\'faltas_completo\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">relat&oacute;rio de faltas completo</a><br />';
+    $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'conteudo_aula\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">conte&uacute;do de aula</a><br />';
+    $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'caderno_chamada\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">caderno de chamada</a>';
+
+    	
 	if($fl_digitada == 'f' && $fl_concluida == 'f') {  
 		$fl_situacao = '<font color="green"><b>Aberto</b></font>';  
 	} 
-	else { 
+	else {
+
+        $opcoes_diario .= '<br />';
+
 		if($fl_concluida == 't') {
         	$fl_situacao = '<font color="blue"><b>Conclu&iacute;do</b></font>';
     	}
 
 		if($fl_digitada == 't') {
             $fl_situacao = '<font color="red"><b>Finalizado</b></font>';
-            $fl_encerrado = 1;
-        }        
+        }
+
 	}
 
     $rcolor = (($i % 2) == 0) ? $r1 : $r2;
+    $op_color = ($rcolor == $r2) ? $r1 : $r2;
 ?>
 
     <tr bgcolor="<?=$rcolor?>">
-      <td width="5%" align="center"><input  type="radio" name="diario" id="diario" value="<?=$disciplina_id .'|'. $diario_id .'|'. $fl_encerrado?>" />    
+      <td width="5%" align="center"><?=$i?>
+        <!--<input  type="radio" name="diario" id="diario" value="<\?=$disciplina_id .'|'. $diario_id .'|'. $fl_encerrado?>" />-->
       </td>
-      <td width="10%" align="center"><?=$diario_id?>
-      </td>
-      <td width="60%">
-        <a href="#" id="<?=$diario_id . '_pane'?>"><?=$descricao_disciplina?></a>
-            
+      <td width="5%" align="center"><strong><?=$diario_id?></strong></td>
+      <td width="50%">&nbsp;&nbsp;<strong><?=$descricao_disciplina?></strong></td>
+      <td align="center"><?=$qtde_alunos?></td>
+      <td align="center"><?=$turma?></td>
+      <td align="center"><?=$fl_situacao?></td>
+      <td align="center">
+        <a href="#" id="<?=$diario_id . '_pane'?>" title="clique para visualizar / ocultar">acessar</a>
         <!-- panel com as opções do diário // inicio //-->
-          <div id="diario_<?=$diario_id?>_pane" style="display:none; border: 0.0015em solid; width:200px; text-align:center; margin: 1.2em; padding: 1em;">
-            <h4>opções do diário <?=$diario_id?>:</h4>
-            <br />
-            <input type="button" id="papeleta" name="papeleta" value="Papeleta" onclick="enviar_('papeleta',<?=$diario_id?>);" /><br />
-            <input type="button" id="conteudo" name="conteudo" value="Conte&uacute;do de aula" onclick="enviar_('conteudo_aula',<?=$diario_id?>);" />
-           <br />
-          </div>
-        <!-- panel com as opções do diário \\ fim \\ -->
+        <div id="diario_<?=$diario_id?>_pane" style="display:none; margin: 1.2em; padding: 1em; background-color: <?=$op_color?>" class="opcoes_web_diario">
+            <?=$sem_opcoes . $opcoes_diario?>
+        </div>
+        <!-- panel com as opções do diário \\ fim \\ -->       
       </td>
-      <td width="10%"align="center"><?=$fl_situacao?></td>
+
     </tr>
 
 <?php
@@ -191,34 +237,6 @@ foreach($diarios as $row3) :
 ?>
 </table>
 
-<br /><br />
-<p>
-
-<input type="button" id="notas" name="notas" value="Notas" onclick="enviar('notas');"/> &nbsp; &nbsp;
-
-<input type="button" id="chamada" name="chamada" value="Chamada" onclick="enviar('chamada');"/> &nbsp; &nbsp;
-
-<!--<input type="button" id="papeleta" name="papeleta" value="Papeleta" onclick="enviar('papeleta');" /> &nbsp; &nbsp;
-<input type="button" id="conteudo" name="conteudo" value="Conte&uacute;do de aula" onclick="enviar('conteudo_aula');" /> &nbsp; &nbsp;
--->
-<select name="relatorio_acao" id="relatorio_acao" class="select" onchange="enviar(this.value);">
-    <option value="0">---  relat&oacute;rios     ---</option>
-    <option value="papeleta">Papeleta</option>
-    <option value="papeleta_completa">Papeleta Completa</option>
-	<option value="conteudo_aula">Conte&uacute;do de aula</option>
-    <option value="faltas_completo">Relat&oacute;rio de faltas completo</option>
-    <option value="caderno_chamada">Imprimir caderno de chamada</option>
-</select>
-
-&nbsp;&nbsp;&nbsp;
-
-<select name="outras_acoes" id="outras_acoes" class="select" onchange="enviar(this.value);">
-  	<option value="0">---  outras   op&ccedil;&otilde;es     ---</option>
-	<option value="marca_diario">Marcar / desmarcar como conclu&iacute;do</option>
-	<option value="altera_chamada">Alterar faltas nas chamadas</option>
-    <option value="exclui_chamada">Excluir chamada</option>
-</select>
-	</p>
 <br /><br />
 <br /><br />
 </form>

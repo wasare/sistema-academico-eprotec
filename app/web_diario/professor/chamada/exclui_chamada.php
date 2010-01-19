@@ -20,6 +20,10 @@ if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
 }
 // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
+if (!existe_chamada($diario_id)) {
+  exit('<script language="javascript" type="text/javascript">window.alert("Nenhuma chamada registrada para este diario!");window.close(); </script>');
+}
+
 if (is_finalizado($diario_id)){
 
     echo '<script language="javascript" type="text/javascript">';
@@ -29,7 +33,9 @@ if (is_finalizado($diario_id)){
     exit;
 }
 
-// TODO: registrar no log a operação de exclusão de chamada
+
+
+// @todo registrar no log a operação de exclusão de chamada
 if(isset($_POST['exclui_ok']) && $_POST['exclui_ok'] === 'exclui_chamada') {    
 	
     $sql_exclui_chamada = 'BEGIN;';

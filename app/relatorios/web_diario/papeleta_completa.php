@@ -69,35 +69,32 @@ foreach($qry as $registro)
 
 // ^ ATUALIZA NOTAS E FALTAS CASO O DIARIO TENHA SIDO INICIALIZADO ^//
 
+
+if (!existe_matricula($diario_id)) {
+  exit('<script language="javascript">window.alert("Este diário ainda não possue alunos matriculados!"); javascript:window.close(); </script>');
+}
+
 $sql3 = 'SELECT 
-			b.nome, b.ra_cnec, a.ordem_chamada, a.nota_final, c.ref_diario_avaliacao, c.nota, a.num_faltas 
-		FROM 
-			matricula a, pessoas b, diario_notas c 
-		WHERE	 
-			(a.dt_cancelamento is null) AND 
-			a.ref_disciplina_ofer = '. $diario_id .' AND 
-			a.ref_pessoa = b.id AND 
-			b.ra_cnec = c.ra_cnec AND 
-			c.d_ref_disciplina_ofer = a.ref_disciplina_ofer AND 
-			a.ref_motivo_matricula = 0 
-		ORDER BY 
-			lower(to_ascii(nome)), ref_diario_avaliacao;';
+            b.nome, b.ra_cnec, a.ordem_chamada, a.nota_final, c.ref_diario_avaliacao, c.nota, a.num_faltas 
+        FROM 
+            matricula a, pessoas b, diario_notas c 
+        WHERE    
+            (a.dt_cancelamento is null) AND 
+            a.ref_disciplina_ofer = '. $diario_id .' AND 
+            a.ref_pessoa = b.id AND 
+            b.ra_cnec = c.ra_cnec AND 
+            c.d_ref_disciplina_ofer = a.ref_disciplina_ofer AND 
+            a.ref_motivo_matricula = 0 
+        ORDER BY 
+            lower(to_ascii(nome)), ref_diario_avaliacao;';
 
 
 $matriculas = $conn->get_all($sql3);
 
-if($matriculas === FALSE)
-{
-    envia_erro($sql3);
-    exit;
+if($matriculas === FALSE) {
+    exit(envia_erro($sql3));
 }
-else {
-    if(count($matriculas) == 0) {
-        echo '<script language="javascript">window.alert("Este diário ainda não foi iniciado pelo professor!"); javascript:window.close(); </script>';
-      exit;
-    }
 
-}
 
 $sql5 = " SELECT fl_digitada, fl_concluida
             FROM
@@ -203,18 +200,18 @@ if( $fl_digitada == 'f') {
 </font>
 <table cellspacing="0" cellpadding="0" class="papeleta">
 	<tr bgcolor="#cccccc">
-		<td><b>N&ordm;</b></td>
-		<td><b>Matr&iacute;cula</b></td>
-		<td><b>Nome</b></td>
-		<td align="center"><b>N1</b></td>
-		<td align="center"><b>N2</b></td>
-		<td align="center"><b>N3</b></td>
-		<td align="center"><b>N4</b></td>
-		<td align="center"><b>N5</b></td>
-		<td align="center"><b>N6</b></td>
-		<td align="center"><b>N. Extra</b></td>
-		<td align="center"><b>Total</b></td>
-		<td align="center"><b>Faltas</b></td>
+		<th><b>N&ordm;</b></th>
+		<th><b>Matr&iacute;cula</b></th>
+		<th><b>Nome</b></th>
+		<th align="center"><b>N1</b></th>
+		<th align="center"><b>N2</b></th>
+		<th align="center"><b>N3</b></th>
+		<th align="center"><b>N4</b></th>
+		<th align="center"><b>N5</b></th>
+		<th align="center"><b>N6</b></th>
+		<th align="center"><b>N. Extra</b></th>
+		<th align="center"><b>Total</b></th>
+		<th align="center"><b>Faltas</b></th>
 	</tr>
 <?php
 

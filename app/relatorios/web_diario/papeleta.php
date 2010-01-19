@@ -18,10 +18,13 @@ if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login'
     exit('<script language="javascript" type="text/javascript">
             alert(\'Você não tem direito de acesso a estas informações!\');
             window.close();</script>');
-  }
-  // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
+  }  
 }
+// ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
+if (!existe_matricula($diario_id)) {
+  exit('<script language="javascript">window.alert("Este diário ainda não possue alunos matriculados!"); javascript:window.close(); </script>');
+}
 
 
 $sql3 = "SELECT 
@@ -142,11 +145,11 @@ if( $fl_digitada == 'f') {
 </font>
 <table cellspacing="0" cellpadding="0" class="papeleta">
 	<tr bgcolor="#cccccc">
-		<td  align="center"><b>N&ordm;</b></td>
-		<td  align="center"><b>Matr&iacute;cula</b></td>
-		<td><b>Nome</b></td>
-		<td align="center"><b>Nota</b></td>
-		<td align="center"><b>Falta</b></td>
+		<th  align="center"><b>N&ordm;</b></th>
+		<th  align="center"><b>Matr&iacute;cula</b></th>
+		<th><b>Nome</b></th>
+		<th align="center"><b>Nota</b></th>
+		<th align="center"><b>Falta</b></th>
 	</tr>
 
 <?php

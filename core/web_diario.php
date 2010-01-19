@@ -386,8 +386,8 @@ function acessa_diario($diario_id,$sa_ref_pessoa) {
 		return FALSE;
 }
 
-// VERIFICA SE NAO EXISTE CHAMADA PARA ESTA DATA
-function existe_chamada($diario_id,$data_chamada) {
+// VERIFICA SE EXISTE CHAMADA
+function existe_chamada($diario_id,$data_chamada='') {
 
 	global $conn;
 
@@ -395,8 +395,14 @@ function existe_chamada($diario_id,$data_chamada) {
 	  FROM
       diario_seq_faltas
       WHERE
-      dia = '". $data_chamada ."' AND
-      ref_disciplina_ofer = ". $diario_id .";";
+      ref_disciplina_ofer = ". $diario_id;
+    
+    if (!empty($data_chamada)) {
+      $sql .= " AND  dia = '". $data_chamada ."';";
+    }
+    else {
+      $sql .= ';';
+    }
 
     $chamadas = $conn->get_one($sql);
 
@@ -404,6 +410,30 @@ function existe_chamada($diario_id,$data_chamada) {
 		return TRUE;
 	else
 		return FALSE;
+}
+
+// VERIFICA SE EXISTE MATRICULAS NO DIARIO
+function existe_matricula($diario_id) {
+
+  global $conn;
+
+  $sql = 'SELECT
+			COUNT(a.id)
+		FROM
+			matricula a
+		WHERE
+			(a.dt_cancelamento is null) AND
+			a.ref_disciplina_ofer = '. $diario_id .' AND
+			a.ref_motivo_matricula = \'0\'
+        GROUP BY
+            a.id;';
+
+  $matriculas = $conn->get_one($sql);
+
+  if($matriculas > 0)
+    return TRUE;
+  else
+    return FALSE;
 }
 
 // GRAVA LOG NO BANCO DE DADOS
