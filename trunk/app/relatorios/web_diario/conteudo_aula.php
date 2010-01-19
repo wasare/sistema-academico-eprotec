@@ -22,22 +22,22 @@ if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login'
   // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 }
 
+if (!existe_chamada($diario_id)) {
+  exit('<script language="javascript" type="text/javascript">window.alert("Nenhuma conteudo registrado para este diario!");window.close(); </script>');
+}
 
 $sql1 ="SELECT id,
                dia,
                conteudo,
-	       flag
+           flag
                FROM
                diario_seq_faltas
                WHERE
-               ref_disciplina_ofer = $diario_id 
+               ref_disciplina_ofer = $diario_id
                ORDER BY dia desc;";
 
 
 $conteudos = $conn->get_all($sql1);
-
-if(count($conteudos) == 0) 
-  exit('<script language="javascript" type="text/javascript">window.alert("Nenhuma conteudo registrado para este diario!");window.close(); </script>');
 
 
 ?>

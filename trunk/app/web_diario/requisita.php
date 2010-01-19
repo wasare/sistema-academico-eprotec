@@ -20,7 +20,7 @@ if(!is_numeric($diario_id) && !is_numeric($operacao))
 }
 
 //  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
-if($operacao != 'lista_diarios_coordenacao') {
+if($operacao != 'lista_diarios_coordenacao' && $operacao != 'troca_senha') {
   if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
     exit('<script language="javascript" type="text/javascript">
             alert(\'Você não tem direito de acesso a estas informações!\');
@@ -42,7 +42,7 @@ if(isset($_SESSION['web_diario_periodo_id']))
 if(isset($_SESSION['web_diario_periodo_coordena_id']))
 	$menu_superior .= '<a href="#" onclick="window.opener.reload_parent_pane(\'pane_coordenacao\');window.close();">Coordena&ccedil;&atilde;o</a>&nbsp;|&nbsp;';
 
-$menu_superior .= '<a href="#" onclick="window.opener.location.href=\''. $BASE_URL .'\';window.close();">Sair</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+$menu_superior .= '<a href="#" onclick="window.opener.location.href=\''. $BASE_URL .'\';window.close();">Encerrar a sess&atilde;o</a>&nbsp;&nbsp;&nbsp;&nbsp;';
 $menu_superior .= '<img src="'. $BASE_URL .'public/images/icons/bola_verde.gif" width="10" height="10" />&nbsp;' . $sa_usuario .'&nbsp;&nbsp;';
 
 $menu_superior .= '<br /></div>';
@@ -117,9 +117,31 @@ if($operacao == 'lista_diarios_coordenacao') {
     unset($_POST['diario_id']);
 	$_GET['curso_id'] = $diario_id;
 	$_GET['periodo_id'] = $_SESSION['web_diario_periodo_coordena_id']; 
-    require_once($BASE_DIR .'app/web_diario/secretaria/lista_diarios_secretaria.php');
+    require_once($BASE_DIR .'app/web_diario/coordenacao/lista_diarios_coordenacao.php');
     exit;
 }
+
+if($operacao == 'marca_finalizado') {
+	echo papeleta_header($diario_id);
+    require_once($BASE_DIR .'app/web_diario/coordenacao/marca_finalizado.php');
+	echo '<br />';
+	echo '<script language="javascript" type="text/javascript">
+			alert(\'Diario finalizado com sucesso!\');
+			window.opener.location.reload();
+			setTimeout("self.close()",450); </script>';
+    exit;
+}
+
+if($operacao == 'finaliza_todos') {
+    require_once($BASE_DIR .'app/web_diario/coordenacao/finaliza_todos.php');
+	echo '<br />';
+	echo '<script language="javascript" type="text/javascript">
+			window.opener.location.reload();
+			setTimeout("self.close()",450); </script>';
+    exit;
+}
+
+// ^ OPERACAO DA COORDENACAO ^
 
 // ^ OPERACOES COM ALTERACAO DE DADOS   ^ //
 

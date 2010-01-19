@@ -26,7 +26,7 @@ if(isset($_POST['confirm1'])) {
 
             $msg = '<font color="green">Senha alterada com sucesso!</font>';
 
-			$message = 'Sistema Acadêmico - usu&aacute;rio: "'.$sa_usuario;
+			$message = 'Sistema Acad&ecirc;mico - usu&aacute;rio: "'.$sa_usuario;
 
 			$senha_ok = TRUE;
 

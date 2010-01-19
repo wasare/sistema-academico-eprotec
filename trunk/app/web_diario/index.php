@@ -73,151 +73,7 @@ else
 
 <script type="text/javascript" src="<?=$BASE_URL .'lib/prototype.js'?>"> </script>
 <script type="text/javascript" src="<?=$BASE_URL .'lib/tabbed_pane.js'?>"> </script>
-
-<script language="javascript" type="text/javascript">
-
-function abrir(winName, urlLoc, w, h)
-{
-   var l, t, jw, jh, myWin;
-
-   jw = screen.width;
-   jh = screen.height;
-
-   l = ((screen.availWidth-jw)/2);
-   t = ((screen.availHeight-jh)/2);
-
-   features  = "toolbar=no";      // yes|no
-   features += ",location=no";    // yes|no
-   features += ",directories=no"; // yes|no
-   features += ",status=no";  // yes|no
-   features += ",menubar=no";     // yes|no
-   features += ",scrollbars=yes";   // auto|yes|no
-   features += ",resizable=no";   // yes|no
-   features += ",dependent";  // close the parent, close the popup, omit if you want otherwise
-   features += ",height=" + (h?h:jh);
-   features += ",width=" + (w?w:jw);
-   features += ",left=" + l;
-   features += ",top=" + t;
-
-   winName = winName.replace(/[^a-z]/gi,"_");
-
-	myWin = window.open(urlLoc,winName,features);
-	myWin.focus();
-}
-
-function concluido(diario_id) {
-           
-    if (! diario_id == "") {
-        if (! confirm('Você deseja marcar / desmarcar como concluído o diário ' + diario_id + '?' + '\n\n Como concluído o diário poderá ser "Finalizado" pela coordenação ficando\n bloqueado para alterações!')) {
-            return false;
-        } 
-        else {
-            return true;
-        }
-    }
-}
-
-function enviar(action) {
-
-    var undefined;
-    var lst = -1;
-    var i;
-    var lista = $('lista_diarios').getInputs('radio');
-
-    if(lista.length == undefined) {
-
-        if(lista.checked)
-            lst = 0;
-    }
-    else {
-		for (i = 0 ; i < lista.length; i++) {
-            if( lista[i].checked ) {
-                lst = i;
-                i = -1;
-                break;
-            }
-        }
-    }
-
-    if (lst == -1) {
-       $('relatorio_acao').selectedIndex = 0;
-       $('outras_acoes').selectedIndex = 0;
-       alert("Primeiro selecione um diário!");
-       return false;
-    }
-    else {
-
-        if(lst == 0 && i != -1) {
-            diarios = lista.value;
-        }
-        else {
-            diarios = lista[lst].value;
-        }
-		
-		 diario  = diarios.split("|");
-
-        var disc = diario[0];
-        var ofer = diario[1];
-        var encerrado = diario[2];
-
-		$('relatorio_acao').selectedIndex = 0; 
-        $('outras_acoes').selectedIndex = 0;
-
-        if (encerrado == 1 && (action == 'notas' || action == 'chamada' || action == 'altera_chamada' || action == 'exclui_chamada' || action == 'marca_diario' )) {
-
-            alert("ERRO! Este diário está finalizado e não pode ser alterado!");
-            return false;
-        }
-    }
-
-	if (action != 0)
-	{
-        if (action == 'marca_diario') {
-			if (concluido(ofer)) 
-				abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=' + ofer);
-		}
-		else
-			abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=' + ofer);
-	}
-}
-
-set_periodo = function(data,pane) {
-	$('pane_overlay').show();
-    var parametro = data;
-    var objAjax = new Ajax.Request('seleciona_periodo.php', {method: 'post', evalJS: true, parameters: parametro, onSuccess: reload_pane});
-}
-
-
-String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
-
-reload_pane = function(resposta) {
-    var pane = unescape(resposta.responseText);
-
-    if (pane.trim() == 'pane_diarios')  
-        thePane.load_page('pane_diarios');
-
-    if (pane.trim() == 'pane_coordenacao')  
-        thePane.load_page('pane_coordenacao');
-}
-
-reload_parent_pane = function(pane) {
-    $('pane_overlay').show();
-    
-    if (pane.trim() == 'pane_diarios') {
-        thePane.load_page('pane_diarios');        
-        $('pane_coordenacao').removeClassName('active');
-        $('pane_diarios').addClassName('active');
-    }
-
-    if (pane.trim() == 'pane_coordenacao') {
-        thePane.load_page('pane_coordenacao');
-        $('pane_diarios').removeClassName('active');
-        $('pane_coordenacao').addClassName('active');
-    }
-}
-
-
-</script>
+<script type="text/javascript" src="<?=$BASE_URL .'app/web_diario/web_diario.js'?>"> </script>
 
 </head>
 
@@ -227,7 +83,7 @@ reload_parent_pane = function(pane) {
 
 <table border="0" cellspacing="0" cellpadding="0" class="papeleta">
     <tr>
-	<td>
+	<th>
     <img src="<?=$BASE_URL .'public/images/sa_icon.png'?>" alt="Sistema Acad&ecirc;mico - Web Di&aacute;rio" title="Sistema Acad&ecirc;mico - Web Di&aacute;rio" />
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<font style="font-size: 2.2em; font-weight: bold;">Sistema Acad&ecirc;mico - Web Di&aacute;rio</font>
@@ -235,11 +91,13 @@ reload_parent_pane = function(pane) {
     <img src="<?=$BASE_URL .'public/images/ifmg.jpg'?>" alt="IFMG - Campus Bambu&iacute;" title="IFMG - Campus Bambu&iacute;" />
     &nbsp;&nbsp;
     <img src="<?=$BASE_URL .'public/images/gti.jpg'?>" alt="Ger&ecirc;ncia TI" title="Ger&ecirc;ncia de TI" width="50" height="34" />
+    <img src="<?=$BASE_URL .'public/images/icons/bola_verde.gif'?>" width="10" height="10" />&nbsp;<a href="#" style="background-color: #ffe566;"><?=$sa_usuario?></a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="<?=$BASE_URL .'index.php'?>" style="background-color: #ffe566;">encerrar a sessão</a>
     <?php
 		if ($_SERVER['HTTP_HOST'] == 'dev.cefetbambui.edu.br' || $host != '192.168.0.234')
 			echo '&nbsp;&nbsp;&nbsp;&nbsp;<strong>Servidor de BD: </strong>'. $host;
     ?>
-    </td>
+    </th>
     </tr>
 </table>
 
@@ -257,10 +115,6 @@ reload_parent_pane = function(pane) {
         ?>
         
 		<li><a href="#" id="pane_ferramentas">Ferramentas</a></li>
-
-		<li><a href="<?=$BASE_URL .'index.php'?>" style="background-color: #ffe566;" id="pane_sair">Sair</a></li>
-		<?=$sa_usuario?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="<?=$BASE_URL .'index.php'?>" style="background-color: #ffe566;" id="pane_sair">encerrar a sessão</a>
     </ol>
    
     <div id="pane_container" class="tabbed-container">

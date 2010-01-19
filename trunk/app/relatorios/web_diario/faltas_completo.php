@@ -24,6 +24,9 @@ if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login'
   // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 }
 
+if (!existe_chamada($diario_id)) {
+  exit('<script language="javascript" type="text/javascript">window.alert("Nenhuma chamada registrada para este diario!");window.close(); </script>');
+}
 
 $sql3 = "SELECT DISTINCT dia FROM diario_seq_faltas WHERE ref_disciplina_ofer = $diario_id ORDER BY dia;"; 
 
@@ -101,13 +104,13 @@ else {
 <br />
 <table cellspacing="0" cellpadding="0" class="papeleta">
 	<tr bgcolor="#cccccc">
-		<td><strong>N&ordm;</strong></td>
-		<td><strong>Matr&iacute;cula</strong></td>
-		<td><strong>Nome</strong></td>
+		<th><strong>Ordem</strong></th>
+		<th><strong>Matr&iacute;cula</strong></th>
+		<th><strong>Nome</strong></th>
         <?php
 
 			foreach($num_chamadas as $d) {
-				echo '<td align="center"><strong>'. date::convert_date($d['dia']) .'</strong></td>';								
+				echo '<th align="center"><strong>'. date::convert_date($d['dia']) .'</strong></th>';
 			}
 
 		?>
@@ -129,8 +132,8 @@ $FaltaMax = $ch_realizada * 0.25;
 $i = 0;
 $No = 1;
 
-$r1 = '#F3F3F3';
-$r2 = '#E3E3E3';
+$r1 = '#FFFFFF';
+$r2 = '#FAFAFA';
 
 											
 foreach($alunos_diario as $row3) {
@@ -163,7 +166,7 @@ foreach($alunos_diario as $row3) {
    
    print("<tr bgcolor=\"$rcolor\">\n"); 
    print ("<td align=\"center\">".$No++."</td>\n ");
-   print(" <td width=\"10%\" align=\"center\">$racnec</td>\n <td width=\"60%\">$nome_f</td>\n "); 
+   print(" <td align=\"center\">$racnec</td>\n <td>$nome_f</td>\n "); 
    
 
 //   -- RECUPERA AS FALTAS PARCIAIS POR ALUNO

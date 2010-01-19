@@ -5,7 +5,7 @@ table.papeleta {
     border-spacing: 0px;
 }   
     
-.papeleta td {
+.papeleta td, .papeleta th {
     font: 0.85em verdana, arial, tahoma, sans-serif;
     border: 0.0015em solid;
     padding: 5px;
@@ -29,6 +29,33 @@ table.papeleta {
     color: #00047D;
 }
 
+.papeleta tr:hover td {
+  background: #e5ffcc; /*#ccccff/*#ccffe5;*/
+  color: #000033;
+}
+
+.opcoes_web_diario {
+  border: 0.0015em solid;
+  width:200px;
+  text-align: left;
+  background-color: white;
+  line-height: 2em;
+}
+
+.opcoes_web_diario a {
+    text-decoration: none;
+    color: #00047D;
+    border-bottom: 2px #eee dotted;
+}
+
+.opcoes__web_diario a:hover {
+    text-decoration: underline;
+    color: #00047D;
+}
+
+.opcoes_web_diario a:visited, a:active {
+    color: #00047D;
+}
 
 .opcoes_diario {
 	line-height: 2em;
@@ -38,7 +65,6 @@ table.papeleta {
     text-decoration: none;
     color: #00047D;
     border-bottom: 2px #eee dotted;
-
 }
 
 .opcoes_diario a:hover {
@@ -79,7 +105,7 @@ table.papeleta {
 	color: #336699;
 	display: block;
 	padding: 10px;
-	background: #CCCCCC;
+	background: #e5ffcc;/* #CCCCCC;*/
 	border-color: #333;
 	border-style: solid;
 	border-width: 1px;
