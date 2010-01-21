@@ -2,13 +2,11 @@
 
 require_once(dirname(__FILE__) .'/../../setup.php');
 
-if(empty($_SESSION['web_diario_periodo_coordena_id']))
-{
-        echo '<script language="javascript">
+if(empty($_SESSION['web_diario_periodo_coordena_id'])) {
+       exit ('<script language="javascript">
                 window.alert("ERRO! Primeiro informe um período!");
                 window.close();
-        </script>';
-        exit;
+        </script>');
 }
 
 $conn = new connection_factory($param_conn);
@@ -51,12 +49,11 @@ if(count($cursos) == 0)
         exit;
 }
 
-// RECUPERA INFORMACOES SOBRE DO PROFESSOR E SEUS PERIODOS
+// RECUPERA INFORMACOES SOBRE oS PERIODOS DA COORDENACAO
 $qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, periodos p WHERE  o.ref_periodo = p.id AND o.ref_curso IN (SELECT DISTINCT ref_curso FROM coordenador WHERE ref_professor = '. $sa_ref_pessoa .') ORDER BY ref_periodo DESC;';
 
 $periodos = $conn->get_all($qry_periodos);
-// ^ RECUPERA INFORMACOES SOBRE O PROFESSOR E SEUS PERIODOS ^ //
-
+// ^ RECUPERA INFORMACOES SOBRE oS PERIODOS DA COORDENACAO ^ //
 
 ?>
 
@@ -70,10 +67,10 @@ $periodos = $conn->get_all($qry_periodos);
 
 </head>
 
-<body bgcolor="#FFFFFF" text="#000000" >
-<center>
+<body>
+
 <div align="left">
-<br />
+
 <strong>
             <font size="4" face="Verdana, Arial, Helvetica, sans-serif">
                 Per&iacute;odo de coordenação: 
@@ -82,24 +79,24 @@ $periodos = $conn->get_all($qry_periodos);
 </strong>
 &nbsp;&nbsp;
 
-<span><a href="#" title="alterar o per&iacute;odo" alt="alterar o per&iacute;odo" id="periodos_coordenacao">alterar</a></span>
-<br /><br />
+<span><a href="#" title="alterar o per&iacute;odo" id="periodos_coordenacao">alterar</a></span>
+<br />
+<br />
+<!-- panel para alteracao dos periodos do coordenador // inicio //-->
 <div id="periodos_coordenacao_pane" style="display:none; border: 0.0015em solid; width: 200px; text-align:center;">
 <br />
 
 <h4>clique no per&iacute;odo:</h4>
 <br />
 <?php
-    foreach($periodos as $p)
-    {
+    foreach($periodos as $p) {
         echo '<a href="#" title="Per&iacute;odo '. $p['descricao'] .'" alt="Per&iacute;odo '. $p['descricao'] .'" onclick="set_periodo(\'periodo_coordena_id='. $p['ref_periodo'] .'\');">'. $p['descricao'] .'</a><br />';
     }
-
 ?>
-
 <br />
 </div>
-<br /><br />
+<!-- panel para alteracao dos periodos do coordenador \\ fim \\ -->
+<br />
 <strong>
             <font size="4" face="Verdana, Arial, Helvetica, sans-serif">
                 Cursos desta coordenação 
@@ -111,27 +108,24 @@ $periodos = $conn->get_all($qry_periodos);
 <br />
 
 <?php
-    foreach($cursos as $c)
-    {
+    foreach($cursos as $c) {
 		$onclick = 'onclick="abrir(\''. $IEnome .' - web diário\', \'requisita.php?do=lista_diarios_coordenacao&id='. $c['ref_curso'] .'\');"';
         echo '<a href="#" title="Curso '. $c['curso'] .'" alt="Curso '. $c['curso'] .'" '. $onclick .'>'. $c['curso'] .'</a><br />';
     }
-
 ?>
 
 <br /><br />
 
-<form name="acessa_diario" id="acesso_diario" method="post">
+<form name="acessa_diario" id="acesso_diario" method="post" action="">
 <strong>Acesso rápido</strong> <br />
 Código do diário:
-<input type="text" name="diario_id" id="diario_id" />
+<input type="text" name="diario_id" id="diario_id" size="10" />
+<input type="button" name="envia_diario" id="envia_diario" value="Consultar" onclick="enviar_diario('pesquisa_diario_coordenacao',null,null);" />
 </form>
 <br />
 </div>
 <script language="javascript" type="text/javascript">
-
     $('periodos_coordenacao').observe('click', function() { $('periodos_coordenacao_pane').toggle(); });
-
 </script>
 
 </body>

@@ -76,13 +76,11 @@ $periodo = $conn->get_row($qryPeriodo);
 
    $diarios = $conn->get_all($sql);
 
-   if(count($diarios) == 0)
-   {
-		echo '<script language="javascript">
+   if (count($diarios) == 0) {
+		exit('<script language="javascript">
                 window.alert("Nenhum diário encontrado para o filtro selecionado!");
                 window.close();
-		</script>';
-		exit;
+		</script>');
    }
 
 ?>
@@ -98,17 +96,13 @@ $periodo = $conn->get_row($qryPeriodo);
 
 </head>
 
-<body bgcolor="#FFFFFF" text="#000000" >
+<body>
 
-<script type="text/javascript" src="<?=$BASE_URL .'lib/wz_tooltip.js'?>"> </script>
-
-<center>
-<br />
 <div align="left">
 
 <table cellpadding="0" cellspacing="0" class="papeleta">
   <tr>
-  <td>
+  <th>
     <div align="center">
       <font color="#990000" size="4" face="Verdana, Arial, Helvetica, sans-serif">
         <strong>
@@ -116,12 +110,12 @@ $periodo = $conn->get_row($qryPeriodo);
         </strong>
       </font>
     </div>
-  </td>
+  </th>
   </tr>
 </table>
 
 <h4><strong>Curso: </strong><font color="blue"><?=$curso['id'] .' - '. $curso['nome']?></font></h4>
-<h3>Passe o ponteiro do mouse sobre o di&aacute;rio desejado e selecione a op&ccedil;&atilde;o:</h3>
+<h5>Clique em "acessar" para exibir as op&ccedil;&otilde;es do di&aacute;rio:</h5>
 
 <form id="change_acao" name="change_acao" method="get" action="">
 
@@ -142,7 +136,7 @@ $periodo = $conn->get_row($qryPeriodo);
 $i = 0;
 
 $r1 = '#FFFFFF';
-$r2 = '#FFFFF';
+$r2 = '#FFFFF0';
 
 foreach($diarios as $row3) :
 
@@ -247,11 +241,7 @@ foreach($diarios as $row3) :
 ?>
 
 </table> <br />
-<!--
-    echo '<p>';
-    echo '<input type="button" id="finaliza_todos" name="finaliza_todos" value="Finaliza todos os di&aacute;rios conclu&iacute;dos" onclick="finaliza_todos('. $curso['id'] .',\''. $periodo['id'] .'\');"/> &nbsp; &nbsp; &nbsp;';
-	echo '</p>';
--->
+
 <input type="button" value="finaliza todos os diários concluídos" onclick="enviar_diario('finaliza_todos',<?=$diario_id?>,<?=$fl_encerrado?>);" />
 &nbsp;&nbsp;
 <a href="#" onclick="javascript:window.close();">Fechar</a>
@@ -268,7 +258,7 @@ foreach($diarios as $row3) :
 </script>
 
 </div>
-</center>
+
 </body>
 </head>
 </html>

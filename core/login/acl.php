@@ -17,7 +17,7 @@ class acl {
      */
     public function has_access ($url, connection_factory $conn) {
 
-        global $sa_usuario_id, $BASE_DIR;
+        global $sa_ref_pessoa, $sa_usuario_id, $BASE_DIR;
 
 
         $url_completo = '/'. str_replace($BASE_DIR,'',$url);
@@ -51,13 +51,8 @@ class acl {
 
 
         //-- busca os papeis do usuario
-
-        $sql_usr = "SELECT ref_papel
-                    FROM usuario_papel
-                    WHERE ref_usuario = $sa_usuario_id";
-
-        $rs_usr    = $conn->Execute($sql_usr);
-        $roles_usr = $rs_usr->GetArray();
+        $roles_usr = $this->get_roles($sa_ref_pessoa, $conn);
+        
         $arr_usr   = array();
 
         foreach($roles_usr as $row_usr)
@@ -68,13 +63,11 @@ class acl {
 
         $arr = array_intersect($arr_usr, $arr_url);
 
-        if(!count($arr) > 0) {
+        if(count($arr) == 0) {
             return false;
         }else{
             return true;
         }
-
-
     }
     
     /**
@@ -91,6 +84,21 @@ class acl {
             die('<center><h2>Sem permiss&atilde;o para acessar esta p&aacute;gina.</h2>'.
                 '<a href="javascript:history.back(-1)">Voltar</a></center>');
         }
+    }
+
+    /**
+    * Retorna os papeis do usuário
+    * @param $pessoa_id
+    * @param conexao com banco de dados
+    * @return array contendo os papeis do usuário
+    */
+    public static function get_roles($pessoa_id, connection_factory $conn){
+
+        $sql = "SELECT ref_papel
+                    FROM usuario_papel a, usuario b
+                    WHERE a.ref_usuario = b.id AND b.ref_pessoa = $pessoa_id;";
+
+        return $conn->get_col($sql);
     }
 
 }

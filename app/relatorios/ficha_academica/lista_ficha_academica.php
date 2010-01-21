@@ -1,35 +1,34 @@
 <?php
 
-require_once('../../../app/setup.php');
-require_once('../../../core/situacao_academica.php');
-require_once("../../../core/reports/header.php");
+require_once(dirname(__FILE__) .'/../../setup.php');
+require_once($BASE_DIR .'core/situacao_academica.php');
+require_once($BASE_DIR .'core/web_diario.php');
+require_once($BASE_DIR .'core/reports/header.php');
   
 $conn = new connection_factory($param_conn);
-
 $header  = new header($param_conn);
 
-$aluno_id    = $_GET['aluno'];
-$curso_id    = $_GET['cs'];
-$contrato_id = $_GET['contrato'];
-
-$btnOK = TRUE;	
-
-if(!isset($aluno_id) OR !is_numeric($aluno_id) OR empty($aluno_id)) 
-	$btnOK = FALSE;
-	
-	
-if(!isset($curso_id) OR !is_numeric($curso_id) OR empty($curso_id))
-	$btnOK = FALSE;
-
-if(!isset($contrato_id) OR !is_numeric($contrato_id) OR empty($contrato_id))
-	$btnOK = FALSE;
+$aluno_id    = (int) $_GET['aluno'];
+$curso_id    = (int) $_GET['cs'];
+$contrato_id = (int) $_GET['contrato'];
 
 
-if (!$btnOK)
-     die('Erro de valida&ccedil;&atilde;o de dados!');
+if ($aluno_id == 0 || $curso_id == 0 || $contrato_id == 0)
+    die('Erro de valida&ccedil;&atilde;o de dados!');
 
 
-	$sql1 = "SELECT DISTINCT
+//  VERIFICA O DIREITO DE ACESSO A FICHA COMO PROFESSOR OU COORDENADOR
+if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
+  if(!acessa_ficha_aluno($aluno_id,$sa_ref_pessoa,$curso_id)) {
+    exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.close();</script>');
+  }
+  // ^ VERIFICA O DIREITO DE ACESSO A FICHA COMO PROFESSOR OU COORDENADOR ^ //
+}
+
+
+$sql1 = "SELECT DISTINCT
     d.id, 
     s.descricao as periodo, 
     d.descricao_disciplina as descricao, 
@@ -57,21 +56,26 @@ if (!$btnOK)
     ORDER BY 2, 3";
 
 	
-$ficha_academica = $conn->adodb->getAll($sql1);
+$ficha_academica = $conn->get_all($sql1);
 	
 $contMatriculada = count($ficha_academica);
 
 if ($contMatriculada == 0)
 	die('Nenhum dado encontrado para o aluno informado!');
 
+$nome_aluno = $conn->get_one('SELECT nome FROM pessoas WHERE id = '. $aluno_id .';');
+$nome_curso = $conn->get_one('SELECT id || \' - \' || descricao FROM cursos WHERE id = '. $curso_id .';');
+$contrato = $conn->get_row('SELECT nome_campus, turma FROM campus a , contratos b WHERE b.ref_campus = a.id AND b.id = '. $contrato_id .';');
+
 ?>
 <html>
 <head>
-<title>SA</title>
+  <title><?=$IEnome?> - Sistema Acad&ecirc;mico</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link href="<?=$BASE_URL .'public/styles/relatorio.css'?>" rel="stylesheet" type="text/css">
 
-<style media="print">
+
+<style type="text/css" media="print">
 <!--
 .nao_imprime {display:none}
 
@@ -95,15 +99,17 @@ table.relato {
 
 </head>
 <body>
-	<div>
-		<div align="center" style="text-align:center; font-size:12px;">
-        	<?php echo $header->get_empresa($PATH_IMAGES); ?>
+	<div align="left">
+		<div align="center" style="text-transform: capitalize; font-size: 0.8em; font-family: Verdana; text-align:center;">
+        	<?=$header->get_empresa($PATH_IMAGES)?>
             <br /><br />
         </div> 
 	<h2>Ficha Acad&ecirc;mica</h2>
-	<font color="#000000" size="2"> <b>Matr&iacute;cula: </b><?php echo($aluno_id);?> <b> Nome: </b><?php echo($_GET['nome']);?> </font><br>
-	<font color="#000000" size="2"> <b>Curso: </b><?php echo($_GET['curso']);?><br />
-	<b>Data: </b> <?php echo date("d/m/Y"); ?> <b>Hora: </b><?php echo date("H:i"); ?> </font><br>
+    <div id="cabecalho" style="text-align: left;">
+      <font color="#000000" size="2"><b> Nome: </b><?=$nome_aluno?>&nbsp;&nbsp;<b>Matr&iacute;cula: </b><?=str_pad($aluno_id, 5, "0", STR_PAD_LEFT)?></font><br>
+      <font color="#000000" size="2"> <b>Curso: </b><?=$nome_curso?>&nbsp;&nbsp;<b>Turma: </b><?=$turma = (!empty($contrato['turma'])) ? $contrato['turma'] : '-'?></font><br />
+      <font color="#000000" size="2"> <b>Campus: </b><?=$contrato['nome_campus']?>&nbsp;&nbsp;<b>Data: </b> <?php echo date("d/m/Y"); ?>&nbsp;&nbsp;<b>Hora: </b><?php echo date("H:i"); ?></font><br />
+    </div>
 	<br>
 	<table cellpadding="0" cellspacing="0" class="relato">
 	  <tr bgcolor="#666666">
@@ -284,25 +290,11 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
                  
 ?>
 </table>
-<div align="left" class="relato">
-    <h4>Legenda</h4>
-    <strong>CI</strong> - Disciplina Cursada na Institui&ccedil;&atilde;o<br />
-    <strong>AE</strong> - Aproveitamento de Estudos <br />
-    <strong>CE</strong> - Certifica&ccedil;&atilde;o Experi&ecirc;ncia <br />
-    <strong>DEF</strong> - Dispensado de Educa&ccedil;&atilde;o f&iacute;sica<br /><br />
-    <strong>A</strong> - Aprovado<br />
-    <strong>R</strong> - Reprovado <br />
-    <strong>M</strong> - Matriculado <br /><br />
-    <strong>DE</strong> - Disciplina Equivalente<br />
-</div>
-</div>
-
 <br /><br />
-
 <table border="0" cellspacing="0" cellpadding="0" class="relato">
   <tr bgcolor="666666">
     <th height="24" colspan="2">
-    	<b>Informa&ccedil;&otilde;es:</b><br>    
+    	<b>Informa&ccedil;&otilde;es:</b><br>
     </th>
   </tr>
   <tr>
@@ -331,12 +323,25 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
   </tr>
 </table>
 <br />
+<div align="left" class="relato" style="font-size: 0.75em;">
+    <h4>Legenda</h4>
+    <strong>CI</strong> - Disciplina Cursada na Institui&ccedil;&atilde;o<br />
+    <strong>AE</strong> - Aproveitamento de Estudos <br />
+    <strong>CE</strong> - Certifica&ccedil;&atilde;o Experi&ecirc;ncia <br />
+    <strong>DEF</strong> - Dispensado de Educa&ccedil;&atilde;o f&iacute;sica<br /><br />
+    <strong>A</strong> - Aprovado<br />
+    <strong>R</strong> - Reprovado <br />
+    <strong>M</strong> - Matriculado <br /><br />
+    <strong>DE</strong> - Disciplina Equivalente<br />
+</div>
+</div>
 <br />
-<br /><br />
+<br />
+
 <div class="nao_imprime">
 <input type="button" value="Imprimir" onClick="window.print()">
 &nbsp;&nbsp;&nbsp;
-<input type="button" name="fechar" id="fechar" value="Fechar" onclick="javascript:window.close();" />
+<a href="#" onclick="javascript:window.close();">Fechar</a>
 </div>
 <br /><br />
 </body>

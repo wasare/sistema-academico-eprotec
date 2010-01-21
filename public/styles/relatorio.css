@@ -8,7 +8,7 @@ table.relato {
 .relato td, th {
     font: 0.85em verdana, arial, tahoma, sans-serif;
     border: 0.0015em solid;
-    padding: 5px;
+    padding: 0.35em;
     border-collapse: collapse;
     border-spacing: 1px;
 }
@@ -29,3 +29,6 @@ table.relato {
     color: #00047D;
 }
 
+.relato tr:hover td {
+  background: #e5ffcc; /*#ccccff/*#ccffe5;*/
+}

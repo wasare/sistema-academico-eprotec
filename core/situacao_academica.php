@@ -8,13 +8,11 @@
 **/
 
 //Arquivos de configuracao e biblioteca
-header("Cache-Control: no-cache");
 require_once(dirname(__FILE__) .'/../app/setup.php');
 
 $conn = new connection_factory($param_conn);
 
-function verificaReprovacaoPorFaltas($aluno_id,$diarios)
-{
+function verificaReprovacaoPorFaltas($aluno_id,$diarios) {
 	global $conn;
 
 	$diarios_matriculados = count($diarios);

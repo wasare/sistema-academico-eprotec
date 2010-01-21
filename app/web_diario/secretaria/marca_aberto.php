@@ -6,7 +6,10 @@ require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
 
 $conn = new connection_factory($param_conn);
 
-$diario_id = $_GET['diario_id'];
+$diario_id = (int) $_GET['diario_id'];
+
+if($diario_id == 0)
+    exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');
 
 $confirma = '';
 if(isset($_GET['confirma']))

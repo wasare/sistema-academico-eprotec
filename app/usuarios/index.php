@@ -79,9 +79,8 @@ $RsNome = $conn->Execute(iconv("utf-8","iso-8859-1",$sql));
                 ?>
             <tr bgcolor="<?=$cor_linha?>">
                 <td align="left">
-                    <a href="../relatorios/pessoas/lista_pessoas.php?id_pessoa=<?=$RsNome->fields[2]?>"
-                       target="blank"
-                       alt="<?=$RsNome->fields['nome_pessoa']?>"
+                    <a href="../relatorios/pessoas/lista_pessoa.php?pessoa_id=<?=$RsNome->fields[2]?>"
+                       target="_blank"
                        title="<?=$RsNome->fields['nome_pessoa']?>" >
                                <?=$RsNome->fields[1]?>
                     </a>

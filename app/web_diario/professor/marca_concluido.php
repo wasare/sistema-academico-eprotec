@@ -6,7 +6,7 @@ require_once($BASE_DIR .'core/web_diario.php');
 $conn = new connection_factory($param_conn);
 
 $diario_id = (int) $_GET['diario_id'];
-$operacao = $_GET['do'];
+$operacao = (string) $_GET['do'];
 
 if(!is_numeric($diario_id))
     exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');

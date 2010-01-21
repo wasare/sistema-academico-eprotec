@@ -1,8 +1,20 @@
 <?php
 
-require_once(dirname(__FILE__) .'/../setup.php');	
+require_once(dirname(__FILE__) .'/../setup.php');
+require_once($BASE_DIR .'core/login/acl.php');
 
 $conn = new connection_factory($param_conn);
+
+// VERIFICA SE O USUARIO TEM DIREITO DE ACESSO
+$acl = new acl();
+$papeis = $acl->get_roles($sa_ref_pessoa, $conn);
+
+if (count(array_intersect($papeis, $PAPEIS_WEB_DIARIO)) == 0) {  
+  exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.history.back(1);</script>');
+}
+// ^ VERIFICA SE O USUARIO TEM DIREITO DE ACESSO ^ //
 
 unset($_SESSION['conteudo']);
 unset($_SESSION['flag_falta']);
@@ -15,29 +27,25 @@ $qry_periodo = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer 
 
 $periodo = $conn->get_row($qry_periodo);
 
-if(!empty($periodo))
-{
+if(count($periodo) > 0) {
 	$_SESSION['web_diario_periodo_id'] = isset($_SESSION['web_diario_periodo_id']) ? $_SESSION['web_diario_periodo_id'] : $periodo['ref_periodo'];
 	$is_professor = TRUE;
 }
 // ^ RECUPERA INFORMACOES SOBRE OS PERIODOS DO PROFESSOR ^ //
 
-
 // RECUPERA INFORMACOES SOBRE OS PERIODOS DO COORDENADOR
-$qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, periodos p WHERE  o.ref_periodo = p.id AND o.ref_curso IN (SELECT DISTINCT ref_curso FROM coordenador WHERE ref_professor = '. $sa_ref_pessoa .') ORDER BY ref_periodo DESC LIMIT 1;';
+$sql_coordena = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, periodos p WHERE  o.ref_periodo = p.id AND o.ref_curso IN (SELECT DISTINCT ref_curso FROM coordenador WHERE ref_professor = '. $sa_ref_pessoa .') ORDER BY ref_periodo DESC LIMIT 1;';
 
-$periodo = $conn->get_row($qry_periodo);
+$periodo_coordenacao = $conn->get_row($sql_coordena);
 
-if(!empty($periodo))
-{
-    $_SESSION['web_diario_periodo_coordena_id'] = isset($_SESSION['web_diario_periodo_coordena_id']) ? $_SESSION['web_diario_periodo_coordena_id'] : $periodo['ref_periodo'];
+if(count($periodo_coordenacao) > 0) {
+    $_SESSION['web_diario_periodo_coordena_id'] = isset($_SESSION['web_diario_periodo_coordena_id']) ? $_SESSION['web_diario_periodo_coordena_id'] : $periodo_coordenacao['ref_periodo'];
 	$is_coordenador = TRUE;
 }
 
-if ($is_coordenador === TRUE) {
+if ($is_coordenador) {
 	
 	// ^ RECUPERA INFORMACOES SOBRE OS PERIODOS DO COORDENADOR ^ //
-
 
 	// RECUPERA INFORMACOES SOBRE OS CURSOS DO COORDENADOR
 	$sql_coordena = 'SELECT DISTINCT ref_curso
@@ -47,8 +55,7 @@ if ($is_coordenador === TRUE) {
 
 	$cursos_coordenacao = $conn->get_col($sql_coordena);
 
-	if(count($cursos_coordenacao) > 0)
-	{
+	if(count($cursos_coordenacao) > 0) 	{
 		$is_coordenador = TRUE;
 		$_SESSION['web_diario_cursos_coordenacao'] = $cursos_coordenacao;	
 	}
@@ -56,12 +63,9 @@ if ($is_coordenador === TRUE) {
 	// ^ RECUPERA INFORMACOES SOBRE OS PERIODOS E CURSOS DO COORDENADOR ^ //
 }
 
-$class_periodos = $class_coordenacao = '';
-
-if (!$is_professor && $is_coordenador)
-    $class_coordenacao = ' class="active"';
-else
-	$class_diarios = ' class="active"';
+// recurso para carregar a página padrão
+$class_coordenacao = ($is_coordenador && !$is_professor) ? ' class="active"' : '';
+$class_diarios = ($is_professor) ? ' class="active"' : '';
 
 ?>
 
@@ -77,49 +81,67 @@ else
 
 </head>
 
-<body bgcolor="#FFFFFF" text="#000000">
+<body>
 
 <div align="center">
-
-<table border="0" cellspacing="0" cellpadding="0" class="papeleta">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-	<th>
-    <img src="<?=$BASE_URL .'public/images/sa_icon.png'?>" alt="Sistema Acad&ecirc;mico - Web Di&aacute;rio" title="Sistema Acad&ecirc;mico - Web Di&aacute;rio" />
-	&nbsp;&nbsp;&nbsp;&nbsp;
-	<font style="font-size: 2.2em; font-weight: bold;">Sistema Acad&ecirc;mico - Web Di&aacute;rio</font>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <img src="<?=$BASE_URL .'public/images/ifmg.jpg'?>" alt="IFMG - Campus Bambu&iacute;" title="IFMG - Campus Bambu&iacute;" />
-    &nbsp;&nbsp;
-    <img src="<?=$BASE_URL .'public/images/gti.jpg'?>" alt="Ger&ecirc;ncia TI" title="Ger&ecirc;ncia de TI" width="50" height="34" />
-    <img src="<?=$BASE_URL .'public/images/icons/bola_verde.gif'?>" width="10" height="10" />&nbsp;<a href="#" style="background-color: #ffe566;"><?=$sa_usuario?></a>&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="<?=$BASE_URL .'index.php'?>" style="background-color: #ffe566;">encerrar a sessão</a>
-    <?php
-		if ($_SERVER['HTTP_HOST'] == 'dev.cefetbambui.edu.br' || $host != '192.168.0.234')
-			echo '&nbsp;&nbsp;&nbsp;&nbsp;<strong>Servidor de BD: </strong>'. $host;
-    ?>
-    </th>
-    </tr>
-</table>
+      <td width="50" valign="middle">
+        <a href="index.php">
+          <img src="<?=$BASE_URL .'public/images/sa_icon.png'?>" alt="Principal" width="40" height="34" border="0" />
+        </a>
+     </td>
+     <td width="230">
+       <a href="index.php" class="titulo_topo">Web Di&aacute;rio</a>
+     </td>
+     <td valign="top">
+        <div align="right" style="font-size: 0.8em;">
+          <strong>Desenvolvimento: </strong>
+        </div>
+     </td>    
+     <td valign="middle">&nbsp;
+       <a href="<?=$IEurl?>" target="_blank">
+        <img src="<?=$BASE_URL .'public/images/ifmg.jpg'?>" alt="IFMG - Campus Bambu&iacute;" title="IFMG - Campus Bambu&iacute;" border="0" />
+       </a>&nbsp;&nbsp;
+       <img src="<?=$BASE_URL .'public/images/gti.jpg'?>" alt="Ger&ecirc;ncia TI" title="Ger&ecirc;ncia de TI" width="50" height="34" border="0" />
+     </td>
+        <?php
+              if ($_SERVER['HTTP_HOST'] == 'dev.cefetbambui.edu.brr' || $host != '192.168.0.234' && $host != 'localhost') {
+              echo '<td>';
+               echo '&nbsp;&nbsp;&nbsp;&nbsp;<strong>Servidor de BD: </strong>'. $host;
+               echo '</td>';
+            }
+        ?>
 
-<br />
-<br />
+   </tr>
+</table>
 
 <div class="tabbed-pane" align="center">
     <ol class="guias">
+      <li style="font-size: 0.65em;">
+        <a href="index.php">
+          <img src="<?=$BASE_URL .'public/images/home_icon.gif'?>" border="0" alt="P&aacute;gina inicial" title="P&aacute;gina inicial" />
+        </a>
+      </li>
 		<?php
-			if($is_professor === TRUE)
+			if ($is_professor)
 				echo '<li><a href="#" '. $class_diarios .' id="pane_diarios">Meus di&aacute;rios</a></li>';
 
-            if($is_coordenador === TRUE)
+            if ($is_coordenador)
                 echo '<li><a href="#" '. $class_coordenacao .' id="pane_coordenacao">Coordena&ccedil;&atilde;o</a></li>';
         ?>
         
 		<li><a href="#" id="pane_ferramentas">Ferramentas</a></li>
+        <li><a href="<?=$BASE_URL .'index.php'?>">Sair</a></li>
+        <li>&nbsp;&nbsp;&nbsp;
+          <img src="<?=$BASE_URL .'public/images/icons/bola_verde.gif'?>" width="10" height="10" alt="Usu&aacute;rio <?=$sa_usuario?>" title="Usu&aacute;rio <?=$sa_usuario?>" />
+          <?=$sa_usuario?>
+        </li>
     </ol>
    
     <div id="pane_container" class="tabbed-container">
         <div id="pane_overlay" class="overlay" style="display: none">
-            <h2> <img src="<?=$BASE_URL .'public/images/carregando.gif'?>" /> &nbsp;&nbsp; carregando&#8230; </h2>
+            <h2> <img src="<?=$BASE_URL .'public/images/carregando.gif'?>" alt="carregando..." /> &nbsp;&nbsp; carregando&#8230; </h2>
         </div>
         <div id="web_guias" class="pane"></div>
     </div>
@@ -133,10 +155,10 @@ else
 var thePane = new TabbedPane('web_guias',
     {
         <?php
-			if($is_professor === TRUE)
+			if ($is_professor)
                 echo "'pane_diarios': 'professor/diarios_professor.php',";
 
-            if($is_coordenador === TRUE)
+            if ($is_coordenador)
                 echo "'pane_coordenacao': 'coordenacao/cursos_coordenacao.php',";
         ?>
         'pane_ferramentas': 'ferramentas.php',
