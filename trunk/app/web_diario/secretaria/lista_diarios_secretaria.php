@@ -194,7 +194,6 @@ foreach($diarios as $row3) :
         if($fl_concluida == 't') {
             $fl_situacao = '<font color="blue"><b>Conclu&iacute;do</b></font>';
         }
-
         if($fl_digitada == 't') {
             $fl_situacao = '<font color="red"><b>Finalizado</b></font>';
             $fl_encerrado = 1;

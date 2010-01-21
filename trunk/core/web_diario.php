@@ -1,7 +1,6 @@
 <?php
-
 /**
-* Funcoes usadas pelo web diÃ¡rio
+* Funcoes usadas pelo web diario
 * @author Wanderson S. Reis
 * @version 1
 * @since 30-09-2009
@@ -9,14 +8,10 @@
 
 require_once(dirname(__FILE__) .'/../app/setup.php');
 
-
-// CONEXAO ABERTA PARA TRABALHAR COM TRANSACAO (NÃƒO PERSISTENTE)
+// CONEXAO ABERTA PARA TRABALHAR COM TRANSACAO (NÃO PERSISTENTE)
 $conn = new connection_factory($param_conn,FALSE);
 
-
-
-function papeleta_header($diario_id)
-{
+function papeleta_header($diario_id) {
 	global $conn;
 
 	$sql9 = "SELECT DISTINCT
@@ -37,8 +32,7 @@ function papeleta_header($diario_id)
 
 	$profs = count($qry9);
 	
-	foreach( $qry9 as $linha9 )
-    {
+	foreach( $qry9 as $linha9 ) {
         $curso = $linha9["cdesc"];
         $disciplina  = $linha9["descricao_extenso"];
         $periodo   = $linha9["perdesc"];
@@ -276,8 +270,7 @@ function ini_diario($ofer) {
 
     $qryDiario = "BEGIN;";
 
-	foreach($qry as $registro)
-    {
+	foreach($qry as $registro) {
 		$ref_pessoa = $registro['ref_pessoa'];
 
             for($i = 1 ; $i <= $numprovas; $i++)
@@ -307,8 +300,7 @@ function ini_diario($ofer) {
 }
 
 // function registra as faltas da chamada e alterações destas faltas
-function registra_faltas($ref_aluno, $diario_id, $num_faltas, $data_chamada, $professor,$altera=FALSE)
-{
+function registra_faltas($ref_aluno, $diario_id, $num_faltas, $data_chamada, $professor,$altera=FALSE) {
 	global $conn;
 
     $sql_falta = 'BEGIN;';
@@ -448,6 +440,56 @@ function reg_log($pagina,$status) {
 
   $conn->Execute($sql_log);
 
+}
+
+// VERIFICA O DIREITO DE ACESSO AO DADOS DO ALUNO PELO PROFESSOR OU COORDENADOR
+function acessa_ficha_aluno($aluno_id,$sa_ref_pessoa,$curso_id,$conexao=FALSE) {
+
+	global $conn;
+
+	$sql = 'SELECT
+				(
+					SELECT count(*)
+							FROM contratos
+							WHERE ref_pessoa = '. $aluno_id .' AND
+								  ref_curso IN ( 
+                                                  SELECT DISTINCT 
+                                                            ref_curso
+                                                       FROM 
+                                                            coordenador
+                                                       WHERE
+                                                            ref_professor = '. $sa_ref_pessoa .' AND
+                                                            ref_curso = '. $curso_id .'
+                                               )
+				) + (
+					  SELECT COUNT(*)
+							FROM matricula
+							WHERE ref_pessoa = '. $aluno_id .' AND
+								  ref_disciplina_ofer IN (
+                                                            SELECT DISTINCT
+                                                                  o.id
+                                                              FROM
+                                                                  disciplinas_ofer o, disciplinas_ofer_prof dp
+                                                              WHERE
+                                                                   dp.ref_professor = '. $sa_ref_pessoa .' AND
+                                                                   o.ref_curso = '. $curso_id .' AND
+                                                                   o.id = dp.ref_disciplina_ofer AND
+                                                                   o.is_cancelada = \'0\'
+                                                           )
+					) AS acesso;';
+
+    if ($conexao == TRUE) {
+      $rs = pg_query($conexao, $sql);
+      $acesso = pg_fetch_result($rs, 0, 0);
+    }
+    else {
+      $acesso = $conn->get_one($sql);
+    }
+
+	if($acesso > 0)
+		return TRUE;
+	else
+		return FALSE;
 }
 
 

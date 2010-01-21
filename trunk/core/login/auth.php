@@ -68,16 +68,21 @@ class auth {
                 // força atualização da sessão recriando o ID da sessão
                 adodb_session_regenerate_id();
 
-                $log_msg .= $login .' - *** LOGIN ACEITO ***'."\n";         
+                $log_msg .= $login .' - *** LOGIN ACEITO ***'."\n";
 
                 error_log($log_msg,3,$this->log_file);
 
+                $this->reg_log('LOGIN ACEITO');
+                
                 $ret = TRUE;
               }
               else {
                 $log_msg .=  $login .' - *** LOGIN RECUSADO ***'."\n";
 
-                error_log($log_msg,3,$this->log_file);              
+                error_log($log_msg,3,$this->log_file);
+
+                $this->reg_log('LOGIN RECUSADO', $_SERVER["PHP_SELF"], $login, $modulo);
+
             }
         }
 
@@ -151,6 +156,30 @@ class auth {
         }
     }
 
+    /**
+     * Registra logs no banco de dados
+     * @return void
+     */
+    public function reg_log($status, $pagina='', $usuario='', $modulo='') {
+
+      list($sa_usuario,$sa_senha,$sa_usuario_id,$sa_ref_pessoa) = explode(":",$_SESSION['sa_auth']);
+
+      $pagina = empty ($pagina) ? $_SERVER['PHP_SELF'] : $pagina;
+      $usuario = empty($usuario) ? $sa_usuario : $usuario;
+      $modulo = empty($modulo) ? $_SESSION['sa_modulo'] : $modulo;      
+      $sa_senha = empty($sa_senha) ? '-' : $sa_senha;
+
+      if ($modulo == 'web_diario_login') {
+        
+        $ip = $_SERVER["REMOTE_ADDR"];
+        $sql_store = htmlspecialchars("$usuario");
+        $sql_log = 'INSERT INTO diario_log (usuario, data, hora, ip_acesso, pagina_acesso, status, senha_acesso) VALUES ';
+        $sql_log .= '(\''.$sql_store.'\',\''. date("Y-m-d") .'\',\''. date("H:i:s") .'\','."'$ip','$pagina','$status','$sa_senha');";
+
+        if (isset($GLOBALS['ADODB_SESS_CONN']))
+              $GLOBALS['ADODB_SESS_CONN']->Execute($sql_log);
+      }
+    }
 	/**
      * Configura a URL raiz do sistema
      * @return void

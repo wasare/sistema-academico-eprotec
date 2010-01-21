@@ -209,8 +209,9 @@ $num_alunos  = count($arr_alunosid);
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <title>SA</title>
         <link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
-        <style>
-            table{
+        <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css" />
+        <style type="text/css">
+            table {
                 font-size:11px;
             }
         </style>
@@ -219,7 +220,7 @@ $num_alunos  = count($arr_alunosid);
         <div align="center">
             <?php echo $header->get_empresa($PATH_IMAGES); ?>
             <br /><br />
-            <h2>Resumo de notas e faltas de curso no per&iacute;odo</h2>
+            <h2>Resumo de notas e faltas do curso no per&iacute;odo</h2>
         </div>
         <strong>Per&iacute;odo:</strong> <?php echo $desc_periodo; ?><br />
         <strong>Curso:</strong> <?php echo $desc_curso[0]; ?><br />
@@ -229,7 +230,7 @@ $num_alunos  = count($arr_alunosid);
 
         <b>LEGENDA</b>
 
-        <table border="1" cellpadding="0" cellspacing="0">
+        <table cellpadding="0" cellspacing="0" class="papeleta">
             <tr>
                 <td align="center"><strong>C&oacute;d. Di&aacute;rio</strong></td>
                 <td align="center"><strong>Descri&ccedil;&atilde;o</strong></td>
@@ -283,13 +284,13 @@ $num_alunos  = count($arr_alunosid);
                     <?php
                     //Situacao do diario
                     if($legenda['fl_concluida'] == 't') {
-                        echo 'Finalizado';
+                        echo '<font color="red"><b>Finalizado</b></font>';
                     }
                     elseif($legenda['fl_concluida'] == 'f' AND $legenda['fl_digitada'] == 't'){
-                        echo 'Conclu&iacute;da';
+                        echo '<font color="blue"><b>Conclu&iacute;do</b></font>';
                     }
                     elseif($legenda['fl_concluida'] == 'f' AND $legenda['fl_digitada'] == 'f') {
-                        echo 'Aberto';
+                        echo '<font color="green"><b>Aberto</b></font>';
                     }
                     ?>
                 </td>
@@ -305,7 +306,7 @@ $num_alunos  = count($arr_alunosid);
         <br />
         <!-- Tabela principal -->
 
-        <table border="1" cellpadding="0" cellspacing="0">
+        <table cellpadding="0" cellspacing="0" class="papeleta">
             <tr>
                 <td rowspan="2">
                     <strong>Aluno</strong>

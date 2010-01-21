@@ -6,21 +6,19 @@ require_once($BASE_DIR .'core/web_diario.php');
 $conn = new connection_factory($param_conn);
 
 $diario_id = (int) $_GET['id'];
-$operacao = $_GET['do'];
+$operacao = (string) $_GET['do'];
 
 $_SESSION['web_diario_do'] = $operacao;
 
-if(!is_numeric($diario_id) && !is_numeric($operacao))
-{
-	echo '<script language="javascript" type="text/javascript">
+if (($diario_id == 0 || empty($operacao)) && $operacao != 'troca_senha' && $operacao != 'pesquisa_aluno'){
+	exit('<script language="javascript" type="text/javascript">
                 window.alert("ERRO! Dados invalidos!");
                 window.close();
-    </script>';
-    exit; 
+    </script>');
 }
 
 //  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
-if($operacao != 'lista_diarios_coordenacao' && $operacao != 'troca_senha') {
+if($operacao != 'lista_diarios_coordenacao' && $operacao != 'troca_senha' && $operacao != 'pesquisa_aluno') {
   if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
     exit('<script language="javascript" type="text/javascript">
             alert(\'Você não tem direito de acesso a estas informações!\');
@@ -111,15 +109,8 @@ if($operacao == 'troca_senha') {
     require_once($BASE_DIR .'app/usuarios/alterar_senha.php');
     exit;
 }
+
 // OPERACAO DA COORDENACAO
-if($operacao == 'lista_diarios_coordenacao') {
-	unset($_GET['diario_id']);
-    unset($_POST['diario_id']);
-	$_GET['curso_id'] = $diario_id;
-	$_GET['periodo_id'] = $_SESSION['web_diario_periodo_coordena_id']; 
-    require_once($BASE_DIR .'app/web_diario/coordenacao/lista_diarios_coordenacao.php');
-    exit;
-}
 
 if($operacao == 'marca_finalizado') {
 	echo papeleta_header($diario_id);
@@ -141,9 +132,23 @@ if($operacao == 'finaliza_todos') {
     exit;
 }
 
+// ^ OPERACOES COM ALTERACAO DE DADOS   ^ //
+
+if($operacao == 'lista_diarios_coordenacao') {
+	unset($_GET['diario_id']);
+    unset($_POST['diario_id']);
+	$_GET['curso_id'] = $diario_id;
+	$_GET['periodo_id'] = $_SESSION['web_diario_periodo_coordena_id']; 
+    require_once($BASE_DIR .'app/web_diario/coordenacao/lista_diarios_coordenacao.php');
+    exit;
+}
+
+if($operacao == 'pesquisa_diario_coordenacao') {
+    require_once($BASE_DIR .'app/web_diario/coordenacao/pesquisa_diario.php');
+	exit;
+}
 // ^ OPERACAO DA COORDENACAO ^
 
-// ^ OPERACOES COM ALTERACAO DE DADOS   ^ //
 
 
 
@@ -172,6 +177,12 @@ if($operacao == 'conteudo_aula') {
     require_once($BASE_DIR .'app/relatorios/web_diario/conteudo_aula.php');
     exit;
 }
+
+if($operacao == 'pesquisa_aluno') {
+    require_once($BASE_DIR .'app/web_diario/consultas/pesquisa_aluno.php');
+	exit;
+}
+
 // ^ RELATORIOS ^ //
 
 

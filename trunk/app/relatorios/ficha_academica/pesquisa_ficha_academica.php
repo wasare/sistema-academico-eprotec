@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../../app/setup.php");
+require_once(dirname(__FILE__) .'/../../../app/setup.php');
   
 $btnOK = false;
   
@@ -34,8 +34,8 @@ $conn = new connection_factory($param_conn);
       <td valign="botton">Nome:</td>
     </tr>
     <tr>
-      <td width="50" valign="middle"><input name="ra"  type="text" maxlenght="8" size="8" value="<?echo $ra; ?>" /></td>
-      <td valign="middle"><input name="nome"type="text" maxlenght="50" size="50" value="<? echo $nome; ?>" />
+      <td width="50" valign="middle"><input name="ra"  type="text" maxlength="8" size="8" value="<?=$ra?>" /></td>
+      <td valign="middle"><input name="nome"type="text" maxlength="50" size="50" value="<?=$nome;?>" />
         <input name="btnOK" type="submit" value=" OK " /></td>
     </tr>
     <tr>
@@ -53,7 +53,7 @@ if ($_POST) {
 	$ra = trim(@$_POST['ra']);
 	$nome = trim(@$_POST['nome']);
 
-  	$sql1 = 'SELECT  DISTINCT a.nome, a.id, b.ref_curso, d.abreviatura, c.id as contrato
+  	$sql1 = 'SELECT  DISTINCT a.nome, a.id, b.ref_curso, d.abreviatura, c.id as contrato, c.turma
 	  FROM pessoas a, matricula b, contratos c, cursos d
 	  WHERE
       a.id IN ( 
@@ -101,10 +101,11 @@ if ($_POST) {
 				
 	   		echo '<table  width="700" border="0" >
 	    			<tr bgcolor="#666666">
-    					<td width="12%" height="24"><b><font color="#FFFFFF">Matr&iacute;cula</font></b></td>
-    					<td width="45%"><b><font color="#FFFFFF">Nome</font></b></td>
-						<td width="35%"><b><font color="#FFFFFF">Curso</font></b></td>
-      					<td width="10%"><b><font color="#FFFFFF">Exibir</font></b></td>
+    					<th height="24"><b><font color="#FFFFFF">Matr&iacute;cula</font></b></th>
+    					<th width="45%"><b><font color="#FFFFFF">Nome</font></b></th>
+						<th width="35%"><b><font color="#FFFFFF">Curso</font></b></th>
+                        <th><b><font color="#FFFFFF">Turma</font></b></th>
+      					<th width="15%"><b><font color="#FFFFFF">Exibir</font></b></th>
     				</tr>';
 			
            	while(!$Result1->EOF) {
@@ -122,16 +123,14 @@ if ($_POST) {
 				echo ' <td align="center">' . $q3id . '</td>';
 				echo ' <td>' . $Result1->fields[0] . '</td>';
                	echo ' <td>' . $Result1->fields[3] . '</td>';
+                echo ' <td align="center">' . $Result1->fields[5] . '</td>';
 				echo ' <td align="center">
-						<a target="_blank" href="lista_ficha_academica.php?aluno=' . $q3id . '&nome=' . $Result1->fields[0] . '&curso=' . $Result1->fields[3] . '&cs='.$Result1->fields[2] . '&contrato='. $Result1->fields[4] .'">
-						<img src="../../../public/images/icons/print.jpg" width="20" height="20" title="Exibir 
-dados em 
-HTML" alt="Exibir 
-dados 
-em HTML" /></a></td>';
+						<a target="_blank" href="lista_ficha_academica.php?aluno=' . $Result1->fields[1] . '&cs='.$Result1->fields[2] . '&contrato='. $Result1->fields[4] .'">
+						<img src="../../../public/images/icons/report.png" width="20" height="20" title="Ficha acad&ecirc;mica" alt="Ficha acad&ecirc;mica" /></a>
+						&nbsp;&nbsp;<a target="_blank" href="../pessoas/lista_pessoas.php?pessoa_id=' . $Result1->fields[1] .'">
+						<img src="../../../public/images/icons/pessoa.png" width="20" height="20" title="Informa&ccedil;&otilde;es pessoais" alt="Informa&ccedil;&otilde;es pessoais" /></a></td>';
+                echo '</tr>';
 
-				echo '</tr>';
-					
            		$Result1->MoveNext();
 					
     		}//fim while

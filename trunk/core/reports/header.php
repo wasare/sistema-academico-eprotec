@@ -15,16 +15,11 @@ class header{
 
 		$conn = new connection_factory($this->param_conn);
 
-        $RsEmpresa = $conn->Execute("SELECT razao_social, sigla FROM configuracao_empresa WHERE id = 1");
+        $empresa = $conn->get_row("SELECT razao_social, sigla FROM configuracao_empresa WHERE id = 1");
 
-		$resp = '<br />
-		         <img src="'.$path_images.'logo.jpg" />
-                 <br /><br />
-				 <font face="verdana" size="3">'.$RsEmpresa->fields[0].'</font>';
-			
-        $conn->Close();
-
-		return $resp;
+		return  '<br />
+		         <img src="'.$path_images.'logo.jpg" alt="Instituto Federal de Minas Gerais" title="Instituto Federal de Minas Gerais"/>
+                 <br /><br />'. $empresa['razao_social'];
     }
 }
 

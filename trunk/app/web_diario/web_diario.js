@@ -92,11 +92,24 @@ function enviar_diario(action,ofer,encerrado) {
           abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=' + ofer);
         }
         break;
+      case 'pesquisa_diario_coordenacao':
+          diario_id = $F('diario_id');
+          abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=' + diario_id);
+        break;
+      case 'pesquisa_aluno':
+          campo_aluno = $F('campo_aluno');
+          abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=&aluno=' + campo_aluno);
+        break;
       default:
         abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=' + ofer);
     }
   }
   return false;
+}
+
+function consulta_diario() {
+    diario_id = $F('diario_id');  
+    self.location = "coordenacao/pesquisa_diario.php?diario_id=" + diario_id;
 }
 
 

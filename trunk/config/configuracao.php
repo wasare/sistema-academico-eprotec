@@ -8,20 +8,10 @@ date_default_timezone_set('America/Sao_Paulo');
 /**
  * Banco de dados
  */
-$host     = '200.131.50.5';
+$host     = '192.168.0.234';
 $database = 'sa';
-$user     = 'pgmaster';
-$password = 'mamulengo';
-
-$host     = 'localhost';
-$database = 'sa-latin1';
-$user     = 'pgmaster';
-$password = 'dbmasterbi';
-// select to_ascii(encode(convert_to(c,'LATIN9'),'escape'),'LATIN9') from chartest;
-/*
- * select nome from pessoas a, professores b where a.id = b.ref_professor and lower(to_ascii(encode(convert_to(nome,'LATIN9'),'escape'),'LATIN9'))  SIMILAR TO '%u%' order by lower(to_ascii(encode(convert_to(nome,'LATIN9'),'escape'),'LATIN9'))
- */
-
+$user     = 'usrsagu';
+$password = 'x6S8YzrJBs';
 
 /**
  * Variaveis de acesso a dados - SA 
@@ -33,21 +23,12 @@ $param_conn['password'] = $password;
 $param_conn['port']     = '5432';
 
 /**
- * Variaveis de acesso a dados - Web Diario
- */
-$webdiario_host     = $param_conn['host'];
-$webdiario_database = $param_conn['database'];
-$webdiario_user     = 'usrsagu';
-$webdiario_password = 'x6S8YzrJBs';
-$webdiario_port     = $param_conn['port'];
-
-/**
  * Variaveis de acesso a dados - Modulo do aluno
  */
 $aluno_host     = $param_conn['host'];
 $aluno_database = $param_conn['database'];
-$aluno_user     = 'pgmaster';
-$aluno_password = 'dbmasterbi';
+$aluno_user     = $user;
+$aluno_password = $password;
 $aluno_port     = '';
 
 /**
@@ -65,6 +46,7 @@ $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';
 $PATH_IMAGES    = $BASE_URL."public/images/";
 $REVISAO 		= @file_get_contents ('../VERSAO.TXT');
 $SESS_TABLE     = 'sessao';
+$PAPEIS_WEB_DIARIO = array('professor' => 3, 'coordenador' => 0);
 
 
 /*

@@ -99,12 +99,9 @@ $periodos = $conn->get_all($qry_periodos);
 
 </head>
 
-<body bgcolor="#FFFFFF" text="#000000" >
+<body>
 
-<center>
 <div align="left">
-<br />
-  
 <strong>
 			<font size="4" face="Verdana, Arial, Helvetica, sans-serif">
 				Per&iacute;odo: 
@@ -123,11 +120,9 @@ $periodos = $conn->get_all($qry_periodos);
 <h4>clique no per&iacute;odo:</h4>
 <br />
 <?php
-    foreach($periodos as $p)
-    {
-        echo '<a href="#" title="Per&iacute;odo '. $p['descricao'] .'" alt="Per&iacute;odo '. $p['descricao'] .'" onclick="set_periodo(\'periodo_id='. $p['ref_periodo'] .'\');">'. $p['descricao'] .'</a><br />';
+    foreach($periodos as $p) {
+      echo '<a href="#" title="Per&iacute;odo '. $p['descricao'] .'" alt="Per&iacute;odo '. $p['descricao'] .'" onclick="set_periodo(\'periodo_id='. $p['ref_periodo'] .'\');">'. $p['descricao'] .'</a><br />';
     }
-
 ?>
 <br />
 </div>
@@ -255,7 +250,6 @@ foreach($diarios as $row3) :
 ?>
 </script>
 </div>
-</center>
 
 </body>
 </html>
