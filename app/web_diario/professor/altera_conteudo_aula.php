@@ -7,46 +7,34 @@ require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
 
 $conn = new connection_factory($param_conn);
 
-$flag = $_GET['flag'];
+$flag = (isset($_POST['ok'])) ? (int) $_POST['flag'] : (int) $_GET['flag'];
 $data_chamada = $_GET['data_chamada'];
-
 $diario_id = (int) $_GET['diario_id'];
 
-if(!is_numeric($diario_id))
-    exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');
+
+if ((!isset($_POST['ok']) && $diario_id == 0) || $flag == 0)
+    exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Dados invalidos!");window.close();</script>');
+
+if (is_finalizado($diario_id))
+    exit('<script language="javascript" type="text/javascript">window.alert("Diario fechado para alteracoes!");window.close();</script>');
 
 //  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
-if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
+if ($_SESSION['sa_modulo'] == 'web_diario_login') {
   if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
 
     exit('<script language="javascript" type="text/javascript">
             alert(\'Você não tem direito de acesso a estas informações!\');
             window.close();</script>');
   }
-  // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 }
-
-if(!is_numeric($flag) || !is_numeric($diario_id) AND !isset($_POST['ok']))
-{
-    exit('<script language="javascript">
-                window.alert("ERRO! Conteudo de aula invalido!");
-                window.close();
-    </script>');
-}
+// ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
 
 
-if(isset($_POST['ok']) AND $_POST['ok'] == 'OK1')
-{
+if(isset($_POST['ok']) && $_POST['ok'] == 'OK1') {
     
 	$sql1 = 'UPDATE diario_seq_faltas SET conteudo = \''.$_POST['texto'].'\' WHERE id = '.$_POST['flag'].';';
    
 	$q = $conn->Execute($sql1);
-    
-    if($q === FALSE)
-    {
-		envia_erro($sql1 ."\n". $conn->ErrorMsg());
-        exit;
-    }
 
 	echo '<script type="text/javascript">  window.alert("Conteudo de aula alterado com sucesso! ");';
 	if(isset($_SESSION['web_diario_do']))
@@ -65,19 +53,13 @@ else
                WHERE
                id = $flag;";
 			   
-	$conteudo = $conn->adodb->getOne($sql1);
-
-	if($conteudo === FALSE)
-	{
-		envia_erro(__FILE__ . "\n" . $sql1 ."\n". $conn->ErrorMsg());
-		exit;
-	}
+	$conteudo = $conn->get_one($sql1);
 }
 
 ?>
 	
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN\">
-<tml>
+<html>
 <head>
 <title><?=$IEnome?> - Altera&ccedil;&atilde;o de conte&uacute;do de aula</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -107,7 +89,7 @@ else
   <tr>
     <td colspan="3">
         <div align="center">
-          <textarea name="texto" cols="100" rows="15"><?=$conteudo?></textarea>
+          <textarea name="texto" cols="80" rows="10"><?=$conteudo?></textarea>
         </div>
       </td>
   </tr>

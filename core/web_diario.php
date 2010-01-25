@@ -158,6 +158,26 @@ function is_finalizado($diario_id) {
         return FALSE;
 }
 
+function is_diario($diario_id) {
+
+	global $conn;
+  	$sql = 'SELECT
+                  COUNT(d.id)
+                     FROM
+                        disciplinas_ofer d
+                     WHERE
+                        d.id = '. $diario_id .' AND
+                        d.is_cancelada = \'0\';';
+
+  	$diario = $conn->get_one($sql);
+
+    if ($diario == 1)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+
 function ini_diario($ofer) {
 
 	global $conn;

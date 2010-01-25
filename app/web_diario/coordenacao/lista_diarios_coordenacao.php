@@ -1,42 +1,54 @@
 <?php
 
-//echo hash('sha256','');
 require_once(dirname(__FILE__). '/../../setup.php');
+require_once($BASE_DIR .'core/web_diario.php');
 
 $conn = new connection_factory($param_conn);
-/*
-// TODO: verificar se é coordenador quando acessando do web diário
-//  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
-if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
-  if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
 
-    exit('<script language="javascript" type="text/javascript">
-            alert(\'Você não tem direito de acesso a estas informações!\');
-            window.close();</script>');
-  }
-  // ^ VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR ^ //
-}
-*/
+$periodo_id = (string) $_GET['periodo_id'];
+$curso_id = (int) $_GET['curso_id'];
+$diario_id = (int) $_GET['diario_id'];
 
-if(empty($_GET['periodo_id']) OR empty($_GET['curso_id']))
-{
-	if(empty($_GET['diario_id']))
-	{
-		echo '<script language="javascript">
+if (empty($periodo_id) OR $curso_id == 0) {
+
+    if ($diario_id == 0) {
+		exit('<script language="javascript">
                 window.alert("ERRO! Primeiro informe um período e um curso ou um diário!");
 				window.close();
-		</script>';
-		exit;
+		</script>');
 	}
+
+    if (!is_diario($diario_id))
+        exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario inexistente ou cancelado!");window.close();</script>');
+
 }
 
-if(!is_numeric($_GET['diario_id'])) {
-	$qryCurso = 'SELECT DISTINCT id, descricao as nome FROM cursos WHERE id = '. $_GET['curso_id'].';';
-	$qryPeriodo = 'SELECT id, descricao FROM periodos WHERE id = \''. $_GET['periodo_id'].'\';';
+// VERIFICA SE O USUARIO TEM DIREITO DE ACESSO
+$sql_coordena = ' SELECT count(*)
+							FROM coordenador
+							WHERE ref_professor = '. $sa_ref_pessoa .' AND ';
+
+if ($diario_id > 0)
+  $sql_coordena .= ' ref_curso = '. get_curso($diario_id) .';';
+else
+  $sql_coordena .= ' ref_curso = '. $curso_id .';';
+
+$coordenacao = $conn->get_one($sql_coordena);
+
+if ($coordenacao == 0) {
+  exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.history.back(1);</script>');
+}
+// ^ VERIFICA SE O USUARIO TEM DIREITO DE ACESSO ^ /
+
+if ($diario_id == 0) {
+	$qryCurso = 'SELECT DISTINCT id, descricao as nome FROM cursos WHERE id = '. $curso_id.';';
+	$qryPeriodo = 'SELECT id, descricao FROM periodos WHERE id = \''. $periodo_id.'\';';
 }
 else {
-	$qryCurso = 'SELECT c.id, c.descricao as nome FROM cursos c, disciplinas_ofer d WHERE d.ref_curso = c.id AND d.id = '. $_GET['diario_id'].';';
-	$qryPeriodo = 'SELECT p.id, p.descricao FROM periodos p, disciplinas_ofer d WHERE d.ref_periodo = p.id AND d.id = '. $_GET['diario_id'].';';
+	$qryCurso = 'SELECT c.id, c.descricao as nome FROM cursos c, disciplinas_ofer d WHERE d.ref_curso = c.id AND d.id = '. $diario_id .';';
+	$qryPeriodo = 'SELECT p.id, p.descricao FROM periodos p, disciplinas_ofer d WHERE d.ref_periodo = p.id AND d.id = '. $diario_id .';';
 }
 
 
@@ -62,13 +74,13 @@ $periodo = $conn->get_row($qryPeriodo);
            " WHERE is_cancelada = '0' ";
 
 
-			if(is_numeric($_GET['diario_id']))
-                $sql .= " AND id = ". $_GET['diario_id'];
+			if ($diario_id > 0)
+                $sql .= " AND id = ". $diario_id;
 			else
-				if(is_numeric($_GET['periodo_id']) AND is_numeric($_GET['curso_id']) )
+				if (!empty($periodo_id) AND is_numeric($curso_id))
 				{
-					$sql .= " AND ref_periodo = '". $_GET['periodo_id'] ."'";
-					$sql .= " AND ref_curso = ". $_GET['curso_id'];
+					$sql .= " AND ref_periodo = '". $periodo_id ."'";
+					$sql .= " AND ref_curso = ". $curso_id;
 				}
 
 			$sql = 'SELECT * from ('. $sql .') AS T1 ORDER BY lower(to_ascii(descricao_extenso));';
@@ -93,7 +105,6 @@ $periodo = $conn->get_row($qryPeriodo);
 
 <script type="text/javascript" src="<?=$BASE_URL .'lib/prototype.js'?>"> </script>
 <script type="text/javascript" src="<?=$BASE_URL .'app/web_diario/web_diario.js'?>"> </script>
-
 </head>
 
 <body>
@@ -154,26 +165,10 @@ foreach($diarios as $row3) :
     $fl_encerrado = ($fl_digitada == 't')  ? 1 : 0;
 
     $opcoes_diario = '';
+    
 	$fl_professor = TRUE;
 	if ( preg_match('/sem professor/i', $professor) )
-		$fl_professor = FALSE;
-
-
-    if($fl_digitada == 'f' && $fl_concluida == 'f') {
-        $fl_situacao = '<font color="green"><b>Aberto</b></font>';
-    }
-    else {
-        if($fl_concluida == 't') {
-            $fl_situacao = '<font color="blue"><b>Conclu&iacute;do</b></font>';
-        }
-
-        if($fl_digitada == 't') {
-            $fl_situacao = '<font color="red"><b>Finalizado</b></font>';
-            $fl_encerrado = 1;
-        }
-    }
-
-    $rcolor = (($i % 2) == 0) ? $r1 : $r2;
+		$fl_professor = FALSE;    
 
 	$fl_opcoes = 0;
 
@@ -192,39 +187,39 @@ foreach($diarios as $row3) :
 			$fl_opcoes = 1;
         }
         else {				
-          $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'marca_finalizado\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">finaliza para lan&ccedil;amentos</a><br /><br />';
+          $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'marca_finalizado\',\''. $diario_id .'\',\''. $fl_encerrado .'\',\''. $BASE_URL .'\',\''. $IEnome .'\');">finaliza para lan&ccedil;amentos</a><br /><br />';
           $fl_opcoes = 1;
 		}
     }
 
-    if($fl_professor === TRUE) {
+    if ($fl_professor === TRUE) {
       $opcoes_diario .= '<strong>Relat&oacute;rios</strong><hr />';
-      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'papeleta\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">papeleta</a><br />';
-      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'papeleta_completa\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">papeleta completa</a><br />';
-      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'faltas_completo\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">relat&oacute;rio de faltas completo</a><br />';
-      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'conteudo_aula\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">conte&uacute;do de aula</a><br />';
-      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'caderno_chamada\',\''. $diario_id .'\',\''. $fl_encerrado .'\');">caderno de chamada</a>';
+      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'papeleta\',\''. $diario_id .'\',\''. $fl_encerrado .'\',\''. $BASE_URL .'\',\''. $IEnome .'\');">papeleta</a><br />';
+      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'papeleta_completa\',\''. $diario_id .'\',\''. $fl_encerrado .'\',\''. $BASE_URL .'\',\''. $IEnome .'\');">papeleta completa</a><br />';
+      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'faltas_completo\',\''. $diario_id .'\',\''. $fl_encerrado .'\',\''. $BASE_URL .'\',\''. $IEnome .'\');">relat&oacute;rio de faltas completo</a><br />';
+      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'conteudo_aula\',\''. $diario_id .'\',\''. $fl_encerrado .'\',\''. $BASE_URL .'\',\''. $IEnome .'\');">conte&uacute;do de aula</a><br />';
+      $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'caderno_chamada\',\''. $diario_id .'\',\''. $fl_encerrado .'\',\''. $BASE_URL .'\',\''. $IEnome .'\');">caderno de chamada</a>';
 	  $fl_opcoes = 1;
 	}
 
 
 	$sem_opcoes = ($fl_opcoes == 0) ? '<font color="red">Nenhuma op&ccedil;&atilde;o dispon&iacute;vel.</font>' : '';
 
+    $cont = $i + 1;
+    $rcolor = (($i % 2) == 0) ? $r1 : $r2;
+
 ?>
-    <?php
-      $cont = $i + 1;
-    ?>
 
 	<tr bgcolor="<?=$rcolor?>">
       <td align="center"><?=$cont?></td>
-      <td align="center"><strong><?=$diario_id?></strong></td>
-      <td><strong><?=$descricao_disciplina?></strong></td>
+      <td align="center"><?=$diario_id?></td>
+      <td><?=$descricao_disciplina?></td>
       <td align="center"><?=$qtde_alunos?></td>
       <td align="center"><?=$turma?></td>
       <td><?=$professor?></td>
       <td align="center"><?=$fl_situacao?></td>
       <td align="center">
-        <a href="#" id="<?=$diario_id . '_pane'?>" title="clique para visualizar / ocultar">acessar</a>
+        <a href="#" id="<?=$diario_id . '_pane'?>" title="clique para visualizar / ocultar">Acessar</a>
         <!-- panel com as opções do diário // inicio //-->
         <div id="diario_<?=$diario_id?>_pane" style="display:none; margin: 1.2em; padding: 1em; background-color: <?=$op_color?>" class="opcoes_web_diario">
             <?=$sem_opcoes . $opcoes_diario?>
@@ -239,10 +234,9 @@ foreach($diarios as $row3) :
 
     endforeach;
 ?>
-
-</table> <br />
-
-<input type="button" value="finaliza todos os diários concluídos" onclick="enviar_diario('finaliza_todos',<?=$diario_id?>,<?=$fl_encerrado?>);" />
+</table>
+<br />
+<input type="button" value="finaliza todos os diários concluídos" onclick="enviar_diario('finaliza_todos',<?=$diario_id?>,<?=$fl_encerrado?>,'<?=$BASE_URL?>','<?=$IEnome?>');" />
 &nbsp;&nbsp;
 <a href="#" onclick="javascript:window.close();">Fechar</a>
 </form>
@@ -255,6 +249,7 @@ foreach($diarios as $row3) :
 <?php
    endforeach;
 ?>
+
 </script>
 
 </div>

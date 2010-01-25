@@ -120,7 +120,7 @@ $periodos = $conn->get_all($qry_periodos);
 <strong>Acesso rápido</strong> <br />
 Código do diário:
 <input type="text" name="diario_id" id="diario_id" size="10" />
-<input type="button" name="envia_diario" id="envia_diario" value="Consultar" onclick="enviar_diario('pesquisa_diario_coordenacao',null,null);" />
+<input type="button" name="envia_diario" id="envia_diario" value="Consultar" onclick="enviar_diario('pesquisa_diario_coordenacao',null,null,'<?=$BASE_URL?>','<?=$IEnome?>');" />
 </form>
 <br />
 </div>
