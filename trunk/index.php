@@ -57,7 +57,7 @@ else {
         <title><?=$IEnome?> - Sistema Acad&ecirc;mico</title>
         <link href="public/images/favicon.ico" rel="shortcut icon" />
         <link href="public/styles/style.css" rel="stylesheet" type="text/css" />
-        <style>
+        <style type="text/css">
             #alert_login{
                 font-family:verdana,arial;
                 font-size:14;
@@ -125,15 +125,10 @@ else {
                             </td>
                         </tr>
                         <tr>
-                            <td align="right">
-                                M&oacute;dulo:
-                            </td>
-                            <td>
-                                <select id="modulo" name="modulo" style="width: 145px;">
-									<option value="web_diario_login">Coordenador</option>
-                                    <option value="web_diario_login">Professor</option>
-                                    <option value="sa_login" selected>Secretaria</option>
-                                </select>
+                          <td colspan="2">
+                            <br />
+                              <input type="radio" name="modulo" id="modulo" value="sa_login" />&nbsp;&nbsp;Secretaria &nbsp;&nbsp;&nbsp;&nbsp;
+                              <input type="radio" name="modulo" id="modulo" value="web_diario_login" />&nbsp;&nbsp;Web di&aacute;rio
                             </td>
                         </tr>
                         <tr>

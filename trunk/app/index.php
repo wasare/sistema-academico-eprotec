@@ -125,10 +125,6 @@ require_once(dirname(__FILE__).'/setup.php');
                                             </li>
                                         </ul>
                                     </li>
-                                    <li>
-                                        <a href="web_diario/secretaria/pesquisa_diarios.php" 
-                                           target="frame2">Web Di&aacute;rio</a>
-                                    </li>
                                 </ul>
                             </li>
                             <li><a class="MenuBarItemSubmenu" href="#">Cadastros</a>
@@ -218,7 +214,7 @@ require_once(dirname(__FILE__).'/setup.php');
                                     </li>
                                     <li>
                                         <a href="sagu/academico/disciplina_ofer.phtml" 
-                                           target="frame2">Disciplinas Oferecidas (Di&aacute;rios)</a>
+                                           target="frame2">Disciplinas Oferecidas</a>
                                     </li>
                                     <li>
                                         <a href="sagu/academico/consulta_inclui_pre_requisito.phtml" 
@@ -235,6 +231,10 @@ require_once(dirname(__FILE__).'/setup.php');
                                     <li>
                                         <a href="matricula/matricula_aluno.php" 
                                            target="frame2">Matr&iacute;cula</a>
+                                    </li>
+                                    <li>
+                                        <a href="web_diario/secretaria/diarios_secretaria.php"
+                                           target="frame2">Di&aacute;rios</a>
                                     </li>
                                     <li>
                                         <a href="dispensa_disciplina/dispensa_aluno.php" 

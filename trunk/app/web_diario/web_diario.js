@@ -19,7 +19,7 @@ function abrir(winName, urlLoc, w, h) {
    features += ",menubar=no";     // yes|no
    features += ",scrollbars=yes";   // auto|yes|no
    features += ",resizable=no";   // yes|no
-   features += ",dependent";  // close the parent, close the popup, omit if you want otherwise
+ //  features += ",dependent";  // close the parent, close the popup, omit if you want otherwise
    features += ",height=" + (h?h:jh);
    features += ",width=" + (w?w:jw);
    features += ",left=" + l;
@@ -28,7 +28,7 @@ function abrir(winName, urlLoc, w, h) {
    winName = winName.replace(/[^a-z]/gi,"_");
 
 	myWin = window.open(urlLoc,winName,features);
-	myWin.focus();
+	//myWin.focus();
 }
 
 function concluido(diario_id) {
@@ -68,8 +68,66 @@ function finaliza_todos(diario_id) {
     return false;
 }
 
-function enviar_diario(action,ofer,encerrado) {
+function finalizado_secretaria(diario_id, wname) {
+    if (typeof wname == "undefined") {
+      wname = "";
+    }
+    if (! diario_id == "") {
+        if (! confirm('Você deseja realmente finalizar o diário ' + diario_id + '?' + '\n Depois de finalizado o professor não poderá fazer alterações!\n')) {
+            return false;
+        }
+        else {
+            abrir(wname,'../coordenacao/marca_finalizado.php?diario_id=' + diario_id)
+            return true;
+        }
+    }
+    return false;
+}
 
+function reaberto_secretaria(diario_id, wname) {
+    if (typeof wname == "undefined") {
+      wname = "";
+    }
+    if (! diario_id == "") {
+        if (! confirm('Você deseja realmente reabrir o diário ' + diario_id + '?' + '\n Depois de aberto o professor poderá fazer alterações!\n')) {
+            return false;
+        }
+        else {
+
+            abrir(wname,'marca_aberto.php?diario_id=' + diario_id);
+            return true;
+        }
+    }
+    return false;
+}
+
+function finaliza_todos_secretaria(diario_id, wname) {
+    if (typeof wname == "undefined") {
+      wname = "";
+    }
+	if (! diario_id == "") {
+    	if (! confirm('Você deseja realmente finalizar todos os diários no período/curso corrente?\n Depois de finalizados o professor não poderá fazer alterações e \n somente a secretaria poderá abri-los novamente!')) {
+            return false;
+        }
+        else {
+            abrir(wname,'../coordenacao/finaliza_todos.php?diario_id=' + diario_id);
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
+function enviar_diario(action,ofer,encerrado,base_url,wname) {
+
+  if (typeof base_url == "undefined") {
+    base_url = "";
+  }
+  if (typeof wname == "undefined") {
+    wname = "";
+  }
+  
   if (encerrado == 1 && (action == 'notas' || action == 'chamada' || action == 'altera_chamada' || action == 'exclui_chamada' || action == 'marca_diario' )) {
     alert("ERRO! Este diário está finalizado e não pode ser alterado!");
     return false;
@@ -79,37 +137,52 @@ function enviar_diario(action,ofer,encerrado) {
     switch (action) {
       case 'marca_diario':
         if (concluido(ofer)) {
-          abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=' + ofer);
+          abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=' + action + '&id=' + ofer);
         }
         break;
       case 'marca_finalizado':
         if (finalizado(ofer)) {
-          abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=' + ofer);
+           abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=' + action + '&id=' + ofer);
+        }
+        break;
+      case 'marca_aberto':
+        if (reaberto(ofer)) {
+           abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=' + action + '&id=' + ofer);
         }
         break;
       case 'finaliza_todos':
         if (finaliza_todos(ofer)) {
-          abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=' + ofer);
+           abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=' + action + '&id=' + ofer);
         }
         break;
       case 'pesquisa_diario_coordenacao':
           diario_id = $F('diario_id');
-          abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=' + diario_id);
+          abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=' + action + '&id=' + diario_id);
         break;
       case 'pesquisa_aluno':
           campo_aluno = $F('campo_aluno');
-          abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=&aluno=' + campo_aluno);
+           abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=' + action + '&id=&aluno' + campo_aluno);
+        break;
+      case 'diarios_secretaria':
+          diario_id = $F('diario_id');
+          periodo_id = $F('periodo_id');
+          curso_id = $F('curso_id');
+          abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=diarios_secretaria&id=' + diario_id + '&periodo=' + periodo_id + '&curso=' + curso_id);
         break;
       default:
-        abrir("<?=$IEnome?>" + '- web diário', 'requisita.php?do=' + action + '&id=' + ofer);
+         alert(base_url);
+         abrir( wname + ' web diário', base_url + 'requisita.php?do=' + action + '&id=' + ofer);
+         //window.open('?do=' + action + '&id=' + ofer,  wname + ' web diário');
     }
   }
   return false;
 }
 
-function consulta_diario() {
-    diario_id = $F('diario_id');  
-    self.location = "coordenacao/pesquisa_diario.php?diario_id=" + diario_id;
+function consulta_diarios_secretaria(base_url,wname) {
+    diario_id = $F('diario_id');
+    periodo_id = $F('periodo_id');
+    curso_id = $F('curso_id');
+    abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=diarios_secretaria&id=' + diario_id + '&periodo=' + periodo_id + '&curso=' + curso_id);
 }
 
 

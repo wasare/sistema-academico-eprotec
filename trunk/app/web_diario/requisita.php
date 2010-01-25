@@ -10,15 +10,19 @@ $operacao = (string) $_GET['do'];
 
 $_SESSION['web_diario_do'] = $operacao;
 
-if (($diario_id == 0 || empty($operacao)) && $operacao != 'troca_senha' && $operacao != 'pesquisa_aluno'){
+if (($diario_id == 0 || empty($operacao)) && $operacao != 'troca_senha' && $operacao != 'pesquisa_aluno') {
 	exit('<script language="javascript" type="text/javascript">
-                window.alert("ERRO! Dados invalidos!");
+                window.alert("ERRO! Dados invalidos!!");
                 window.close();
     </script>');
 }
 
 //  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
-if($operacao != 'lista_diarios_coordenacao' && $operacao != 'troca_senha' && $operacao != 'pesquisa_aluno') {
+if($operacao != 'lista_diarios_coordenacao' && $operacao != 'troca_senha' && $operacao != 'pesquisa_aluno' && $_SESSION['sa_modulo'] == 'web_diario_login') {
+
+  if (!is_diario($diario_id))
+        exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!"); window.close();</script>');
+  
   if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
     exit('<script language="javascript" type="text/javascript">
             alert(\'Você não tem direito de acesso a estas informações!\');
@@ -32,18 +36,25 @@ $_GET['diario_id'] = $diario_id;
 $_POST['diario_id'] = $diario_id;
 
 
-$menu_superior = '<div class="nao_imprime">';
+$menu_superior = '';
 
-if(isset($_SESSION['web_diario_periodo_id']))
+if ($_SESSION['sa_modulo'] == 'web_diario_login') {
+  $menu_superior = '<div class="nao_imprime">';
+
+  if(isset($_SESSION['web_diario_periodo_id']))
 	$menu_superior .= '<a href="#" onclick="window.opener.reload_parent_pane(\'pane_diarios\');window.close();">Meus di&aacute;rios</a>&nbsp;|&nbsp;';
 
-if(isset($_SESSION['web_diario_periodo_coordena_id']))
+  if(isset($_SESSION['web_diario_periodo_coordena_id']))
 	$menu_superior .= '<a href="#" onclick="window.opener.reload_parent_pane(\'pane_coordenacao\');window.close();">Coordena&ccedil;&atilde;o</a>&nbsp;|&nbsp;';
 
-$menu_superior .= '<a href="#" onclick="window.opener.location.href=\''. $BASE_URL .'\';window.close();">Encerrar a sess&atilde;o</a>&nbsp;&nbsp;&nbsp;&nbsp;';
-$menu_superior .= '<img src="'. $BASE_URL .'public/images/icons/bola_verde.gif" width="10" height="10" />&nbsp;' . $sa_usuario .'&nbsp;&nbsp;';
 
-$menu_superior .= '<br /></div>';
+    $menu_superior .= '<a href="#" onclick="window.opener.location.href=\''. $BASE_URL .'\';window.close();">Encerrar a sess&atilde;o</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+    $menu_superior .= '<img src="'. $BASE_URL .'public/images/icons/bola_verde.gif" width="10" height="10" />&nbsp;' . $sa_usuario .'&nbsp;&nbsp;';
+
+    $menu_superior .= '<br /></div>';
+}
+
+
 ?>
 
 <html>
@@ -69,7 +80,7 @@ if($operacao == 'notas') {
       echo '<script type="text/javascript">window.alert("Diario iniciado com sucesso!"); </script>';
     }
     else {
-        // TODO: informar ao administrador/desenvolvedor quando ocorrer erro
+        // @todo: informar ao administrador/desenvolvedor quando ocorrer erro
         echo '<script language=javascript> window.alert("Falha ao inicializar o diario!"); window.close(); </script>';
         exit;
     }
@@ -116,20 +127,18 @@ if($operacao == 'marca_finalizado') {
 	echo papeleta_header($diario_id);
     require_once($BASE_DIR .'app/web_diario/coordenacao/marca_finalizado.php');
 	echo '<br />';
-	echo '<script language="javascript" type="text/javascript">
+	exit('<script language="javascript" type="text/javascript">
 			alert(\'Diario finalizado com sucesso!\');
 			window.opener.location.reload();
-			setTimeout("self.close()",450); </script>';
-    exit;
+			setTimeout("self.close()",450); </script>');
 }
 
 if($operacao == 'finaliza_todos') {
     require_once($BASE_DIR .'app/web_diario/coordenacao/finaliza_todos.php');
 	echo '<br />';
-	echo '<script language="javascript" type="text/javascript">
+	exit('<script language="javascript" type="text/javascript">
 			window.opener.location.reload();
-			setTimeout("self.close()",450); </script>';
-    exit;
+			setTimeout("self.close()",450); </script>');
 }
 
 // ^ OPERACOES COM ALTERACAO DE DADOS   ^ //
@@ -144,12 +153,10 @@ if($operacao == 'lista_diarios_coordenacao') {
 }
 
 if($operacao == 'pesquisa_diario_coordenacao') {
-    require_once($BASE_DIR .'app/web_diario/coordenacao/pesquisa_diario.php');
+    require_once($BASE_DIR .'app/web_diario/coordenacao/pesquisa_diario_coordenacao.php');
 	exit;
 }
 // ^ OPERACAO DA COORDENACAO ^
-
-
 
 
 // RELATORIOS

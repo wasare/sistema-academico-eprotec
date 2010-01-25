@@ -8,8 +8,8 @@ $conn = new connection_factory($param_conn);
 $diario_id = (int) $_GET['diario_id'];
 $operacao = $_GET['do'];
 
-if($diario_id == 0)
-    exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');
+if (!is_diario($diario_id))
+        exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!"); window.close();</script>');
 
 //  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
 if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
@@ -31,5 +31,14 @@ $sql1 = "UPDATE
             id = $diario_id;";
 
 $conn->Execute($sql1);
+
+if ($_SESSION['sa_modulo'] == 'sa_login') {
+
+  exit('<script language="javascript" type="text/javascript">
+            alert(\'Diario finalizado com sucesso!\');
+			window.opener.location.reload();
+			setTimeout("self.close()",450);</script>');
+
+}
 	
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../../app/setup.php');
+require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/search.php');
 
 $conn = new connection_factory($param_conn);
@@ -21,12 +21,13 @@ $busca2  = new search('curso','curso_id','cursos_list', 'form1', '../../relatori
         <link href="../../../lib/SpryAssets/SpryValidationCheckbox.css" rel="stylesheet" type="text/css" />
         <link href="../../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
         <script src="../../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
-        <script language="javascript" src="../../../lib/prototype.js"></script>
+        <script type="text/javascript" language="javascript" src="../../../lib/prototype.js"></script>
+        <script type="text/javascript" src="<?=$BASE_URL .'app/web_diario/web_diario.js'?>"> </script>
     </head>
 
     <body>
         <h2>Consulta Di&aacute;rios</h2>
-        <form name="form1" id="form1" action="lista_diarios_secretaria.php" method="get" target="_blank">
+        <form name="form1" id="form1" action="lista_diarios_secretaria.php" method="post">
             <input type="image" name="voltar"
                    src="../../../public/images/icons/back.png"
                    alt="Voltar"
@@ -63,13 +64,8 @@ $busca2  = new search('curso','curso_id','cursos_list', 'form1', '../../relatori
                 &nbsp;&nbsp;<span class="comentario">Se preenchido os campos anteriores ser&atilde;o ignorados.</span><br />
                 <input name="diario_id" type="text" id="diario_id" size="10" />
                 <br /><br />
-                <input name="lista_diarios" type="submit" id="lista_diarios" value="Listar di&aacute;rios" />
+                <input name="lista_diarios" type="submit" id="lista_diarios" value="Listar di&aacute;rios" /> <!--onclick="enviar_diario('diarios_secretaria',null,null,'<\?=$BASE_URL?>','<\?=$IEnome?>');"-->
             </div>
         </form>
-        <!--<script type="text/javascript">
-		var sprytextfield0 = new Spry.Widget.ValidationTextField("sprytextfield0");
-		var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1");
-
-        </script>-->
     </body>
 </html>

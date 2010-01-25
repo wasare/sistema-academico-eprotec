@@ -1,6 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__) .'/../setup.php');
+require_once($BASE_DIR .'core/login/acl.php');
 require_once($BASE_DIR .'core/date.php');
 
 $conn = new connection_factory($param_conn);

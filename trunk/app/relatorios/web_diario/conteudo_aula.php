@@ -12,7 +12,7 @@ if(!is_numeric($diario_id))
     exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');
 
 //  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
-if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
+if($_SESSION['sa_modulo'] == 'web_diario_login') {
   if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
 
     exit('<script language="javascript" type="text/javascript">
@@ -39,6 +39,8 @@ $sql1 ="SELECT id,
 
 $conteudos = $conn->get_all($sql1);
 
+$fl_finalizado = is_finalizado($diario_id);
+
 
 ?>
 <html>
@@ -59,19 +61,25 @@ $conteudos = $conn->get_all($sql1);
 
 <div align="left">
   <font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif">
+    <?php
+      if(!$fl_finalizado) :
+    ?>
     <strong>*Para alterar o conte&uacute;do de aula clique na data da chamada!</strong>
+    <?php
+      endif;
+    ?>
   </font>
 </div>
 
 
 
-<table cellspacing="0" cellpadding="0" class="papeleta">
+<table cellspacing="0" cellpadding="0" class="papeleta" width="60%">
   <tr bgcolor="#666666"> 
-    <td align="center">
-    	<div align="center"><font color="#FFFFFF">&nbsp;</font><b><font color="#FFFFFF">DATA</font></b></div>
-    </td>
-    <td align="center"><font color="#FFFFFF"><b>AULAS</b></font></td>
-    <td><font color="#FFFFFF"><b>CONTE&Uacute;DO DE AULA</b></font></td>
+    <th align="center">
+    	<div align="center"><font color="#FFFFFF">&nbsp;</font><b><font color="#FFFFFF">Data</font></b></div>
+    </th>
+    <th align="center"><font color="#FFFFFF"><b>Aulas</b></font></th>
+    <th><font color="#FFFFFF"><b>Conte&uacute;do</b></font></th>
   </tr>
 <?php 
 
@@ -89,7 +97,15 @@ foreach($conteudos as $linha1) :
 
   <tr bgcolor="<?=$st?>">
     <td align="center">
-      <a href="<?=$BASE_URL?>app/web_diario/professor/altera_conteudo_aula.php?flag=<?=$chamada_id?>&diario_id=<?=$diario_id?>&data_chamada=<?=date::convert_date($data_chamada)?>" title="clique para alterar" alt="clique para alterar"><?=date::convert_date($data_chamada)?></a>
+      <?php
+          if ($fl_finalizado) :
+            echo date::convert_date($data_chamada);
+         else :
+      ?>
+            <a href="<?=$BASE_URL?>app/web_diario/professor/altera_conteudo_aula.php?flag=<?=$chamada_id?>&diario_id=<?=$diario_id?>&data_chamada=<?=date::convert_date($data_chamada)?>" title="clique para alterar"><?=date::convert_date($data_chamada)?></a>
+      <?php
+        endif;
+      ?>
     </td>
     <td align="center"><?=$aulas?></td>
 	<td><?=$conteudo?></td>
