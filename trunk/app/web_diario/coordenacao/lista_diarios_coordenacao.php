@@ -126,7 +126,7 @@ $periodo = $conn->get_row($qryPeriodo);
 </table>
 
 <h4><strong>Curso: </strong><font color="blue"><?=$curso['id'] .' - '. $curso['nome']?></font></h4>
-<h5>Clique em "acessar" para exibir as op&ccedil;&otilde;es do di&aacute;rio:</h5>
+<h5>Clique em "Acessar" para exibir as op&ccedil;&otilde;es do di&aacute;rio:</h5>
 
 <form id="change_acao" name="change_acao" method="get" action="">
 

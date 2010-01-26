@@ -33,7 +33,7 @@ if (empty($campo_aluno))
  <br />
 <form name="pesquisa_aluno" id="pesquisa_aluno" method="post" action="">
   <strong> Matr&iacute;cula ou nome do aluno:</strong> &nbsp;<input name="campo_aluno" id="campo_aluno" type="text" maxlength="30" size="15" />
-   <input type="button" name="envia_pesquisa_aluno" id="envia_pesquisa_aluno" value="Consultar" onclick="enviar_diario('pesquisa_aluno',null,null);" />
+   <input type="button" name="envia_pesquisa_aluno" id="envia_pesquisa_aluno" value="Consultar" onclick="enviar_diario('pesquisa_aluno',null,null,'<?=$BASE_URL?>','<?=$IEnome?>');" />
     &nbsp;&nbsp;&nbsp;
     <a href="#" onclick="javascript:window.close();">Fechar</a>
  </form>

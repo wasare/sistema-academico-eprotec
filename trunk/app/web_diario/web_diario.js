@@ -161,7 +161,7 @@ function enviar_diario(action,ofer,encerrado,base_url,wname) {
         break;
       case 'pesquisa_aluno':
           campo_aluno = $F('campo_aluno');
-           abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=' + action + '&id=&aluno' + campo_aluno);
+           abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=' + action + '&id=&aluno=' + campo_aluno);
         break;
       case 'diarios_secretaria':
           diario_id = $F('diario_id');
@@ -170,9 +170,7 @@ function enviar_diario(action,ofer,encerrado,base_url,wname) {
           abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=diarios_secretaria&id=' + diario_id + '&periodo=' + periodo_id + '&curso=' + curso_id);
         break;
       default:
-         alert(base_url);
-         abrir( wname + ' web diário', base_url + 'requisita.php?do=' + action + '&id=' + ofer);
-         //window.open('?do=' + action + '&id=' + ofer,  wname + ' web diário');
+         abrir( wname + ' web diário', base_url + 'app/web_diario/requisita.php?do=' + action + '&id=' + ofer);
     }
   }
   return false;

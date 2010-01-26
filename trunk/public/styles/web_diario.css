@@ -96,7 +96,7 @@ table.papeleta {
     font-size: 0.85em;
 }
 
-.tabbed-pane .guias li a.active, .tabbed-pane .guias li:hover {
+.tabbed-pane .guias li a.active, .tabbed-pane .guias li:hover, .tabbed-pane .guias li.active {
 	background: #5699FF;
 	border: 0;
 }

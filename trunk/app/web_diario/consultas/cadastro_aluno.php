@@ -27,7 +27,7 @@ if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login'
 }
 
 $sql = '
-SELECT
+SELECT DISTINCT
     p.id,
     p.identificacao,
     p.titulo_academico,
@@ -95,16 +95,19 @@ SELECT
     f.pai_nome,
     f.mae_nome
 FROM 
-    pessoas p, cidade c1, cidade c2, cidade c3, pais n1, filiacao f
+    pessoas p
+LEFT OUTER JOIN cidade c1 ON(p.ref_cidade = c1.id)
+LEFT OUTER JOIN cidade c2 ON(p.rg_cidade  = c2.id)
+LEFT OUTER JOIN cidade c3 ON(p.ref_naturalidade = c3.id)
+LEFT OUTER JOIN pais n1 ON(p.ref_nacionalidade = n1.id)
+LEFT OUTER JOIN filiacao f ON(p.ref_filiacao = f.id)
 WHERE 
-    p.id = ' . $aluno_id . ' AND
-    p.ref_cidade = c1.id AND
-    p.rg_cidade  = c2.id AND
-    p.ref_nacionalidade = n1.id AND
-    p.ref_filiacao = f.id
-; ';
+    p.id = ' . $aluno_id . ';';
 
 $aluno = $conn->get_row($sql);
+
+if(count($aluno) == 0)
+    exit('<script language="javascript" type="text/javascript">window.alert("Aluno inexistente!"); window.close();</script>');
 
 ?>
 <html>

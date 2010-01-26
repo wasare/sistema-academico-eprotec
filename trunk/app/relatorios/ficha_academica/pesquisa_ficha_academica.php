@@ -127,8 +127,7 @@ if ($_POST) {
 				echo ' <td align="center">
 						<a target="_blank" href="lista_ficha_academica.php?aluno=' . $Result1->fields[1] . '&cs='.$Result1->fields[2] . '&contrato='. $Result1->fields[4] .'">
 						<img src="../../../public/images/icons/report.png" width="20" height="20" title="Ficha acad&ecirc;mica" alt="Ficha acad&ecirc;mica" /></a>
-						&nbsp;&nbsp;<a target="_blank" href="../pessoas/lista_pessoas.php?pessoa_id=' . $Result1->fields[1] .'">
-						<img src="../../../public/images/icons/pessoa.png" width="20" height="20" title="Informa&ccedil;&otilde;es pessoais" alt="Informa&ccedil;&otilde;es pessoais" /></a></td>';
+						&nbsp;&nbsp;<a target="_blank" href="../pessoas/lista_pessoa.php?pessoa_id=' . $Result1->fields[1] .'"><img src="../../../public/images/icons/pessoa.png" width="20" height="20" title="Informa&ccedil;&otilde;es pessoais" alt="Informa&ccedil;&otilde;es pessoais" /></a></td>';
                 echo '</tr>';
 
            		$Result1->MoveNext();
@@ -163,7 +162,5 @@ if ($_POST) {
 	}//fim se
 
 ?>
-</div>
-</div>
 </body>
 </html>

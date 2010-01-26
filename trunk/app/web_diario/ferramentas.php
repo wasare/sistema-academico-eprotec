@@ -42,7 +42,7 @@ if (count(array_intersect($papeis, $PAPEIS_WEB_DIARIO)) == 0) {
   <br />
 <form name="pesquisa_aluno" id="pesquisa_aluno" method="post" action="">
   <strong> Matr&iacute;cula ou nome do aluno:</strong> &nbsp;<input name="campo_aluno" id="campo_aluno" type="text" maxlength="30" size="15" />
-   <input type="button" name="envia_pesquisa_aluno" id="envia_pesquisa_aluno" value="Consultar" onclick="enviar_diario('pesquisa_aluno',null,null);" />
+   <input type="button" name="envia_pesquisa_aluno" id="envia_pesquisa_aluno" value="Consultar" onclick="enviar_diario('pesquisa_aluno',null,null,'<?=$BASE_URL?>','<?=$IEnome?>');" />
  </form>
 <br />
 </div>
@@ -115,9 +115,9 @@ if (count(array_intersect($papeis, $PAPEIS_WEB_DIARIO)) == 0) {
 <br />
 <h5>programas para leitura/impress&atilde;o do caderno de chamada</h5>
 <br />
-<h5><a href="<?=$BASE_URL .'app/web_diario/docs/gs851w32.exe'?>">1 - GhostScript</a></h5>
+<h5><a href="<?=$BASE_URL .'public/programas/gs851w32.exe'?>">1 - GhostScript</a></h5>
 	<br />
-<h5><a href="<?=$BASE_URL .'app/web_diario/docs/gsv48w32.exe'?>">2 - GhostView</a></h5>
+<h5><a href="<?=$BASE_URL .'public/programas/gsv48w32.exe'?>">2 - GhostView</a></h5>
 <br />
 <br />
 </div>
