@@ -1,20 +1,24 @@
 <?php
 
 require_once(dirname(__FILE__) .'/../setup.php');
+require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'core/login/acl.php');
 
 $conn = new connection_factory($param_conn);
 
 // VERIFICA SE O USUARIO TEM DIREITO DE ACESSO
 $acl = new acl();
-$papeis = $acl->get_roles($sa_ref_pessoa, $conn);
 
-if (count(array_intersect($papeis, $PAPEIS_WEB_DIARIO)) == 0) {  
+// @todo melhorar o retorno ao usuário usando um metódo de logout
+if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_WEB_DIARIO, $conn)) {
   exit('<script language="javascript" type="text/javascript">
             alert(\'Você não tem direito de acesso a estas informações!\');
             window.history.back(1);</script>');
 }
 // ^ VERIFICA SE O USUARIO TEM DIREITO DE ACESSO ^ //
+
+
+// @todo verificar se quem acessou possui pelo menos um diário ou coordena pelo menos um curso
 
 unset($_SESSION['conteudo']);
 unset($_SESSION['flag_falta']);

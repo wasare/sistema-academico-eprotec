@@ -118,7 +118,7 @@ $periodo = $conn->get_row($qryPeriodo);
 </table>
 
 <h4><strong>Curso: </strong><font color="blue"><?=$curso['id'] .' - '. $curso['nome']?></font></h4>
-<h5>Clique em "acessar" para exibir as op&ccedil;&otilde;es do di&aacute;rio:</h5>
+<h5>Clique em "Acessar" para exibir as op&ccedil;&otilde;es do di&aacute;rio:</h5>
 
 <form id="change_acao" name="change_acao" method="get" action="">
 
@@ -164,7 +164,7 @@ foreach($diarios as $row3) :
 
       $opcoes_diario = '';
       $fl_opcoes = 0;
-      
+
     if($fl_digitada == 'f' && $fl_concluida == 'f') {
         $fl_situacao = '<font color="green"><b>Aberto</b></font>';
     }
@@ -182,9 +182,9 @@ foreach($diarios as $row3) :
 			$fl_opcoes = 1;
         }
         else {
-            $opcoes_diario .= "<a href=\"#\" onclick=\"finalizado_secretaria('$diario_id','$IEnome');\">finaliza para lan&ccedil;amentos</a><br />";
-			$fl_opcoes = 1;
-		}
+          $opcoes_diario .= "<a href=\"#\" onclick=\"finalizado_secretaria('$diario_id','$IEnome');\">finaliza para lan&ccedil;amentos</a><br />";
+          $fl_opcoes = 1;
+        }
     }	
 	
      $opcoes_diario .= empty($opcoes_diario) ? '' : '<br />';

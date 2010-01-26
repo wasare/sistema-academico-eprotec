@@ -76,7 +76,7 @@ class acl {
     * @param conexao com banco de dados
     * @return efetuado ou rejeitado acesso a arquivo
     */
-    public static function check($url, connection_factory $conn){
+    public static function check($url, connection_factory $conn) {
         
         $acl = new acl();
 
@@ -92,13 +92,34 @@ class acl {
     * @param conexao com banco de dados
     * @return array contendo os papeis do usuário
     */
-    public static function get_roles($pessoa_id, connection_factory $conn){
+    public static function get_roles($pessoa_id, connection_factory $conn) {
 
         $sql = "SELECT ref_papel
                     FROM usuario_papel a, usuario b
                     WHERE a.ref_usuario = b.id AND b.ref_pessoa = $pessoa_id;";
 
         return $conn->get_col($sql);
+    }
+
+    /**
+    * Verifica se usuário possue papel para acessar determinado conteúdo
+    * @param $pessoa_id
+    * @param $papeis_permitidos
+    * @param conexao com banco de dados
+    * @return boolean
+    */
+    public static function has_role($pessoa_id, $papeis_permitidos, connection_factory $conn) {
+
+      $sql = "SELECT ref_papel
+                    FROM usuario_papel a, usuario b
+                    WHERE a.ref_usuario = b.id AND b.ref_pessoa = $pessoa_id;";
+
+      $papeis_usuario =  $conn->get_col($sql);
+
+      if (count(array_intersect($papeis_usuario, $papeis_permitidos)) == 0)
+        return FALSE;
+      else
+        return TRUE;
     }
 
 }

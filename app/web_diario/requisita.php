@@ -193,7 +193,6 @@ if($operacao == 'pesquisa_aluno') {
 // ^ RELATORIOS ^ //
 
 
-
 ?>
 <script language="javascript" type="text/javascript">
   window.focus();

@@ -1,6 +1,20 @@
 <?php
 
 require_once(dirname(__FILE__).'/setup.php');
+require_once($BASE_DIR .'core/login/acl.php');
+
+$conn = new connection_factory($param_conn);
+
+// VERIFICA SE O USUARIO TEM DIREITO DE ACESSO
+$acl = new acl();
+
+// @todo melhorar o retorno ao usuário usando um metódo de logout
+if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
+  exit('<script language="javascript" type="text/javascript">
+            alert(\'Você não tem direito de acesso a estas informações!\');
+            window.history.back(1);</script>');
+}
+// ^ VERIFICA SE O USUARIO TEM DIREITO DE ACESSO ^ //
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
