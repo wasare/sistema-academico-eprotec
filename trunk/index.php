@@ -9,12 +9,12 @@ $sessao = new session($param_conn);
 
 // INICIA UM NOVO PROCESSO DE LOGIN
 if(isset($_POST['modulo'])) {
-  
+
     $conn = new connection_factory($param_conn);
 
     $autentica = new auth($BASE_URL);
     $autentica->log_file($BASE_DIR .'logs/login.log');
-    
+
     if($autentica->login(trim($_POST['uid']),trim($_POST['pwd']),$_POST['modulo'], $conn) === TRUE) {
 
       // REDIRECIONA DE ACORDO COM O MODULO SELECIONADO
