@@ -1,64 +1,134 @@
 <?php
-	session_start();
-	$_SESSION = array();
-	session_destroy();
-
- 	include_once('topo.htm'); 
+session_start();
+$_SESSION = array();
+session_destroy();
 ?>
-	<p align="center" class="style2"><br>
-	</p>
-	<table width="507" border="0" align="center" height="46">
-	  <tr>
-		<td width="497" height="20" class="login" align="center"><div align="center" class="caixa">
-			<form name="form1" method="post" action="lista_cursos.php">
-			  <table width="340" border="0">
-				<tr>
-				  <td height="30" colspan="2" class="title"><div align="center">Consultas de Notas, Faltas e Saldo da Conta Acad&ecirc;mica</div></td>
-				</tr>
-				<tr>
-				  <td colspan="2" class="title">&nbsp;</td>
-				</tr>
-				<tr>
-				  <td width="109" class="login" >Registro Escolar:</td>
-				  <td width="226" class="login" ><input type="text" id="user" name="user"></td>
-				</tr>
-				<tr>
-				  <td class="login" >Data Nascimento:</td>
-				  <td class="login" ><input type="text" id="nasc" name="nasc" maxsize="10">
-					<span class="style1">(DD/MM/AAAA)</span></td>
-				</tr>
-				<tr>
-				  <td class="login" >Senha:</td>
-				  <td><input type="password" id="senha" name="senha"></td>
-				</tr>
-				<tr>
-				  <td>&nbsp;</td>
-				  <td><input type="submit" id="submit" name="submit" target="_parent" value="Entrar">
-					</td>
-				</tr>
-			  </table>
-			  <input type="hidden" name="btnOK" value="true" />
-		      <input type="hidden" id="sa_login" name="sa_login" value="aluno_login" />		
-			</form>
-		  </div></td>
-	  </tr>
-	  <tr>
-		<td height="20" class="login"><p>&nbsp;</p>
-		  <p><strong>Como Consultar:</strong> </p>
-		  <ul>
-			<li> No Registro Escolar utilizar o n&uacute;mero da sua carteira de estudante; <br>
-			</li>
-			<li> Na data de nascimento informe a data no formato DD/MM/AAAA.<br>
-			</li>
-			<li> Se ocorrer algum problema de usu&aacute;rio ou senha inv&aacute;lido, verfique os dados. Caso persista o erro consulte no Setor de Registros Escolares se a sua data de nascimento est&aacute; correta no sistema. <br>
-			</li>
-			<li> Na senha utilize o seu Registro Escolar + zeros a esquerda at&eacute; completar 5 algarismos. <b>Exemplo:</b> para registro n&ordm; 135 a senha ser&aacute; 00135. </li>
-			<li><b>Qualquer diverg&ecirc;ncia em notas e faltas informe-se com o seu professor.</b></li>
-		  </ul></td>
-	  </tr>
-	</table>
-	<br>
-<?php
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title> - Sistema Acad&ecirc;mico</title>
+        <link href="../../public/images/favicon.ico" rel="shortcut icon" />
+        <link href="../../public/styles/style.css" rel="stylesheet" type="text/css" />
+        <style>
+            #alert_login{
+                font-family:verdana,arial;
+                font-size:14;
+                font-weight:bold;
+                color: red;
+                position:absolute;
+                top: 50%;
+                left: 50%;
+                margin-left:-170px;
+                margin-top:-120px;
+                width:300px;
+                height:180px;
+                z-index:1;
+                background-color:#FFF6D5;
+                padding: 4px;
+                border: 4px solid orange;
+            }
+            #alert_login a{
+                text-align:right;
+            }
+            #caixa_login {
+                background-color: #CEE7FF;
+                width:300px;
+                font-family: Verdana, Arial, Helvetica, sans-serif;
+                font-size: 12px;
+                border: 4px solid #3399FF;
+                padding: 10px 5px 10px 5px;
+                margin: 10px 5px 10px 5px;
+            }
+        </style>
+    </head>
 
-	include_once('rodape.htm');    
-?>
+    <body>
+        <div align="center">
+            <table border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>
+                        <img src="../../public/images/sa_icon.png" alt="logomarca SA" width="80" height="68" style="margin: 10px;" />
+                    </td>
+                    <td valign="top">
+                        <h3>Bem vindo ao Sistema Acad&ecirc;mico - M&oacute;dulo do aluno.</h3>
+
+                        No Registro Escolar utilizar o n&uacute;mero da sua carteira de estudante; <br />
+                        Na data de nascimento informe a data no formato DD/MM/AAAA.<br />
+                        Se ocorrer algum problema de usu&aacute;rio ou senha inv&aacute;lido, verfique os dados.<br />
+                        Caso persista o erro consulte no Setor de Registros Escolares se a sua data de nascimento est&aacute; correta no sistema. <br />
+
+                        Na senha utilize o seu Registro Escolar + zeros a esquerda at&eacute; completar 5 algarismos.<br />
+                        <b>Exemplo:</b> para registro n&ordm; 135 a senha ser&aacute; 00135.<br />
+                        <b>Qualquer diverg&ecirc;ncia em notas e faltas informe-se com o seu professor.</b><br />
+
+                    </td>
+                </tr>
+            </table>
+            <h2>Entre com sua conta</h2>
+            <div id="caixa_login">
+                <form name="form1" method="post" action="lista_cursos.php">
+                    <table border="0">
+                        <tr>
+
+                            <td align="right">
+                                Usu&aacute;rio:
+                            </td>
+                            <td>
+                                <input type="text" id="user" name="user" maxlength="20" style="width: 140px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+
+                                Data de nascimento:
+                            </td>
+                            <td>
+                                <input type="text" id="nasc" name="nasc" maxlength="20" style="width: 140px;" />
+                                <span class="style1">(DD/MM/AAAA)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+
+                                Senha:
+                            </td>
+                            <td>
+                                <input type="password" id="senha" name="senha" maxlength="20" style="width: 140px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <p>
+                                    <input type="image" src="../../public/images/bt_entrar.png" />
+                                </p>
+                                <a href="esqueci_senha.php">Esqueci minha senha</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="btnOK" value="true" />
+                    <input type="hidden" id="sa_login" name="sa_login" value="aluno_login" />
+                </form>
+            </div>
+
+            <table border="0">
+                <tr>
+                    <td>
+                        <img src="../../public/images/logo.jpg" alt="IFMG Campus Bambu&ia&iacute;" style="margin: 10px;" />
+                    </td>
+                    <td>
+                        <strong>Instituto Federal Minas Gerais</strong><br />
+                        Campus Bambu&iacute;<br />
+
+                        Ger&ecirc;ncia de Tecnologia da Informa&ccedil;&atilde;o
+                    </td>
+                </tr>
+            </table>
+            <p>
+                <font color="#999999">&copy;2009 IFMG Campus Bambu&iacute;</font>
+            </p>
+        </div>
+
+    </body>
+</html>
+

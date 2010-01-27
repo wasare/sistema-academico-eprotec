@@ -9,7 +9,7 @@ if($_POST) {
 
         $conn = new connection_factory($param_conn);
 
-        $sqlUsuario = " 
+        $sqlUsuario = "
 		SELECT u.id,u.nome,p.email
 		FROM usuario u, pessoas p
 		WHERE
@@ -22,7 +22,7 @@ if($_POST) {
             ); ";
 
         $RsUsuario    = $conn->Execute($sqlUsuario);
-		$nome_usuario = $RsUsuario->fields[1]; 
+        $nome_usuario = $RsUsuario->fields[1];
 
         if($RsUsuario->RecordCount() === 1) {
             $nova_senha = rand(10000000,99999999);
@@ -33,8 +33,8 @@ if($_POST) {
 
             if($conn->Execute($sqlUpdateUsuario)) {
                 $message = 'Dados para acessar o SA - Usuário: '.$nome_usuario
-							.' - Nova senha: '.
-							$nova_senha;
+                        .' - Nova senha: '.
+                        $nova_senha;
 
                 if(mail($RsUsuario->fields[2], 'SA - Envio de senha', $message, 'From: SA')) {
                     $msg = '<font color=green>Procedimento efetuado com sucesso!
@@ -46,11 +46,11 @@ if($_POST) {
                 $msg = 'Erro ao atualizar nova senha!';
             }
         }else {
-            $msg = 'Usu&aacute;rio n&atilde;o cadastrado! 
+            $msg = 'Usu&aacute;rio n&atilde;o cadastrado!
 					Procure a secretaria do campus.';
         }
     }else {
-        $msg = 'O campo <i>Nome do usu&aacute;rio</i> ou 
+        $msg = 'O campo <i>Nome do usu&aacute;rio</i> ou
 				<i>Email cadastrado no SA</i> devem ser preenchidos!';
     }
 }
@@ -71,7 +71,7 @@ if($_POST) {
             <form method="post" action="esqueci_senha.php">
                 <p>
                     <strong>Entre com usu&aacute;rio ou email cadastrado no SA:</strong>
-					<br />
+                    <br />
                     <input type="text" name="user" id="user" size="40" />
                     <br />
                     <input type="submit" value="Enviar" />
