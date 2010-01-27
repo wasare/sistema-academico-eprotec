@@ -33,3 +33,8 @@ CREATE FUNCTION get_turno(character varying) RETURNS character varying
 CREATE FUNCTION periodo_disciplina_ofer(integer) RETURNS character varying
     AS $_$select ref_periodo from disciplinas_ofer where id = $1$_$
     LANGUAGE sql;
+
+-- função get_motivo
+CREATE FUNCTION get_motivo(integer) RETURNS character varying
+    AS $_$select descricao from motivo where id = $1$_$
+    LANGUAGE sql;

@@ -12,7 +12,7 @@ $conn = new connection_factory($param_conn);
 /*
  * Executa uma instrucao SQL no banco de dados
  */
-$sql = "INSERT INTO motivos(descricao, ref_tipo_motivo)
+$sql = "INSERT INTO motivo(descricao, ref_tipo_motivo)
         VALUES('".$_POST['nome']."',".$_POST['tipo'].");";
 
 $conn->Execute($sql);

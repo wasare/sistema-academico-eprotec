@@ -2,8 +2,7 @@
 
 require_once(dirname(__FILE__) .'/../../setup.php');
 
-if(empty($_SESSION['web_diario_periodo_id']) OR empty($_SESSION['web_diario_periodo_id']))
-{
+if(empty($_SESSION['web_diario_periodo_id']) OR empty($_SESSION['web_diario_periodo_id'])) {
         exit('<script language="javascript" type="text/javascript">
                 window.alert("ERRO! Primeiro informe um período!");
                 window.close();

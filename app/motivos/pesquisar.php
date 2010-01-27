@@ -13,7 +13,7 @@ if($_POST) {
 /*
  * Realiza uma consulta no banco de dados retornando um vetor multidimensional
  */
-    $sql = 'SELECT id, descricao, ref_tipo_motivo FROM motivos WHERE descricao';
+    $sql = 'SELECT id, descricao, ref_tipo_motivo FROM motivo WHERE descricao';
     $arr_motivo = $conn->get_all();
 }
 

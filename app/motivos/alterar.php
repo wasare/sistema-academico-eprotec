@@ -12,7 +12,7 @@ $conn = new connection_factory($param_conn);
 /*
  * Realiza uma consulta no banco de dados retornando um vetor multidimensional
  */
-$sql = 'SELECT id, descricao, ref_tipo_motivo FROM motivos WHERE id = '.$_GET['id'];
+$sql = 'SELECT id, descricao, ref_tipo_motivo FROM motivo WHERE id = '.$_GET['id'];
 $arr_motivo = $conn->get_all($sql);
 
 ?>

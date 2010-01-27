@@ -56,3 +56,5 @@ DROP FUNCTION get_turno_(character varying);
 ALTER TABLE diario_log ALTER COLUMN pagina_acesso TYPE text;
 ALTER TABLE diario_log ALTER COLUMN senha_acesso TYPE varchar(80);
 
+-- motivo
+ALTER TABLE motivos RENAME TO motivo;
