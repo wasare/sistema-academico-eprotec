@@ -12,7 +12,7 @@ $conn = new connection_factory($param_conn);
 /*
  * Executa uma instrucao SQL no banco de dados
  */
-$conn->Execute('DELETE FROM motivos WHERE id='.$_GET['id']);
+$conn->Execute('DELETE FROM motivo WHERE id='.$_GET['id']);
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

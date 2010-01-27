@@ -14,7 +14,7 @@ $conn = new connection_factory($param_conn);
  */
 $sql = 'SELECT
             id, descricao, ref_tipo_motivo
-        FROM motivos
+        FROM motivo
         ORDER BY descricao
         LIMIT 20;';
 

@@ -13,7 +13,7 @@ $conn = new connection_factory($param_conn);
  * Realiza uma consulta no banco de dados retornando um vetor multidimensional
  */
 $sql = "SELECT id, descricao, ref_tipo_motivo
-        FROM motivos
+        FROM motivo
         WHERE
             lower(to_ascii(descricao)) LIKE
             lower(to_ascii('%".$_POST['nome']."%'))

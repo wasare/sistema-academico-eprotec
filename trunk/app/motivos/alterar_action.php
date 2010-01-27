@@ -12,7 +12,7 @@ $conn = new connection_factory($param_conn);
 /*
  * Executa uma instrucao SQL no banco de dados
  */
-$sql = "UPDATE motivos SET 
+$sql = "UPDATE motivo SET 
             descricao='".$_POST['nome']."',
             ref_tipo_motivo=".$_POST['tipo']."
         WHERE
