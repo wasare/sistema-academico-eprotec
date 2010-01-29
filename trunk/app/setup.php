@@ -1,5 +1,10 @@
 <?php
 // die('<h2>Sistema em manuten&ccedil;&atilde;o</h2>');
+/* DEBUG
+print_r($_POST);
+error_reporting(E_ALL & ~E_NOTICE);
+ini_set("display_errors", 1);
+*/
 /**
  * Inclui arquivo com as configuracoes do sistema
  */

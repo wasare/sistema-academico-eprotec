@@ -2,43 +2,35 @@
 
 /**
 * Seleciona as disciplinas para matricular
-* @author Santiago Silva Pereira
+* @author Santiago Silva Pereira, Wanderson S. Reis
 * @version 1
 * @since 04-02-2009
 **/
+require_once(dirname(__FILE__) .'/../setup.php');
+require_once($BASE_DIR .'core/situacao_academica.php');
 
-//Arquivos de configuracao e biblioteca
-header("Cache-Control: no-cache");
-require_once("../../app/setup.php");
-require_once('../../core/situacao_academica.php');
+$conn = new connection_factory($param_conn);
 
-//Criando a classe de conexao ADODB
-$Conexao = NewADOConnection("postgres");
-
-//Setando como conexao persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 //
 $aluno_id = $_SESSION['sa_aluno_id'];
 //
-$diario_id = $_POST['diario_id'];
-$contrato_id = $_POST['contrato_id'];
-$curso_id = $_POST['curso_id'];
+$diario_id = (int) $_POST['diario_id'];
+$contrato_id = (int) $_POST['contrato_id'];
+$curso_id = (int) $_POST['curso_id'];
 //
 $msg = '';
 
 
 
-if(!is_numeric($diario_id) OR !is_numeric($contrato_id))
-{
+if(!is_numeric($diario_id) OR !is_numeric($contrato_id)) {
 	
 		$msg = '<p><div align="center"><b><font color="#CC0000">'.
 	    'Entre com um c&oacute;digo de di&aacute;rio!'.
 		'</font></b></div></p>';
 	
 }
-else
-{
+else {
 
 		$sqlDiarioMatricular = "
 		SELECT DISTINCT 
@@ -54,15 +46,14 @@ else
 			A.ref_disciplina = B.ref_disciplina AND
 			A.ref_periodo = '".$_SESSION['sa_periodo_id']."' AND
 			A.id = $diario_id AND
-			A.is_cancelada <> '1' 
+			A.is_cancelada = '0'
 		ORDER BY 2";
 
         //echo '<br />'. $sqlDiarioMatricular;
-		$RsDiarioMatricular = $Conexao->Execute($sqlDiarioMatricular);
+		$RsDiarioMatricular = $conn->Execute($sqlDiarioMatricular);
 
 
-		while(!$RsDiarioMatricular->EOF)
-		{
+		while(!$RsDiarioMatricular->EOF) {
 
     		$ofer             = $RsDiarioMatricular->fields[0];
 		    $id               = $RsDiarioMatricular->fields[1];
@@ -83,7 +74,7 @@ else
             		ref_pessoa = $aluno_id
     		);";
 
-		    $RsConfereDiario = $Conexao->Execute($sqlConfereDiario);
+		    $RsConfereDiario = $conn->Execute($sqlConfereDiario);
 
 		    if ($RsConfereDiario)
 			{
@@ -129,8 +120,7 @@ else
 
 
 
-		if($DiarioMatricular == '')
-		{
+		if($DiarioMatricular == '') {
 		    $msg = '<p><div align="center"><b><font color="#CC0000">'.
 	    	'di&aacute;rio n&atilde;o dispon&iacute;vel ou o aluno j&aacute; est&aacute; matriculado neste di&aacute;rio/disciplina!'.
 			'</font></b></div></p>';
@@ -147,9 +137,10 @@ else
 echo $msg;
 //echo $_SESSION['sa_diarios_matricula_avulsa'][$ofer];
 
-foreach( $_SESSION['sa_diarios_matricula_avulsa'] as $diario)
-{
+if (is_array($_SESSION['sa_diarios_matricula_avulsa'])) {
+  foreach($_SESSION['sa_diarios_matricula_avulsa'] as $diario) {
 	echo $diario;
+  }
 }
 
 ?>

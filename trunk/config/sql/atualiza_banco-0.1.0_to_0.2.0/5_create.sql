@@ -38,3 +38,9 @@ CREATE FUNCTION periodo_disciplina_ofer(integer) RETURNS character varying
 CREATE FUNCTION get_motivo(integer) RETURNS character varying
     AS $_$select descricao from motivo where id = $1$_$
     LANGUAGE sql;
+
+-- função nota_distribuida
+CREATE FUNCTION nota_distribuida(integer) RETURNS integer
+    AS $_$select cast(sum(nota_distribuida) as integer) from diario_formulas where grupo ilike '%-' || $1$_$
+    LANGUAGE sql;
+

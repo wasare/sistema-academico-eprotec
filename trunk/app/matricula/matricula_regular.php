@@ -58,6 +58,8 @@ function deselecionar_tudo()
   <div class="panel"> <strong>Di&aacute;rios matriculados</strong> (Di&aacute;rio / Disciplina / Professor) <br />
     <br />
     <?=$DisciplinasMatriculadas?>
+    <br />
+    <strong>(*) Disciplina cancelada.</strong>
   </div>
   <form name="form1" method="post" action="matricula.post.php">
     <div class="panel"> <strong>Selecione os di&aacute;rios para matricular</strong> (Di&aacute;rio / Disciplina / Professor)

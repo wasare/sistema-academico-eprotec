@@ -1,41 +1,24 @@
 <?php
 
 //INCLUSAO DE BIBLIOTECAS
-require_once("../../../app/setup.php");
-require_once("../../../lib/adodb5/tohtml.inc.php");
+require_once(dirname(__FILE__) .'/../../setup.php');
+require_once($BASE_DIR .'lib/adodb5/tohtml.inc.php');
 
+$conn = new connection_factory($param_conn);
 
 //error_reporting(E_ALL & ~E_NOTICE);
 //ini_set("display_errors", 1);
 
-
-//Criando a classe de conexão
-$Conexao = NewADOConnection("postgres");
-	
-//Setando como conexão persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
-
-
 $cod_aluno = $_POST["codigo_pessoa"];
 $periodo = $_POST["periodo1"];
 
-
-
 $sqlAluno = "SELECT id, nome FROM pessoas WHERE id = $cod_aluno;";
 
-$RsAluno = $Conexao->Execute($sqlAluno);
-
-//Se Result1 falhar	
-if (!$RsAluno){
-	print $Conexao->ErrorMsg();			
-    die();
-}	
-
-
+$RsAluno = $conn->Execute($sqlAluno);
 
 $sqlDiarios = "
 SELECT 
-m.id, m.ref_disciplina_ofer, d.id, d.descricao_disciplina, m.ref_curso, c.descricao
+m.id, m.ref_disciplina_ofer, d.id, d.descricao_disciplina, m.ref_curso, c.descricao, o.is_cancelada
 FROM 
 matricula m, cursos c, disciplinas_ofer o, disciplinas d
 WHERE 
@@ -46,14 +29,8 @@ o.id = m.ref_disciplina_ofer AND
 o.ref_disciplina = d.id
 ORDER BY c.descricao;";
 
-$RsDiarios = $Conexao->Execute($sqlDiarios);
+$RsDiarios = $conn->Execute($sqlDiarios);
 	
-if (!$RsDiarios){
-	print $Conexao->ErrorMsg();			
-    die();
-}
-
-
 if ( $RsDiarios->RecordCount() > 0 ) {
 
 $exibe_diarios = ' <table border="0" cellpadding="0" cellspacing="2">      <tr>
@@ -72,10 +49,10 @@ while(!$RsDiarios->EOF) {
 	{
 		$cor = "#E1E1FF";
 	}
-		
+	$cancelado = ($RsDiarios->fields[6] == 1) ? '&nbsp;<strong>*</strong>' : '';
 	$exibe_diarios .= "<tr bgcolor=\"$cor\">";
 	$exibe_diarios .= "<td><input name=\"id_matricula[]\" type=\"checkbox\" value=\"" . $RsDiarios->fields[0] . "\" /></td>";
-	$exibe_diarios .= "<td>" . $RsDiarios->fields[1] . "</td>";
+	$exibe_diarios .= "<td>" . $RsDiarios->fields[1] . $cancelado ."</td>";
 	$exibe_diarios .= "<td>" . $RsDiarios->fields[2] . " - " . $RsDiarios->fields[3] . "</td>";
 	$exibe_diarios .= "<td>" . $RsDiarios->fields[4] . " - " . $RsDiarios->fields[5] . "</td>";
 	$exibe_diarios .= "</tr>";
@@ -84,7 +61,8 @@ while(!$RsDiarios->EOF) {
 		
 }
   $exibe_diarios .= "</table>";
-  $exibe_botao = '<p class="msg_erro"><strong>Aten&ccedil;&atilde;o! Esta a&ccedil;&atilde;o n&atilde;o pode ser retomada! 
+  $exibe_diarios .= '<strong>(*) Disciplina cancelada.</strong>';
+  $exibe_botao = '<p class="msg_erro"><strong>Aten&ccedil;&atilde;o! Esta a&ccedil;&atilde;o n&atilde;o pode ser desfeita!
 </strong></p>';
   $exibe_botao .= '<input type="submit" value="Excluir a matr&iacute;cula nas disciplinas selecionadas" />';
    

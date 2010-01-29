@@ -52,6 +52,8 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
             <div class="panel"> <strong>Di&aacute;rios matriculados</strong> (Di&aacute;rio / Disciplina / Professor) <br />
                 <br />
                 <?=$DisciplinasMatriculadas?>
+                <br />
+                <strong>(*) Disciplina cancelada.</strong>
             </div>
 
             <form name="form1" method="post" action="matricula.post.php">
