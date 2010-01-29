@@ -227,10 +227,6 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                            target="frame2">Cursos / Disciplinas</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/disciplina_ofer.phtml" 
-                                           target="frame2">Disciplinas Oferecidas</a>
-                                    </li>
-                                    <li>
                                         <a href="sagu/academico/consulta_inclui_pre_requisito.phtml" 
                                            target="frame2">Pr&eacute;-requisitos</a>
                                     </li>
@@ -243,12 +239,12 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                             <li><a href="#" class="MenuBarItemSubmenu">Matr&iacute;culas</a>
                                 <ul>
                                     <li>
-                                        <a href="matricula/matricula_aluno.php" 
-                                           target="frame2">Matr&iacute;cula</a>
+                                        <a href="sagu/academico/disciplina_ofer.phtml"
+                                           target="frame2">Disciplinas Oferecidas</a>
                                     </li>
                                     <li>
-                                        <a href="web_diario/secretaria/diarios_secretaria.php"
-                                           target="frame2">Di&aacute;rios</a>
+                                        <a href="matricula/matricula_aluno.php" 
+                                           target="frame2">Matr&iacute;cula</a>
                                     </li>
                                     <li>
                                         <a href="dispensa_disciplina/dispensa_aluno.php" 
@@ -257,6 +253,10 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                     <li>
                                         <a href="matricula/remover_matricula/filtro.php" 
                                            target="frame2">Excluir Matr&iacute;cula</a>
+                                    </li>
+                                    <li>
+                                        <a href="web_diario/secretaria/diarios_secretaria.php"
+                                           target="frame2">Di&aacute;rios</a>
                                     </li>
                                 </ul>
                             </li>

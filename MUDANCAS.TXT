@@ -1,4 +1,104 @@
 ------------------------------------------------------------------------
+r183 | wanderson | 2010-01-27 18:05:56 -0200 (Wed, 27 Jan 2010) | 3 lines
+
+- corrigi erros no cadastro de contratos relacionados a alterações no banco de dados e atualiza outros cadastros afetados
+
+
+------------------------------------------------------------------------
+r182 | santiago | 2010-01-27 16:41:39 -0200 (Wed, 27 Jan 2010) | 2 lines
+
+Adequar o layout da área do aluno. fecha #262
+Alteração e recuperação de acesso a área do aluno. fecha #252
+------------------------------------------------------------------------
+r181 | wanderson | 2010-01-26 18:18:33 -0200 (Tue, 26 Jan 2010) | 8 lines
+
+- corrigi erros no web diário: pesquisas, operações e exibição da ficha de informações pessoais do aluno
+- corrigi pequeno problema de design no web diário
+- inclui os programas para leitura de arquivos .ps
+- verificação básica de direito de acesso ao SA, refs #243
+- inclui configuração sobre papéis no arquivo configuracao.php
+- revisão do acesso aos diários dentro do módulo principal do SA
+
+
+------------------------------------------------------------------------
+r180 | wanderson | 2010-01-25 15:42:05 -0200 (Mon, 25 Jan 2010) | 7 lines
+
+- corrigi erro de usabilidade ao usar a função de "abrir" diários finalizado, fecha #229
+- restringi alteração de conteúdo de aulas somente para diários não finalizados
+- melhorias de validação no web diário
+- alteração da posição e nome do link "Web Diário" agora se chama "Diários" e fica no menu "Matrículas"
+- adequação da tela de login
+
+
+------------------------------------------------------------------------
+r179 | wanderson | 2010-01-21 11:12:38 -0200 (Thu, 21 Jan 2010) | 10 lines
+
+- adequa o web diário ao novo sistema de controle de login/acesso do SA, fecha #228
+- limita o acesso a informações dos alunos no web diário aos professores e coordenadores, fecha #253
+- protege a foto do cadastro de pessoas de acesso não autorizado, fecha #263
+- adequa o leiaute do web diário ao SA e adiciona melhorias de usuabilidade e segurança, fecha #264
+- melhorias na pesquisa da ficha acadêmica, relatório global de notas e faltas e ficha de informações pessoais
+- inclui relatório simples de contagem de registros do sistema
+- exclui arquivos que não estavam sendo utilizados
+
+
+
+------------------------------------------------------------------------
+r178 | wanderson | 2010-01-19 09:55:59 -0200 (Tue, 19 Jan 2010) | 4 lines
+
+- implementação das funções do professor e do coordenador no web diário, refs #228
+- adequações e melhorias nos relatórios do web diário
+
+
+------------------------------------------------------------------------
+r177 | santiago | 2010-01-13 16:20:07 -0200 (Wed, 13 Jan 2010) | 1 line
+
+Novo controle professores com criação do usuário do web diário. fecha #249
+------------------------------------------------------------------------
+r176 | wanderson | 2010-01-04 12:31:44 -0200 (Mon, 04 Jan 2010) | 7 lines
+
+- adiciona nova função periodo_disciplina_ofer() no banco de dados
+- altera tamanho do campo senha_acesso na tabela diario_log
+- inclui novo arquivo registra_alteracao_faltas.php (módulo web diário)
+- melhorias no processo de inclusão e alteração de faltas
+- implementação das funções do professor no web diário, refs #228
+
+
+------------------------------------------------------------------------
+r175 | wanderson | 2009-12-23 11:06:57 -0200 (Wed, 23 Dec 2009) | 3 lines
+
+- alterações diversas para a nova versão do web diário, refs #228
+
+
+------------------------------------------------------------------------
+r174 | wanderson | 2009-12-22 16:03:53 -0200 (Tue, 22 Dec 2009) | 6 lines
+
+- adiciona nova pasta gravação de logs do sistema
+- corrigi erro na classe number
+- implementa exclusão automática de sessões de login expiradas
+- torna obrigatório o lançamento da nota distribuída, fecha #256
+
+
+------------------------------------------------------------------------
+r173 | wanderson | 2009-12-21 08:40:45 -0200 (Mon, 21 Dec 2009) | 3 lines
+
+- adiciona nova pasta para gravação de logs do sistema
+- melhorias diversas no tratamento de login (página index.php)
+
+------------------------------------------------------------------------
+r172 | wanderson | 2009-12-21 08:36:12 -0200 (Mon, 21 Dec 2009) | 5 lines
+
+- corrigi erro no arquivo app/usuarios/alterar.php
+- renomeia a tabela coordenadores para coordenador
+- melhorias diversas no tratamento de login e da sessão do usuário
+- alterações diversas para a nova versão do web diário, refs #228
+
+------------------------------------------------------------------------
+r171 | wanderson | 2009-12-21 08:11:51 -0200 (Mon, 21 Dec 2009) | 2 lines
+
+- exclui arquivos de biblioteca desnecessários
+
+------------------------------------------------------------------------
 r170 | wanderson | 2009-12-18 16:27:37 -0200 (Fri, 18 Dec 2009) | 4 lines
 
 - adiciona somatório de todas as notas distribuídas na papeleta completa, fecha #254
