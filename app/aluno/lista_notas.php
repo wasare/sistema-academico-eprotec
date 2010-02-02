@@ -3,83 +3,96 @@
 require_once('aluno.conf.php');
 include_once('includes/topo.htm');
 
-$sql_notas = '
-SELECT DISTINCT
-    c.descricao_disciplina, b.ra_cnec, a.ordem_chamada, a.nota_final,
-    a.ref_curso, a.num_faltas, d.fl_digitada
-FROM matricula a, pessoas b, disciplinas c, disciplinas_ofer d
-WHERE
-    a.ref_periodo = \'%s\' AND
-    a.ref_disciplina IN (
-        SELECT DISTINCT a.ref_disciplina
-        FROM matricula a, disciplinas b
-        WHERE
-            a.ref_disciplina = b.id AND
-            a.ref_periodo = \'%s\' AND
-            a.ref_motivo_matricula = 0 AND
-            a.ref_pessoa = %s
-    ) AND
-    a.ref_disciplina = c.id AND
-    a.ref_pessoa = b.id AND
-    a.ref_disciplina_ofer = d.id AND
-    d.is_cancelada = \'0\' AND
-    a.ref_curso = %s AND
-    a.ref_pessoa = %s
-ORDER BY c.descricao_disciplina;';
-
-$aluno = $user;
-$data = $DataInicial;
-
+$aluno   = $user;
 $periodo = $_GET["p"];
-$curso = $_GET["c"];
+$curso   = $_GET["c"];
 
-$result_notas = $conn->get_all(sprintf($sql_notas,$periodo,$periodo,$aluno,$curso,$aluno));
+//$aluno   = '2223';
+//$periodo = '0901';
+//$curso   = '501';
 
-$AlunoNome   = $conn->get_one('SELECT nome FROM pessoas WHERE id = '.$aluno.';');
-$CursoNome   = $conn->get_one('SELECT abreviatura FROM cursos WHERE id = '.$curso.';');
-$PeriodoNome = $conn->get_one('SELECT descricao FROM periodos WHERE id = \''.$periodo.'\';');
+$rs_pessoa   = $conn->get_one("SELECT nome FROM pessoas WHERE id = $aluno");
+$rs_curso    = $conn->get_one("SELECT descricao FROM cursos WHERE id = $curso");
+$rs_periodo  = $conn->get_one("SELECT descricao FROM periodos WHERE id = '$periodo'");
 
+$sql_diarios = "SELECT id FROM disciplinas_ofer
+                WHERE  ref_curso = '$curso' AND ref_periodo = '$periodo'";
+
+$rs_diarios = $conn->get_all($sql_diarios);
+/*
+foreach ($rs_diarios as $diario) {
+    $str_in .= $diario[0] . ', ';
+}
+
+//Retorna o tamanho da string menos 2
+$tam_str = strlen($str_in) - 2;
+//Retorna os caracters comecando de Zero ate o valor especificado
+$str_in = substr($str_in, 0, $tam_str);
+*/
 ?>
-<h2>Meu Aproveitamento</h2>
-<strong>Registro: </strong><?=str_pad($aluno, 5, "0", STR_PAD_LEFT)?>&nbsp;&nbsp;
-<strong>Aluno: </strong><?=$AlunoNome?>
-<br />
-<strong>Curso: </strong><?=$CursoNome?>&nbsp;&nbsp;
-<strong>Per&iacute;odo: </strong><?=$PeriodoNome?>
-<br /><br />
-<table cellpadding="2" cellspacing="2" width="600">
-    <tr bgcolor="#000000" >
-        <td align="center"><font color="#FFFFFF"><b>Disciplina</b></font></td>
-        <td align="center"><font color="#FFFFFF"><b>Nota</b></font></td>
-        <td align="center"><font color="#FFFFFF"><b>Faltas</b></font></td>
+<p>
+    <strong>Aluno: </strong><?=$aluno?> - <?=$rs_pessoa?><br />
+    <strong>Curso: </strong><?=$curso?> - <?=$rs_curso?><br />
+    <strong>Per&iacute;odo: </strong><?=$rs_periodo?>
+</p>
+<table>
+    <tr bgcolor="#545443">
+        <th><font color="#ffffff">Disciplina</font></th>
+        <th><font color="#ffffff">Nota 1</font></th>
+        <th><font color="#ffffff">Nota 2</font></th>
+        <th><font color="#ffffff">Nota 3</font></th>
+        <th><font color="#ffffff">Nota 4</font></th>
+        <th><font color="#ffffff">Nota 5</font></th>
+        <th><font color="#ffffff">Nota 6</font></th>
+        <th><font color="yellow">Reavalia&ccedil;&atilde;o</font></th>
+        <th><font color="#ffffff">Nota Final</font></th>
+        <th><font color="#ffffff">Nota distribuida</font></th>
+        <th><font color="#ffffff">Faltas</font></th>
     </tr>
     <?php
-    $bgcolor = '';
+    foreach ($rs_diarios as $diario) {
 
-    for($i = 0; $i < count($result_notas) ; $i++) {
-        if ( ($i % 2) == 0 ) $bgcolor = "#FFFFFF";
-        else $bgcolor = "#FFFFCC";
+        //Exibe as principais informacoes do aluno a.ref_disciplina_ofer IN ($str_in) AND
+        $sql_diario_info = "
+        SELECT
+            descricao_disciplina (get_disciplina_de_disciplina_of(a.ref_disciplina_ofer)),
+            a.ref_disciplina_ofer, b.nome, b.ra_cnec, a.ordem_chamada,
+            a.nota_final, c.ref_diario_avaliacao, c.nota, a.num_faltas,
+            nota_distribuida(a.ref_disciplina_ofer) as \"total_distribuido\"
+        FROM
+            matricula a, pessoas b, diario_notas c
+        WHERE
+            (a.dt_cancelamento is null) AND
+            a.ref_disciplina_ofer =  ".$diario[0]." AND
+            b.id = $aluno AND
+            a.ref_pessoa = b.id AND
+            b.ra_cnec = c.ra_cnec AND
+            c.d_ref_disciplina_ofer = a.ref_disciplina_ofer AND
+            a.ref_motivo_matricula = 0
+        ORDER BY descricao_disciplina, ref_diario_avaliacao;";
 
-        if($result_notas[$i]['fl_digitada'] == 'f')
-            $encerrada = '<font color="red" size="-2"><strong>*</strong></font>';
-        else $encerrada = '';
+        $rs_diarios_info = $conn->get_all($sql_diario_info);
 
-        if (empty($result_notas[$i]["num_faltas"])) $faltas = ' - ';
-        else $faltas = $result_notas[$i]["num_faltas"];
+        if ($rs_diarios_info[0][0] != '') {
 
-        echo '<tr bgcolor="'.$bgcolor.'"><td>&nbsp;&nbsp;'.$result_notas[$i]["descricao_disciplina"].'&nbsp;&nbsp;'.$encerrada.'</td>';
-        echo '<td>&nbsp;&nbsp;'.$result_notas[$i]["nota_final"].'&nbsp;&nbsp;</td>';
-        echo '<td>&nbsp;&nbsp;'. $faltas .'&nbsp;&nbsp;</td></tr>';
+            if ($color != '#ffffff') $color = '#ffffff';
+            else $color = '#cce5ff';
+
+            echo '<tr bgcolor="'.$color.'">';
+            echo '<td>'.$rs_diarios_info[0][0].'</td>';
+
+            foreach ($rs_diarios_info as $diario_info) {
+                
+                if ($diario_info[7] == '-1')
+                    echo '<td align="center"> - </td>';
+                else 
+                    echo '<td align="center">'.$diario_info[7].'</td>';
+            }
+            echo '<td align="center">'.$rs_diarios_info[0][5].'</td>';
+            echo '<td align="center">'.$rs_diarios_info[0][9].'</td>';
+            echo '<td align="center">'.$rs_diarios_info[0][8].'</td>';
+            echo '</tr>';
+        }
     }
-
     ?>
 </table>
-<br />
-<font color="red" size="-2">
-    (<strong>*</strong>) disciplinas com notas
-    parciais, ainda poder&aacute; sofrer altera&ccedil;&otilde;es!
-</font>
-<br />
-<a href="lista_cursos.php">Voltar</a>
-
-<?php include_once('includes/rodape.htm'); ?>

@@ -1,14 +1,4 @@
 <?php
-/*
-if(!isset($_SESSION)){
-    session_start();
-}
-*/
-//error_reporting(0);
-//ini_set('display_errors', '0');
-
-//CONTROLE DE SESSAO DE LOGIN NO MODULO ALUNO
-//$_SESSION['aluno_login'] = 1;
 
 require_once(dirname(__FILE__) .'/../../config/configuracao.php');
 require_once($BASE_DIR .'core/data/connection_factory.php');
@@ -17,18 +7,7 @@ require_once($BASE_DIR .'core/date.php');
 
 // Inicia a sessao
 $sessao = new session($param_conn);
-
 $conn = new connection_factory($param_conn_aluno);
-
-/*
-function aluno_br_date($date) {
-    $dia = Substr($date, 8, 2);
-    $mes = Substr($date, 5, 2);
-    $ano = Substr($date, 0, 4);
-    $newdate = $dia . '/' . $mes . '/' . $ano;
-    return $newdate;
-}
-*/
 
 if (isset($_SESSION['sa_aluno_user']) and $_SESSION['sa_aluno_user'] != '' and !isset($_POST["btnOK"])) {
     $user  = $_SESSION['sa_aluno_user'];
