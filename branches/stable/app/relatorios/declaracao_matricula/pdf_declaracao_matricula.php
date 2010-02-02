@@ -11,7 +11,7 @@ $pdf=new PDF();
 
 $pdf->AddPage();
 
-$pdf->SetMargins(20,30,20);
+$pdf->SetMargins(20,20,20);
 
 $pdf->SetTitle('Declaração de matrícula');
 
@@ -32,14 +32,15 @@ $pdf->Cell(44);
 $pdf->MultiCell(70,5,$carimbo_dados,0,'C');
 //$pdf->SetFont('Times','',12);
 $pdf->Ln(15);
+$pdf->SetFont('Times','',9);
 $pdf->MultiCell(0,5,$decretos,0,'J');
-$pdf->Ln(6);
+$pdf->Ln(2);
 //$pdf->SetDrawColor(0,0,0);
 //$pdf->SetLineWidth(300);
 //$pdf->Line(0,0,0,100);
 $pdf->Cell(0,0,'',1,0);
 $pdf->Ln(2);
-$pdf->SetFont('Times','',9);
+$pdf->SetFont('Times','',10);
 $pdf->MultiCell(0,5,$empresa,0,'C');
 
 $pdf->Output();

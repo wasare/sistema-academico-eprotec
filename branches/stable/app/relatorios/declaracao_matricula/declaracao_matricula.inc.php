@@ -180,13 +180,13 @@ Decreto Nº 63.923 de 30/12/68 - Transformado em Colégio Agrícola
 Decreto Nº 83.935 de 04/09/79 - Denominado Escola Agrotécnica Federal de Bambuí-MG
 Lei Nº 8.731/93 de 16/11/1993 - Transformação em Autarquia
 Transformado em Centro Federal de Educação Tecnológica de Bambuí, através do Decreto Presidencial de
-17/12/2002, publicado no DOU de 18/12/2002,Seção I, página 12, de acordo com o Decreto Federal nº 2406 de 27/11/1997; Art. 9º da Lei 9394/96.
-Transformado em campus do Instituto Federal de Minas Gerais pela Lei nº 11.892, de 29/12/2008, publicada no DOU de 30/12/2008,Seção I, págs.1-3, institui a Rede Federal de Educação Profissional, Científica e Tecnológica, cria os Institutos Federais de Educação, Ciência e Tecnologia.';
+17/12/2002, publicado no DOU de 18/12/2002, Seção I, página 12, de acordo com o Decreto Federal nº 2406 de 27/11/1997; Art. 9º da Lei 9394/96.
+Transformado em campus do Instituto Federal de Minas Gerais pela Lei nº 11.892, de 29/12/2008, publicada no DOU de 30/12/2008, Seção I, págs.1-3, institui a Rede Federal de Educação Profissional, Científica e Tecnológica, cria os Institutos Federais de Educação, Ciência e Tecnologia.';
 
 // @todo melhorar a parametrização destes dados, configurando no banco ou no arquivo de configuração
 // @todo configuração deve ser por campus (?)
 $empresa = $RsEmpresa->fields[3].' - '.$RsEmpresa->fields[4] ."\n";
-$empresa .= 'Caixa Postal 05 - CEP: '. $RsEmpresa->fields[6] .' - '. $RsEmpresa->fields[9] .'-'. $RsEmpresa->fields[11] ."\n";
+$empresa .= 'Caixa Postal 05 - CEP: '. substr_replace($RsEmpresa->fields[6], '-'. substr($RsEmpresa->fields[6], -4, 1) , -3, 1) .' - '. $RsEmpresa->fields[9] .'-'. $RsEmpresa->fields[11] ."\n";
 $empresa .= 'Tel: (37) 3431-4900'
 
 ?>
