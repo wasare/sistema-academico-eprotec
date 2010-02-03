@@ -94,7 +94,7 @@ $campus_id = 'undefined';
             "      B.num_sala, " .
             "      A.ref_disciplina_ofer, " .
             "      A.ref_pessoa, " .
-            "      pessoa_nome(A.ref_pessoa), " .
+            "      pessoa_nome(A.ref_pessoa) AS aluno_nome, " .
             "      A.ref_disciplina_subst, " .
             "      descricao_disciplina(A.ref_disciplina_subst), " .
             "      get_creditos(A.ref_disciplina_subst), " .
@@ -125,8 +125,9 @@ $campus_id = 'undefined';
             "          A.ref_disciplina, " .
             "          descricao_disciplina(A.ref_disciplina_subst), " .
     	    "          is_ouvinte(A.ref_pessoa, A.ref_curso), " .
-    	    "          pessoa_nome(A.ref_pessoa);";
+    	    "          pessoa_nome(A.ref_pessoa)";
 
+    $sql = 'SELECT * FROM ('. $sql .') AS T1 ORDER BY lower(to_ascii(T1.aluno_nome));';
 
 function cabecalho($myfile_ps, $data, $ref_disciplina, $disciplina, $ref_curso, $curso, $campus, $texto, $dia_semana, $dia_semana_desc, $departamento, $creditos, $hora_aula, $creditos_desconto, $hora_aula_desconto, $ref_professor, $nome_professor, $periodo, $sala, $fl_ouvinte, $turno, $turno_desc, $ref_disciplina_ofer, $descricao_disciplina_subst, &$quebra_pagina, $complemento_disc)
 {
@@ -460,7 +461,7 @@ PS_line($myfile_ps, 45, $lin, 814, $lin, 2);
 
 $quebra_pagina = 25;
 
-$alunos_diario = $conn->adodb->getAll($sql);
+$alunos_diario = $conn->get_all($sql);
 
 
 $num = 1 ;

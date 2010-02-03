@@ -44,3 +44,17 @@ CREATE FUNCTION nota_distribuida(integer) RETURNS integer
     AS $_$select cast(sum(nota_distribuida) as integer) from diario_formulas where grupo ilike '%-' || $1$_$
     LANGUAGE sql;
 
+-- função campus_disciplina_ofer
+CREATE FUNCTION campus_disciplina_ofer(integer) RETURNS integer
+    AS $_$select cast(ref_campus as integer) from disciplinas_ofer where id = $1$_$
+    LANGUAGE sql;
+
+-- função instituicao_nome
+CREATE FUNCTION instituicao_nome(integer) RETURNS character varying
+    AS $_$select nome_atual from instituicoes where id = $1$_$
+    LANGUAGE sql;
+
+-- função descricao_periodo
+CREATE FUNCTION descricao_periodo(character varying) RETURNS character varying
+    AS $_$select descricao from periodos where id = $1$_$
+    LANGUAGE sql;

@@ -8,7 +8,7 @@ $conn = new connection_factory($param_conn);
 
 $diario_id = (int) $_GET['diario_id'];
 
-if(!is_numeric($diario_id))
+if($diario_id == 0)
     exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Diario invalido!");window.close();</script>');
 
 //  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR

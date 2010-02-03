@@ -253,6 +253,6 @@ $cabecalho .= ">> <strong>Curso</strong>: $curso_id  - <strong>Per&iacute;odo</s
        <?=$cabecalho?>
     <?=$msg?>
   </div>
-  <a href="dispensa_aluno.php">Nova Dispensa</a> <a href="../../diagrama.php">P&aacute;gina inicial</a> </div>
+  <a href="dispensa_aluno.php">Nova Dispensa</a> <a href="<?=$BASE_URL .'app/index.php'?>">P&aacute;gina inicial</a> </div>
 </body>
 </html>

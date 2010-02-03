@@ -236,7 +236,7 @@ foreach($diarios as $row3) :
 ?>
 </table>
 <br />
-<input type="button" value="finaliza todos os diários concluídos" onclick="enviar_diario('finaliza_todos',<?=$diario_id?>,<?=$fl_encerrado?>,'<?=$BASE_URL?>','<?=$IEnome?>');" />
+<input type="button" value="Finaliza todos os diários concluídos" onclick="enviar_diario('finaliza_todos',<?=$diario_id?>,<?=$fl_encerrado?>,'<?=$BASE_URL?>','<?=$IEnome?>');" />
 &nbsp;&nbsp;
 <a href="#" onclick="javascript:window.close();">Fechar</a>
 </form>

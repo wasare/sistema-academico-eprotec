@@ -25,7 +25,7 @@ $conn = new connection_factory($param_conn);
         </div></td>
     </tr>
   </table>
-  <table width="700" cellpadding="0" cellspacing="0" bgcolor="#E6E6E6" class="pesquisa">
+  <table width="760" cellpadding="0" cellspacing="0" bgcolor="#E6E6E6" class="pesquisa">
     <tr>
       <th colspan="2">&nbsp;</th>
     </tr>
@@ -98,16 +98,18 @@ if ($_POST) {
 	else {
 			
 		if ($num_result > 0) {
+
+?>
 				
-	   		echo '<table  width="700" border="0" >
-	    			<tr bgcolor="#666666">
-    					<th height="24"><b><font color="#FFFFFF">Matr&iacute;cula</font></b></th>
-    					<th width="45%"><b><font color="#FFFFFF">Nome</font></b></th>
-						<th width="35%"><b><font color="#FFFFFF">Curso</font></b></th>
-                        <th><b><font color="#FFFFFF">Turma</font></b></th>
-      					<th width="15%"><b><font color="#FFFFFF">Exibir</font></b></th>
-    				</tr>';
-			
+	   		<table  width="760" border="0" >
+              <tr bgcolor="#666666">
+                <th height="24"><b><font color="#FFFFFF">Matr&iacute;cula</font></b></th>
+                <th><b><font color="#FFFFFF">Nome</font></b></th>
+                <th><b><font color="#FFFFFF">Curso</font></b></th>
+                <th><b><font color="#FFFFFF">Turma</font></b></th>
+      			<th><b><font color="#FFFFFF">Exibir</font></b></th>
+    		  </tr>
+<?php
            	while(!$Result1->EOF) {
 									
       	   		$q3id = str_pad($Result1->fields[1], 5, "0", STR_PAD_LEFT);
@@ -118,18 +120,29 @@ if ($_POST) {
 				else {
 					$st ='#F3F3F3';
 				}
-				
-      			echo "<tr bgcolor=\"$st\">";
-				echo ' <td align="center">' . $q3id . '</td>';
-				echo ' <td>' . $Result1->fields[0] . '</td>';
-               	echo ' <td>' . $Result1->fields[3] . '</td>';
-                echo ' <td align="center">' . $Result1->fields[5] . '</td>';
-				echo ' <td align="center">
-						<a target="_blank" href="lista_ficha_academica.php?aluno=' . $Result1->fields[1] . '&cs='.$Result1->fields[2] . '&contrato='. $Result1->fields[4] .'">
-						<img src="../../../public/images/icons/report.png" width="20" height="20" title="Ficha acad&ecirc;mica" alt="Ficha acad&ecirc;mica" /></a>
-						&nbsp;&nbsp;<a target="_blank" href="../pessoas/lista_pessoa.php?pessoa_id=' . $Result1->fields[1] .'"><img src="../../../public/images/icons/pessoa.png" width="20" height="20" title="Informa&ccedil;&otilde;es pessoais" alt="Informa&ccedil;&otilde;es pessoais" /></a></td>';
-                echo '</tr>';
-
+?>
+      			<tr bgcolor="<?=$st?>">
+                  <td align="center"><?=$q3id?></td>
+                  <td><?=$Result1->fields[0]?></td>
+                  <td><?=$Result1->fields[3]?></td>
+                  <td align="center"><?=$Result1->fields[5]?></td>
+                  <td align="center">
+                        &nbsp;
+						<a target="_blank" href="lista_ficha_academica.php?aluno=<?=$Result1->fields[1]?>&cs=<?=$Result1->fields[2]?>&contrato=<?=$Result1->fields[4]?>">
+                          <img src="../../../public/images/icons/report.png" width="20" height="20" title="Ficha acad&ecirc;mica" alt="Ficha acad&ecirc;mica" />
+                        </a>
+						&nbsp;&nbsp;
+                        <a target="_blank" href="../pessoas/lista_pessoa.php?pessoa_id=<?=$Result1->fields[1]?>">
+                          <img src="../../../public/images/icons/pessoa.png" width="20" height="20" title="Informa&ccedil;&otilde;es pessoais" alt="Informa&ccedil;&otilde;es pessoais" />
+                        </a>
+                        &nbsp;&nbsp;
+                        <a target="_blank" href="<?=$BASE_URL?>/app/relatorios/integralizacao_curso/lista_integralizacao_curso.php?aluno=<?=$Result1->fields[1]?>&cs=<?=$Result1->fields[2]?>&contrato=<?=$Result1->fields[4]?>">
+                          <img src="<?=$BASE_URL?>/public/images/icons/verifica.png" width="20" height="20" border="0" title="Verifica integraliza&ccedil;&atilde;o do curso" alt="Verifica integraliza&ccedil;&atilde;o do curso" />
+                        </a>
+                        &nbsp;
+                  </td>
+                </tr>
+<?php
            		$Result1->MoveNext();
 					
     		}//fim while

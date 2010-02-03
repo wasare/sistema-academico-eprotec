@@ -51,16 +51,16 @@ h2 {
 	font-weight:bold;
 	background-color:#000000;
 	color:#ffffff;
-	border: 0.03em solid ; 
-	padding: 1px; 
+	border: 0.02em solid;
+	padding: 0.3em;
 	border-collapse: collapse; 
-	/*border-spacing: 0px;*/
+	border-spacing: 0.015em;
 }
 .tabela_relatorio td { 
-	border: 0.03em solid ; 
-	padding: 1px; 
+	border: 0.02em solid;
+	padding: 0.25em;
 	border-collapse: collapse; 
-	/*border-spacing: 0px;*/
+	border-spacing: 0.015em;
 	text-decoration:none;
 	font-style:normal;
 	font-family:Verdana, Arial, Helvetica, sans-serif;
