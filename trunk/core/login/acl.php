@@ -116,6 +116,8 @@ class acl {
 
       $papeis_usuario =  $conn->get_col($sql);
 
+      $papeis_permitidos = is_array($papeis_permitidos) ? $papeis_permitidos : array();
+
       if (count(array_intersect($papeis_usuario, $papeis_permitidos)) == 0)
         return FALSE;
       else
