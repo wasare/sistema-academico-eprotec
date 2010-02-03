@@ -9,7 +9,10 @@ $periodo_id = (string) $_POST['periodo_id'];
 $curso_id = (int) $_POST['curso_id'];
 $diario_id = (int) $_POST['diario_id'];
 
+// @todo verificar direitos de acesso
 if (empty($periodo_id) OR $curso_id == 0) {
+
+    $diario_id = ($diario_id == 0) ? (int) $_GET['diario_id'] : $diario_id;
 
     if ($diario_id == 0) {
 		exit('<script language="javascript">
@@ -235,7 +238,7 @@ foreach($diarios as $row3) :
 
 <br />
 &nbsp;&nbsp;&nbsp;
-<input type="button" value="finalizar todos os diários concluídos" onclick="finaliza_todos_secretaria('<?=$diario_id?>','<?=$IEnome?>');" />
+<input type="button" value="Finalizar todos os diários concluídos" onclick="finaliza_todos_secretaria('<?=$diario_id?>','<?=$IEnome?>');" />
 
 </form>
 <script language="javascript" type="text/javascript">

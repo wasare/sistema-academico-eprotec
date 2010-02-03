@@ -109,6 +109,25 @@ else {
                 <form method="post" action="" name="myform">
                     <table border="0">
                         <tr>
+                          <td colspan="2">
+                            <fieldset style="padding-left: 2em; padding-right: 2em; padding-bottom: 2em">
+                              <legend><strong><h3>M&oacute;dulo</h3></strong></legend>
+                              <select size="2" name="modulo" id="modulo" style="width: 110px;">
+                                <option value="sa_login">Secretaria</option>
+                                <option value="web_diario_login">Web di&aacute;rio</option>
+                              </select>
+                              </fieldset>
+                            </td>
+                        </tr>
+                      <tr>
+                            <td>
+                              &nbsp;
+                            </td>
+                            <td>
+                              &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
                             <td align="right">
                                 Usu&aacute;rio:
                             </td>
@@ -123,14 +142,7 @@ else {
                             <td>
                                 <input type="password" name="pwd" maxlength="20" style="width: 140px;" />
                             </td>
-                        </tr>
-                        <tr>
-                          <td colspan="2">
-                            <br />
-                              <input type="radio" name="modulo" id="modulo" value="sa_login" />&nbsp;&nbsp;Secretaria &nbsp;&nbsp;&nbsp;&nbsp;
-                              <input type="radio" name="modulo" id="modulo" value="web_diario_login" />&nbsp;&nbsp;Web di&aacute;rio
-                            </td>
-                        </tr>
+                        </tr>                        
                         <tr>
                             <td colspan="2" align="center">
                                 <p>

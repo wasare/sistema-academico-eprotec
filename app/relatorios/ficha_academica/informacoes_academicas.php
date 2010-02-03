@@ -4,29 +4,16 @@ require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/situacao_academica.php');
 require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'core/reports/header.php');
+require_once($BASE_DIR .'core/date.php');
+
   
 $conn = new connection_factory($param_conn);
 $header  = new header($param_conn);
 
-$aluno_id    = (int) $_GET['aluno'];
-$curso_id    = (int) $_GET['cs'];
-$contrato_id = (int) $_GET['contrato'];
+$aluno_id = (int) $_GET['aluno'];
 
-
-if ($aluno_id == 0 || $curso_id == 0 || $contrato_id == 0)
+if ($aluno_id == 0)
     exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Dados invalidos!");window.close();</script>');
-
-
-//  VERIFICA O DIREITO DE ACESSO A FICHA COMO PROFESSOR OU COORDENADOR
-if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login') {
-  if(!acessa_ficha_aluno($aluno_id,$sa_ref_pessoa,$curso_id)) {
-    exit('<script language="javascript" type="text/javascript">
-            alert(\'Você não tem direito de acesso a estas informações!\');
-            window.close();</script>');
-  }
-  // ^ VERIFICA O DIREITO DE ACESSO A FICHA COMO PROFESSOR OU COORDENADOR ^ //
-}
-
 
 $sql1 = "SELECT DISTINCT
     d.id, 
@@ -39,21 +26,21 @@ $sql1 = "SELECT DISTINCT
     m.nota as nota, 
     m.ref_disciplina_ofer as oferecida,
     m.ref_motivo_matricula,
+    m.ref_curso,
+    c.id as contrato_id,
     professor_disciplina_ofer_todos(o.id),
     get_carga_horaria_realizada(o.id) as carga_horaria_realizada
     FROM 
         matricula m, disciplinas d, disciplinas_ofer o, periodos s, contratos c
     WHERE 
-        m.ref_curso = $curso_id AND 
-        c.id = $contrato_id AND
-        m.ref_contrato = $contrato_id AND
+        m.ref_pessoa = $aluno_id AND
         c.id = m.ref_contrato AND
         m.ref_periodo = s.id AND
         m.ref_disciplina_ofer = o.id AND 
         d.id = o.ref_disciplina AND
         o.is_cancelada = '0' AND
         s.id = o.ref_periodo
-    ORDER BY 2, 3";
+    ORDER BY s.descricao, 3";
 
 	
 $ficha_academica = $conn->get_all($sql1);
@@ -61,11 +48,12 @@ $ficha_academica = $conn->get_all($sql1);
 $contMatriculada = count($ficha_academica);
 
 if ($contMatriculada == 0)
-	exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Nenhum dado encontrado para o aluno / contrato informado!");window.close();</script>');
+  exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Nenhum dado encontrado para o aluno / contrato informado!");window.close();</script>');
+
 
 $nome_aluno = $conn->get_one('SELECT nome FROM pessoas WHERE id = '. $aluno_id .';');
-$nome_curso = $conn->get_one('SELECT id || \' - \' || descricao FROM cursos WHERE id = '. $curso_id .';');
-$contrato = $conn->get_row('SELECT nome_campus, turma FROM campus a , contratos b WHERE b.ref_campus = a.id AND b.id = '. $contrato_id .';');
+
+$contratos = $conn->get_all('SELECT DISTINCT c.id, pessoa_nome(c.ref_pessoa) AS nome , c.ref_curso, curso_desc(c.ref_curso), c.dt_formatura, c.dt_ativacao, c.dt_desativacao FROM contratos c WHERE c.ref_pessoa = '. $aluno_id .' ORDER BY c.dt_ativacao, nome;');
 
 ?>
 <html>
@@ -73,7 +61,6 @@ $contrato = $conn->get_row('SELECT nome_campus, turma FROM campus a , contratos 
   <title><?=$IEnome?> - Sistema Acad&ecirc;mico</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link href="<?=$BASE_URL .'public/styles/relatorio.css'?>" rel="stylesheet" type="text/css">
-
 
 <style type="text/css" media="print">
 <!--
@@ -104,22 +91,65 @@ table.relato {
         	<?=$header->get_empresa($PATH_IMAGES)?>
             <br /><br />
         </div> 
-	<h2>Ficha Acad&ecirc;mica</h2>
+      <h2>Informa&ccedil;&otilde;es Acad&ecirc;micas</h2>
     <div id="cabecalho" style="text-align: left;">
-      <font color="#000000" size="2"><b> Nome: </b><?=$nome_aluno?>&nbsp;&nbsp;<b>Matr&iacute;cula: </b><?=str_pad($aluno_id, 5, "0", STR_PAD_LEFT)?></font><br>
-      <font color="#000000" size="2"> <b>Curso: </b><?=$nome_curso?>&nbsp;&nbsp;<b>Turma: </b><?=$turma = (!empty($contrato['turma'])) ? $contrato['turma'] : '-'?></font><br />
-      <font color="#000000" size="2"> <b>Campus: </b><?=$contrato['nome_campus']?>&nbsp;&nbsp;<b>Data: </b> <?php echo date("d/m/Y"); ?>&nbsp;&nbsp;<b>Hora: </b><?php echo date("H:i"); ?></font><br />
+      <font color="#000000" size="2"><b> Aluno: </b><?=$nome_aluno?>
+        <a target="_blank" href="<?=$BASE_URL?>/app/relatorios/pessoas/lista_pessoa.php?pessoa_id=<?=$aluno_id?>">
+          <img src="<?=$BASE_URL?>/public/images/icons/pessoa.png" width="20" height="20" border="0" title="Informa&ccedil;&otilde;es pessoais" alt="Informa&ccedil;&otilde;es pessoais" />
+        </a>
+        <br /><b>Matr&iacute;cula: </b><?=str_pad($aluno_id, 5, "0", STR_PAD_LEFT)?></font><br>
     </div>
-	<br>
+    <br />
+    <h4>Contratos</h4>
+    <table cellpadding="0" cellspacing="0" class="relato">
+	  <tr bgcolor="#666666">
+	    <th><div align="center"><font color="#FFFFFF"><b>Contrato</b></font></div></th>
+	    <th><div align="center"><font color="#FFFFFF"><b>Curso</b></font></div></th>
+        <th><div align="center"><font color="#FFFFFF"><b>Ativa&ccedil;&atilde;o</b></font></div></th>
+        <th><div align="center"><font color="#FFFFFF"><b>Cola&ccedil;&atilde;o de grau</b></font></div></th>
+        <th><div align="center"><font color="#FFFFFF"><b>Desativa&ccedil;&atilde;o</b></font></div></th>
+        <th><div align="center"><font color="#FFFFFF"><b>Exibir</b></font></div></th>
+	  </tr>
+<?php
+// c.id, pessoa_nome(c.ref_pessoa) AS nome , c.ref_curso, curso_desc(c.ref_curso), c.dt_formatura, c.dt_ativacao, c.dt_desativacao
+   foreach ($contratos as $c) :
+
+?>
+     <tr>
+        <td align="center">
+          <?=$c['id']?>
+        </td>
+		<td><span id="<?=$oferecida?>" title="Di&aacute;rio: <?=$oferecida?>  - Professor(es): <?=$professor?>">
+            <?=$c['ref_curso']?>&nbsp;-&nbsp;<?=$c['curso_desc']?></span></td>
+		<td align="center"><?=date::convert_date($c['dt_ativacao'])?></td>
+        <td align="center"><?=date::convert_date($c['dt_formatura'])?></td>
+        <td align="center"><?=date::convert_date($c['dt_desativacao'])?></td>
+        <td align="center">
+          &nbsp;
+          <a target="_blank" href="lista_ficha_academica.php?aluno=<?=$aluno_id?>&cs=<?=$c['ref_curso']?>&contrato=<?=$c['id']?>">
+            <img src="<?=$BASE_URL?>/public/images/icons/report.png" width="20" height="20" border="0" title="Visualizar ficha acad&ecirc;mica" alt="Visualizar ficha acad&ecirc;mica" />
+          </a>
+          &nbsp;&nbsp;
+          <a target="_blank" href="<?=$BASE_URL?>/app/relatorios/integralizacao_curso/lista_integralizacao_curso.php?aluno=<?=$aluno_id?>&cs=<?=$c['ref_curso']?>&contrato=<?=$c['id']?>">
+            <img src="<?=$BASE_URL?>/public/images/icons/verifica.png" width="20" height="20" border="0" title="Verifica integraliza&ccedil;&atilde;o do curso" alt="Verifica integraliza&ccedil;&atilde;o do curso" />
+          </a>
+          &nbsp;
+        </td>
+     </tr>
+<?php
+   endforeach;
+?>
+    </table>
+     <br />
+    <h4>Disciplinas</h4>
+
 	<table cellpadding="0" cellspacing="0" class="relato">
 	  <tr bgcolor="#666666">
 	    <th><div align="center"><font color="#FFFFFF"><b>Per&iacute;odo</b></font></div></th>
+        <th><div align="center"><font color="#FFFFFF"><b>Curso</b></font></div></th>
 	    <th><div align="center"><font color="#FFFFFF"><b>Componente Modular</b></font></div></th>
 	    <th><div align="center"><font color="#FFFFFF"><b>M&eacute;dia</b></font></div></th>
-	    <th><div align="center"><font color="#FFFFFF"><b>Faltas</b></font></div></th>
-	    <th><div align="center"><font color="#FFFFFF"><b>% Faltas</b></font></div></th>
-		<th><div align="center"><font color="#FFFFFF"><b>CH Realizada</b></font></div></th>
-	    <th><div align="center"><font color="#FFFFFF"><b>CH Prevista</b></font></div></th>
+	    <th><div align="center"><font color="#FFFFFF"><b>Faltas</b></font></div></th>        
 	    <th><div align="center"><font color="#FFFFFF"><b>Matr&iacute;cula</b></font></div></th>
 	    <th><div align="center"><font color="#FFFFFF"><b>Situa&ccedil;&atilde;o</b></font></div></th>
 	  </tr>
@@ -144,7 +174,7 @@ $percFaltasMatriculada = 0;
 $chRealizadaMatriculada = 0;
 
 
-foreach ($ficha_academica as $disc) {
+foreach ($ficha_academica as $disc) :
 	$fcolor = '#000000';
 // id	periodo	descricao	carga_horaria	ref_periodo	faltas	nota_final	nota	oferecida	ref_motivo_matricula	professor_disciplina_ofer_todos	carga_horaria_realizada
 	$nome_materia = $disc['id'] .' - '. $disc['descricao'];
@@ -157,6 +187,8 @@ foreach ($ficha_academica as $disc) {
     $ref_motivo_matricula = $disc['ref_motivo_matricula'];
     $nota_final = $disc['nota_final'];
 	$professor = $disc['professor_disciplina_ofer_todos'];
+    $curso_id = $disc['ref_curso'];
+    $contrato_id = $disc['contrato_id'];
 
     // APROVEITAMENTO DE ESTUDOS 2
     // CERTIFICACAO DE EXPERIENCIAS 3
@@ -250,79 +282,25 @@ foreach ($ficha_academica as $disc) {
     
 	if (strstr($nota_final,'.'))
         $nota_final = number_format($nota_final,'1',',','.');
-	
-    echo 
-	"<tr bgcolor=\"$st\">
-        <td><font color=$fcolor>$periodo</font></td>
-		<td><span id=\"$oferecida\" title=\"Di&aacute;rio: $oferecida  - Professor(es): $professor\"><font color=$fcolor>$nome_materia</font></span></td>
-		<td align=center><font color=$fcolor>$nota_final</font></td>
-        <td align=center><font color=$fcolor>$faltas_materia</font></td>
-        <td align=center><font color=$fcolor>$stfaltas</font></td>
-        <td align=center><font color=$fcolor>$carga_realizada</font></td>
-        <td align=center><font color=$fcolor>$carga_prevista</font></td>
-        <td align=center><font color=$fcolor>$matricula</font></td>
-        <td align=center><font color=$fcolor>$situacao</font></td>
-        </tr>";
-}//FIM FOREACH
+?>
+    
+	<tr bgcolor="<?=$st?>">
+        <td><font color="<?=$fcolor?>"><?=$periodo?></font></td>
+        <td align=center><font color="<?=$fcolor?>"><?=$curso_id?></font></td>
+		<td><span id="<?=$oferecida?>" title="Di&aacute;rio: <?=$oferecida?>  - Professor(es): <?=$professor?>">
+            <font color="<?=$fcolor?>"><?=$nome_materia?></font></span></td>
+		<td align=center><font color="<?=$fcolor?>"><?=$nota_final?></font></td>
+        <td align=center><font color="<?=$fcolor?>"><?=$faltas_materia?></font></td>        
+        <td align=center><font color="<?=$fcolor?>"><?=$matricula?></font></td>
+        <td align=center><font color="<?=$fcolor?>"><?=$situacao?></font></td>
+     </tr>
+<?php
 
-
-
-//INFORMACOES --
-
-//Media nas disciplinas aprovadas
-$notaMediaAprovado = @number_format($notaAprovado / $contAprovado,'2',',','.');
-
-//Media percentual de faltas das disciplinas aprovadas
-$percFaltasAprovado = @($percFaltasAprovado / $contAprovado);
-
-//Convertendo para o padrao decimal - Media percentual de faltas das disciplinas aprovadas
-$percFaltasAprovado = number_format($percFaltasAprovado,'2',',','.');
-
-
-//Media nas disciplinas matriculadas
-$notaMediaMatriculada = @number_format($notaMatriculada / $contMatriculada,'2',',','.');
-
-//Media percentual de faltas das disciplinas matriculadas
-$percFaltasMatriculada = $percFaltasMatriculada / $contMatriculada;
-
-//Convertendo para o padrao decimal - Media percentual de faltas das disciplinas matriculada
-$percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
+  endforeach; //FIM FOREACH
                  
 ?>
 </table>
 <br /><br />
-<table border="0" cellspacing="0" cellpadding="0" class="relato">
-  <tr bgcolor="666666">
-    <th height="24" colspan="2">
-    	<b>Informa&ccedil;&otilde;es:</b><br>
-    </th>
-  </tr>
-  <tr>
-    <td>M&eacute;dia da nota nas disciplinas aprovadas:</td>
-    <td align="right">&nbsp;<?php echo $notaMediaAprovado; ?></td>
-  </tr>
-  <tr>
-    <td>M&eacute;dia percentual de faltas das disciplinas aprovadas: </td>
-    <td align="right">&nbsp;<?php echo $percFaltasAprovado . ' %'; ?></td>
-  </tr>
-  <tr>
-    <td>Total carga hor&aacute;ria realizada nas disciplinas aprovadas: </td>
-    <td align="right">&nbsp;<?php echo $chRealizadaAprovado;?></td>
-  </tr>
-  <tr>
-    <td>M&eacute;dia da nota nas disciplinas matriculadas:</td>
-    <td align="right">&nbsp;<?php echo $notaMediaMatriculada; ?></td>
-  </tr>
-  <tr>
-    <td>M&eacute;dia percentual de faltas das disciplinas matriculadas: </td>
-    <td align="right">&nbsp;<?php echo $percFaltasMatriculada . ' %'; ?></td>
-  </tr>
-  <tr>
-    <td>Total carga hor&aacute;ria realizada nas disciplinas matriculadas: </td>
-    <td align="right">&nbsp;<?php echo $chRealizadaMatriculada;?></td>
-  </tr>
-</table>
-<br />
 <div align="left" class="relato" style="font-size: 0.75em;">
     <h4>Legenda</h4>
     <strong>CI</strong> - Disciplina Cursada na Institui&ccedil;&atilde;o<br />
@@ -335,7 +313,6 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
     <strong>DE</strong> - Disciplina Equivalente<br />
 </div>
 </div>
-<br />
 <br />
 
 <div class="nao_imprime">

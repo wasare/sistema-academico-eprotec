@@ -1,11 +1,15 @@
 <?php
 
-require_once("../../../app/setup.php");
-require_once("../../../core/reports/carimbo.php");
+require_once(dirname(__FILE__) .'/../../setup.php');
+require_once($BASE_DIR .'core/reports/carimbo.php');
 
 $conn = new connection_factory($param_conn);
 
 $Result1 = $conn->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
+
+$Result2 = $conn->Execute("SELECT nome_campus, id FROM campus ORDER BY 1 DESC;");
+
+$Result3 = $conn->Execute("SELECT descricao, id FROM tipos_curso ORDER BY 1 DESC;");
 
 $carimbo = new carimbo($param_conn);	
 
@@ -50,15 +54,28 @@ $carimbo = new carimbo($param_conn);
         	<span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
         </span>
         <br />
-		Assinatura:<br />
+			Campus:<br />
+            <?php print $Result2->GetMenu('campus_id',null,true,false,0); ?>
+			<span class="comentario">Caso n&atilde;o selecionado exibir&aacute; todos.</span>
+        <br />
+         <h4>Ou</h4>
+                C&oacute;digo do aluno:<br />
+                &nbsp;&nbsp;<span class="comentario">Se preenchido, os campos anteriores ser&aatilde;o ignorados.</span><br />
+                <input name="aluno_id" type="text" id="aluno_id" size="10" />
+                <br />
+
+
+		<br />Assinatura:<br />
 		<?php echo $carimbo->listar();?>
 	</div>
 	
 </form>
+<!--
 <script type="text/javascript">
-    <!--
+    
     var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1");
-    //-->
+    
 </script>
+//-->
 </body>
 </html>
