@@ -22,7 +22,9 @@ ALTER TABLE coordenadores RENAME TO coordenador;
 -- usuario
 ALTER TABLE sagu_usuarios RENAME TO usuario;
 ALTER TABLE seq_sagu_usuarios RENAME TO usuario_id_seq;
+ALTER TABLE sagu_usuarios_nome_uniq RENAME TO uniq_usuario;
 ALTER TABLE usuario ALTER COLUMN id SET DEFAULT NEXTVAL('public.usuario_id_seq');
+ALTER TABLE usuario ADD COLUMN ref_campus int;
 -- GRANT ALL ON usuario_id_seq TO admin;
 
 
@@ -58,3 +60,7 @@ ALTER TABLE diario_log ALTER COLUMN senha_acesso TYPE varchar(80);
 
 -- motivo
 ALTER TABLE motivos RENAME TO motivo;
+
+-- campus
+ALTER TABLE campus ADD COLUMN ref_campus_sede int;
+ALTER TABLE campus DROP COLUMN codigo_contabil;

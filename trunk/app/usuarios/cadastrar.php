@@ -4,8 +4,9 @@ require_once("../../app/setup.php");
 
 $conn = new connection_factory($param_conn);
 
-$RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
+$setor = $conn->get_all('SELECT id, nome_setor FROM setor;');
 $RsPapel = $conn->Execute('SELECT papel_id, descricao, nome FROM papel');
+$campus = $conn->get_all('SELECT id, nome_campus FROM campus WHERE id = ref_campus_sede;');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -60,14 +61,22 @@ $RsPapel = $conn->Execute('SELECT papel_id, descricao, nome FROM papel');
                     <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio</span>
                 </span>
                 <br />
+                <strong>Campus:</strong><br />
+                <select name="campus" id="campus" size="3">
+                    <?php
+                      foreach($campus as $c) {
+                        echo '<option value="'. $c['id'] .'"'. $selected .' >';
+                        echo $c['nome_campus'] ."</option>";
+                      }
+                    ?>
+                </select><br />
                 <strong>Setor:</strong><br />
                 <select name="setor" id="setor">
                     <?php
-                    while(!$RsSetor->EOF) {
-                        echo '<option value="'.$RsSetor->fields[0].'" >';
-                        echo $RsSetor->fields[1]."</option>";
-                        $RsSetor->MoveNext();
-                    }
+                      foreach($setor as $s) {
+                        echo '<option value="'. $s['id'] .'"'. $selected .' >';
+                        echo $s['nome_setor'] ."</option>";
+                      }
                     ?>
                 </select>
                 <p>

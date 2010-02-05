@@ -140,19 +140,25 @@ $info .= "<strong>Total de Matr&iacute;culas: </strong>" . $Matriculas . $txt_ci
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<title>SA</title>
-	<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
+	<link href="<?=$BASE_URL?>public/styles/style.css" rel="stylesheet" type="text/css">
+    <link href="<?=$BASE_URL?>public/styles/print.css" rel="stylesheet" type="text/css" media="print" />
 </head>
 <body marginwidth="20" marginheight="20">
 	<div style="width: 760px;" align="center">
-		<div align="center" style="text-align:center; font-size:12px;">
-        	<?php echo $header->get_empresa($PATH_IMAGES); ?>
-            <br /><br />
-		</div> 
+      	<?php echo $header->get_empresa($PATH_IMAGES); ?>
+  
 		<h2>CURSOS COM ALUNOS MATRICULADOS NO PERÍODO</h2>
 		<?php 
 	        echo $info;
 			rs2html($RsCursos, 'cellspacing="0" border="0" class="tabela_relatorio" cellpadding="0"'); 
 		?>
 	</div>
+<br />
+<div class="nao_imprime">
+  <input type="button" value="Imprimir" onClick="window.print()" />
+  &nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="javascript:window.close();">Fechar</a>
+</div>
+<br />
 </body>
 </html>

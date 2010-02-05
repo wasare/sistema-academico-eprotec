@@ -53,44 +53,20 @@ if ($contMatriculada == 0)
 
 $nome_aluno = $conn->get_one('SELECT nome FROM pessoas WHERE id = '. $aluno_id .';');
 
-$contratos = $conn->get_all('SELECT DISTINCT c.id, pessoa_nome(c.ref_pessoa) AS nome , c.ref_curso, curso_desc(c.ref_curso), c.dt_formatura, c.dt_ativacao, c.dt_desativacao FROM contratos c WHERE c.ref_pessoa = '. $aluno_id .' ORDER BY c.dt_ativacao, nome;');
+$contratos = $conn->get_all('SELECT DISTINCT c.id, pessoa_nome(c.ref_pessoa) AS nome , c.ref_curso, curso_desc(c.ref_curso), c.dt_formatura, c.dt_ativacao, c.dt_desativacao, get_campus(c.ref_campus) as campus FROM contratos c WHERE c.ref_pessoa = '. $aluno_id .' ORDER BY c.dt_ativacao, nome;');
 
 ?>
 <html>
 <head>
   <title><?=$IEnome?> - Sistema Acad&ecirc;mico</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="<?=$BASE_URL .'public/styles/relatorio.css'?>" rel="stylesheet" type="text/css">
-
-<style type="text/css" media="print">
-<!--
-.nao_imprime {display:none}
-
-table.relato {
-    font: 0.7em verdana, arial, tahoma, sans-serif;
-    border: 0.0015em solid;
-    border-collapse: collapse;
-    border-spacing: 0px;
-}
-
-.relato td, th {
-    font: 0.7em verdana, arial, tahoma, sans-serif;
-    border: 0.0015em solid;
-    padding: 2px;
-    border-collapse: collapse;
-    border-spacing: 1px;
-}
--->
-</style>
-
-
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <link href="<?=$BASE_URL?>public/styles/relatorio.css" rel="stylesheet" type="text/css">
+  <link href="<?=$BASE_URL?>public/styles/print.css" rel="stylesheet" type="text/css" media="print" />
 </head>
 <body>
 	<div align="left">
-		<div align="center" style="text-transform: capitalize; font-size: 0.8em; font-family: Verdana; text-align:center;">
-        	<?=$header->get_empresa($PATH_IMAGES)?>
-            <br /><br />
-        </div> 
+      	<?=$header->get_empresa($PATH_IMAGES)?>
+   </div> 
       <h2>Informa&ccedil;&otilde;es Acad&ecirc;micas</h2>
     <div id="cabecalho" style="text-align: left;">
       <font color="#000000" size="2"><b> Aluno: </b><?=$nome_aluno?>
@@ -99,12 +75,12 @@ table.relato {
         </a>
         <br /><b>Matr&iacute;cula: </b><?=str_pad($aluno_id, 5, "0", STR_PAD_LEFT)?></font><br>
     </div>
-    <br />
     <h4>Contratos</h4>
     <table cellpadding="0" cellspacing="0" class="relato">
 	  <tr bgcolor="#666666">
 	    <th><div align="center"><font color="#FFFFFF"><b>Contrato</b></font></div></th>
 	    <th><div align="center"><font color="#FFFFFF"><b>Curso</b></font></div></th>
+        <th><div align="center"><font color="#FFFFFF"><b>Campus</b></font></div></th>
         <th><div align="center"><font color="#FFFFFF"><b>Ativa&ccedil;&atilde;o</b></font></div></th>
         <th><div align="center"><font color="#FFFFFF"><b>Cola&ccedil;&atilde;o de grau</b></font></div></th>
         <th><div align="center"><font color="#FFFFFF"><b>Desativa&ccedil;&atilde;o</b></font></div></th>
@@ -121,6 +97,7 @@ table.relato {
         </td>
 		<td><span id="<?=$oferecida?>" title="Di&aacute;rio: <?=$oferecida?>  - Professor(es): <?=$professor?>">
             <?=$c['ref_curso']?>&nbsp;-&nbsp;<?=$c['curso_desc']?></span></td>
+        <td align="center"><?=$c['campus']?></td>
 		<td align="center"><?=date::convert_date($c['dt_ativacao'])?></td>
         <td align="center"><?=date::convert_date($c['dt_formatura'])?></td>
         <td align="center"><?=date::convert_date($c['dt_desativacao'])?></td>
@@ -312,7 +289,6 @@ foreach ($ficha_academica as $disc) :
     <strong>M</strong> - Matriculado <br /><br />
     <strong>DE</strong> - Disciplina Equivalente<br />
 </div>
-</div>
 <br />
 
 <div class="nao_imprime">
@@ -320,6 +296,9 @@ foreach ($ficha_academica as $disc) :
 &nbsp;&nbsp;&nbsp;
 <a href="#" onclick="javascript:window.close();">Fechar</a>
 </div>
-<br /><br />
+<div style="clear: both;line-height: .3em;">
+ <br /><hr color="#868686" size="2">
+</div>
+<br />
 </body>
 </html>

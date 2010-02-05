@@ -114,9 +114,10 @@ class acl {
                     FROM usuario_papel a, usuario b
                     WHERE a.ref_usuario = b.id AND b.ref_pessoa = $pessoa_id;";
 
-      $papeis_usuario =  $conn->get_col($sql);
+      $papeis_usuario = (array) $conn->get_col($sql);
 
-      $papeis_permitidos = is_array($papeis_permitidos) ? $papeis_permitidos : array();
+     // $papeis_permitidos = is_array($papeis_permitidos) ? $papeis_permitidos : array();
+      $papeis_permitidos = (array) $papeis_permitidos;
 
       if (count(array_intersect($papeis_usuario, $papeis_permitidos)) == 0)
         return FALSE;

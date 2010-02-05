@@ -40,7 +40,8 @@ $sql1 = "SELECT DISTINCT
     m.ref_disciplina_ofer as oferecida,
     m.ref_motivo_matricula,
     professor_disciplina_ofer_todos(o.id),
-    get_carga_horaria_realizada(o.id) as carga_horaria_realizada
+    get_carga_horaria_realizada(o.id) as carga_horaria_realizada,
+    o.fl_concluida
     FROM 
         matricula m, disciplinas d, disciplinas_ofer o, periodos s, contratos c
     WHERE 
@@ -71,39 +72,14 @@ $contrato = $conn->get_row('SELECT nome_campus, turma FROM campus a , contratos 
 <html>
 <head>
   <title><?=$IEnome?> - Sistema Acad&ecirc;mico</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="<?=$BASE_URL .'public/styles/relatorio.css'?>" rel="stylesheet" type="text/css">
-
-
-<style type="text/css" media="print">
-<!--
-.nao_imprime {display:none}
-
-table.relato {
-    font: 0.7em verdana, arial, tahoma, sans-serif;
-    border: 0.0015em solid;
-    border-collapse: collapse;
-    border-spacing: 0px;
-}
-
-.relato td, th {
-    font: 0.7em verdana, arial, tahoma, sans-serif;
-    border: 0.0015em solid;
-    padding: 2px;
-    border-collapse: collapse;
-    border-spacing: 1px;
-}
--->
-</style>
-
-
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <link href="<?=$BASE_URL?>public/styles/relatorio.css" rel="stylesheet" type="text/css">
+  <link href="<?=$BASE_URL?>public/styles/print.css" rel="stylesheet" type="text/css" media="print" />
 </head>
 <body>
 	<div align="left">
-		<div align="center" style="text-transform: capitalize; font-size: 0.8em; font-family: Verdana; text-align:center;">
         	<?=$header->get_empresa($PATH_IMAGES)?>
-            <br /><br />
-        </div> 
+    </div>
 	<h2>Ficha Acad&ecirc;mica</h2>
     <div id="cabecalho" style="text-align: left;">
       <font color="#000000" size="2"><b> Nome: </b><?=$nome_aluno?>&nbsp;&nbsp;<b>Matr&iacute;cula: </b><?=str_pad($aluno_id, 5, "0", STR_PAD_LEFT)?></font><br>
@@ -143,6 +119,8 @@ $percFaltasMatriculada = 0;
 //carga horaria realizada
 $chRealizadaMatriculada = 0;
 
+// conta disciplinas aprovadas com diario nao finalizado
+$diarios_nao_finalizados = 0;
 
 foreach ($ficha_academica as $disc) {
 	$fcolor = '#000000';
@@ -157,6 +135,7 @@ foreach ($ficha_academica as $disc) {
     $ref_motivo_matricula = $disc['ref_motivo_matricula'];
     $nota_final = $disc['nota_final'];
 	$professor = $disc['professor_disciplina_ofer_todos'];
+    $fl_concluida = $disc['fl_concluida'];
 
     // APROVEITAMENTO DE ESTUDOS 2
     // CERTIFICACAO DE EXPERIENCIAS 3
@@ -218,6 +197,10 @@ foreach ($ficha_academica as $disc) {
     if ($situacao == 'R') { 
 		$fcolor = '#FF0000';
 	}
+    elseif ($fl_concluida == 'f') {
+        $fcolor = '#006FC7';
+        $diarios_nao_finalizados++;
+    }
    
     //  DADOS PARA CONTABILIZAR MEDIAS
     if ($situacao == 'A') 
@@ -290,6 +273,15 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
                  
 ?>
 </table>
+<?php
+  if ($diarios_nao_finalizados > 0) :
+?>
+    <span style="font-size: 0.7em;">
+      * Existe(m) <strong><?=$diarios_nao_finalizados?></strong> disciplina(s) aprovada(s) em di&aacute;rio(s) n&atilde;o finalizado(s), marcado(s) em <span style="color:#006FC7; font-weight: bold;">AZUL</span>.
+    </span>
+<?php
+  endif;
+?>
 <br /><br />
 <table border="0" cellspacing="0" cellpadding="0" class="relato">
   <tr bgcolor="666666">
@@ -334,7 +326,6 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
     <strong>M</strong> - Matriculado <br /><br />
     <strong>DE</strong> - Disciplina Equivalente<br />
 </div>
-</div>
 <br />
 <br />
 
@@ -343,6 +334,9 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
 &nbsp;&nbsp;&nbsp;
 <a href="#" onclick="javascript:window.close();">Fechar</a>
 </div>
-<br /><br />
+<div style="clear: both;line-height: .3em;">
+ <br /><hr color="#868686" size="2">
+</div>
+<br />
 </body>
 </html>

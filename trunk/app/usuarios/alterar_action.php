@@ -9,6 +9,7 @@ $id_usuario  = $_POST['id_usuario'];
 $senha       = $_POST['senha'];
 $permissoes  = $_POST['permissao'];
 $ref_setor   = $_POST['setor'];
+$ref_campus  = $_POST['campus'];
 
 if($_POST['ativado']) {
     $ativado = 't';
@@ -29,7 +30,8 @@ UPDATE usuario
 SET 
     $sql_senha
 	ativado='$ativado', 
-	ref_setor=$ref_setor 
+	ref_setor=$ref_setor,
+    ref_campus=$ref_campus
 WHERE 
 	id = $id_usuario;";
 

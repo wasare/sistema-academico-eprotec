@@ -3,11 +3,13 @@
 require_once("../../../app/setup.php");
 require_once("../../../lib/adodb5/tohtml.inc.php");
 require_once("../../../core/reports/carimbo.php");
+require_once("../../../core/reports/header.php");
 
 
 $conn = new connection_factory($param_conn);
 
 $carimbo = new carimbo($param_conn);
+$header  = new header($param_conn);
 
 $periodo    = $_POST["periodo1"];
 $tipo       = $_POST["tipo"];
@@ -88,12 +90,14 @@ $rodape .= '<span style="font-size: 9px;"><strong>' . $resp_cargo . "</strong></
 <head>
     <title>Lista de di&aacute;rios</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
+    <link href="<?=$BASE_URL?>public/styles/style.css" rel="stylesheet" type="text/css">
+    <link href="<?=$BASE_URL?>public/styles/print.css" rel="stylesheet" type="text/css" media="print" />
 </head>
 <body marginwidth="20" marginheight="20">
     <div style="width: 760px;" align="center">
+      <?php echo $header->get_empresa($PATH_IMAGES); ?>
         <h2>RELAT&Oacute;RIO DE ANDAMENTO DOS DI&Aacute;RIOS</h2>
-        <?php echo $info; ?>
+        <?=$info?>
         <?php rs2html($Result1, 'width="90%" cellspacing="0" border="0" class="tabela_relatorio" cellpadding="0"', FALSE, FALSE); ?>
         <br /><br />
         <div class="carimbo_box">
@@ -106,5 +110,12 @@ $rodape .= '<span style="font-size: 9px;"><strong>' . $resp_cargo . "</strong></
         	</span>
         </div>
     </div>
+<br />
+<div class="nao_imprime">
+  <input type="button" value="Imprimir" onClick="window.print()" />
+  &nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="javascript:window.close();">Fechar</a>
+</div>
+<br />
 </body>
 </html>

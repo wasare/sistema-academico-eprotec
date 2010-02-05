@@ -208,20 +208,13 @@ $num_alunos  = count($arr_alunosid);
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <title>SA</title>
-        <link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/web_diario.css'?>" type="text/css" />
-        <style type="text/css">
-            table {
-                font-size:11px;
-            }
-        </style>
+        <link href="<?=$BASE_URL?>public/styles/relatorio.css" rel="stylesheet" type="text/css">
+        <link href="<?=$BASE_URL?>public/styles/print.css" rel="stylesheet" type="text/css" media="print" />        
     </head>
     <body>
-        <div align="center">
+        <div align="left">
             <?php echo $header->get_empresa($PATH_IMAGES); ?>
-            <br /><br />
             <h2>Resumo de notas e faltas do curso no per&iacute;odo</h2>
-        </div>
         <strong>Per&iacute;odo:</strong> <?php echo $desc_periodo; ?><br />
         <strong>Curso:</strong> <?php echo $desc_curso[0]; ?><br />
         <strong>Turma:</strong> <?php echo $turma; ?><br />
@@ -230,15 +223,15 @@ $num_alunos  = count($arr_alunosid);
 
         <b>LEGENDA</b>
 
-        <table cellpadding="0" cellspacing="0" class="papeleta">
+        <table cellpadding="0" cellspacing="0" class="relato">
             <tr>
-                <td align="center"><strong>C&oacute;d. Di&aacute;rio</strong></td>
-                <td align="center"><strong>Descri&ccedil;&atilde;o</strong></td>
-                <td align="center"><strong>Professor(a)</strong></td>
-                <td align="center"><strong>CH Prevista</strong></td>
-                <td align="center"><strong>CH Realizada</strong></td>
-                <td align="center"><strong>N Distribuida</strong></td>
-                <td align="center"><strong>Situa&ccedil;&atilde;o</strong></td>
+                <th align="center"><strong>C&oacute;d. Di&aacute;rio</strong></th>
+                <th align="center"><strong>Descri&ccedil;&atilde;o</strong></th>
+                <th align="center"><strong>Professor(a)</strong></th>
+                <th align="center"><strong>CH Prevista</strong></th>
+                <th align="center"><strong>CH Realizada</strong></th>
+                <th align="center"><strong>N Distribuida</strong></th>
+                <th align="center"><strong>Situa&ccedil;&atilde;o</strong></th>
             </tr>
 
             <?php foreach($arr_legenda as $legenda) : ?>
@@ -301,20 +294,20 @@ $num_alunos  = count($arr_alunosid);
         </table>
         <br />
         <br />
-        <strong>Aten&ccedil;&atilde;o:</strong>O relat&oacute;rio abaixo exibe somente os di&aacute;rio concluídos.
+        <strong>Aten&ccedil;&atilde;o:</strong> O relat&oacute;rio abaixo exibe somente os di&aacute;rio concluídos.
         <br />
         <br />
         <!-- Tabela principal -->
 
-        <table cellpadding="0" cellspacing="0" class="papeleta">
+        <table cellpadding="0" cellspacing="0" class="relato">
             <tr>
-                <td rowspan="2">
+                <th rowspan="2">
                     <strong>Aluno</strong>
-                </td>
+                </th>
 
                 <?php foreach($arr_diarios as $diario) : ?>
 
-                <td colspan="2"><strong><?=$diario?></strong></td>
+                <th colspan="2"><strong><?=$diario?></strong></th>
 
                 <?php endforeach; ?>
 
@@ -323,8 +316,8 @@ $num_alunos  = count($arr_alunosid);
 
                 <?php for($i = 0; $i < $num_diarios; $i++): ?>
 
-                <td><strong>N</strong></td>
-                <td><strong>F</strong></td>
+                <th><strong>N</strong></th>
+                <th><strong>F</strong></th>
 
                 <?php endfor; ?>
 
@@ -334,7 +327,7 @@ $num_alunos  = count($arr_alunosid);
 
             <tr valign="top">
                 <td width="300">
-                        <?php echo $conn->get_one('SELECT nome FROM pessoas WHERE id = '.$alunoid); ?>
+                        <?php echo $conn->get_one('SELECT nome FROM pessoas WHERE id = '. $alunoid) .' ('. $alunoid .')' ; ?>
                 </td>
                     <?php foreach($arr_diarios as $diario): ?>
                 <td>
@@ -359,6 +352,12 @@ $num_alunos  = count($arr_alunosid);
             <?php endforeach; ?>
 
         </table>
-
+<br />
+<div class="nao_imprime">
+  <input type="button" value="Imprimir" onClick="window.print()" />
+  &nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="javascript:window.close();">Fechar</a>
+</div>
+<br />
     </body>
 </html>

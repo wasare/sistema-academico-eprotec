@@ -1,5 +1,5 @@
 <?php
-
+//phpinfo();
 /**
  * Forca o fuso horario da aplicacao
  */
@@ -39,12 +39,12 @@ $DOC_TYPE       = '<meta http-equiv="Content-Type" content="text/html; charset=I
 /**
  * Variaveis do sistema
  */
-$BASE_URL       = 'http://'. $_SERVER['SERVER_NAME'] .'/~wasare/dev/netbeans-php/sistema-academico/';
-$BASE_DIR       = '/home/wasare/public_html/dev/netbeans-php/sistema-academico/';
+$BASE_URL       = 'http://'. $_SERVER['HTTP_HOST'] . '/~wasare/dev/netbeans-php/sistema-academico/';// dirname(dirname($_SERVER['PHP_SELF'])) .'/';
+$BASE_DIR       = dirname(dirname(realpath(__FILE__))) .'/';
 $LOGIN_URL      = $BASE_URL .'index.php';
 $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';
 $PATH_IMAGES    = $BASE_URL."public/images/";
-$REVISAO 		= @file_get_contents ('../VERSAO.TXT');
+$REVISAO 	= @file_get_contents($BASE_DIR .'VERSAO.TXT');
 $SESS_TABLE     = 'sessao';
 $PAPEIS_SA = array('secretaria' => 1, 'administrador' => 2);
 $PAPEIS_WEB_DIARIO = array('professor' => 3, 'coordenador' => 0);
@@ -65,6 +65,7 @@ $IEnome     = 'Instituto Federal Minas Gerais';
 $IEurl      = 'http://www.ifmg.edu.br/bambui';
 
 // app/sagu/academico/cursos_disciplinas_edita.phtm
+// app/relatorios/integralizacao_curso/lista_integralizacao_curso.php
 $curriculos["M"] = "M&iacute;nimo";
 $curriculos["C"] = "Complementar";
 $curriculos["O"] = "Optativa";

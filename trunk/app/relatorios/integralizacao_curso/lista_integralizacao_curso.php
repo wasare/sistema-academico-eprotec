@@ -27,41 +27,107 @@ if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login'
   // ^ VERIFICA O DIREITO DE ACESSO A FICHA COMO PROFESSOR OU COORDENADOR ^ //
 }
 
+$fl_integralizado = FALSE;
 
-$sql1 = "SELECT DISTINCT
-    d.id, 
-    s.descricao as periodo, 
-    d.descricao_disciplina as descricao, 
-    d.carga_horaria, 
-    m.ref_periodo, 
-    CAST(m.num_faltas AS INTEGER) as faltas, 
-    CAST(m.nota_final AS FLOAT) as nota_final, 
-    m.nota as nota, 
-    m.ref_disciplina_ofer as oferecida,
-    m.ref_motivo_matricula,
-    professor_disciplina_ofer_todos(o.id),
-    get_carga_horaria_realizada(o.id) as carga_horaria_realizada
-    FROM 
-        matricula m, disciplinas d, disciplinas_ofer o, periodos s, contratos c
-    WHERE 
-        m.ref_curso = $curso_id AND 
-        c.id = $contrato_id AND
-        m.ref_contrato = $contrato_id AND
-        c.id = m.ref_contrato AND
-        m.ref_periodo = s.id AND
-        m.ref_disciplina_ofer = o.id AND 
-        d.id = o.ref_disciplina AND
-        o.is_cancelada = '0' AND
-        s.id = o.ref_periodo
-    ORDER BY 2, 3";
+// TODAS AS DISCIPLINAS DA MATRIZ CURRICULAR
+$sql_disciplinas_curso = "SELECT ref_disciplina FROM cursos_disciplinas WHERE ref_curso = $curso_id;";
 
-	
-$ficha_academica = $conn->get_all($sql1);
-	
-$contMatriculada = count($ficha_academica);
+// DISCIPLINAS APROVADAS COM MATRICULA PARA O CONTRATO CONSULTADO
+$sql_disciplinas_aprovadas = "
+        SELECT DISTINCT
+            o.ref_disciplina
+        FROM
+                matricula m, disciplinas_ofer o
+        WHERE
+                m.ref_pessoa = $aluno_id AND
+                m.ref_disciplina_ofer = o.id AND
+                m.ref_contrato = $contrato_id AND
+                m.ref_curso = $curso_id AND
+                o.is_cancelada = '0' AND
+                m.dt_cancelamento IS NULL AND
+                ( 
+                    ( m.nota_final >= 60 AND 
+                      o.fl_concluida = 't' AND
+                      ( m.num_faltas <= ( get_carga_horaria_realizada(o.id) ) * 0.25 ) ) OR
+                    ref_motivo_matricula IN (2,3,4)
+                ); ";
 
-if ($contMatriculada == 0)
-	exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Nenhum dado encontrado para o aluno / contrato informado!");window.close();</script>');
+     
+$disciplinas_curso = (array) $conn->get_col($sql_disciplinas_curso);
+//$disciplinas_curso = is_array($disciplinas_curso) ? $disciplinas_curso : array();
+
+//print_r($disciplinas_curso);
+//echo '<br /><br />';
+
+$disciplinas_aprovadas = (array) $conn->get_col($sql_disciplinas_aprovadas);
+//$disciplinas_aprovadas = is_array($disciplinas_aprovadas) ? $disciplinas_aprovadas : array();
+
+
+//print_r($disciplinas_aprovadas);
+//echo '<br />';
+
+$disciplinas_nao_cursadas = array_diff($disciplinas_curso, $disciplinas_aprovadas);
+$disciplinas_cursadas_fora_da_matriz = array_diff($disciplinas_aprovadas, $disciplinas_curso);     
+
+/*
+$cursadas = array("green", "red", "blue");
+$matriz = array("green", "yellow", "red", "blue");
+$result = array_diff($matriz, $cursadas);
+print_r($result);
+
+ // array_diff       Returns an array containing all the entries from array1  that are not present in any of the other arrays.
+// array_intersect Returns an array containing all of the values in array1  whose values exist in all of the parameters.
+*/
+if (count($disciplinas_nao_cursadas) == 0) {
+  $fl_integralizado = TRUE;
+}
+elseif (count($disciplinas_cursadas_fora_da_matriz) > 0) {
+
+  // DISCIPLINAS REFERENTES AS DISCIPLINAS EQUIVALENTES CURSADAS FORA DA MATRIZ, CASO EXISTA ALGUMA
+  $sql_disciplinas_equivalentes = "SELECT
+                                          ref_disciplina
+                                      FROM
+                                          disciplinas_equivalentes
+                                      WHERE
+                                          ref_curso = $curso_id AND
+                                          ref_disciplina_equivalente IN (". implode(",", $disciplinas_cursadas_fora_da_matriz) .");";
+        
+  $disciplinas_equivalentes_cursadas = (array) $conn->get_col($sql_disciplinas_equivalentes);
+  //$disciplinas_equivalentes_cursadas = is_array($disciplinas_equivalentes_cursadas) ? $disciplinas_equivalentes_cursadas : array();
+
+  $disciplinas_nao_cursadas_como_equivalentes = array_diff($disciplinas_nao_cursadas, $disciplinas_equivalentes_cursadas);
+
+  // array_diff       Returns an array containing all the entries from array1  that are not present in any of the other arrays.
+  // array_intersect Returns an array containing all of the values in array1  whose values exist in all of the parameters.
+        
+  if (count($disciplinas_nao_cursadas_como_equivalentes) == 0) {
+    $fl_integralizado = TRUE;
+  }
+  else {
+    //$disciplinas_nao_cursadas = array_diff($disciplinas_nao_cursadas, $disciplinas_equivalentes_cursadas);
+    $disciplinas_nao_cursadas =  $disciplinas_equivalentes_cursadas;
+  }
+}
+
+if (count($disciplinas_nao_cursadas) > 0) {
+
+  $sql_disciplinas_nao_integralizadas = " SELECT
+                                          d.id || ' - ' || descricao_disciplina AS disciplina,
+                                          d.carga_horaria, c.semestre_curso,
+                                          curriculo_mco AS curriculo
+                                       FROM
+                                          disciplinas d, cursos_disciplinas c
+                                       WHERE
+                                          d.id = c.ref_disciplina AND
+                                          ref_curso = $curso_id AND
+                                          c.ref_disciplina IN (". implode(",", $disciplinas_nao_cursadas) .")
+                                       ORDER BY
+                                              semestre_curso;";
+
+  $disciplinas_nao_integralizadas = $conn->get_all($sql_disciplinas_nao_integralizadas);
+
+}
+
 
 $nome_aluno = $conn->get_one('SELECT nome FROM pessoas WHERE id = '. $aluno_id .';');
 $nome_curso = $conn->get_one('SELECT id || \' - \' || descricao FROM cursos WHERE id = '. $curso_id .';');
@@ -71,278 +137,99 @@ $contrato = $conn->get_row('SELECT nome_campus, turma FROM campus a , contratos 
 <html>
 <head>
   <title><?=$IEnome?> - Sistema Acad&ecirc;mico</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="<?=$BASE_URL .'public/styles/relatorio.css'?>" rel="stylesheet" type="text/css">
-
-
-<style type="text/css" media="print">
-<!--
-.nao_imprime {display:none}
-
-table.relato {
-    font: 0.7em verdana, arial, tahoma, sans-serif;
-    border: 0.0015em solid;
-    border-collapse: collapse;
-    border-spacing: 0px;
-}
-
-.relato td, th {
-    font: 0.7em verdana, arial, tahoma, sans-serif;
-    border: 0.0015em solid;
-    padding: 2px;
-    border-collapse: collapse;
-    border-spacing: 1px;
-}
--->
-</style>
-
-
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <link href="<?=$BASE_URL?>public/styles/relatorio.css" rel="stylesheet" type="text/css">
+  <link href="<?=$BASE_URL?>public/styles/web_diario.css" rel="stylesheet" type="text/css">
+  <link href="<?=$BASE_URL?>public/styles/print.css" rel="stylesheet" type="text/css" media="print" />
 </head>
 <body>
-	<div align="left">
-		<div align="center" style="text-transform: capitalize; font-size: 0.8em; font-family: Verdana; text-align:center;">
+	<div align="left">		
         	<?=$header->get_empresa($PATH_IMAGES)?>
-            <br /><br />
-        </div> 
-	<h2>Ficha Acad&ecirc;mica</h2>
+    </div>
+      <h2>Integraliza&ccedil;&atilde;o de Curso</h2>
     <div id="cabecalho" style="text-align: left;">
       <font color="#000000" size="2"><b> Nome: </b><?=$nome_aluno?>&nbsp;&nbsp;<b>Matr&iacute;cula: </b><?=str_pad($aluno_id, 5, "0", STR_PAD_LEFT)?></font><br>
-      <font color="#000000" size="2"> <b>Curso: </b><?=$nome_curso?>&nbsp;&nbsp;<b>Turma: </b><?=$turma = (!empty($contrato['turma'])) ? $contrato['turma'] : '-'?></font><br />
-      <font color="#000000" size="2"> <b>Campus: </b><?=$contrato['nome_campus']?>&nbsp;&nbsp;<b>Data: </b> <?php echo date("d/m/Y"); ?>&nbsp;&nbsp;<b>Hora: </b><?php echo date("H:i"); ?></font><br />
+      <font color="#000000" size="2"> <b>Curso: </b><?=$nome_curso?>
+        <br /><b>Turma: </b><?=$turma = (!empty($contrato['turma'])) ? $contrato['turma'] : '-'?>&nbsp;&nbsp;<b>Contrato: </b><?=$contrato_id?></font><br />
+      <font color="#000000" size="2"> <b>Campus: </b><?=$contrato['nome_campus']?><br />
+        <b>Data: </b> <?php echo date("d/m/Y"); ?>&nbsp;&nbsp;<b>Hora: </b><?php echo date("H:i"); ?></font><br />
     </div>
-	<br>
-	<table cellpadding="0" cellspacing="0" class="relato">
-	  <tr bgcolor="#666666">
-	    <th><div align="center"><font color="#FFFFFF"><b>Per&iacute;odo</b></font></div></th>
-	    <th><div align="center"><font color="#FFFFFF"><b>Componente Modular</b></font></div></th>
-	    <th><div align="center"><font color="#FFFFFF"><b>M&eacute;dia</b></font></div></th>
-	    <th><div align="center"><font color="#FFFFFF"><b>Faltas</b></font></div></th>
-	    <th><div align="center"><font color="#FFFFFF"><b>% Faltas</b></font></div></th>
-		<th><div align="center"><font color="#FFFFFF"><b>CH Realizada</b></font></div></th>
-	    <th><div align="center"><font color="#FFFFFF"><b>CH Prevista</b></font></div></th>
-	    <th><div align="center"><font color="#FFFFFF"><b>Matr&iacute;cula</b></font></div></th>
-	    <th><div align="center"><font color="#FFFFFF"><b>Situa&ccedil;&atilde;o</b></font></div></th>
-	  </tr>
-<?php	
+    <br />
+    <div id="integralizou">
+      <?php
+          if ($fl_integralizado) :
+      ?>
+      <br /><br />
+      <span style="color: green; font-size: 1.2em;font-style: italic;">
+        Este curso / contrato foi totalmente integralizado pelo aluno.
+      </span>
+      <br /><br />
+      <?php
+          else :
+      ?>
+            <h3>Disciplinas n&atilde;o integralizadas</h3>
+            <table cellpadding="0" cellspacing="0" class="relato">
+            <tr bgcolor="#666666">
+              <th><div align="center"><font color="#FFFFFF"><b>Disciplina</b></font></div></th>
+              <th><div align="center"><font color="#FFFFFF"><b>Carga hor&aacute;ria</b></font></div></th>
+              <th><div align="center"><font color="#FFFFFF"><b>Per&iacute;odo no curso</b></font></div></th>
+              <th><div align="center"><font color="#FFFFFF"><b>Curr&iacute;culo</b></font></div></th>
+            </tr>
+      <?php
 
-//VARIAVEIS --
+            $carga_nao_integralizada = 0;
+            foreach ($disciplinas_nao_integralizadas as $disc) :
 
-//nota total aprovado
-$notaAprovado = 0;
-//contador
-$contAprovado = 0;
-//percentual de faltas
-$percFaltasAprovado = 0;
-//carga horaria realizada
-$chRealizadaAprovado = 0;
-  
-//nota total matriculada
-$notaMatriculada = 0;
-//percentual de faltas
-$percFaltasMatriculada = 0;
-//carga horaria realizada
-$chRealizadaMatriculada = 0;
+                $nome_disciplina  = $disc['disciplina'];
+                $carga_prevista   = $disc['carga_horaria'];
+                $semestre_curso   = $disc['semestre_curso'];
+                $curriculo        = $curriculos[$disc['curriculo']];
 
+                $carga_nao_integralizada += ($disc['curriculo'] == 'M') ? $carga_prevista : 0;
 
-foreach ($ficha_academica as $disc) {
-	$fcolor = '#000000';
-// id	periodo	descricao	carga_horaria	ref_periodo	faltas	nota_final	nota	oferecida	ref_motivo_matricula	professor_disciplina_ofer_todos	carga_horaria_realizada
-	$nome_materia = $disc['id'] .' - '. $disc['descricao'];
-    $periodo = $disc['periodo'];
-    $faltas_materia = $disc['faltas'];
-    $ref_periodo = $disc['ref_periodo'];
-    $carga_prevista = $disc['carga_horaria'];
-    $carga_realizada = $disc['carga_horaria_realizada'];
-    $oferecida = $disc['oferecida'];
-    $ref_motivo_matricula = $disc['ref_motivo_matricula'];
-    $nota_final = $disc['nota_final'];
-	$professor = $disc['professor_disciplina_ofer_todos'];
-
-    // APROVEITAMENTO DE ESTUDOS 2
-    // CERTIFICACAO DE EXPERIENCIAS 3
-    // EDUCACAO FISICA 4
-    switch ($ref_motivo_matricula) {
-            case 0:
-                $matricula = 'CI';
-                break;
-            case 2:
-                $matricula = 'AE';
-                break;
-            case 3:
-                $matricula = 'CE';
-                break;
-            case 4:
-                $matricula = 'DEF';
-                break;
-    }
-
-    $situacao = '';
-    // verifica aprovacao a qualquer tempo considerando qualquer disciplina equivalente, dispensa, etc, em relacao ao contrato
-    if(verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$oferecida))
-		$situacao = 'A'; 
-    else
-	    $situacao = 'R';
-
-    // verifica aprovacao considerando exatamente a disciplina matriculada ou dispensada em relacao ao contrato
-    if(verificaAprovacaoContratoDisciplina($aluno_id,$curso_id,$contrato_id,$oferecida))
-        $situacao = 'A';
-    else
-        $situacao = 'R'; 
-   
-    if(!verificaPeriodo($ref_periodo))
-        $situacao = 'M';
-
-    if(verificaEquivalencia($curso_id,$oferecida))
-        $matricula .= ' / DE';
-
-	if($nota_final == ''){
-		$nota_final = ' - ';
-	}  
-   
-	$pfaltas = 0;
-	$stfaltas = 0;
-	if (!empty($carga_realizada)) {
-    	$perfaltas = ($faltas_materia * 100) / $carga_realizada;
-        $pfaltas = substr($perfaltas,0,5);
-		
-		$stfaltas = $pfaltas;
-        //$stfaltas = getNumeric2Real($pfaltas) . ' %';
-    }
-    else {
-		//$pfaltas = '-'; 
-		$stfaltas = $pfaltas;
-		$carga_realizada = 0;
-	}
-    
 	
-    if ($situacao == 'R') { 
-		$fcolor = '#FF0000';
-	}
-   
-    //  DADOS PARA CONTABILIZAR MEDIAS
-    if ($situacao == 'A') 
-	{
-		$contAprovado++;
-		//total notas aprovado
-		$notaAprovado += $nota_final;
-		//total percentual de faltas
-		$percFaltasAprovado += $stfaltas;
-		//Total carga horaria realizada
-		$chRealizadaAprovado += $carga_realizada;
-	}
-
-     //total notas matriculada
-     $notaMatriculada += $nota_final;
-     //total percentual de faltas
-     $percFaltasMatriculada += $stfaltas;
-     //Total carga horaria realizada
-     $chRealizadaMatriculada += $carga_realizada;
+                $st = ($st == '#F3F3F3') ? '#FFFFFF' : '#F3F3F3';
+      ?>
 	
-	if ($st == '#F3F3F3') {
-   		$st = '#FFFFFF';
-	}
-	else {
-		$st ='#F3F3F3';
-	}
+              <tr bgcolor="<?=$st?>">
+                <td>&nbsp;&nbsp;<?=$nome_disciplina?></td>
+                <td align="center"><?=$carga_prevista?></td>
+                <td align="center"><?=$semestre_curso?></td>
+                <td align="center"><?=$curriculo?></td>
+              </tr>
+      <?php
+            endforeach;
+       ?>
+              </table>
+            <span style="font-size: 0.7em;">
+              * Carga hor&aacute;ria n&atilde;o integralizada no curr&iacute;culo m&iacute;nimo: <strong><?=$carga_nao_integralizada?></strong>
+            </span>            
+    <?php
+        endif; 
+     ?>
 
-	if (strstr($stfaltas,'.'))
-		$stfaltas = number_format($stfaltas,'2',',','.');	
-    
-	if (strstr($nota_final,'.'))
-        $nota_final = number_format($nota_final,'1',',','.');
-	
-    echo 
-	"<tr bgcolor=\"$st\">
-        <td><font color=$fcolor>$periodo</font></td>
-		<td><span id=\"$oferecida\" title=\"Di&aacute;rio: $oferecida  - Professor(es): $professor\"><font color=$fcolor>$nome_materia</font></span></td>
-		<td align=center><font color=$fcolor>$nota_final</font></td>
-        <td align=center><font color=$fcolor>$faltas_materia</font></td>
-        <td align=center><font color=$fcolor>$stfaltas</font></td>
-        <td align=center><font color=$fcolor>$carga_realizada</font></td>
-        <td align=center><font color=$fcolor>$carga_prevista</font></td>
-        <td align=center><font color=$fcolor>$matricula</font></td>
-        <td align=center><font color=$fcolor>$situacao</font></td>
-        </tr>";
-}//FIM FOREACH
-
-
-
-//INFORMACOES --
-
-//Media nas disciplinas aprovadas
-$notaMediaAprovado = @number_format($notaAprovado / $contAprovado,'2',',','.');
-
-//Media percentual de faltas das disciplinas aprovadas
-$percFaltasAprovado = @($percFaltasAprovado / $contAprovado);
-
-//Convertendo para o padrao decimal - Media percentual de faltas das disciplinas aprovadas
-$percFaltasAprovado = number_format($percFaltasAprovado,'2',',','.');
-
-
-//Media nas disciplinas matriculadas
-$notaMediaMatriculada = @number_format($notaMatriculada / $contMatriculada,'2',',','.');
-
-//Media percentual de faltas das disciplinas matriculadas
-$percFaltasMatriculada = $percFaltasMatriculada / $contMatriculada;
-
-//Convertendo para o padrao decimal - Media percentual de faltas das disciplinas matriculada
-$percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
-                 
-?>
-</table>
-<br /><br />
-<table border="0" cellspacing="0" cellpadding="0" class="relato">
-  <tr bgcolor="666666">
-    <th height="24" colspan="2">
-    	<b>Informa&ccedil;&otilde;es:</b><br>
-    </th>
-  </tr>
-  <tr>
-    <td>M&eacute;dia da nota nas disciplinas aprovadas:</td>
-    <td align="right">&nbsp;<?php echo $notaMediaAprovado; ?></td>
-  </tr>
-  <tr>
-    <td>M&eacute;dia percentual de faltas das disciplinas aprovadas: </td>
-    <td align="right">&nbsp;<?php echo $percFaltasAprovado . ' %'; ?></td>
-  </tr>
-  <tr>
-    <td>Total carga hor&aacute;ria realizada nas disciplinas aprovadas: </td>
-    <td align="right">&nbsp;<?php echo $chRealizadaAprovado;?></td>
-  </tr>
-  <tr>
-    <td>M&eacute;dia da nota nas disciplinas matriculadas:</td>
-    <td align="right">&nbsp;<?php echo $notaMediaMatriculada; ?></td>
-  </tr>
-  <tr>
-    <td>M&eacute;dia percentual de faltas das disciplinas matriculadas: </td>
-    <td align="right">&nbsp;<?php echo $percFaltasMatriculada . ' %'; ?></td>
-  </tr>
-  <tr>
-    <td>Total carga hor&aacute;ria realizada nas disciplinas matriculadas: </td>
-    <td align="right">&nbsp;<?php echo $chRealizadaMatriculada;?></td>
-  </tr>
-</table>
-<br />
-<div align="left" class="relato" style="font-size: 0.75em;">
-    <h4>Legenda</h4>
-    <strong>CI</strong> - Disciplina Cursada na Institui&ccedil;&atilde;o<br />
-    <strong>AE</strong> - Aproveitamento de Estudos <br />
-    <strong>CE</strong> - Certifica&ccedil;&atilde;o Experi&ecirc;ncia <br />
-    <strong>DEF</strong> - Dispensado de Educa&ccedil;&atilde;o f&iacute;sica<br /><br />
-    <strong>A</strong> - Aprovado<br />
-    <strong>R</strong> - Reprovado <br />
-    <strong>M</strong> - Matriculado <br /><br />
-    <strong>DE</strong> - Disciplina Equivalente<br />
-</div>
-</div>
-<br />
-<br />
+    <br /> <br />
+    <span style="font-size: 0.85em;font-weight: bold;">
+      Observa&ccedil;&otilde;es:
+    </span>
+    <br /><br />
+    <span style="color: teal; font-size: 0.8em;font-style: italic;">
+     * A informa&ccedil;&atilde;o acima esta de acordo com os lan&ccedil;amentos do Sistema Acad&ecirc;mico<br />
+     * Somente as disciplinas de di&aacute;rios <strong>finalizados</strong> s&atilde;o consideradas <br />
+     * Disciplinas <strong>equivalentes</strong> cursadas s&atilde;o consideradas somente quanto conclu&iacute;das dentro do curso / contrato acima<br />
+     * Para mais detalhes consulte a <strong>Ficha Acad&ecirc;mica</strong> do aluno<br />
+    </span>
+    <br /><br />
+    </div>
 
 <div class="nao_imprime">
 <input type="button" value="Imprimir" onClick="window.print()">
 &nbsp;&nbsp;&nbsp;
 <a href="#" onclick="javascript:window.close();">Fechar</a>
 </div>
-<br /><br />
+<div style="clear: both;line-height: .3em;">
+ <br /><hr color="#868686" size="2">
+</div>
+<br />
 </body>
 </html>
