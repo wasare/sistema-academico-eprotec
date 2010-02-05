@@ -70,15 +70,12 @@ if($total < 1){
 <head>
 	<title>SA</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-	<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
+	<link href="<?=$BASE_URL?>public/styles/style.css" rel="stylesheet" type="text/css">
+    <link href="<?=$BASE_URL?>public/styles/print.css" rel="stylesheet" type="text/css" media="print" />
 </head>
 <body marginwidth="20" marginheight="20">
 	<div style="width: 760px;">
-       
-    	<div align="center" style="text-align:center; font-size:12px;">
         	<?php echo $header->get_empresa($PATH_IMAGES); ?>
-            <br /><br />
-        </div>    
         <div align="center">
             <h2>RELAT&Oacute;RIO DE EGRESSOS</h2>
             <p>
@@ -138,5 +135,12 @@ if($total < 1){
 	    <br>
 	</div>
     </div>
+<br />
+<div class="nao_imprime">
+  <input type="button" value="Imprimir" onClick="window.print()" />
+  &nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="javascript:window.close();">Fechar</a>
+</div>
+<br />
 </body>
 </html>

@@ -12,12 +12,14 @@ SELECT
     u.senha,
     u.ativado,
     s.nome_setor,
+    c.nome_campus,
     p.id || \' - \' || p.nome as nome_pessoa
 FROM
-    usuario u, setor s, pessoas p
+    usuario u, setor s, pessoas p, campus c
 WHERE
     s.id = u.ref_setor AND
-    u.ref_pessoa = p.id
+    u.ref_pessoa = p.id AND
+    c.id = u.ref_campus
 ORDER BY lower(u.nome)';
 
 $RsNome = $conn->Execute(iconv("utf-8","iso-8859-1",$sql));
@@ -59,10 +61,11 @@ $RsNome = $conn->Execute(iconv("utf-8","iso-8859-1",$sql));
 
         <table width="80%" border="0">
             <tr  style="font-weight:bold; color: white; background-color: #666666;">
-                <td>Usu&aacute;rio</td>
-                <td>Setor</td>
-                <td>Permiss&otilde;es</td>
-                <td width="60" align="center">Op&ccedil;&otilde;es</td>
+                <th>Usu&aacute;rio</th>
+                <th>Campus</td>
+                <th>Setor</td>
+                <th>Permiss&otilde;es</th>
+                <th align="center">Op&ccedil;&otilde;es</th>
             </tr>
             <?php
 
@@ -86,6 +89,7 @@ $RsNome = $conn->Execute(iconv("utf-8","iso-8859-1",$sql));
                     </a>
                         <?=$situacao?>
                 </td>
+                <td align="left"><?=$RsNome->fields['nome_campus']?></td>
                 <td align="left"><?=$RsNome->fields['nome_setor']?></td>
                 <td align="left">
                         <?php

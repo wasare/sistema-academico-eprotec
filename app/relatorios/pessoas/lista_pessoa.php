@@ -109,13 +109,13 @@ $pessoa = $conn->get_row($sql);
         <title>SA</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+        <link href="<?=$BASE_URL?>public/styles/print.css" rel="stylesheet" type="text/css" media="print" />
     </head>
     <body>
         <div style="width: 760px;" align="center">
             <div align="center" style="text-align:center; font-size:12px;">
                 <?=$header->get_empresa($PATH_IMAGES)?>
-                <br /><br />
-            </div>
+           </div>
             <h2>Informa&ccedil;&otilde;es pessoais</h2>
             <div class="panel">
 
@@ -218,11 +218,16 @@ $pessoa = $conn->get_row($sql);
                 <h3>Observa&ccedil;&atilde;o</h3>
                 <?=$pessoa['obs'];?>
             </div>
+
+            <div class="nao_imprime">
+              <input type="button" value="Imprimir" onClick="window.print()">
+              &nbsp;&nbsp;&nbsp;
+              <a href="#" onclick="javascript:window.close();">Fechar</a>
+            </div>
+            <div style="clear: both;line-height: .3em;">
+              <br /><hr color="#868686" size="2">
+            </div>
         </div>
-       <br />
-      <div align="left">
-        <a href="#" onclick="javascript:window.close();">Fechar</a>
-      </div>
       <br />
     </body>
 </html>

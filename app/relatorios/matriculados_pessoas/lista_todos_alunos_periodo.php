@@ -65,15 +65,13 @@ $info .= "<strong>Período: </strong> <span>".$_POST['periodo']."</span> $txt_cid
 <head>
 	<title>SA</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-	<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
+	<link href="<?=$BASE_URL?>public/styles/style.css" rel="stylesheet" type="text/css">
+    <link href="<?=$BASE_URL?>public/styles/print.css" rel="stylesheet" type="text/css" media="print" />
 </head>
 <body marginwidth="20" marginheight="20">
-	<div align="center" style="text-align:center; font-size:12px;">
-       	<?php echo $header->get_empresa($PATH_IMAGES); ?>
-        <br /><br />
-    </div> 
+  	<?php echo $header->get_empresa($PATH_IMAGES); ?>
 	<h2>RELAT&Oacute;RIO COM TODOS OS ALUNOS MATRICULADOS POR PER&Iacute;ODO</h2>
-	<?php echo $info; ?>
+	<?=$info?>
 	<table cols=16 width="90%" cellspacing="0" border="0" class="tabela_relatorio" cellpadding="0">
 		<tr>
 			<th>Código</th>
@@ -114,5 +112,12 @@ $info .= "<strong>Período: </strong> <span>".$_POST['periodo']."</span> $txt_cid
 		</tr>
 		<?php $Result1->MoveNext(); } ?>
 	</table>
+<br />
+<div class="nao_imprime">
+  <input type="button" value="Imprimir" onClick="window.print()" />
+  &nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="javascript:window.close();">Fechar</a>
+</div>
+<br />
 </body>
 </html>

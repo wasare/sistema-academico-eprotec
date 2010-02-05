@@ -13,16 +13,21 @@ SELECT
     u.ativado,
     u.ref_pessoa,
     p.nome,
-    s.nome_setor
+    s.nome_setor,
+    c.nome_campus,
+    u.ref_campus,
+    u.ref_setor
 FROM
-    usuario u, setor s, pessoas p
+    usuario u, setor s, pessoas p, campus c
 WHERE
     s.id = u.ref_setor AND
     u.ref_pessoa = p.id AND
+    c.id = u.ref_campus AND
     u.id = '.$id_usuario;
 
-$RsUsuario = $conn->Execute($sqlUsuario);
-$RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
+$RsUsuario = $conn->get_row($sqlUsuario);
+$setor = $conn->get_all('SELECT id, nome_setor FROM setor;');
+$campus = $conn->get_all('SELECT id, nome_campus FROM campus WHERE id = ref_campus_sede;');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -86,15 +91,25 @@ $RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
 
             <div class="panel">
                 <strong>Pessoa:</strong><br />
-                <?=$RsUsuario->fields[3]?> - <?=$RsUsuario->fields[4]?><br />
+                <?=$RsUsuario[3]?> - <?=$RsUsuario[4]?><br />
+                <strong>Campus:</strong><br />
+                <select name="campus" id="campus" size="3">
+                    <?php
+                      foreach($campus as $c) {
+                        $selected = ($c['id'] == $RsUsuario[7]) ? 'selected="selected"' : '';
+                        echo '<option value="'. $c['id'] .'"'. $selected .' >';
+                        echo $c['nome_campus'] ."</option>";
+                      }
+                    ?>
+                </select><br />
                 <strong>Setor:</strong><br />
                 <select name="setor" id="setor">
                     <?php
-                    while(!$RsSetor->EOF) {
-                        echo '<option value="'.$RsSetor->fields[0].'" >';
-                        echo $RsSetor->fields[1]."</option>";
-                        $RsSetor->MoveNext();
-                    }
+                      foreach($setor as $s) {
+                        $selected = ($s['id'] == $RsUsuario[8]) ? 'selected="selected"' : '';
+                        echo '<option value="'. $s['id'] .'"'. $selected .' >';
+                        echo $s['nome_setor'] ."</option>";
+                      }
                     ?>
                 </select>
                 <p>
@@ -102,7 +117,7 @@ $RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
                     <input type="text"
                            name="usuario"
                            id="usuario"
-                           value="<?php echo $RsUsuario->fields[1]; ?>"
+                           value="<?php echo $RsUsuario[1]; ?>"
                            disabled="disabled" />
                 </p>
                 <strong>Senha:</strong><br />
@@ -125,11 +140,11 @@ $RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
 
                         $sqlPapelUsuario =  'SELECT ref_papel '.
                             'FROM usuario_papel '.
-                            'WHERE ref_usuario = '.$RsUsuario->fields[0];
+                            'WHERE ref_usuario = '.$RsUsuario[0];
 
-                        $arr_papel_usuario = $conn->adodb->GetCol($sqlPapelUsuario);
+                        $arr_papel_usuario = $conn->get_col($sqlPapelUsuario);
 
-                        $arr_papel = $conn->adodb->GetAll('SELECT papel_id, descricao, nome FROM papel');
+                        $arr_papel = $conn->get_all('SELECT papel_id, descricao, nome FROM papel');
 
                         foreach($arr_papel as $papel) {
                             if(in_array($papel['papel_id'],$arr_papel_usuario)) {
@@ -146,7 +161,7 @@ $RsSetor = $conn->Execute('SELECT id, nome_setor FROM setor;');
                 <p>
                     Usu&aacute;rio ativado?
                     <?php
-                    if ($RsUsuario->fields[2] == 't') {
+                    if ($RsUsuario[2] == 't') {
                         echo '<input type="checkbox" checked="checked" name="ativado" id="ativado" />';
                     }
                     else {

@@ -45,9 +45,10 @@ class auth {
         }
         else {
 
-            $sql = "SELECT id,ref_pessoa FROM usuario
+            $sql = "SELECT u.id,ref_pessoa,nome_campus FROM usuario u, campus c
                     WHERE nome = '$login' AND
                     senha = '". hash('sha256',trim($senha)) ."' AND
+                    c.id = ref_campus AND
                     ativado = 'TRUE'; ";
 
             $usuario = $GLOBALS['ADODB_SESS_CONN']->getAll($sql);
@@ -64,6 +65,7 @@ class auth {
                 // CONFIGURA AS VARIAVEIS DA SESSAO DE LOGIN
                 $_SESSION['sa_auth'] = $login .':'. hash('sha256',$senha) .':'. $usuario[0] .':'. $usuario[1];
                 $_SESSION['sa_modulo'] = $modulo;
+                $_SESSION['sa_campus'] = $usuario[2];
 
                 // força atualização da sessão recriando o ID da sessão
                 adodb_session_regenerate_id();
@@ -141,7 +143,7 @@ class auth {
 
                 // CONFIGURA AS VARIAVEIS DA SESSAO DE LOGIN
                 $_SESSION['sa_auth'] = $sa_usuario .':'. $sa_senha .':'. $sa_usuario_id .':'. $sa_ref_pessoa;
-                $_SESSION['sa_modulo'] = $sa_modulo;
+                //$_SESSION['sa_modulo'] = $sa_modulo;
             }
             else {               
                 $sessao->clear_session($sa_usuario, NULL);

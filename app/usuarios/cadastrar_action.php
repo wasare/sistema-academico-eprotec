@@ -6,6 +6,7 @@ $conn = new connection_factory($param_conn);
 
 $ref_pessoa = $_POST['ref_pessoa'];
 $ref_setor  = $_POST['setor'];
+$ref_campus  = $_POST['campus'];
 $usuario    = $_POST['usuario'];
 $senha      = hash('sha256', $_POST['senha']);
 $permissoes = $_POST['permissao'];
@@ -21,8 +22,8 @@ $usuario_existe = $conn->Execute("SELECT id FROM usuario WHERE nome = '$usuario'
 
 if(empty($usuario_existe->fields[0]))
 {
-	$sqlUsuario = "INSERT INTO usuario (nome, senha, ref_pessoa, ativado, ref_setor )
-	VALUES('$usuario', '$senha', $ref_pessoa, '$ativado', $ref_setor);";
+	$sqlUsuario = "INSERT INTO usuario (nome, senha, ref_pessoa, ativado, ref_setor, ref_campus )
+	VALUES('$usuario', '$senha', $ref_pessoa, '$ativado', $ref_setor, $ref_campus);";
 	
 	if($conn->Execute($sqlUsuario)){
 		$msg = '<font color="green">Usu&aacute;rio cadastrado com sucesso!</font>';

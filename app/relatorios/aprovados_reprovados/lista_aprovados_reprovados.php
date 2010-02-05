@@ -7,17 +7,16 @@ require_once("aprovados_reprovados.php");
 <head>
 	<title>Lista de Alunos</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-	<link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
+	<link href="<?=$BASE_URL?>public/styles/style.css" rel="stylesheet" type="text/css">
+    <link href="<?=$BASE_URL?>public/styles/print.css" rel="stylesheet" type="text/css" media="print" />
 </head>
 <body marginwidth="20" marginheight="20">
 <div style="width: 760px;" align="center">
-		<div align="center" style="text-align:center; font-size:12px;">
-        	<?php echo $header->get_empresa($PATH_IMAGES); ?>
-            <br /><br />
-		</div> 
+     <?php echo $header->get_empresa($PATH_IMAGES); ?>
+
 	<h2>RELAT&Oacute;RIO DE SITUA&Ccedil;&Atilde;O DE APROVA&Ccedil;&Atilde;O DE ALUNO(S)</h2>
-	<?php
-		echo $info;
+    <?=$info?>
+	<?php		
   		rs2html($Result1, 'width="90%" cellspacing="0" border="0" class="tabela_relatorio" cellpadding="0"'); 
 	?>
 	<br /><br />
@@ -31,5 +30,12 @@ require_once("aprovados_reprovados.php");
 			</span>
 		</div>
 </div>
+<br />
+<div class="nao_imprime">
+  <input type="button" value="Imprimir" onClick="window.print()" />
+  &nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="javascript:window.close();">Fechar</a>
+</div>
+<br />
 </body>
 </html>

@@ -37,16 +37,18 @@ if($total < 1){
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>SA</title>
-    <link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
+    <link href="<?=$BASE_URL?>public/styles/style.css" rel="stylesheet" type="text/css" />
+    <link href="<?=$BASE_URL?>public/styles/print.css" rel="stylesheet" type="text/css" media="print" />
 </head>
 
 <body marginwidth="20" marginheight="20">
 <div style="width: 760px;">
-    <div align="center" style="text-align:center; font-size:12px;">
+
        	<?php echo $header->get_empresa($PATH_IMAGES); ?>
-        <br /><br />
-    </div> 
-    <h2>MATRÍCULAS/CIDADES DE ALUNOS POR CURSO NO PERÍODO <?=$periodo; ?></h2>
+
+  <h2>MATRÍCULAS/CIDADES DE ALUNOS POR CURSO</h2>
+  <h3>Per&iacute;odo: <?=$periodo; ?></h3>
+  <br />
     <?php
         while(!$RsCursos->EOF) {
             echo "<h3>" . $RsCursos->fields[0] . " - " . $RsCursos->fields[1] . "</h3>";
@@ -75,7 +77,7 @@ if($total < 1){
     <br /><br />
     <center>
     <div class="carimbo_box">
-        _______________________________<br>
+        _______________________________<br />
         <span class="carimbo_nome">
             <?php echo $carimbo->get_nome($_POST['carimbo']);?>
         </span><br />
@@ -85,5 +87,12 @@ if($total < 1){
     </div>
     </center>
 </div>
+<br />
+<div class="nao_imprime">
+  <input type="button" value="Imprimir" onClick="window.print()" />
+  &nbsp;&nbsp;&nbsp;
+  <a href="#" onclick="javascript:window.close();">Fechar</a>
+</div>
+<br />
 </body>
 </html>
