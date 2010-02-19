@@ -14,7 +14,7 @@ $user     = 'usrsagu';
 $password = 'x6S8YzrJBs';
 
 /**
- * Variaveis de acesso a dados - SA 
+ * Variaveis de acesso a dados
  */
 $param_conn['host']     = $host;
 $param_conn['database'] = $database;
