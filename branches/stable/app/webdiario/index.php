@@ -46,7 +46,8 @@ session_destroy();
             <tr>
               <td height="6"><span class="login">Per&iacute;odo:</span></td>
               <td height="6"><select id="speriodo" name="speriodo">
-				<option value="20092" selected="selected">2009 / 2&ordm; Semestre</option>
+                <option value="20101" selected="selected">2010 / 1&ordm; Semestre</option>
+				<option value="20092" >2009 / 2&ordm; Semestre</option>
                 <option value="20091" >2009 / 1&ordm; Semestre</option>
                 <option value="20082" >2008 / 2&ordm; Semestre</option>
                 <option value="20081" >2008 / 1&ordm; Semestre</option>
