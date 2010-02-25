@@ -14,23 +14,22 @@ if (isset($_SESSION['sa_aluno_user']) and $_SESSION['sa_aluno_user'] != '' and !
     $senha = $_SESSION['sa_aluno_senha'];
     $nasc  = $_SESSION['sa_aluno_nasc'];
 }else {
-    $user  = $_POST['user'];
+    $user  = (int) $_POST['user'];
     $senha = md5($_POST['senha']);
-    $nasc  = $_POST['nasc'];
+    $nasc  = addslashes($_POST['nasc']);
 
     $_SESSION['sa_aluno_user']  = $user;
     $_SESSION['sa_aluno_senha'] = $senha;
     $_SESSION['sa_aluno_nasc']  = $nasc;
 }
 
-$qryUsuarioCont = '
-    SELECT COUNT(*)
-    FROM acesso_aluno a, pessoas b
-    WHERE
-        a.ref_pessoa = '.$user.' AND
-        b.id = '.$user.' AND
-        dt_nascimento = \''.$nasc.'\' AND
-        a.senha = \''.$senha.'\';';
+$qryUsuarioCont = "
+SELECT COUNT(*) FROM acesso_aluno a, pessoas b
+WHERE
+    a.ref_pessoa = $user AND
+    b.id = $user AND
+    dt_nascimento = '$nasc' AND
+    a.senha = '$senha'; ";
 
 $AlunoCont = $conn->get_one($qryUsuarioCont);
 

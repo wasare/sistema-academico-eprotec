@@ -70,9 +70,8 @@ session_destroy();
                 <form name="form1" method="post" action="lista_cursos.php">
                     <table border="0">
                         <tr>
-
                             <td align="right">
-                                Usu&aacute;rio:
+                                Matr&iacute;cula:
                             </td>
                             <td>
                                 <input type="text" id="user" name="user" maxlength="20" style="width: 140px;" />
