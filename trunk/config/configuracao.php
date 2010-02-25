@@ -25,11 +25,11 @@ $param_conn['port']     = '5432';
 /**
  * Variaveis de acesso a dados - Modulo do aluno
  */
-$aluno_host     = $param_conn['host'];
-$aluno_database = $param_conn['database'];
-$aluno_user     = $user;
-$aluno_password = $password;
-$aluno_port     = '';
+$param_conn_aluno['host']     = $param_conn['host'];
+$param_conn_aluno['database'] = $param_conn['database'];
+$param_conn_aluno['user']     = 'aluno';
+$param_conn_aluno['password'] = '@1srv27';
+$param_conn_aluno['port']     = '';
 
 /**
  * HTML Padrao
@@ -39,7 +39,7 @@ $DOC_TYPE       = '<meta http-equiv="Content-Type" content="text/html; charset=I
 /**
  * Variaveis do sistema
  */
-$BASE_URL       = 'http://'. $_SERVER['HTTP_HOST'] . '/~wasare/dev/netbeans-php/sistema-academico/';// dirname(dirname($_SERVER['PHP_SELF'])) .'/';
+$BASE_URL       = 'http://'. $_SERVER['HTTP_HOST'] . '/desenvolvimento/santiago/sistema-academico/';
 $BASE_DIR       = dirname(dirname(realpath(__FILE__))) .'/';
 $LOGIN_URL      = $BASE_URL .'index.php';
 $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';

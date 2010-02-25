@@ -8,7 +8,9 @@ include_once('includes/topo.htm');
 $sql_curso = '
 SELECT DISTINCT
     a.ref_curso, e.abreviatura, a.ref_periodo, d.descricao
-FROM matricula a, pessoas b, disciplinas c, periodos d, cursos e
+FROM 
+    matricula a, pessoas b, disciplinas c,
+    periodos d, cursos e, contratos f
 WHERE
     a.ref_disciplina IN (
         SELECT DISTINCT a.ref_disciplina
@@ -23,7 +25,12 @@ WHERE
     a.ref_periodo = d.id AND
     a.ref_disciplina = c.id AND
     a.ref_pessoa = b.id AND
-    a.ref_pessoa = %s;';
+    a.ref_pessoa = %s AND
+    f.dt_desativacao is null AND
+    f.id = a.ref_contrato
+    
+;';
+
 
 $aluno = $user;
 $data = $DataInicial;
@@ -57,7 +64,8 @@ $curso = '';
 <br />
 <strong>Endere&ccedil;o: </strong><?=$arr_aluno['rua']?>
 &nbsp;&nbsp;
-<strong>Bairro: </strong><?=$arr_aluno['bairro']?>
+<strong>Bairro: </strong>
+<?=$arr_aluno['bairro']?>
 &nbsp;&nbsp;
 <strong>CEP: </strong><?=$arr_aluno['cep']?>
 &nbsp;&nbsp;
