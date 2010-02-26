@@ -191,12 +191,12 @@ WHERE matriculada is null
         $descricao_disciplina = $RsDisciplinas->fields[1];
         $ref_curso            = $RsDisciplinas->fields[2];
         $ref_periodo          = $RsDisciplinas->fields[3];
-        $turma                = $RsDisciplinas->fields[4];
+        $turma_ofer           = $RsDisciplinas->fields[4];
 
         $DisciplinasNaoCursadas .= "<input type=\"radio\" name=\"id_diario\" ".
                    "id=\"id_diarios\" value=\"$ref_disciplina_ofer\" onclick=\"Exibe('dispensar')\" />";
         $DisciplinasNaoCursadas .= '&nbsp;&nbsp;';
-        $DisciplinasNaoCursadas .= "<strong>$ref_disciplina_ofer - $descricao_disciplina</strong> - $ref_curso - $turma($ref_periodo) <br />";
+        $DisciplinasNaoCursadas .= "<strong>$ref_disciplina_ofer - $descricao_disciplina</strong> - $ref_curso - $turma_ofer($ref_periodo) <br />";
 
         $RsDisciplinas->MoveNext();
 	
