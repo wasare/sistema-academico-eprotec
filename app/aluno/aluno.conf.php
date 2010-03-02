@@ -9,20 +9,41 @@ require_once($BASE_DIR .'core/date.php');
 $sessao = new session($param_conn);
 $conn = new connection_factory($param_conn_aluno);
 
-if (isset($_SESSION['sa_aluno_user']) and $_SESSION['sa_aluno_user'] != '' and !isset($_POST["btnOK"])) {
+/*
+ * Verifica se as variaveis de sessao do usuario foram setadas
+ */
+if(isset($_SESSION['sa_aluno_user']) and $_SESSION['sa_aluno_user'] != '') {
     $user  = $_SESSION['sa_aluno_user'];
     $senha = $_SESSION['sa_aluno_senha'];
     $nasc  = $_SESSION['sa_aluno_nasc'];
 }else {
-    $user  = (int) $_POST['user'];
-    $senha = md5($_POST['senha']);
-    $nasc  = addslashes($_POST['nasc']);
+    /*
+     * Verifica se o formulario de autenticacao
+     * enviou parametros
+     */
+    if($_POST['user']
+            and $_POST['senha']
+            and $_POST['nasc']
+    ) {
+        $user  = (int) $_POST['user'];
+        $senha = md5($_POST['senha']);
+        $nasc  = addslashes($_POST['nasc']);
 
-    $_SESSION['sa_aluno_user']  = $user;
-    $_SESSION['sa_aluno_senha'] = $senha;
-    $_SESSION['sa_aluno_nasc']  = $nasc;
+        $_SESSION['sa_aluno_user']  = $user;
+        $_SESSION['sa_aluno_senha'] = $senha;
+        $_SESSION['sa_aluno_nasc']  = $nasc;
+    }else {
+        /*
+         * Em caso de sessao expirada retorna para
+         * o formulario de autenticacao
+         */
+        header('location: index.php');
+    }
 }
 
+/*
+ * Verifica a autenticacao do usuario na base dados
+*/
 $qryUsuarioCont = "
 SELECT COUNT(*) FROM acesso_aluno a, pessoas b
 WHERE
@@ -33,15 +54,15 @@ WHERE
 
 $AlunoCont = $conn->get_one($qryUsuarioCont);
 
-// VERIFICA O ACESSO
 if ($AlunoCont != 1) {
-    print '
-         <script language=javascript>
-            window.alert("Usuário e/ou senha inválido(s)");
-            javascript:window.history.back(1);
-         </script>';
+    print '<script language=javascript>
+           window.alert("Usuário e/ou senha inválido(s)");
+           javascript:window.history.back(1);
+           </script>';
     exit;
-} else {
+}
+/*
+else {
     // VERIFICA MATRICULA NO PERIODO CORRENTE
     $m = date("m");
 
@@ -87,5 +108,5 @@ if ($AlunoCont != 1) {
         exit;
     }
 }
-
+*/
 ?>
