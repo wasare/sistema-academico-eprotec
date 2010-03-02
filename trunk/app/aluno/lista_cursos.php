@@ -28,13 +28,12 @@ WHERE
     a.ref_pessoa = %s AND
     f.dt_desativacao is null AND
     f.id = a.ref_contrato
-    
 ;';
 
-
 $aluno = $user;
-$data = $DataInicial;
+$data = date("01/01/2006");
 
+$arr_curso = array();
 $arr_curso = $conn->get_all(sprintf($sql_curso,$aluno, $data, $aluno));
 
 $sql_aluno = "
@@ -49,38 +48,52 @@ WHERE
     p.ref_cidade = c.id ;";
 
 $dados_aluno = $conn->get_all($sql_aluno);
-
 $arr_aluno = $dados_aluno['0'];
 
 $curso = '';
-
 ?>
 <h2>Minhas informa&ccedil;&otilde;es</h2>
-<strong>Registro: </strong><?=str_pad($aluno, 5, "0", STR_PAD_LEFT)?>
+<strong>Registro: </strong>
+<?=str_pad($aluno, 5, "0", STR_PAD_LEFT)?>
 &nbsp;&nbsp;
-<strong>Nome: </strong><?=$arr_aluno['nome']?>
+<strong>Nome: </strong>
+<?=$arr_aluno['nome']?>
 &nbsp;&nbsp;
-<strong>Data de nascimento:  </strong><?=date::convert_date($arr_aluno['dt_nascimento'])?>
+<strong>Data de nascimento:  </strong>
+<?=date::convert_date($arr_aluno['dt_nascimento'])?>
 <br />
-<strong>Endere&ccedil;o: </strong><?=$arr_aluno['rua']?>
+<strong>Endere&ccedil;o: </strong>
+<?=$arr_aluno['rua']?>
 &nbsp;&nbsp;
 <strong>Bairro: </strong>
 <?=$arr_aluno['bairro']?>
 &nbsp;&nbsp;
-<strong>CEP: </strong><?=$arr_aluno['cep']?>
+<strong>CEP: </strong>
+<?=$arr_aluno['cep']?>
 &nbsp;&nbsp;
-<strong>Cidade: </strong><?=$arr_aluno['cidade']?>
+<strong>Cidade: </strong>
+<?=$arr_aluno['cidade']?>
 <br />
-<strong>Telefone: </strong><?=$arr_aluno['fone_particular']?>&nbsp;&nbsp;
-<strong>E-mail:  </strong><?=$arr_aluno['email']?>
+<strong>Telefone: </strong>
+<?=$arr_aluno['fone_particular']?>&nbsp;&nbsp;
+<strong>E-mail:  </strong>
+<?=$arr_aluno['email']?>
 <br />
-<font color="red"><strong>Aten&ccedil;&atilde;o:</strong> Para corrigir ou atualizar seus dados procure o setor de registros escolares.</font>
+<font color="red">
+    <strong>Aten&ccedil;&atilde;o:</strong>
+    Para corrigir ou atualizar seus dados procure o setor de
+    registros escolares.
+</font>
 <h2>Meus cursos</h2>
 <table>
     <?php
+    
+    if(!$arr_curso)
+        echo '<font color="grey">
+        Você não possue vínculo em nenhum curso ou disciplina
+        </font>';
 
     for($i = 0; $i < count($arr_curso) ; $i++) {
-
         echo '<tr><td><b>';
         echo $arr_curso[$i]["abreviatura"].'</b><br> |  <a href=lista_notas.php?c='.$arr_curso[$i]["ref_curso"].'&p='.$arr_curso[$i]["ref_periodo"].'>'.$arr_curso[$i]["descricao"].'</a>';
 
