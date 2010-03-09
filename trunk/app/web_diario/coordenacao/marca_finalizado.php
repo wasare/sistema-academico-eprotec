@@ -23,8 +23,7 @@ if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login'
 }
 
 // MARCA O DIARIO COMO CONCLUIDO
-$sql1 = "UPDATE 
-			disciplinas_ofer
+$sql1 = "UPDATE disciplinas_ofer
          SET
             fl_digitada = 't' 
          WHERE  
@@ -38,6 +37,9 @@ if ($_SESSION['sa_modulo'] == 'sa_login') {
             alert(\'Diario finalizado com sucesso!\');
 			window.opener.location.reload();
 			setTimeout("self.close()",450);</script>');
+  /*exit('<script language="javascript" type="text/javascript">
+        alert(\'Diario finalizado com sucesso!\');
+	window.close();</script>');*/
 
 }
 	
