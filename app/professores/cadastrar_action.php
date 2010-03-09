@@ -13,6 +13,7 @@ $id_pessoa       = $_POST['id_pessoa'];
 $departamento    = $_POST['departamento'];
 $user            = $_POST['user'];
 $setor           = $_POST['setor'];
+$campus          = $_POST['campus'];
 $papel_professor = 3;
 $password        = rand(10000000,99999999);
 $password_hash   = hash('sha256',$password);
@@ -71,8 +72,8 @@ if($count != 0 ) {
             begin;
                 INSERT INTO professores(ref_professor,ref_departamento,dt_ingresso)
                     VALUES($id_pessoa,$departamento,'$data');
-                INSERT INTO  usuario(nome,ref_pessoa,senha,ativado,ref_setor)
-                    VALUES('$user',$id_pessoa,'$password_hash','$ativo','$setor');
+                INSERT INTO  usuario(nome,ref_pessoa,senha,ativado,ref_setor,ref_campus)
+                    VALUES('$user',$id_pessoa,'$password_hash','$ativo','$setor','$campus');
                 INSERT INTO usuario_papel(ref_usuario, ref_papel)
                     VALUES(CURRVAL('usuario_id_seq'),3);
             commit;";

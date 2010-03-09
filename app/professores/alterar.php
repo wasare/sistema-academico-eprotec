@@ -126,16 +126,18 @@ $arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
                     <br />
                     <span id="sprypassword1">
                         <input type="password" name="password" id="password" />
-                        <span class="passwordRequiredMsg">Valor obrigat&oacute;rio.</span>
+                        <!-- <span class="passwordRequiredMsg">Valor obrigat&oacute;rio.</span>  -->
                     </span>
                     <br />
                     Confirme a nova senha:
                     <br/>
                     <span id="spryconfirm1">
                         <input type="password" name="confirm" id="confirm" />
-                        <span class="confirmRequiredMsg">Valor obrigat&oacute;rio.</span>
+                        <!-- <span class="confirmRequiredMsg">Valor obrigat&oacute;rio.</span> -->
                         <span class="confirmInvalidMsg">As senhas n&atilde;o conferem.</span>
                     </span>
+                    <br />
+                    Para manter a senha atual deixe o campo nova senha em branco.
                 </p>
             </div>
         </form>
@@ -146,8 +148,8 @@ $arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
             var validsel2 = new Spry.Widget.ValidationSelect("validsel2", {validateOn:["change"]});
             var date1 = new Spry.Widget.ValidationTextField("date1", "date", {format:"dd/mm/yyyy", hint:"dd/mm/yyyy", validateOn:["blur", "change"], useCharacterMasking:true});
             var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
-            var sprypassword1 = new Spry.Widget.ValidationPassword("sprypassword1");
-            var spryconfirm1 = new Spry.Widget.ValidationConfirm("spryconfirm1", "sprypassword1");
+            var sprypassword1 = new Spry.Widget.ValidationPassword("sprypassword1", {isRequired:false});
+            var spryconfirm1 = new Spry.Widget.ValidationConfirm("spryconfirm1", "sprypassword1", {isRequired:false});
             //-->
         </script>
     </body>
