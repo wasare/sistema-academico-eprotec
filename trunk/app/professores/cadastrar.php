@@ -10,8 +10,9 @@ require_once("../../app/setup.php");
 $conn = new connection_factory($param_conn);
 
 $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
+$arr_campus        = $conn->get_all('SELECT id, nome_campus FROM campus ORDER BY nome_campus;');
+$arr_setor         = $conn->get_all('SELECT id, nome_setor FROM setor');
 
-$arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -89,6 +90,18 @@ $arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
                     <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio.</span>
                     <span class="textfieldInvalidFormatMsg">Formato inv&aacute;lido.</span>
                 </span>
+                <br />
+                Campus:
+                <br />
+                <span id="validsel3">
+                    <select name="campus" id="campus" tabindex="1">
+                        <option value="">Selecione o campus</option>
+                        <?php foreach($arr_campus as $campus): ?>
+                        <option value="<?=$campus['id']?>"><?=$campus['nome_campus']?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <span class="selectRequiredMsg">Selecione um item.</span>
+                </span>
                 <h3>Acesso ao Web Di&aacute;rio</h3>
                 <p>
                     Usu&aacute;rio:
@@ -123,6 +136,7 @@ $arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
             var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1","integer");
             var validsel1 = new Spry.Widget.ValidationSelect("validsel1", {validateOn:["change"]});
             var validsel2 = new Spry.Widget.ValidationSelect("validsel2", {validateOn:["change"]});
+            var validsel3 = new Spry.Widget.ValidationSelect("validsel3", {validateOn:["change"]});
             var date1 = new Spry.Widget.ValidationTextField("date1", "date", {format:"dd/mm/yyyy", hint:"dd/mm/yyyy", validateOn:["blur", "change"], useCharacterMasking:true});
             var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
             //var sprypassword1 = new Spry.Widget.ValidationPassword("sprypassword1");
