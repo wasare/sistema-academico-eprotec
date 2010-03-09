@@ -23,5 +23,8 @@ ALTER TABLE usuario ADD CONSTRAINT setor_usuario_fkey FOREIGN KEY (ref_setor) RE
 
 -- campus
 ALTER TABLE campus ADD CONSTRAINT campus_sede_fkey FOREIGN KEY (ref_campus_sede) REFERENCES campus(id) MATCH FULL;
+-- faz um update na tabela compus para atualizar os registros por causa do novo campo da tabela 
+UPDATE campus SET ref_campus_sede = 1;
+UPDATE campus SET ref_campus_sede = 3 WHERE id = 3;
 
 
