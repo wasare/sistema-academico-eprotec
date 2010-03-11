@@ -6,7 +6,7 @@ require_once($BASE_DIR .'core/web_diario.php');
 $conn = new connection_factory($param_conn);
 
 $diario_id = (int) $_POST['diario_id'];
-$operacao = $_POST['operacao'];
+$operacao  = $_POST['operacao'];
 
 //  VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR
 if(!acessa_diario($diario_id,$sa_ref_pessoa)) {
@@ -45,7 +45,12 @@ $num_aulas = $aula_tipo[strlen($aula_tipo) - 1];
 
 if(!is_numeric($aula_tipo) || (strlen($aula_tipo) < 1 || strlen($aula_tipo) > 8 ))
    die('<script language="javascript" type="text/javascript"> window.alert("Você deverá selecionar a quantidade de aulas para esta chamada."); window.history.back(1);</script>');
- 
+
+
+/*
+ * Recebe a data
+
+
 if(empty($_POST['select_dia']))
   die('<font size=2><b>Voc&ecirc; n&atilde;o selecionou o DIA ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>');
 else
@@ -63,6 +68,11 @@ else
   $select_ano = $_POST['select_ano'];
 
 $data_chamada = $select_dia . "/" . $select_mes . '/'. $select_ano;
+ */
+
+$data_chamada = $_POST['data'];
+
+
 
 // VALIDAR CONTEUDO AQUI
 if(empty($conteudo))
