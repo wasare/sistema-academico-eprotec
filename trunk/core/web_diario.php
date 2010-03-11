@@ -1,10 +1,10 @@
 <?php
 /**
-* Funcoes usadas pelo web diario
-* @author Wanderson S. Reis
-* @version 1
-* @since 30-09-2009
-**/
+ * Funcoes usadas pelo web diario
+ * @author Wanderson S. Reis
+ * @version 1
+ * @since 30-09-2009
+ **/
 
 require_once(dirname(__FILE__) .'/../app/setup.php');
 
@@ -12,9 +12,9 @@ require_once(dirname(__FILE__) .'/../app/setup.php');
 $conn = new connection_factory($param_conn,FALSE);
 
 function papeleta_header($diario_id) {
-	global $conn;
+    global $conn;
 
-	$sql9 = "SELECT DISTINCT
+    $sql9 = "SELECT DISTINCT
           a.id || ' - ' || a.descricao as cdesc,
           b.id || ' - ' || b.descricao_extenso || '  ' || '(' || d.id || ')' as descricao_extenso,
           c.descricao as perdesc,
@@ -30,9 +30,9 @@ function papeleta_header($diario_id) {
 
     $qry9 = $conn->get_all($sql9);
 
-	$profs = count($qry9);
-	
-	foreach( $qry9 as $linha9 ) {
+    $profs = count($qry9);
+
+    foreach( $qry9 as $linha9 ) {
         $curso = $linha9["cdesc"];
         $disciplina  = $linha9["descricao_extenso"];
         $periodo   = $linha9["perdesc"];
@@ -41,16 +41,16 @@ function papeleta_header($diario_id) {
         $campus = $linha9['nome_campus'];
     }
 
-	$ret = '';
+    $ret = '';
     $ret .= '<input type="hidden" name="curso" id="curso" value="'. $ref_curso .'" />';
 
     $ret = 'Curso: <b>'. $curso .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
     $ret .= 'Disciplina: <b>'. $disciplina .'</b><br>';
     $ret .= 'Per&iacute;odo: <b>'. $periodo .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
-	$ret .= 'Campus: <b>'. $campus .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
+    $ret .= 'Campus: <b>'. $campus .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
     $ret .= 'Professor(a): ';
 
-	$i = 1;
+    $i = 1;
     foreach($prof as $p) {
 
         $ret .= '<b>'. $p .'</b><br />';
@@ -59,16 +59,16 @@ function papeleta_header($diario_id) {
             $ret .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';//&nbsp;';
 
         }
-		$i++;
+        $i++;
     }
-    return $ret;	
+    return $ret;
 } 
 
 function get_curso($diario_id) {
 
-	global $conn;
- 
-	$sql9 = "SELECT
+    global $conn;
+
+    $sql9 = "SELECT
              d.ref_curso
              FROM
               disciplinas_ofer d  where
@@ -79,7 +79,7 @@ function get_curso($diario_id) {
 
 function get_curso_tipo($diario_id) {
 
-	global $conn;
+    global $conn;
 
     // CONSULTA O NIVEL DO CURSO
     $sql = 'SELECT
@@ -109,7 +109,7 @@ function get_disciplina($diario_id) {
 
 function get_ano_periodo($periodo) {
 
-	global $conn;
+    global $conn;
 
     $qry1 = "SELECT
 					 to_char(dt_inicial, 'YYYY'), to_char(dt_final, 'YYYY')
@@ -122,7 +122,7 @@ function get_ano_periodo($periodo) {
 
 function is_inicializado($diario_id) {
 
-	global $conn;
+    global $conn;
 
     $grupo = ("%-%-%-" . $diario_id);
 
@@ -142,15 +142,15 @@ function is_inicializado($diario_id) {
 
 function is_finalizado($diario_id) {
 
-	global $conn;
-  	$sql = 'SELECT
+    global $conn;
+    $sql = 'SELECT
                   fl_digitada
                      FROM
                         disciplinas_ofer d
                      WHERE
                         d.id = '. $diario_id .';';
 
-  	$diario = $conn->get_one($sql);
+    $diario = $conn->get_one($sql);
 
     if ($diario == 't')
         return TRUE;
@@ -160,8 +160,8 @@ function is_finalizado($diario_id) {
 
 function is_diario($diario_id) {
 
-	global $conn;
-  	$sql = 'SELECT
+    global $conn;
+    $sql = 'SELECT
                   COUNT(d.id)
                      FROM
                         disciplinas_ofer d
@@ -169,7 +169,7 @@ function is_diario($diario_id) {
                         d.id = '. $diario_id .' AND
                         d.is_cancelada = \'0\';';
 
-  	$diario = $conn->get_one($sql);
+    $diario = $conn->get_one($sql);
 
     if ($diario == 1)
         return TRUE;
@@ -180,9 +180,9 @@ function is_diario($diario_id) {
 
 function ini_diario($ofer) {
 
-	global $conn;
-	
-	// RECUPERA INFORMACOES DO DIARIO
+    global $conn;
+
+    // RECUPERA INFORMACOES DO DIARIO
     $qryDisc = " SELECT DISTINCT
                 prof.ref_professor, o.ref_disciplina, o.ref_periodo 
                 FROM 
@@ -206,8 +206,7 @@ function ini_diario($ofer) {
 
         if(count($diario_info) > 0) {
 
-            foreach($diario_info as $linha)
-            {
+            foreach($diario_info as $linha) {
                 $disc = @$linha['ref_disciplina'];
                 $periodo = @$linha['ref_periodo'];
                 $prof = @$linha['ref_professor'];
@@ -217,31 +216,28 @@ function ini_diario($ofer) {
     }
 
     $grupo = ($prof . "-" . $periodo . "-" . $disc . "-" . $ofer);
-    $grupo_novo = ("%-%-%-" . $ofer); 
-    
+    $grupo_novo = ("%-%-%-" . $ofer);
+
     $curso = get_curso($ofer);
 
     $ret = TRUE;
 
     // PASSO 1
     $numprovas = 6;
-    
+
     // PASSO 2
     $formula = '';
-    for ($cont = 1; $cont <= $numprovas; $cont++)
-    {
+    for ($cont = 1; $cont <= $numprovas; $cont++) {
         $prova[] = 'Nota '.$cont;
 
-        if($cont == 1)
-        {
+        if($cont == 1) {
             $formula .= 'P'.$cont;
         }
-        else
-        {
+        else {
             $formula .= '+P'.$cont;
         }
-    }    
-    
+    }
+
     // PASSO 3
     $sqldel = "BEGIN; DELETE FROM diario_formulas WHERE grupo ILIKE '$grupo_novo';";
     $sqldel .= "DELETE FROM diario_notas WHERE rel_diario_formulas_grupo ILIKE '$grupo_novo'; COMMIT;";
@@ -252,8 +248,7 @@ function ini_diario($ofer) {
 
     $sql1 = 'BEGIN;';
 
-    while(list($index,$value) = each($prova))
-    {
+    while(list($index,$value) = each($prova)) {
         $descricao_prova = $prova[$index];
         $num_prova = ($index+1);
         $sql1 .= "INSERT INTO diario_formulas (ref_prof, ref_periodo, ref_disciplina, prova, descricao, formula, grupo) values($prof,'$periodo','$disc',$num_prova,'$descricao_prova','$formula','$grupo');";
@@ -264,7 +259,7 @@ function ini_diario($ofer) {
 
     $ret = $conn->Execute($sql1);
 
-	// PASSO 4 - PROCESSA CRIA REGISTROS DE ACORDO COM A FORMULA
+    // PASSO 4 - PROCESSA CRIA REGISTROS DE ACORDO COM A FORMULA
     $qryNotas = 'SELECT
         m.ref_pessoa, id_ref_pessoas
         FROM
@@ -286,29 +281,28 @@ function ini_diario($ofer) {
         ORDER BY
                 id_ref_pessoas;';
 
-	$qry = $conn->get_all($qryNotas);
+    $qry = $conn->get_all($qryNotas);
 
     $qryDiario = "BEGIN;";
 
-	foreach($qry as $registro) {
-		$ref_pessoa = $registro['ref_pessoa'];
+    foreach($qry as $registro) {
+        $ref_pessoa = $registro['ref_pessoa'];
 
-            for($i = 1 ; $i <= $numprovas; $i++)
-            {
-                $qryDiario .= ' INSERT INTO diario_notas(ra_cnec, ';
-                $qryDiario .= ' ref_diario_avaliacao,nota,peso,id_ref_pessoas,';
-                $qryDiario .= ' id_ref_periodos,id_ref_curso,d_ref_disciplina_ofer,';
-                $qryDiario .= ' rel_diario_formulas_grupo)';
-                $qryDiario .= " VALUES($ref_pessoa,$i,0,0,$ref_pessoa,'$periodo',$curso,";
-                $qryDiario .= " $ofer,'$grupo');";
-            }
+        for($i = 1 ; $i <= $numprovas; $i++) {
+            $qryDiario .= ' INSERT INTO diario_notas(ra_cnec, ';
+            $qryDiario .= ' ref_diario_avaliacao,nota,peso,id_ref_pessoas,';
+            $qryDiario .= ' id_ref_periodos,id_ref_curso,d_ref_disciplina_ofer,';
+            $qryDiario .= ' rel_diario_formulas_grupo)';
+            $qryDiario .= " VALUES($ref_pessoa,$i,0,0,$ref_pessoa,'$periodo',$curso,";
+            $qryDiario .= " $ofer,'$grupo');";
+        }
 
-                $qryDiario .= ' INSERT INTO diario_notas(ra_cnec, ';
-                $qryDiario .= ' ref_diario_avaliacao,nota,peso,id_ref_pessoas,';
-                $qryDiario .= ' id_ref_periodos,id_ref_curso,d_ref_disciplina_ofer,';
-                $qryDiario .= ' rel_diario_formulas_grupo)';
-                $qryDiario .= " VALUES($ref_pessoa,7,-1,0,$ref_pessoa,'$periodo',$curso,";
-                $qryDiario .= " $ofer,'$grupo');";
+        $qryDiario .= ' INSERT INTO diario_notas(ra_cnec, ';
+        $qryDiario .= ' ref_diario_avaliacao,nota,peso,id_ref_pessoas,';
+        $qryDiario .= ' id_ref_periodos,id_ref_curso,d_ref_disciplina_ofer,';
+        $qryDiario .= ' rel_diario_formulas_grupo)';
+        $qryDiario .= " VALUES($ref_pessoa,7,-1,0,$ref_pessoa,'$periodo',$curso,";
+        $qryDiario .= " $ofer,'$grupo');";
     }
 
 
@@ -316,15 +310,15 @@ function ini_diario($ofer) {
 
     $ret = $conn->Execute($qryDiario);
 
-	return $ret;
+    return $ret;
 }
 
 // function registra as faltas da chamada e alterações destas faltas
 function registra_faltas($ref_aluno, $diario_id, $num_faltas, $data_chamada, $professor,$altera=FALSE) {
-	global $conn;
+    global $conn;
 
     $sql_falta = 'BEGIN;';
-    
+
     $consulta_faltas = 'INSERT INTO
                               diario_chamadas (ra_cnec, data_chamada,
                                                ref_professor, ref_periodo,
@@ -339,21 +333,21 @@ function registra_faltas($ref_aluno, $diario_id, $num_faltas, $data_chamada, $pr
                     (ra_cnec = '$ref_aluno')";
 
     if($altera == TRUE) {
-      // EXCLUI TODAS AS FALTAS ANTERIORES PARA A CHAMADA
-      $sql_falta .= "DELETE FROM diario_chamadas
+        // EXCLUI TODAS AS FALTAS ANTERIORES PARA A CHAMADA
+        $sql_falta .= "DELETE FROM diario_chamadas
                                       WHERE
                                           (ref_disciplina_ofer = $diario_id) AND
                                           (data_chamada = '$data_chamada') AND
                                           (ra_cnec = '$ref_aluno');";
-      // ^ EXCLUI TODAS AS FALTAS ANTERIORES PARA A CHAMADA ^ //
+        // ^ EXCLUI TODAS AS FALTAS ANTERIORES PARA A CHAMADA ^ //
     }
 
     // INCLUI AS FALTAS NA CHAMADA (tabela diario_chamadas)
     for ($i = 1; $i <= abs($num_faltas); $i++) {
-      $sql_falta .= $consulta_faltas." ('$ref_aluno','$data_chamada','$professor',";
-      $sql_falta .= " periodo_disciplina_ofer($diario_id), curso_disciplina_ofer($diario_id),";
-      $sql_falta .= " get_disciplina_de_disciplina_of($diario_id),'$i','N',$diario_id);";
-    }	
+        $sql_falta .= $consulta_faltas." ('$ref_aluno','$data_chamada','$professor',";
+        $sql_falta .= " periodo_disciplina_ofer($diario_id), curso_disciplina_ofer($diario_id),";
+        $sql_falta .= " get_disciplina_de_disciplina_of($diario_id),'$i','N',$diario_id);";
+    }
 
     // ATUALIZA O TOTAL DE FALTA (tabela matricula)
     $sql_falta .=  "UPDATE
@@ -364,20 +358,20 @@ function registra_faltas($ref_aluno, $diario_id, $num_faltas, $data_chamada, $pr
                   ref_pessoa = $ref_aluno AND
                   ref_disciplina_ofer = $diario_id;";
 
-	$sql_falta .= 'COMMIT;';
+    $sql_falta .= 'COMMIT;';
 
-  $conn->Execute($sql_falta);
+    $conn->Execute($sql_falta);
 
-  return TRUE;
+    return TRUE;
 
 }
 
 // VERIFICA O DIREITO DE ACESSO AO DIARIO COMO PROFESSOR OU COORDENADOR 
 function acessa_diario($diario_id,$sa_ref_pessoa) {
 
-	global $conn;
-   
-	$sql = 'SELECT 
+    global $conn;
+
+    $sql = 'SELECT
 				(
 					SELECT count(*) 
 							FROM coordenador 
@@ -389,47 +383,47 @@ function acessa_diario($diario_id,$sa_ref_pessoa) {
 							WHERE ref_disciplina_ofer = '. $diario_id .' AND
 								  ref_professor = '. $sa_ref_pessoa .'
 					) AS acesso;';						
-		
-	$acesso = $conn->get_one($sql);
-	
-	if($acesso > 0 && $acesso <= 2)
-		return TRUE;
-	else
-		return FALSE;
+
+    $acesso = $conn->get_one($sql);
+
+    if($acesso > 0 && $acesso <= 2)
+        return TRUE;
+    else
+        return FALSE;
 }
 
 // VERIFICA SE EXISTE CHAMADA
 function existe_chamada($diario_id,$data_chamada='') {
 
-	global $conn;
+    global $conn;
 
     $sql = "SELECT COUNT(*)
 	  FROM
       diario_seq_faltas
       WHERE
       ref_disciplina_ofer = ". $diario_id;
-    
+
     if (!empty($data_chamada)) {
-      $sql .= " AND  dia = '". $data_chamada ."';";
+        $sql .= " AND  dia = '". $data_chamada ."';";
     }
     else {
-      $sql .= ';';
+        $sql .= ';';
     }
 
     $chamadas = $conn->get_one($sql);
 
-	if($chamadas > 0)
-		return TRUE;
-	else
-		return FALSE;
+    if($chamadas > 0)
+        return TRUE;
+    else
+        return FALSE;
 }
 
 // VERIFICA SE EXISTE MATRICULAS NO DIARIO
 function existe_matricula($diario_id) {
 
-  global $conn;
+    global $conn;
 
-  $sql = 'SELECT
+    $sql = 'SELECT
 			COUNT(a.id)
 		FROM
 			matricula a
@@ -440,34 +434,34 @@ function existe_matricula($diario_id) {
         GROUP BY
             a.id;';
 
-  $matriculas = $conn->get_one($sql);
+    $matriculas = $conn->get_one($sql);
 
-  if($matriculas > 0)
-    return TRUE;
-  else
-    return FALSE;
+    if($matriculas > 0)
+        return TRUE;
+    else
+        return FALSE;
 }
 
 // GRAVA LOG NO BANCO DE DADOS
 function reg_log($pagina,$status) {
 
-  global $conn, $sa_usuario,$sa_senha;
+    global $conn, $sa_usuario,$sa_senha;
 
-  $ip = $_SERVER["REMOTE_ADDR"];
-  $sql_store = htmlspecialchars("$sa_usuario");
-  $sql_log = 'BEGIN; INSERT INTO diario_log (usuario, data, hora, ip_acesso, pagina_acesso, status, senha_acesso) VALUES ';
-  $sql_log .= '(\''.$sql_store.'\',\''. date("Y-m-d") .'\',\''. date("H:i:s") .'\','."'$ip','$pagina','$status','$sa_senha')";
+    $ip = $_SERVER["REMOTE_ADDR"];
+    $sql_store = htmlspecialchars("$sa_usuario");
+    $sql_log = 'BEGIN; INSERT INTO diario_log (usuario, data, hora, ip_acesso, pagina_acesso, status, senha_acesso) VALUES ';
+    $sql_log .= '(\''.$sql_store.'\',\''. date("Y-m-d") .'\',\''. date("H:i:s") .'\','."'$ip','$pagina','$status','$sa_senha')";
 
-  $conn->Execute($sql_log);
+    $conn->Execute($sql_log);
 
 }
 
 // VERIFICA O DIREITO DE ACESSO AO DADOS DO ALUNO PELO PROFESSOR OU COORDENADOR
 function acessa_ficha_aluno($aluno_id,$sa_ref_pessoa,$curso_id,$conexao=FALSE) {
 
-	global $conn;
+    global $conn;
 
-	$sql = 'SELECT
+    $sql = 'SELECT
 				(
 					SELECT count(*)
 							FROM contratos
@@ -499,17 +493,17 @@ function acessa_ficha_aluno($aluno_id,$sa_ref_pessoa,$curso_id,$conexao=FALSE) {
 					) AS acesso;';
 
     if ($conexao == TRUE) {
-      $rs = pg_query($conexao, $sql);
-      $acesso = pg_fetch_result($rs, 0, 0);
+        $rs = pg_query($conexao, $sql);
+        $acesso = pg_fetch_result($rs, 0, 0);
     }
     else {
-      $acesso = $conn->get_one($sql);
+        $acesso = $conn->get_one($sql);
     }
 
-	if($acesso > 0)
-		return TRUE;
-	else
-		return FALSE;
+    if($acesso > 0)
+        return TRUE;
+    else
+        return FALSE;
 }
 
 
