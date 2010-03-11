@@ -5,6 +5,7 @@ ob_start();
 
 ?>
 <link href="../../../public/styles/style.css" rel="stylesheet" type="text/css">
+<link href="../../../public/styles/relatorio_pdf.css" rel="stylesheet" type="text/css">
 <page backtop="10mm" backbottom="10mm" >
 	<page_header></page_header>
 	<page_footer>	
