@@ -43,44 +43,34 @@ $conn->Open();
 $conn->Begin();
 
 
-$sql = " insert into periodos (id," .
-       "                       descricao," .
-       "                       ref_anterior," .
-       "                       ref_cobranca," .
-       "                       ref_origem," .
-       "                       dt_inicial," .
-       "                       dt_final," .
-       "                       ref_local," .
-       "                       tx_dce_normal," .
-       "                       tx_dce_vest," .
-       "                       tx_acresc," .
-       "                       tx_cancel," .
-       "                       tx_banco," .
-       "                       ref_status_vest," .
-       "                       fl_livro_matricula," .
-       "                       media, " .
-       "                       media_final, " .
-       "                       dt_inicio_aula)" .
-       "  values (" .
-       "                       '$id'," .
-       "                       '$descricao'," .
-       "                       '$ref_anterior'," .
-       "                       '$ref_cobranca'," .
-       "                       '$ref_origem'," .
-       "                       '0'," .
-       "                       '$dt_inicial'," .
-       "                       '$dt_final'," .
-       "                       '$ref_local'," .
-       "                       '$tx_dce_normal'," .
-       "                       '$tx_dce_vest'," .
-       "                       '$tx_acresc'," .
-       "                       '$tx_cancel'," .
-       "                       '$tx_banco'," .
-       "                       '$ref_status_vest'," .
-       "                       '$fl_livro_matricula'," .
-       "                       '$media'," .
-       "                       '$media_final'," .
-       "                       '$dt_inicio_aula')";
+$sql = "
+INSERT INTO periodos (
+    id,
+    descricao,
+    ref_anterior,
+    dt_inicial,
+    dt_final,
+    ref_status_vest,
+    fl_livro_matricula,
+    media,
+    media_final,
+    dt_inicio_aula,
+    ref_historico,
+    ref_historico_dce
+) VALUES (
+    '$id',
+    '$descricao',
+    '$ref_anterior',
+    '$dt_inicial',
+    '$dt_final',
+    '$ref_status_vest',
+    '$fl_livro_matricula',
+    '$media',
+    '$media_final',
+    '$dt_inicio_aula',
+    '1',
+    '0'
+)";
 
 $ok = $conn->Execute($sql);
 
