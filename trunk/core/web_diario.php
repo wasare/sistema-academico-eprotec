@@ -14,44 +14,28 @@ $conn = new connection_factory($param_conn,FALSE);
 function papeleta_header($diario_id) {
     global $conn;
 
-    $sql9 = "SELECT DISTINCT
-          a.id || ' - ' || a.descricao as cdesc,
-          b.id || ' - ' || b.descricao_extenso || '  ' || '(' || d.id || ')' as descricao_extenso,
-          c.descricao as perdesc,
-          g.nome_campus,
-          d.ref_curso,
-          f.nome
-         FROM
-          cursos a LEFT OUTER JOIN disciplinas_ofer d ON (a.id = d.ref_curso) LEFT OUTER JOIN disciplinas b ON (d.ref_disciplina = b.id) LEFT OUTER JOIN periodos c ON (c.id = d.ref_periodo) LEFT OUTER JOIN disciplinas_ofer_prof e ON (e.ref_disciplina_ofer = d.id) LEFT OUTER JOIN pessoas f ON (e.ref_professor = f.id)  LEFT OUTER JOIN campus g ON (d.ref_campus =  g.id)
-        WHERE
-          d.id = $diario_id AND
-          d.is_cancelada = '0'
-        ORDER BY f.nome;";
+    $sql9 = "SELECT 
+      DISTINCT 
+          curso_disciplina_ofer(id) || ' - ' || curso_desc(curso_disciplina_ofer(id)) AS curso, get_campus(ref_campus) AS campus, descricao_periodo(ref_periodo), get_disciplina_de_disciplina_of(id) || ' - ' || descricao_disciplina(get_disciplina_de_disciplina_of(id)) || ' (' || id || ')' AS disciplina
+    FROM 
+      disciplinas_ofer
+   WHERE id = $diario_id AND is_cancelada = '0';";
 
-    $qry9 = $conn->get_all($sql9);
+    $diario_info = $conn->get_row($sql9);
 
-    $profs = count($qry9);
-
-    foreach( $qry9 as $linha9 ) {
-        $curso = $linha9["cdesc"];
-        $disciplina  = $linha9["descricao_extenso"];
-        $periodo   = $linha9["perdesc"];
-        $ref_curso   = $linha9["ref_curso"];
-        $prof[]   = $linha9["nome"];
-        $campus = $linha9['nome_campus'];
-    }
+    $profs = $conn->get_col("select pessoa_nome(ref_professor) from disciplinas_ofer_prof where ref_disciplina_ofer = $diario_id;");
 
     $ret = '';
     $ret .= '<input type="hidden" name="curso" id="curso" value="'. $ref_curso .'" />';
 
-    $ret = 'Curso: <b>'. $curso .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
-    $ret .= 'Disciplina: <b>'. $disciplina .'</b><br>';
-    $ret .= 'Per&iacute;odo: <b>'. $periodo .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
-    $ret .= 'Campus: <b>'. $campus .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
+    $ret = 'Curso: <b>'. $diario_info['curso'] .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
+    $ret .= 'Disciplina: <b>'. $diario_info['disciplina'] .'</b><br>';
+    $ret .= 'Per&iacute;odo: <b>'. $diario_info['descricao_periodo'] .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
+    $ret .= 'Campus: <b>'. $diario_info['campus'] .'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />';
     $ret .= 'Professor(a): ';
 
     $i = 1;
-    foreach($prof as $p) {
+    foreach($profs as $p) {
 
         $ret .= '<b>'. $p .'</b><br />';
 
