@@ -198,9 +198,9 @@ reload_pane = function(resposta) {
 
     if (pane.trim() == 'pane_diarios')
         thePane.load_page('pane_diarios');
-
-    if (pane.trim() == 'pane_coordenacao')
-        thePane.load_page('pane_coordenacao');
+   else
+		if (pane.trim() == 'pane_coordenacao')
+			thePane.load_page('pane_coordenacao');
 }
 
 reload_parent_pane = function(pane) {
@@ -208,14 +208,19 @@ reload_parent_pane = function(pane) {
 
     if (pane.trim() == 'pane_diarios') {
         thePane.load_page('pane_diarios');
-        $('pane_coordenacao').removeClassName('active');
+        
+        if ($('pane_coordenacao') != null) {
+			$('pane_coordenacao').removeClassName('active');
+		}
+
         $('pane_diarios').addClassName('active');
     }
-
-    if (pane.trim() == 'pane_coordenacao') {
-        thePane.load_page('pane_coordenacao');
-        $('pane_diarios').removeClassName('active');
-        $('pane_coordenacao').addClassName('active');
+    else {
+		if (pane.trim() == 'pane_coordenacao') {
+			thePane.load_page('pane_coordenacao');
+			$('pane_diarios').removeClassName('active');
+			$('pane_coordenacao').addClassName('active');
+		}
     }
 }
 
