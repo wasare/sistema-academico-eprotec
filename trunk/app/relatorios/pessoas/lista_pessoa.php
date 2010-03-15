@@ -13,9 +13,8 @@ $pessoa_id = (int) $_GET['pessoa_id'];
 if($pessoa_id == 0)
     exit('<script language="javascript" type="text/javascript">window.alert("ERRO! Aluno invalido!");</script>');
 
-
 $sql = '
-SELECT
+SELECT DISTINCT
     p.id,
     p.identificacao,
     p.titulo_academico,
@@ -37,7 +36,6 @@ SELECT
     p.obs,
     p.dt_nascimento,
     p.sexo,
-    p.credo,
     p.nome_fantasia,
     p.cod_inscricao_estadual,
     p.rg_numero,
@@ -70,36 +68,28 @@ SELECT
     p.senha,
     p.fl_dbfolha,
     p.ref_pessoa_folha,
-    p.fl_documentos,
-    p.fl_documentos_fora,
-    p.fl_quitacao_eleitoral,
-    p.fl_segurado,
     p.nome2,
     p.fl_cartao,
     p.deficiencia,
     p.cidade,
     p.nacionalidade,
-    p.in_sagu,
-    p.cod_externo,
     p.deficiencia_desc,
     p.dt_responsavel,
     p.rg_orgao,
     p.placa_carro,
     p.fl_dados_pessoais,
-    p.seguro_meses,
-    p.ra_cnec,
     p.tipo_sangue,
     f.pai_nome,
     f.mae_nome
-FROM 
-    pessoas p, cidade c1, cidade c2, cidade c3, pais n1, filiacao f
-WHERE 
-    p.id = ' . $pessoa_id . ' AND
-    p.ref_cidade = c1.id AND
-    p.rg_cidade  = c2.id AND
-    p.ref_nacionalidade = n1.id AND
-    p.ref_filiacao = f.id
-; ';
+FROM
+    pessoas p
+LEFT OUTER JOIN cidade c1 ON(p.ref_cidade = c1.id)
+LEFT OUTER JOIN cidade c2 ON(p.rg_cidade  = c2.id)
+LEFT OUTER JOIN cidade c3 ON(p.ref_naturalidade = c3.id)
+LEFT OUTER JOIN pais n1 ON(p.ref_nacionalidade = n1.id)
+LEFT OUTER JOIN filiacao f ON(p.ref_filiacao = f.id)
+WHERE
+    p.id = ' . $pessoa_id . ';';
 
 $pessoa = $conn->get_row($sql);
 
