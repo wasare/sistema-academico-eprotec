@@ -78,7 +78,7 @@ $corpo = '        Declaro para os devidos fins que '.$RsContrato->fields[3].
 ', filho(a) de '.$RsContrato->fields[7].' e '.$RsContrato->fields[8].
 ', nascido(a) em '.$data_nascimento[2].' de '.$mes_nascimento.' de '.
 $data_nascimento[0].', natural de '.$RsContrato->fields[4].'/'.$RsContrato->fields[5].
-', encontra-se devidamente matriculado(a) no curso '.$RsContrato->fields[2].
+', encontra-se devidamente matriculado(a) no '.$RsContrato->fields[2].
 ', neste estabelecimento de ensino.
           Por ser verdade e estar de acordo com nossos arquivos, assino a presente.';
 
