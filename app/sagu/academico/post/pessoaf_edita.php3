@@ -210,3 +210,7 @@ SuccessPage("Alteração de Alunos",
             "location='../consulta_inclui_pessoa.phtml'",
             "As informações de <b>$nome</b> foram atualizadas com sucesso.");
 ?>
+<div align="center">
+    <a href="../consulta_inclui_pessoa.phtml">Consultar pessoa</a> |
+    <a href="../pessoaf_inclui.phtml">Cadastrar nova pessoa</a>
+</div>
