@@ -240,3 +240,7 @@ SuccessPage("Inclusão de Alunos",
             "location='../consulta_inclui_pessoa.phtml'");
 
 ?>
+<div align="center">
+    <a href="../consulta_inclui_pessoa.phtml">Consultar pessoa</a> |
+    <a href="../pessoaf_inclui.phtml">Cadastrar nova pessoa</a>
+</div>
