@@ -122,10 +122,6 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                                    target="frame2">&Aacute;rea de ensino</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/academico/cadastro_salas.phtml" 
-                                                   target="frame2">Salas</a>
-                                            </li>
-                                            <li>
                                                 <a href="sagu/academico/carimbos.phtml" 
                                                    target="frame2">Carimbos</a>
                                             </li>
