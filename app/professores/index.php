@@ -14,16 +14,19 @@ $grid = new grid();
 $sql = '
 SELECT
     p.id as "Cód.",
-    p.nome as "Nome",
+    p.nome as "Nome", 
+    u.nome as "Usuário",
     to_char(o.dt_ingresso,\'DD/MM/YYYY\') as "Data de entrada",
     d.descricao as "Departamento"
     '. $grid->options('p.id', 'alterar.php') .'
 FROM
-    professores o, pessoas p, departamentos d
+    professores o LEFT OUTER JOIN usuario u
+    ON (u.ref_pessoa = o.ref_professor),
+    pessoas p, departamentos d
 WHERE
     o.ref_professor = p.id AND
     d.id = o.ref_departamento
-ORDER BY to_ascii(nome)';
+ORDER BY to_ascii(p.nome)';
 
 ?>
 <html>
