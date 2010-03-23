@@ -10,7 +10,7 @@ $acl = new acl();
 
 // @todo melhorar o retorno ao usuário usando um metódo de logout
 if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
-  exit('<script language="javascript" type="text/javascript">
+    exit('<script language="javascript" type="text/javascript">
             alert(\'Você não tem direito de acesso a estas informações!\');
             window.history.back(1);</script>');
 }
@@ -79,7 +79,7 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                          <?php
                                          if ($_SERVER['HTTP_HOST'] == 'dev.cefetbambui.edu.br' || $host != 'dados.cefetbambui.edu.br')
                                              echo '&nbsp;&nbsp;&nbsp;&nbsp;<strong>Servidor de BD: </strong>'. $host;
-                                    ?>
+                                         ?>
                                 </td>
                             </tr>
                         </table>
@@ -125,10 +125,16 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                                 <a href="sagu/academico/carimbos.phtml" 
                                                    target="frame2">Carimbos</a>
                                             </li>
+                                            <?php if($acl->has_access(dirname(__FILE__).'/usuarios/index.php', $conn)) : ?>
                                             <li>
                                                 <a href="usuarios/index.php"
                                                    target="frame2">Usu&aacute;rios do sistema</a>
                                             </li>
+                                            <?php else : ?>
+                                            <li>
+                                                <a style="color: gray;">Usu&aacute;rios do sistema</a>
+                                            </li>
+                                            <?php endif;?>
                                             <li>
                                                 <a href="papeis/index.php" 
                                                    target="frame2">Permiss&otilde;es</a>
@@ -181,8 +187,6 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                            target="frame2">Cola&ccedil;&atilde;o de grau</a>
                                     </li>
                                     <li>
-                                        <!-- <a href="sagu/academico/consulta_inclui_professores.phtml"
-                                           target="frame2">Professores</a> -->
                                         <a href="professores/index.php"
                                            target="frame2">Professores</a>
                                     </li>
