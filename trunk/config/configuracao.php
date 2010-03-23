@@ -8,11 +8,16 @@ date_default_timezone_set('America/Sao_Paulo');
 /**
  * Banco de dados
  */
+$host     = 'dados.cefetbambui.edu.br';
+$database = 'sa_migracao';
+$user     = 'usrsa_migracao';
+$password = '98aHyJshmxuAe53OIDKP';
+/*
 $host     = '192.168.0.234';
 $database = 'sa';
 $user     = 'usrsagu';
 $password = 'x6S8YzrJBs';
-
+*/
 /**
  * Variaveis de acesso a dados
  */
@@ -39,7 +44,7 @@ $DOC_TYPE       = '<meta http-equiv="Content-Type" content="text/html; charset=I
 /**
  * Variaveis do sistema
  */
-$BASE_URL       = 'http://'. $_SERVER['HTTP_HOST'] . '/desenvolvimento/santiago/sistema-academico/';
+$BASE_URL       = 'https://'. $_SERVER['HTTP_HOST'] . '/desenvolvimento/santiago/sistema-academico/';
 $BASE_DIR       = dirname(dirname(realpath(__FILE__))) .'/';
 $LOGIN_URL      = $BASE_URL .'index.php';
 $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';

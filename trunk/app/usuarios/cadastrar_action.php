@@ -1,8 +1,15 @@
 <?php
 
 require_once("../setup.php");
+require_once(dirname(__FILE__).'/../../core/login/acl.php');
 
 $conn = new connection_factory($param_conn);
+
+// Definindo as permissoes do usuario quanto ao arquivo
+$acl = new acl();
+if(!$acl->has_access(__FILE__, $conn)) {
+    exit ('Você não tem permissão para acessar este arquivo!');
+}
 
 $ref_pessoa = $_POST['ref_pessoa'];
 $ref_setor  = $_POST['setor'];
