@@ -23,7 +23,7 @@ require("../../app/setup.php");
                name="bt_voltar"
                class="botao"
                onclick="history.back(-1);return false;" />
-<br />
+        <br />
         <div class="panel" style="float: left;">
             <div class="box_menu_relatorio" style="float: left;">
                 <a href="aprovados_reprovados/pesquisa_aprovados_reprovados.php" title="Alunos aprovados/reprovados" target="_self">
@@ -78,24 +78,24 @@ require("../../app/setup.php");
                     <img src="../../public/images/icons/lupa.png" />&nbsp;Pessoas com matr&iacute;cula
                 </a>
             </div>
-          <div class="box_menu_relatorio" style="float: left; border: 0; padding-left: 5em;">
-            <form name="acessa_rapido" id="acesso_rapido" method="post" action="">
-              <fieldset style="padding-left: 2em; padding-right: 2em; padding-bottom: 2em">
-              <legend><strong><h3>Acesso R&aacute;pido</h3></strong></legend>
-              <fieldset>
-                <legend><strong>Informações Acad&ecirc;micas</strong></legend>
-                  Matr&iacute;cula:&nbsp;<input type="text" name="aluno_id" id="aluno_id" size="6" />
-                  <input type="button" name="envia_aluno" id="envia_aluno" value="OK" onclick="abrir('<?=$IEnome?>' + ' web diário', '<?=$BASE_URL?>' + 'app/relatorios/ficha_academica/informacoes_academicas.php?aluno=' + $F('aluno_id'));" />
-              </fieldset>
-              <br />
-              <fieldset>
-                <legend><strong>Consulta Diário</strong></legend>
-                C&oacute;digo:&nbsp;<input type="text" name="diario_id" id="diario_id" size="6" />
-                <input type="button" name="envia_diario" id="envia_diario" value="OK" onclick="abrir( '<?=$IEnome?>' + ' web diário', '<?=$BASE_URL?>' + 'app/web_diario/secretaria/lista_diarios_secretaria.php?diario_id=' + $F('diario_id'));" />
-              </fieldset>
-            </fieldset>
-            </form>
-          </div>
+            <div class="box_menu_relatorio" style="float: left; border: 0; padding-left: 5em;">
+                <form name="acessa_rapido" id="acesso_rapido" method="post" action="">
+                    <fieldset style="padding-left: 2em; padding-right: 2em; padding-bottom: 2em">
+                        <legend><strong><h3>Acesso R&aacute;pido</h3></strong></legend>
+                        <fieldset>
+                            <legend><strong>Informações Acad&ecirc;micas</strong></legend>
+                            Matr&iacute;cula:&nbsp;<input type="text" name="aluno_id" id="aluno_id" size="6" />
+                            <input type="button" name="envia_aluno" id="envia_aluno" value="OK" onclick="abrir('<?=$IEnome?>' + ' web diário', '<?=$BASE_URL?>' + 'app/relatorios/ficha_academica/informacoes_academicas.php?aluno=' + $F('aluno_id'));" />
+                        </fieldset>
+                        <br />
+                        <fieldset>
+                            <legend><strong>Consulta Diário</strong></legend>
+                            C&oacute;digo:&nbsp;<input type="text" name="diario_id" id="diario_id" size="6" />
+                            <input type="button" name="envia_diario" id="envia_diario" value="OK" onclick="abrir( '<?=$IEnome?>' + ' web diário', '<?=$BASE_URL?>' + 'app/web_diario/secretaria/lista_diarios_secretaria.php?diario_id=' + $F('diario_id'));" />
+                        </fieldset>
+                    </fieldset>
+                </form>
+            </div>
         </div>
     </body>
 </html>
