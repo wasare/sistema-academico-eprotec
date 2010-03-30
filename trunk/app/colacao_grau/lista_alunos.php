@@ -8,7 +8,7 @@ $id_periodo = $_POST['periodo1'];
 
 
 $Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 
 /* Nome do curso */
