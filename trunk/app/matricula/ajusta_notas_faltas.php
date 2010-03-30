@@ -7,7 +7,7 @@ require_once("../../app/setup.php");
 
 //-- Conectando com o PostgreSQL
 $Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 $cabecalho = '';
 
@@ -15,10 +15,10 @@ if ($_POST['btnOK'] == 10)
 {
 	//-- PARAMETROS
 	$aluno_id    = $_POST['aluno_id']; // matricula do aluno
-	$diarios  = explode("|", $_POST['diarios']); // diarios a ajustar quando for mais de um separá-los por um |
+	$diarios  = explode("|", $_POST['diarios']); // diarios a ajustar quando for mais de um separï¿½-los por um |
 
 	/* 
-		Exemplos de URLs para efetivação do ajuste de nota e/ou faltas
+		Exemplos de URLs para efetivaï¿½ï¿½o do ajuste de nota e/ou faltas
 
 		ajusta_notas_faltas.php?d=2483|2484|2485|2486|2487|2488&id=2735
 		ajusta_notas_faltas.php?d=2483&id=2735
@@ -33,7 +33,7 @@ if ($_POST['btnOK'] == 10)
 		// FIXME: migrar para conexao ADODB
 		if(($conn = pg_Pconnect("host=$host user=$user password=$password dbname=$database")) == false)
 		{
-			$error_msg = "Não foi possível estabeler conexão com o Banco: " . $database;
+			$error_msg = "Nï¿½o foi possï¿½vel estabeler conexï¿½o com o Banco: " . $database;
 		}
 		require_once('atualiza_diario_matricula.php');
 

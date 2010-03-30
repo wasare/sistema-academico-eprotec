@@ -8,7 +8,7 @@ require_once('../../core/situacao_academica.php');
 $Conexao = NewADOConnection("postgres");
 
 //Setando como conexao persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 
 function ListaPreRequisitos( $diario_id, $curso_id )
@@ -17,10 +17,10 @@ function ListaPreRequisitos( $diario_id, $curso_id )
   
     $disciplinas = " SELECT get_disciplina_de_disciplina_of('$diario_id') ";
 
-    // se é uma disciplina equivalente pesquisa os pré-requisitos da disciplina "original" da matriz curricular
+    // se ï¿½ uma disciplina equivalente pesquisa os prï¿½-requisitos da disciplina "original" da matriz curricular
     if (verificaEquivalencia($curso_id,$diario_id))
     {
-        // a disciplina é equivalente, recupera a disciplina "original" da matriz curricular
+        // a disciplina ï¿½ equivalente, recupera a disciplina "original" da matriz curricular
         $sqlEquivalente = "
                     SELECT 
                           DISTINCT 
@@ -96,8 +96,8 @@ function ListaPreRequisitos( $diario_id, $curso_id )
 
         echo ("<tr bgcolor=\"#000000\">\n");
         echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cont</b></font></td>");
-        echo ("<td width=\"28%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cód - Disciplina</b></font></td>");
-        echo ("<td width=\"28%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cód - Disciplina Pré-requisito</b></font></td>");
+        echo ("<td width=\"28%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cï¿½d - Disciplina</b></font></td>");
+        echo ("<td width=\"28%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cï¿½d - Disciplina Prï¿½-requisito</b></font></td>");
         echo ("<td width=\"34%\" align=\"right\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Curso&nbsp;&nbsp;</b></font></td>");
         echo ("</tr>"); 
 
