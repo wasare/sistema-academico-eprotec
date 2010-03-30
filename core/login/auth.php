@@ -12,36 +12,36 @@
  */
 class auth {
 
-	protected $redirect_url, $base_url, $sess_table, $log_file;
+    protected $redirect_url, $base_url, $sess_table, $log_file;
 
-	function __construct($base_url,$log_file='login.log',$sess_table='sessao') {
+    function __construct($base_url,$log_file='login.log',$sess_table='sessao') {
 
         $this->base_url = $base_url;
         $this->sess_table = $sess_table;
 
         // TODO: melhorar tratamento de logs
         $this->log_file = $log_file;
-  
-        $this->redirect_url = $base_url;        
-	}
+
+        $this->redirect_url = $base_url;
+    }
 
 
-	/**
-	* Efetua a autenticação do usuário em um módulo do SA
-	* @param Login
-	* @param Senha
-	* @param Módulo que vai acessar no SA
-	* @param conexao com banco de dados
-	* @return boolean
-	*/
+    /**
+     * Efetua a autenticação do usuário em um módulo do SA
+     * @param Login
+     * @param Senha
+     * @param Módulo que vai acessar no SA
+     * @param conexao com banco de dados
+     * @return boolean
+     */
     public function login($login, $senha, $modulo, $conn) {
-        
+
         $ret = FALSE;
-        
+
         $log_msg = $_SERVER['REMOTE_ADDR'] .' - ['. date("d/m/Y H:i:s") .'] - ';
 
         if(empty($login) || empty($senha)) {
-            exit(header('Location: '. $this->base_url .'index.php?sa_msg=Nome de usuário e senha não preenchidos.'));
+            exit(header('Location: '. $this->base_url .'app/login/index.php?sa_msg=Nome de usuário e senha não preenchidos.'));
         }
         else {
 
@@ -53,7 +53,7 @@ class auth {
 
             $usuario = $GLOBALS['ADODB_SESS_CONN']->getAll($sql);
 
-       	    // retorna o primeiro valor da consulta
+            // retorna o primeiro valor da consulta
             if(count($usuario) == 1) {
 
                 list($usuario) = $usuario;
@@ -75,10 +75,10 @@ class auth {
                 error_log($log_msg,3,$this->log_file);
 
                 $this->reg_log('LOGIN ACEITO');
-                
+
                 $ret = TRUE;
-              }
-              else {
+            }
+            else {
                 $log_msg .=  $login .' - *** LOGIN RECUSADO ***'."\n";
 
                 error_log($log_msg,3,$this->log_file);
@@ -98,18 +98,18 @@ class auth {
      * @return void
      */
     public function check_login($sessao) {
-      
+
         $sessao->resume();
-        
+
         list($sa_usuario,$sa_senha,$sa_usuario_id,$sa_ref_pessoa) = explode(":",$_SESSION['sa_auth']);
         $sa_modulo = $_SESSION['sa_modulo'];
 
         if($sa_modulo == 'aluno_login') {
-			// Redirecionamento de alunos
+            // Redirecionamento de alunos
             $redirecionamento = '';
         }
-        else {            
-            $redirecionamento = $this->redirect_url .'index.php?sa_msg=';
+        else {
+            $redirecionamento = $this->redirect_url .'app/login/index.php?sa_msg=';
         }
 
         if(!isset($_SESSION['sa_auth']) || empty($_SESSION['sa_auth'])) {
@@ -123,10 +123,10 @@ class auth {
                     FROM $this->sess_table
                     WHERE expireref = '". $sa_usuario ."';";
 
-            $cont_sess = $GLOBALS['ADODB_SESS_CONN']->getOne($sql);            
-            
+            $cont_sess = $GLOBALS['ADODB_SESS_CONN']->getOne($sql);
+
             if($cont_sess > 1) {
-                
+
                 $sessao->clear_session($sa_usuario, NULL);
                 $sessao->destroy();
 
@@ -145,7 +145,7 @@ class auth {
                 $_SESSION['sa_auth'] = $sa_usuario .':'. $sa_senha .':'. $sa_usuario_id .':'. $sa_ref_pessoa;
                 //$_SESSION['sa_modulo'] = $sa_modulo;
             }
-            else {               
+            else {
                 $sessao->clear_session($sa_usuario, NULL);
                 $sessao->destroy();
 
@@ -164,25 +164,25 @@ class auth {
      */
     public function reg_log($status, $pagina='', $usuario='', $modulo='') {
 
-      list($sa_usuario,$sa_senha,$sa_usuario_id,$sa_ref_pessoa) = explode(":",$_SESSION['sa_auth']);
+        list($sa_usuario,$sa_senha,$sa_usuario_id,$sa_ref_pessoa) = explode(":",$_SESSION['sa_auth']);
 
-      $pagina = empty ($pagina) ? $_SERVER['PHP_SELF'] : $pagina;
-      $usuario = empty($usuario) ? $sa_usuario : $usuario;
-      $modulo = empty($modulo) ? $_SESSION['sa_modulo'] : $modulo;      
-      $sa_senha = empty($sa_senha) ? '-' : $sa_senha;
+        $pagina = empty ($pagina) ? $_SERVER['PHP_SELF'] : $pagina;
+        $usuario = empty($usuario) ? $sa_usuario : $usuario;
+        $modulo = empty($modulo) ? $_SESSION['sa_modulo'] : $modulo;
+        $sa_senha = empty($sa_senha) ? '-' : $sa_senha;
 
-      if ($modulo == 'web_diario_login') {
-        
-        $ip = $_SERVER["REMOTE_ADDR"];
-        $sql_store = htmlspecialchars("$usuario");
-        $sql_log = 'INSERT INTO diario_log (usuario, data, hora, ip_acesso, pagina_acesso, status, senha_acesso) VALUES ';
-        $sql_log .= '(\''.$sql_store.'\',\''. date("Y-m-d") .'\',\''. date("H:i:s") .'\','."'$ip','$pagina','$status','$sa_senha');";
+        if ($modulo == 'web_diario_login') {
 
-        if (isset($GLOBALS['ADODB_SESS_CONN']))
-              $GLOBALS['ADODB_SESS_CONN']->Execute($sql_log);
-      }
+            $ip = $_SERVER["REMOTE_ADDR"];
+            $sql_store = htmlspecialchars("$usuario");
+            $sql_log = 'INSERT INTO diario_log (usuario, data, hora, ip_acesso, pagina_acesso, status, senha_acesso) VALUES ';
+            $sql_log .= '(\''.$sql_store.'\',\''. date("Y-m-d") .'\',\''. date("H:i:s") .'\','."'$ip','$pagina','$status','$sa_senha');";
+
+            if (isset($GLOBALS['ADODB_SESS_CONN']))
+                $GLOBALS['ADODB_SESS_CONN']->Execute($sql_log);
+        }
     }
-	/**
+    /**
      * Configura a URL raiz do sistema
      * @return void
      */
@@ -191,21 +191,21 @@ class auth {
     }
 
 
-	/**
+    /**
      * Configura a URL de redirecionamento
      * @return void
      */
     public function redirect_url($url) {
-		$this->redirect_url = $url;
-	}
+        $this->redirect_url = $url;
+    }
 
     /**
      * Configura o caminho para o arquivo de log
      * @return void
      */
     public function log_file($path) {
-		$this->log_file = $path;
-	}
+        $this->log_file = $path;
+    }
 }
 
 ?>
