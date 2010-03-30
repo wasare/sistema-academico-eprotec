@@ -51,7 +51,7 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                             <tr>
                                 <td width="50" valign="middle">
                                     <a href="index.php">
-                                        <img src="../public/images/icon_sa.gif" 
+                                        <img src="../public/images/icon_sa.gif"
                                              alt="Principal"
                                              width="40"
                                              height="34" />
@@ -67,11 +67,11 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                 </td>
                                 <td valign="middle">&nbsp;
                                     <a href="<?=$IEurl?>" target="_blank">
-                                        <img src="../public/images/ifmg.jpg" 
+                                        <img src="../public/images/ifmg.jpg"
                                              alt="IFMG - Campus Bambu&iacute;"
                                              title="IFMG - Campus Bambu&iacute;" />
                                     </a>&nbsp;&nbsp;
-                                    <img src="../public/images/gti.jpg" 
+                                    <img src="../public/images/gti.jpg"
                                          alt="Ger&ecirc;ncia TI"
                                          title="Ger&ecirc;ncia de TI"
                                          width="50"
@@ -88,7 +88,7 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                 <tr>
                     <td width="23" class="menu">
                         <a href="index.php">
-                            <img src="../public/images/home_icon.gif" 
+                            <img src="../public/images/home_icon.gif"
                                  alt="P&aacute;gina inicial"
                                  title="P&aacute;gina inicial" />
                         </a>
@@ -110,19 +110,19 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                         <a href="#" class="MenuBarItemSubmenu">Configura&ccedil;&otilde;es</a>
                                         <ul>
                                             <li>
-                                                <a href="sagu/academico/consulta_periodos.phtml" 	
+                                                <a href="sagu/academico/consulta_periodos.phtml"
                                                    target="frame2">Per&iacute;odos</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/academico/consulta_inclui_departamentos.phtml" 
+                                                <a href="sagu/academico/consulta_inclui_departamentos.phtml"
                                                    target="frame2">Departamentos</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/academico/areas_ensino.phtml" 
+                                                <a href="sagu/academico/areas_ensino.phtml"
                                                    target="frame2">&Aacute;rea de ensino</a>
                                             </li>
                                             <li>
-                                                <a href="sagu/academico/carimbos.phtml" 
+                                                <a href="sagu/academico/carimbos.phtml"
                                                    target="frame2">Carimbos</a>
                                             </li>
                                             <?php if($acl->has_access(dirname(__FILE__).'/usuarios/index.php', $conn)) : ?>
@@ -136,7 +136,7 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                             </li>
                                             <?php endif;?>
                                             <li>
-                                                <a href="papeis/index.php" 
+                                                <a href="papeis/index.php"
                                                    target="frame2">Permiss&otilde;es</a>
                                             </li>
                                         </ul>
@@ -175,15 +175,15 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_inclui_pessoa.phtml" 
+                                        <a href="sagu/academico/consulta_inclui_pessoa.phtml"
                                            target="frame2">Pessoas F&iacute;sicas</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_inclui_contratos.phtml" 
+                                        <a href="sagu/academico/consulta_inclui_contratos.phtml"
                                            target="frame2">Contratos</a>
                                     </li>
                                     <li>
-                                        <a href="colacao_grau/index.php" 
+                                        <a href="colacao_grau/index.php"
                                            target="frame2">Cola&ccedil;&atilde;o de grau</a>
                                     </li>
                                     <li>
@@ -191,7 +191,7 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                            target="frame2">Professores</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/coordenadores.phtml" 
+                                        <a href="sagu/academico/coordenadores.phtml"
                                            target="frame2">Coordenadores</a>
                                     </li>
                                     <li>
@@ -219,19 +219,19 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                         <a href="sagu/academico/consulta_cursos.phtml" target="frame2">Cursos</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_disciplinas.phtml" 
+                                        <a href="sagu/academico/consulta_disciplinas.phtml"
                                            target="frame2">Disciplinas</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_inclui_cursos_disciplinas.phtml" 
+                                        <a href="sagu/academico/consulta_inclui_cursos_disciplinas.phtml"
                                            target="frame2">Cursos / Disciplinas</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_inclui_pre_requisito.phtml" 
+                                        <a href="sagu/academico/consulta_inclui_pre_requisito.phtml"
                                            target="frame2">Pr&eacute;-requisitos</a>
                                     </li>
                                     <li>
-                                        <a href="sagu/academico/consulta_disciplinas_equivalentes.phtml" 
+                                        <a href="sagu/academico/consulta_disciplinas_equivalentes.phtml"
                                            target="frame2">Disciplinas Equivalentes</a>
                                     </li>
                                 </ul>
@@ -243,15 +243,15 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                            target="frame2">Disciplinas Oferecidas</a>
                                     </li>
                                     <li>
-                                        <a href="matricula/matricula_aluno.php" 
+                                        <a href="matricula/matricula_aluno.php"
                                            target="frame2">Matr&iacute;cula</a>
                                     </li>
                                     <li>
-                                        <a href="dispensa_disciplina/dispensa_aluno.php" 
+                                        <a href="dispensa_disciplina/dispensa_aluno.php"
                                            target="frame2">Dispensa de Disciplina</a>
                                     </li>
                                     <li>
-                                        <a href="matricula/remover_matricula/filtro.php" 
+                                        <a href="matricula/remover_matricula/filtro.php"
                                            target="frame2">Excluir Matr&iacute;cula</a>
                                     </li>
                                     <li>
@@ -261,7 +261,7 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                 </ul>
                             </li>
                             <li>
-                                <a href="relatorios/menu.php" 
+                                <a href="relatorios/menu.php"
                                    title="relatorios"
                                    target="frame2">Relat&oacute;rios</a>
                             </li>
@@ -272,15 +272,15 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                     </td>
                     <td width="193" class="menu">
                         <span class="texto1">
-                            <img src="../public/images/icons/bola_verde.gif" width="10" height="10" /> 
+                            <img src="../public/images/icons/bola_verde.gif" width="10" height="10" />
                             <strong><?=$sa_usuario?></strong>&nbsp;&nbsp;
-                        </span> 
+                        </span>
                         <a href="usuarios/alterar_senha.php" target="frame2">Alterar senha</a>
                     </td>
                 </tr>
             </table>
 
-            <iframe id='frame2' 
+            <iframe id='frame2'
                     name='frame2'
                     src='diagrama.php'
                     onload='iframeAutoHeight(this)'

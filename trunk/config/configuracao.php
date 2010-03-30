@@ -8,10 +8,10 @@ date_default_timezone_set('America/Sao_Paulo');
 /**
  * Banco de dados
  */
-$host     = 'dados.cefetbambui.edu.br';
-$database = 'sa_migracao';
-$user     = 'usrsa_migracao';
-$password = '98aHyJshmxuAe53OIDKP';
+$host     = '192.168.0.234';
+$database = 'sistema_academico';
+$user     = 'usrsa';
+$password = 'TuiML9lnEjaAoNzKwt6Y';
 /*
 $host     = '192.168.0.234';
 $database = 'sa';
