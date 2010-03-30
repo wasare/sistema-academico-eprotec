@@ -11,11 +11,11 @@ header("Cache-Control: no-cache");
 require_once('../../app/setup.php');
 
 
-//Criando a classe de conexão
+//Criando a classe de conexï¿½o
 $Conexao = NewADOConnection("postgres");
 
-//Setando como conexão persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+//Setando como conexï¿½o persistente
+$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 //EXECUTANDO SQL COM ADODB
 $Result1 = $Conexao->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
@@ -96,7 +96,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
                     }
                 }
 
-                alert(code + ' não é um código válido!');
+                alert(code + ' nï¿½o ï¿½ um cï¿½digo vï¿½lido!');
                 field.focus();
                 return true;
             }
