@@ -83,12 +83,9 @@ $sql = "select " .
        "    B.solteiro_emancipado, " .
        "    C.ref_estado AS cidade_uf, " .
        "    D.ref_estado AS naturalidade_uf " .
-       " from pessoas A, documentos B, cidade C, cidade D " .
-       " where A.id = B.ref_pessoa and " .
-       "       A.id = '$id' and " .
-       "       A.ref_cidade = C.id and " .
-       "       A.ref_naturalidade = D.id and " .
-       "       B.ref_pessoa= '$id'";
+       " from pessoas A LEFT OUTER JOIN documentos B ON (A.id = B.ref_pessoa) LEFT OUTER JOIN cidade C ON (A.ref_cidade = C.id) LEFT OUTER JOIN cidade D ON (A.ref_naturalidade = D.id)" .
+       " where " .
+       "       A.id = '$id' ";
 
 //echo $sql; die;
 
