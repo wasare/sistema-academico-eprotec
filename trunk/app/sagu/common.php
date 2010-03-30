@@ -6,6 +6,7 @@ $LoginHost   = $host; //  nome do host ;
 $LoginDB     = $database; // nome do banco;
 $LoginUID    = $user;
 $LoginPWD    = $password;
+$LoginPort   = $port;
 
 $ErrorURL   	  = $BASE_DIR . 'app/sagu/fatalerror.php';
 $SuccessURL 	  = $BASE_DIR . 'app/sagu/modelos/modelo_exito.phtml';
@@ -15,7 +16,7 @@ $SQL_LogFile 	  = $BASE_DIR .'app/sagu/logs/sql.log';
 
 /**
  * LOG DO SISTEMA
- * 1 para gravar os comandos SQL no arquivo $SLQLogFile, 0 para n¿o fazer
+ * 1 para gravar os comandos SQL no arquivo $SLQLogFile, 0 para nï¿½o fazer
  */
 $SQL_Debug   = 1;
 
@@ -125,10 +126,10 @@ class Connection {
 	// opens a connection to the specified data source
 	function Open($no_SaguAssert=false)
 	{
-		global $LoginUID,$LoginPWD,$LoginDB,$LoginHost;
+		global $LoginUID,$LoginPWD,$LoginDB,$LoginHost, $LoginPort;
 
 
-		$arg = "host=$LoginHost dbname=$LoginDB port=5432 user=$LoginUID password=$LoginPWD";
+		$arg = "host=$LoginHost dbname=$LoginDB port=$LoginPort user=$LoginUID password=$LoginPWD";
 		$this->id = @pg_Connect($arg);
 		$this->level = 0;
 
@@ -250,7 +251,7 @@ class Connection {
 
 
 /**
- * Use esta função para pré-visualizar um comando sq
+ * Use esta funï¿½ï¿½o para prï¿½-visualizar um comando sq
  */
 
 function LogSQL($sql,$force=false){
@@ -426,12 +427,12 @@ function CheckInputValue($name,$cond,$hint=""){
 
 	if ( !$cond )
 	{
-		$msg = "Valor informado para o campo <b><i>$name</b></i> é inválido.";
+		$msg = "Valor informado para o campo <b><i>$name</b></i> ï¿½ invï¿½lido.";
 
 		if ( $hint != "" )
-		$msg .= "<br><br><b>Restrição:</b> " . $hint;
+		$msg .= "<br><br><b>Restriï¿½ï¿½o:</b> " . $hint;
 
-		FatalExit("Erro de Digitação!",$msg);
+		FatalExit("Erro de Digitaï¿½ï¿½o!",$msg);
 	}
 }
 
@@ -471,9 +472,9 @@ function CheckFormParameters($list,$href=""){
 		
 		if (!is_numeric($value) AND empty($value))
 		{
-			$msg = "Campo obrigatório [<b><i>$name</i></b>] não informado!";
+			$msg = "Campo obrigatï¿½rio [<b><i>$name</i></b>] nï¿½o informado!";
 
-			FatalExit("Erro de Digitação!",$msg,$href);
+			FatalExit("Erro de Digitaï¿½ï¿½o!",$msg,$href);
 		}
 	}
 }
@@ -569,7 +570,7 @@ function MDA_To_DMA($dt){
 
 
 /**
- * Purpose: Obter ID de uma seqüencia
+ * Purpose: Obter ID de uma seqï¿½encia
  */
 
 function GetIdentity($seq,$SaguAssert=true,$msg=""){
@@ -590,7 +591,7 @@ function GetIdentity($seq,$SaguAssert=true,$msg=""){
 
 	$err = $conn->GetError();
 	$query->Close();
-	SaguAssert(!$SaguAssert || $success,$msg ? $msg : "Nao foi possivel obter um código de '$seq'<br><br>$err!");
+	SaguAssert(!$SaguAssert || $success,$msg ? $msg : "Nao foi possivel obter um cï¿½digo de '$seq'<br><br>$err!");
 
 	return $id;
 }
