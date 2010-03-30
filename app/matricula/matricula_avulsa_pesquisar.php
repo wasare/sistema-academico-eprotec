@@ -14,7 +14,7 @@ require_once("../../app/setup.php");
 $Conexao = NewADOConnection("postgres");
 
 //Setando como conexao persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 
 /**
@@ -100,7 +100,7 @@ if($_POST)
                 <input type="submit" value="Pesquisar" />
             </form>
         </div>
-        <font color="red">Caso o resultado n&atilde;o apareça seja mais espec&iacute;fico!</font>
+        <font color="red">Caso o resultado n&atilde;o apareï¿½a seja mais espec&iacute;fico!</font>
         <?php
         echo $tbl_diarios;
         ?>

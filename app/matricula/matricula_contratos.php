@@ -23,7 +23,7 @@ if($id_pessoa != ''){
 
 
 	$Conexao = NewADOConnection("postgres");
-	$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+	$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 	$RsContrato = $Conexao->Execute($sql);
 

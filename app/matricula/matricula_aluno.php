@@ -13,11 +13,11 @@ header("Cache-Control: no-cache");
 require_once("../../app/setup.php");
 
 
-//Criando a classe de conexão
+//Criando a classe de conexï¿½o
 $Conexao = NewADOConnection("postgres");
 
-//Setando como conexão persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+//Setando como conexï¿½o persistente
+$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 //EXECUTANDO SQL COM ADODB
 $Result1 = $Conexao->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
@@ -91,7 +91,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
                     }
                 }
 
-                alert(code + ' não é um código válido!');
+                alert(code + ' nï¿½o ï¿½ um cï¿½digo vï¿½lido!');
                 field.focus();
                 return true;
             }
@@ -109,7 +109,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
         <form method="post" name="form1">
 
             <div align="center" style="height:600px;">
-                <h1>Processo de Matrícula</h1>
+                <h1>Processo de Matrï¿½cula</h1>
                 <h4>Identifica&ccedil;&atilde;o do Per&iacute;odo e do Aluno: Etapa 1/2</h4>
 
                 <div class="panel">
