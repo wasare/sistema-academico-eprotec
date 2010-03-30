@@ -22,7 +22,7 @@ $ref_campus = $_POST['ref_campus'];
 $Conexao = NewADOConnection("postgres");
 
 //Setando como conexao persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 $sa_periodo_id = $_POST['periodo_id'];
 //$first = $_POST['first'];

@@ -16,7 +16,7 @@ require_once('dispensa_valida.php');
 
 //-- Conectando com o PostgreSQL
 $Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 
 // Array ( [dispensa_tipo] => 4 [ref_liberacao_ed_fisica] => 1 ) 

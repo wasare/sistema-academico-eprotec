@@ -15,7 +15,7 @@ require_once('../../app/setup.php');
 $Conexao = NewADOConnection("postgres");
 
 //Setando como conexao persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 /**
  * @var string 
