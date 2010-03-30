@@ -12,6 +12,7 @@ $host     = '192.168.0.234';
 $database = 'sistema_academico';
 $user     = 'usrsa';
 $password = 'TuiML9lnEjaAoNzKwt6Y';
+$port = 5432;
 /*
 $host     = '192.168.0.234';
 $database = 'sa';
@@ -25,7 +26,7 @@ $param_conn['host']     = $host;
 $param_conn['database'] = $database;
 $param_conn['user']     = $user;
 $param_conn['password'] = $password;
-$param_conn['port']     = '5432';
+$param_conn['port']     = $port;
 
 /**
  * Variaveis de acesso a dados - Modulo do aluno
