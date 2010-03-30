@@ -13,12 +13,7 @@ $database = 'sistema_academico';
 $user     = 'usrsa';
 $password = 'TuiML9lnEjaAoNzKwt6Y';
 $port = 5432;
-/*
-$host     = '192.168.0.234';
-$database = 'sa';
-$user     = 'usrsagu';
-$password = 'x6S8YzrJBs';
-*/
+
 /**
  * Variaveis de acesso a dados
  */
@@ -35,7 +30,7 @@ $param_conn_aluno['host']     = $param_conn['host'];
 $param_conn_aluno['database'] = $param_conn['database'];
 $param_conn_aluno['user']     = 'aluno';
 $param_conn_aluno['password'] = '@1srv27';
-$param_conn_aluno['port']     = '';
+$param_conn_aluno['port']     = $port;
 
 /**
  * HTML Padrao
@@ -45,7 +40,7 @@ $DOC_TYPE       = '<meta http-equiv="Content-Type" content="text/html; charset=I
 /**
  * Variaveis do sistema
  */
-$BASE_URL       = 'https://'. $_SERVER['HTTP_HOST'] . '/desenvolvimento/santiago/sistema-academico/';
+$BASE_URL       = 'https://'. $_SERVER['HTTP_HOST'] . '/desenvolvimento/wanderson/producao/sistema-academico/';
 $BASE_DIR       = dirname(dirname(realpath(__FILE__))) .'/';
 $LOGIN_URL      = $BASE_URL .'index.php';
 $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';

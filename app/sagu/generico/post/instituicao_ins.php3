@@ -30,19 +30,21 @@ $query->Close();
 
 SaguAssert($success,"Nao foi possivel obter um numero de motivo!");
 
+
 $sql = " insert into instituicoes (" .
        "                               id," .
        "                               nome," .
-       "                               sucinto, " . 
-       "                               nome_atual) " . 
-       " values (" .
+       "                               sucinto, " .
+       "                               nome_atual) " .
+       " values ( $1, $2, $3, $4 )";
+/* .
        "                               '$id'," .
        "                               '$nome'," .
        "                               '$sucinto', " .
        "                               '$nome_atual') ";
-	      
+*/
 
-$ok = $conn->Execute($sql);
+$ok = pg_query_params($conn->id, $sql, array("$id", "$nome", "$sucinto", "$nome_atual"));
 
 $conn->Finish();
 $conn->Close();
