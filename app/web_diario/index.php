@@ -110,10 +110,10 @@ $class_diarios = ($is_professor) ? ' class="active"' : '';
        <img src="<?=$BASE_URL .'public/images/gti.jpg'?>" alt="Ger&ecirc;ncia TI" title="Ger&ecirc;ncia de TI" width="50" height="34" border="0" />
      </td>
         <?php
-              if ($_SERVER['HTTP_HOST'] == 'dev.cefetbambui.edu.brr' || $host != '192.168.0.234' && $host != 'localhost') {
-              echo '<td>';
-               echo '&nbsp;&nbsp;&nbsp;&nbsp;<strong>Servidor de BD: </strong>'. $host;
-               echo '</td>';
+              if ($host != 'dados.cefetbambui.edu.br') {
+				echo '<td>';
+				echo '&nbsp;&nbsp;&nbsp;&nbsp;<strong>Servidor de BD: </strong>'. $host;
+				echo '</td>';
             }
         ?>
 
