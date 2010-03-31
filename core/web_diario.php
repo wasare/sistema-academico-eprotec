@@ -177,7 +177,7 @@ function ini_diario($ofer) {
                  o.id = prof.ref_disciplina_ofer ;";
 
 
-    $diario_info = $conn->adodb->getAll($qryDisc);
+    $diario_info = $conn->get_all($qryDisc);
 
     if($diario_info === FALSE) {
 
