@@ -221,14 +221,25 @@ function validate_nota(field) {
 	<input type="hidden" name="operacao" id="operacao" value="<?=$operacao?>">
 
 <?php
-	if($prova != 7) :
+		if($prova != 7) :
 ?>
-	<p><strong>Nota distribu&iacute;da:</strong>
-      <input name="valor_avaliacao" type="text" id="valor_avaliacao" size="5" maxlength="4" value="<?=$nota_distribuida?>" tabindex="1" />&nbsp;
-      <span class="obrigatorio">* obrigatória</span>
-	</p>
-<?php else: ?>
-  <input name="valor_avaliacao" type="hidden" id="valor_avaliacao" size="5" maxlength="4" value="100" />
+			<p><strong>Nota distribu&iacute;da:</strong>
+			<input name="valor_avaliacao" type="text" id="valor_avaliacao" size="5" maxlength="4" value="<?=$nota_distribuida?>" tabindex="1" />&nbsp;
+			<span class="obrigatorio">* obrigatória</span>
+			</p>
+<?php	else : ?>
+			<p>
+            <font color="green"><strong>
+<?php 
+			$curso_tipo = get_curso_tipo($diario_id);
+			// TODO: Selecionar método de cálculo da nota final com base em parâmetros do sistema
+			if( $curso_tipo == 2 || $curso_tipo == 4 || $curso_tipo == 5 || $curso_tipo == 6 || $curso_tipo == 10 ) : ?>
+				Nota Final ser&aacute; igual  (Nota Anterior + Nota Extra) / 2		
+<?php		else : ?>
+				Nota Final ser&aacute; igual Nota Extra 
+<?php		endif; ?>
+			</strong></font></p>
+			<input name="valor_avaliacao" type="hidden" id="valor_avaliacao" size="5" maxlength="4" value="100" />
 <?php endif; ?>
 <br />
 <table cellspacing="0" cellpadding="0" class="papeleta">

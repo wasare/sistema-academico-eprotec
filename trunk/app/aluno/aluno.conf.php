@@ -4,6 +4,7 @@ require_once(dirname(__FILE__) .'/../../config/configuracao.php');
 require_once($BASE_DIR .'core/data/connection_factory.php');
 require_once($BASE_DIR .'core/login/session.php');
 require_once($BASE_DIR .'core/date.php');
+require_once($BASE_DIR .'core/number.php');
 
 // Inicia a sessao
 $sessao = new session($param_conn);
