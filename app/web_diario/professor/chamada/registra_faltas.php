@@ -40,25 +40,14 @@ else
 
 $alunos_faltas = (isset($_POST['faltas'])) ? $_POST['faltas'] : '';
 
-if(!isset($_POST['data_chamada']) || empty($_POST['data_chamada'])) {
 
-  if(empty($_POST['select_dia']))
-    die('<font size=2><b>Voc&ecirc; n&atilde;o selecionou o DIA ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>');
-  else
-    $select_dia = $_POST['select_dia'];
+/*
+    Recebe a data
+*/
 
-  if(empty($_POST['select_mes']))
-    die('<font size=2><b>Voc&ecir;  n&atilde;o selecionou o M&Ecirc;S ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>');
-  else
-    $select_mes = $_POST['select_mes'];
+$data_chamada = $_POST['data'];
 
-  if(empty($_POST['select_ano']))
-    die('<font size=2><b>Voc&ecirc; n&atilde;o selecionou o ANO ! <a href"javascript:history.go(-1);">Voltar</a>!</b></font>');
-  else
-    $select_ano = $_POST['select_ano'];
-}
-else
-  $data_chamada = $_POST['data_chamada'];
+
 
 
 // VERIFICA SE NAO EXISTE CHAMADA NESTA DATA

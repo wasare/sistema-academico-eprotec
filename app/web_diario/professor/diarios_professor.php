@@ -75,9 +75,10 @@ $sql3 = 'SELECT DISTINCT
 
    if(count($diarios) == 0)
    {
-        exit('<script language="javascript">
+        /*exit('<script language="javascript">
                 window.alert("Nenhum diário encontrado para o filtro selecionado!");
-        </script>');
+        </script>');*/
+        $nenhum_diario = "Nenhum di&aacute;rio encontrado para o filtro selecionado.";
    }
 
 
@@ -126,8 +127,13 @@ $periodos = $conn->get_all($qry_periodos);
 <br />
 </div>
 <!-- panel para alteracao dos periodos do professor \\ fim \\ -->
-
 <br />
+<?php if (isset($nenhum_diario)) : ?>
+
+ <h4><?=$nenhum_diario?></h4>
+ <br />
+<?php else : ?>
+
 <h4>Clique em "Acessar" para exibir as op&ccedil;&otilde;es do di&aacute;rio:</h4>
 <br />
 <form id="lista_diarios" name="lista_diarios" method="get" action="professor/diarios_professor.php">
@@ -233,6 +239,8 @@ foreach($diarios as $row3) :
 <br /><br />
 <br /><br />
 </form>
+
+<?php endif; ?>
 
 <script language="javascript" type="text/javascript">
 
