@@ -165,7 +165,7 @@ var thePane = new TabbedPane('web_guias',
             if ($is_coordenador)
                 echo "'pane_coordenacao': 'coordenacao/cursos_coordenacao.php',";
         ?>
-        'pane_ferramentas': 'ferramentas.php',
+        'pane_ferramentas': 'ferramentas.php'
     },
     {
         onClick: function(e) {
