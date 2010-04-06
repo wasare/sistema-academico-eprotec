@@ -88,12 +88,13 @@ $query = $conn->CreateQuery($sql);
 
 SaguAssert($query && $query->MoveNext(),"Registro n�o encontrado!");
 
+//esta variavel nas estava recebendo valor do select => $ref_status_vest,
+
 list ($id,
       $ref_anterior,
       $descricao,
       $dt_inicial,
-      $dt_final,
-      $ref_status_vest,
+      $dt_final,      
       $fl_livro_matricula,
       $media,
       $media_final,
@@ -156,7 +157,7 @@ $dt_inicio_aula = InvData($dt_inicio_aula);
       <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;M&eacute;dia final aprova&ccedil;&atilde;o</font>
       </td>
       <td>
-        <input name="media_final" type=text size="5" maxlength="5" value="<?echo($media_final);?>">
+        <input name="media_final" type=text size="5" maxlength="5" value="<? echo($media_final); ?>">
       </td>
     </tr>
     <tr>
