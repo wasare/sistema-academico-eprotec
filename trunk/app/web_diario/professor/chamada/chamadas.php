@@ -69,11 +69,11 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
             </p>
             Data da chamada:<br />
             <span id="date1">
-                <input type="text" name="data" id="data" />
+                <input type="text" name="data_chamada" id="data_chamada" />
                 <script language="JavaScript">
                     new tcal ({
                         'formname': 'envia_chamada',
-                        'controlname': 'data'
+                        'controlname': 'data_chamada'
                     });
                 </script>
                 <span class="textfieldRequiredMsg">Valor obrigat&oacute;rio.</span>

@@ -48,12 +48,29 @@ if(!is_numeric($aula_tipo) || (strlen($aula_tipo) < 1 || strlen($aula_tipo) > 8 
 
 
 /*
-  
-	Recebe a data
+ * Recebe a data
 
-*/
 
-$data_chamada = $_POST['data'];
+if(empty($_POST['select_dia']))
+  die('<font size=2><b>Voc&ecirc; n&atilde;o selecionou o DIA ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>');
+else
+  $select_dia = $_POST['select_dia'];
+
+if(empty($_POST['select_mes']))
+  die('<font size=2><b>Voc&ecir;  n&atilde;o selecionou o M&Ecirc;S ! <a href="javascript:history.go(-1);">Voltar</a>!</b></font>');
+else
+  $select_mes = $_POST['select_mes'];
+
+
+if(empty($_POST['select_ano']))
+  die('<font size=2><b>Voc&ecirc; n&atilde;o selecionou o ANO ! <a href"javascript:history.go(-1);">Voltar</a>!</b></font>');
+else
+  $select_ano = $_POST['select_ano'];
+
+$data_chamada = $select_dia . "/" . $select_mes . '/'. $select_ano;
+ */
+
+$data_chamada = $_POST['data_chamada'];
 
 
 
