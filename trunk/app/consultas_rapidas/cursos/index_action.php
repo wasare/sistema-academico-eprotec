@@ -28,11 +28,11 @@ $sql = "SELECT DISTINCT c.id, descricao
 //echo $sql;
 //die;
 
-//Criando a classe de conexão ADODB
+//Criando a classe de conexï¿½o ADODB
 $Conexao = NewADOConnection("postgres");
 
-//Setando como conexão persistente
-$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+//Setando como conexï¿½o persistente
+$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 //Exibindo a descricao do curso caso setado
 $RsCurso = $Conexao->Execute($sql);
