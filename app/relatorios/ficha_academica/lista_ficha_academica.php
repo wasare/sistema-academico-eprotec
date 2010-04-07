@@ -41,7 +41,7 @@ $sql1 = "SELECT DISTINCT
     m.ref_motivo_matricula,
     professor_disciplina_ofer_todos(o.id),
     get_carga_horaria_realizada(o.id) as carga_horaria_realizada,
-    o.fl_concluida
+    o.fl_concluida, o.fl_digitada
     FROM 
         matricula m, disciplinas d, disciplinas_ofer o, periodos s, contratos c
     WHERE 
@@ -84,7 +84,7 @@ $contrato = $conn->get_row('SELECT nome_campus, turma FROM campus a , contratos 
     <div id="cabecalho" style="text-align: left;">
       <font color="#000000" size="2"><b> Nome: </b><?=$nome_aluno?>&nbsp;&nbsp;<b>Matr&iacute;cula: </b><?=str_pad($aluno_id, 5, "0", STR_PAD_LEFT)?></font><br>
       <font color="#000000" size="2"> <b>Curso: </b><?=$nome_curso?>&nbsp;&nbsp;<b>Turma: </b><?=$turma = (!empty($contrato['turma'])) ? $contrato['turma'] : '-'?></font><br />
-      <font color="#000000" size="2"> <b>Campus: </b><?=$contrato['nome_campus']?>&nbsp;&nbsp;<b>Data: </b> <?php echo date("d/m/Y"); ?>&nbsp;&nbsp;<b>Hora: </b><?php echo date("H:i"); ?></font><br />
+      <font color="#000000" size="2"> <b>Campus: </b><?=$contrato['nome_campus']?>&nbsp;&nbsp;<b>Contrato: </b><?=$contrato_id?><br /><b>Data: </b> <?php echo date("d/m/Y"); ?>&nbsp;&nbsp;<b>Hora: </b><?php echo date("H:i"); ?></font><br />
     </div>
 	<br>
 	<table cellpadding="0" cellspacing="0" class="relato">
@@ -136,6 +136,7 @@ foreach ($ficha_academica as $disc) {
     $nota_final = $disc['nota_final'];
 	$professor = $disc['professor_disciplina_ofer_todos'];
     $fl_concluida = $disc['fl_concluida'];
+    $fl_digitada = $disc['fl_digitada'];
 
     // APROVEITAMENTO DE ESTUDOS 2
     // CERTIFICACAO DE EXPERIENCIAS 3
@@ -197,7 +198,7 @@ foreach ($ficha_academica as $disc) {
     if ($situacao == 'R') { 
 		$fcolor = '#FF0000';
 	}
-    elseif ($fl_concluida == 'f') {
+    elseif ($fl_digitada == 'f' && $situacao == 'A') {
         $fcolor = '#006FC7';
         $diarios_nao_finalizados++;
     }
@@ -282,6 +283,7 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
 <?php
   endif;
 ?>
+
 <br /><br />
 <table border="0" cellspacing="0" cellpadding="0" class="relato">
   <tr bgcolor="666666">
@@ -315,6 +317,9 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
   </tr>
 </table>
 <br />
+<?php
+	require_once('lista_disciplinas_nao_integralizadas.php');
+?>
 <div align="left" class="relato" style="font-size: 0.75em;">
     <h4>Legenda</h4>
     <strong>CI</strong> - Disciplina Cursada na Institui&ccedil;&atilde;o<br />
