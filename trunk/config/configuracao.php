@@ -40,7 +40,7 @@ $DOC_TYPE       = '<meta http-equiv="Content-Type" content="text/html; charset=I
 /**
  * Variaveis do sistema
  */
-$BASE_URL       = 'https://'. $_SERVER['HTTP_HOST'] . '/desenvolvimento/wanderson/producao/sistema-academico/';
+$BASE_URL       = 'https://'. $_SERVER['HTTP_HOST'] . '/desenvolvimento/santiago/sistema-academico/';
 $BASE_DIR       = dirname(dirname(realpath(__FILE__))) .'/';
 $LOGIN_URL      = $BASE_URL .'index.php';
 $LOGIN_LOG_FILE = $BASE_DIR .'app/sagu/logs/login.log';
