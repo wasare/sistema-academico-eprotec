@@ -9,7 +9,7 @@ $conn = new connection_factory($param_conn);
 
 $flag = (isset($_POST['ok'])) ? (int) $_POST['flag'] : (int) $_GET['flag'];
 $data_chamada = $_GET['data_chamada'];
-$diario_id = (int) $_GET['diario_id'];
+$diario_id = isset($_GET['diario_id']) ? (int) $_GET['diario_id'] : (int) $_POST['diario_id'];
 
 
 if ((!isset($_POST['ok']) && $diario_id == 0) || $flag == 0)
