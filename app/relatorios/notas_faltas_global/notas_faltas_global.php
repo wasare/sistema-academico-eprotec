@@ -177,10 +177,12 @@ $num_alunos  = count($arr_alunosid);
         <h2>Resumo de notas e faltas do curso no per&iacute;odo</h2>
         <p>
             <b style="color:red;">Atenção:</b><br />
-            Este relatório exibe somente os diários concluídos ou finalizados.
-            Lista todos os alunos com matrícula no período
+            <span style="color: teal; font-size: 0.8em;font-style: italic;">
+            - Este relatório exibe somente os diários concluídos ou finalizados.<br />
+            - Lista todos os alunos com matrícula no período
             selecionado e que tenham vínculo no curso/turma selecionados,
             independente da situação atual do aluno.
+            </span>
         </p>
         <strong>Per&iacute;odo:</strong> <?php echo $desc_periodo; ?><br />
         <strong>Curso:</strong> <?php echo $desc_curso[0]; ?><br />
@@ -253,8 +255,6 @@ $num_alunos  = count($arr_alunosid);
             </tr>
             <?php endforeach; ?>
         </table>
-        <br /><br />
-        <strong>Aten&ccedil;&atilde;o:</strong> O relat&oacute;rio abaixo exibe somente os di&aacute;rio concluídos.
         <br /><br />
 
         <table cellpadding="0" cellspacing="0" class="relato">

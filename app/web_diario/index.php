@@ -82,6 +82,7 @@ $class_diarios = ($is_professor) ? ' class="active"' : '';
 <script type="text/javascript" src="<?=$BASE_URL .'lib/prototype.js'?>"> </script>
 <script type="text/javascript" src="<?=$BASE_URL .'lib/tabbed_pane.js'?>"> </script>
 <script type="text/javascript" src="<?=$BASE_URL .'app/web_diario/web_diario.js'?>"> </script>
+<script type="text/javascript" src="<?=$BASE_URL .'lib/event.simulate.js'?>"> </script>
 
 </head>
 

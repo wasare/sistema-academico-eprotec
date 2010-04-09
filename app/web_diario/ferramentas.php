@@ -129,6 +129,14 @@ if (count(array_intersect($papeis, $PAPEIS_WEB_DIARIO)) == 0) {
     $('consulta_aluno').observe('click', function() { $('consulta_aluno_pane').toggle(); });
     $('log_acesso').observe('click', function() { $('log_acesso_pane').toggle(); });
     $('acessa_programas').observe('click', function() { $('programas_pane').toggle(); });
+
+    $('campo_aluno').observe('keydown', function (e) {
+        if ( e.keyCode == 13 ) {
+            $('envia_pesquisa_aluno').simulate('click');
+            e.stop();
+		}
+	});
+
 </script>
 
 </body>
