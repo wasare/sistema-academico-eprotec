@@ -103,9 +103,9 @@ elseif (count($disciplinas_cursadas_fora_da_matriz) > 0) {
   if (count($disciplinas_nao_cursadas_como_equivalentes) == 0) {
     $fl_integralizado = TRUE;
   }
-  else {
+  elseif (count($disciplinas_equivalentes_cursadas) > 0) {
     //$disciplinas_nao_cursadas = array_diff($disciplinas_nao_cursadas, $disciplinas_equivalentes_cursadas);
-    $disciplinas_nao_cursadas =  $disciplinas_equivalentes_cursadas;
+    $disciplinas_nao_cursadas =  (array) $disciplinas_nao_cursadas_como_equivalentes; //$disciplinas_nao_cursadas =  $disciplinas_equivalentes_cursadas;
   }
 }
 

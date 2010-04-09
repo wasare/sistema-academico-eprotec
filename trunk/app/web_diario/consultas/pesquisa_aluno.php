@@ -21,6 +21,7 @@ if (empty($campo_aluno))
 
 <script type="text/javascript" src="<?=$BASE_URL .'lib/prototype.js'?>"> </script>
 <script type="text/javascript" src="<?=$BASE_URL .'app/web_diario/web_diario.js'?>"> </script>
+<script type="text/javascript" src="<?=$BASE_URL .'lib/event.simulate.js'?>"> </script>
 
 </head>
 
@@ -33,7 +34,7 @@ if (empty($campo_aluno))
  <br />
 <form name="pesquisa_aluno" id="pesquisa_aluno" method="post" action="">
   <strong> Matr&iacute;cula ou nome do aluno:</strong> &nbsp;<input name="campo_aluno" id="campo_aluno" type="text" maxlength="30" size="15" />
-   <input type="button" name="envia_pesquisa_aluno" id="envia_pesquisa_aluno" value="Consultar" onclick="enviar_diario('pesquisa_aluno',null,null,'<?=$BASE_URL?>','<?=$IEnome?>');" />
+   <input type="button" name="envia_pesquisa" id="envia_pesquisa_aluno" value="Consultar" onclick="enviar_diario('pesquisa_aluno',null,null,'<?=$BASE_URL?>','<?=$IEnome?>');" />
     &nbsp;&nbsp;&nbsp;
     <a href="#" onclick="javascript:window.close();">Fechar</a>
  </form>
@@ -153,5 +154,15 @@ $sql .= '                   ORDER BY a.ref_pessoa
 <br />
 <br />
 </div>
+
+<script language="javascript" type="text/javascript">
+    $('campo_aluno').observe('keydown', function (e) {
+        if ( e.keyCode == 13 ) {
+            $('envia_pesquisa_aluno').simulate('click');
+            e.stop();
+        }
+    });
+</script>
+
 </body>
 </html>

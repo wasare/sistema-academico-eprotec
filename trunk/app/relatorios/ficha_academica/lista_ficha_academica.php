@@ -4,7 +4,8 @@ require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/situacao_academica.php');
 require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'core/reports/header.php');
-  
+require_once($BASE_DIR .'core/date.php'); 
+ 
 $conn = new connection_factory($param_conn);
 $header  = new header($param_conn);
 
@@ -66,7 +67,8 @@ if ($contMatriculada == 0)
 
 $nome_aluno = $conn->get_one('SELECT nome FROM pessoas WHERE id = '. $aluno_id .';');
 $nome_curso = $conn->get_one('SELECT id || \' - \' || descricao FROM cursos WHERE id = '. $curso_id .';');
-$contrato = $conn->get_row('SELECT nome_campus, turma FROM campus a , contratos b WHERE b.ref_campus = a.id AND b.id = '. $contrato_id .';');
+$contrato = $conn->get_row('SELECT nome_campus, turma, dt_formatura FROM campus a , contratos b WHERE b.ref_campus = a.id AND b.id = '. $contrato_id .';');
+
 
 ?>
 <html>
@@ -315,6 +317,10 @@ $percFaltasMatriculada = number_format($percFaltasMatriculada,'2',',','.');
     <td>Total carga hor&aacute;ria realizada nas disciplinas matriculadas: </td>
     <td align="right">&nbsp;<?php echo $chRealizadaMatriculada;?></td>
   </tr>
+  <tr>
+    <td>Data de cola&ccedil;&atilde;o de grau: </td>
+    <td align="center"><?=$data_colacao_grau = !empty($contrato['dt_formatura']) ? date::convert_date($contrato['dt_formatura']) : ' - '; ?></td>
+  </tr
 </table>
 <br />
 <?php

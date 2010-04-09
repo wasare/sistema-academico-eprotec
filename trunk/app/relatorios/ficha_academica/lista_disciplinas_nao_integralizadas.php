@@ -56,6 +56,7 @@ print_r($result);
  // array_diff       Returns an array containing all the entries from array1  that are not present in any of the other arrays.
 // array_intersect Returns an array containing all of the values in array1  whose values exist in all of the parameters.
 */
+
 if (count($disciplinas_nao_cursadas) == 0) {
   $fl_integralizado = TRUE;
 }
@@ -71,7 +72,6 @@ elseif (count($disciplinas_cursadas_fora_da_matriz) > 0) {
                                           ref_disciplina_equivalente IN (". implode(",", $disciplinas_cursadas_fora_da_matriz) .");";
         
   $disciplinas_equivalentes_cursadas = (array) $conn->get_col($sql_disciplinas_equivalentes);
-  //$disciplinas_equivalentes_cursadas = is_array($disciplinas_equivalentes_cursadas) ? $disciplinas_equivalentes_cursadas : array();
 
   $disciplinas_nao_cursadas_como_equivalentes = array_diff($disciplinas_nao_cursadas, $disciplinas_equivalentes_cursadas);
 
@@ -81,11 +81,13 @@ elseif (count($disciplinas_cursadas_fora_da_matriz) > 0) {
   if (count($disciplinas_nao_cursadas_como_equivalentes) == 0) {
     $fl_integralizado = TRUE;
   }
-  else {
+  elseif (count($disciplinas_equivalentes_cursadas) > 0) {
     //$disciplinas_nao_cursadas = array_diff($disciplinas_nao_cursadas, $disciplinas_equivalentes_cursadas);
-    $disciplinas_nao_cursadas =  $disciplinas_equivalentes_cursadas;
+    $disciplinas_nao_cursadas =  (array) $disciplinas_nao_cursadas_como_equivalentes;//$disciplinas_equivalentes_cursadas;
   }
 }
+
+$disciplinas_nao_integralizadas = array();
 
 if (count($disciplinas_nao_cursadas) > 0) {
 
@@ -101,6 +103,7 @@ if (count($disciplinas_nao_cursadas) > 0) {
                                           c.ref_disciplina IN (". implode(",", $disciplinas_nao_cursadas) .")
                                        ORDER BY
                                               semestre_curso;";
+
 
   $disciplinas_nao_integralizadas = $conn->get_all($sql_disciplinas_nao_integralizadas);
 
