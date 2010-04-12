@@ -8,7 +8,7 @@ $conn = new connection_factory($param_conn);
 // Definindo as permissoes do usuario quanto ao arquivo
 $acl = new acl();
 if(!$acl->has_access(__FILE__, $conn)) {
-    exit ('Você não tem permissão para acessar este arquivo!');
+    exit ('Você não tem permissão para acessar este formulário!');
 }
 
 $ref_pessoa = $_POST['ref_pessoa'];
