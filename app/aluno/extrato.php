@@ -11,7 +11,7 @@ $usuario     = 'Silas';
 
 $SQL = '
 SELECT
-    to_char(T.datahora_transacao,\'DD/MM/YYYY HH:MI\') as momento,
+    to_char(T.datahora_transacao,\'DD/MM/YYYY HH24:MI\') as momento, 
     O.des_operacao,
     O.tipo_operacao,
     T.valor_transacao

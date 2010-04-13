@@ -8,7 +8,7 @@ function MostraCampus()
 
 	$conn->Open();
 
-	$sql= "select id, nome_campus from campus";
+	$sql = "select c2.id, c2.nome_campus, c1.nome_campus as sede from campus c1, campus c2 where c1.id = c2.ref_campus_sede order by 2";
 
 	$query = $conn->CreateQuery($sql);
 
@@ -16,8 +16,9 @@ function MostraCampus()
 
 	echo("<center><table width=\"90%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
 	echo("<tr bgcolor=\"#000000\">\n");
-	echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Código</b></font></td>");
-	echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descrição</b></font></td>");
+	echo ("<td width=\"15%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Código</b></font></td>");
+	echo ("<td width=\"40%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descrição</b></font></td>");
+    echo ("<td width=\"35%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Sede</b></font></td>");
 	echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
 	echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
 	echo("  </tr>");
@@ -39,14 +40,16 @@ function MostraCampus()
 
 		$registro = $query->GetValue(1);
 		$href  = "<a href=\"altera_campus.phtml?id=$registro\"><img src=\"../images/update.gif\" title='Alterar Cadastro' align='absmiddle' border=0></a>";
-		$href1 = "<a href=\"javascript:Confirma_Exclui('$registro')\"><img src=\"../images/delete.gif\" title='Excluir Cadastro' align='absmiddle' border=0></a>";
+		$href1 = "";
+        // <a href=\"javascript:Confirma_Exclui('$registro')\"><img src=\"../images/delete.gif\" title='Excluir Cadastro' align='absmiddle' border=0></a>";
 
 		if ( $i % 2)
 		{
 
 			echo("<tr bgcolor=\"$bg1\">\n");
-			echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">" . $query->GetValue(1) . "</td>");
-			echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">" . $query->GetValue(2) . "</td>");
+			echo ("<td width=\"15%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">" . $query->GetValue(1) . "</td>");
+			echo ("<td width=\"40%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">" . $query->GetValue(2) . "</td>");
+            echo ("<td width=\"35%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg2\">" . $query->GetValue(3) . "</td>");
 			echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href</font></b></td>\n");
 			echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href1</font></b></td>\n");
 
@@ -56,8 +59,9 @@ function MostraCampus()
 		else
 		{
 			echo("<tr bgcolor=\"$bg2\">\n");
-			echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">" . $query->GetValue(1) . "</td>");
-			echo ("<td width=\"80%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">" . $query->GetValue(2) . "</td>");
+			echo ("<td width=\"15%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">" . $query->GetValue(1) . "</td>");
+			echo ("<td width=\"40%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">" . $query->GetValue(2) . "</td>");
+            echo ("<td width=\"35%\"><Font face=\"Verdana\" size=\"2\" color=\"$fg1\">" . $query->GetValue(3) . "</td>");
 			echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href</font></b></td>\n");
 			echo ("<td width=\"5%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$bg1\">$href1</font></b></td>\n");
 			echo("  </tr>");
@@ -134,6 +138,11 @@ function ChangeOp()
   ChangeOption(document.myform.op,document.myform.ref_empresa);
 }
 
+function ChangeOpCampus()
+{
+  ChangeOption(document.myform.opcampus,document.myform.ref_campus_sede);
+}
+
 function ChangeCode(fld_name,op_name)
 { 
   var field = eval('document.myform.' + fld_name);
@@ -168,7 +177,7 @@ function ChangeCode(fld_name,op_name)
 		<td><input name="ref_empresa" type=text size="10" maxlength="10"
 			onChange="ChangeCode('ref_empresa','op')"> <font color="#000000"> <script
 			language="PHP">
-            SQL_Combo("op","select substr(razao_social, 0, 30),id from configuracao_empresa order by razao_social","0","ChangeOp()");
+            SQL_Combo("op","select substr(razao_social, 0, 120),id from configuracao_empresa order by razao_social","0","ChangeOp()");
         </script> </font></td>
 	</tr>
 	<tr>
@@ -183,6 +192,14 @@ function ChangeCode(fld_name,op_name)
 		da Cidade</font></td>
 		<td><input name="cidade_campus" type=text size="50"></td>
 	</tr>
+	<tr>
+        <td bgcolor="#CCCCFF"><font
+            face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus Sede</font></td>
+        <td><input name="ref_campus_sede" type=text size="10" maxlength="10"
+            onChange="ChangeCode('ref_campus_sede','opcampus')"> <font color="#000000">
+            <?=SQL_Combo("opcampus","select substr(nome_campus, 0, 120), id, cidade_campus from campus order by cidade_campus","0","ChangeOpCampus()");?> </font></td>
+    </tr>    
+
 	<tr>
 		<td colspan="2">
 		<hr size="1">
