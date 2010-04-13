@@ -720,4 +720,27 @@ function GetEmpresa($id,$SaguAssert){
 	return $obj;
 }
 
+function GetCampus($id,$SaguAssert){
+
+    $sql = "select id,nome_campus from campus where id=$id";
+
+    $conn = new Connection;
+
+    $conn->Open();
+
+    $query = $conn->CreateQuery($sql);
+
+    if ( $query->MoveNext() )
+    $obj = $query->GetValue(2);
+
+    $query->Close();
+
+    $conn->Close();
+
+    if ( $SaguAssert )
+    SaguAssert(!empty($obj),"Campus [$id] nao definido!");
+
+    return $obj;
+}
+
 ?>

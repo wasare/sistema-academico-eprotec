@@ -125,6 +125,14 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                                 <a href="sagu/academico/carimbos.phtml"
                                                    target="frame2">Carimbos</a>
                                             </li>
+                                             <li>
+                                                <a href="sagu/generico/configuracao_empresa.phtml"
+                                                   target="frame2">Empresas</a>
+                                            </li>
+                                            <li>
+                                                <a href="sagu/generico/campus_inclui.phtml"
+                                                   target="frame2">Campus</a>
+                                            </li> 
                                             <?php if($acl->has_access(dirname(__FILE__).'/usuarios/index.php', $conn)) : ?>
                                             <li>
                                                 <a href="usuarios/index.php"
@@ -159,14 +167,6 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                             <li>
                                                 <a href="sagu/generico/consulta_cidades.phtml"
                                                    target="frame2">Cidades</a>
-                                            </li>
-                                            <li>
-                                                <a href="sagu/generico/configuracao_empresa.phtml"
-                                                   target="frame2">Empresas</a>
-                                            </li>
-                                            <li>
-                                                <a href="sagu/generico/campus_inclui.phtml"
-                                                   target="frame2">Campus</a>
                                             </li>
                                             <li>
                                                 <a href="sagu/generico/consulta_inclui_instituicoes.phtml"

@@ -6,11 +6,13 @@ require_once('../../common.php');
 $ref_empresa   = $_POST['ref_empresa'];
 $nome_campus   = $_POST['nome_campus'];
 $cidade_campus = $_POST['cidade_campus'];
+$ref_campus_sede = $_POST['ref_campus_sede'];
 
 
 CheckFormParameters(array("ref_empresa",
                           "nome_campus",
-                          "cidade_campus"));
+                          "cidade_campus",
+                          "ref_campus_sede"));
 
 $id_campus = GetIdentity('seq_campus');
 
@@ -23,14 +25,16 @@ $sql = "insert into campus" .
        "    id," .
        "    ref_empresa," .
        "    nome_campus," .
-       "    cidade_campus" .
+       "    cidade_campus," .
+       "    ref_campus_sede" .
        "  )" .
        "  values" .
        "  (" .
        "    $id_campus," .
        "    '$ref_empresa'," .
        "    '$nome_campus'," .
-       "    '$cidade_campus'" .
+       "    '$cidade_campus'," .
+       "     $ref_campus_sede" .
        "  )";
 
 $ok = $conn->Execute($sql);
