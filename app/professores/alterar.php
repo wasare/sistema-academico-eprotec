@@ -31,6 +31,7 @@ $nome_pessoa = $conn->get_one("SELECT nome FROM pessoas WHERE id = $id");
 
 $date = new date();
 $data = $date->convert_date($arr_professores['dt_ingresso']);
+$ativado = $arr_professores['ativado'];
 
 $arr_departamentos = $conn->get_all('SELECT id, descricao FROM departamentos');
 
@@ -119,7 +120,10 @@ $arr_setor = $conn->get_all('SELECT id, nome_setor FROM setor');
                         <span class="selectRequiredMsg">Selecione um item.</span>
                     </span>
                     <br />
-                    <input name="ativar" type="checkbox" id="ativar" checked="checked"/> Ativar usu&aacute;rio.
+                    <input name="ativar" type="checkbox" id="ativar" 
+                           <?php if($ativado == 't') : ?>
+                           checked="checked"
+                           <?php endif; ?> /> Ativar usu&aacute;rio.
                     <br />
                     <br />
                     Nova senha:
