@@ -41,8 +41,8 @@ $data = $date->convert_date($_POST['data']);
  */
 $ativo = $_POST["ativar"];
 
-if ($ativo == true) $ativo = true;
-else $ativo = false;
+if ($ativo == true) $ativo = 'true';
+else $ativo = 'false';
 
 /*
  * Realizando as consultas no banco de dados
@@ -73,7 +73,7 @@ if($num_professores == 1) {
                 UPDATE professores SET ref_departamento=$departamento,dt_ingresso='$data'
                 WHERE ref_professor = $id_pessoa;
 
-                UPDATE usuario SET ativado='$ativo', ref_setor='$setor'
+                UPDATE usuario SET ativado=$ativo, ref_setor='$setor'
                 WHERE ref_pessoa = $id_pessoa;
             commit;";
         else
@@ -84,7 +84,7 @@ if($num_professores == 1) {
                 WHERE
                     ref_professor = $id_pessoa;
                 UPDATE usuario SET
-                    senha='$password_hash',ativado='$ativo',ref_setor='$setor'
+                    senha='$password_hash',ativado=$ativo,ref_setor='$setor'
                 WHERE
                     ref_pessoa = $id_pessoa;
             commit;";
