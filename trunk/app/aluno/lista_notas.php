@@ -15,19 +15,36 @@ $rs_pessoa   = $conn->get_one("SELECT nome FROM pessoas WHERE id = $aluno");
 $rs_curso    = $conn->get_one("SELECT descricao FROM cursos WHERE id = $curso");
 $rs_periodo  = $conn->get_one("SELECT descricao FROM periodos WHERE id = '$periodo'");
 
+/*
 $sql_diarios = "SELECT id FROM disciplinas_ofer
                 WHERE ref_curso = '$curso' AND ref_periodo = '$periodo' AND is_cancelada = '0'";
+*/
+
+$sql_diarios_matriculados = "SELECT ref_disciplina_ofer 
+                               FROM 
+                                    matricula m 
+                                LEFT OUTER JOIN 
+                                    disciplinas_ofer o ON (m.ref_disciplina_ofer = o.id)
+								WHERE
+									(m.dt_cancelamento is null) AND
+									m.ref_pessoa = $aluno AND
+									m.ref_contrato IN ( 
+											SELECT id 
+												FROM 
+													contratos 
+												WHERE 
+													ref_pessoa = $aluno AND 
+													ref_curso = $curso
+									) AND
+									m.ref_motivo_matricula = 0 AND 
+									o.is_cancelada = '0' AND
+									o.ref_periodo = '$periodo'";
 
 
-$sql_diarios_matriculados = "SELECT COUNT(id) FROM matricula WHERE
-				(dt_cancelamento is null) AND
-				ref_disciplina_ofer IN ( ". $sql_diarios .") AND
-				ref_pessoa = $aluno AND
-				ref_motivo_matricula = 0";
+$rs_diarios = $conn->get_col($sql_diarios_matriculados);
 
-$rs_diarios_matriculados = $conn->get_one($sql_diarios_matriculados);
+$rs_diarios_matriculados = count($rs_diarios);
 
-$rs_diarios = $conn->get_all($sql_diarios);
 
 
 /*

@@ -97,7 +97,7 @@ else {
                         <img src="../../public/images/sa_icon.png" alt="logomarca SA" width="80" height="68" style="margin: 10px;" />
                     </td>
                     <td valign="top">
-                        <h3>Bem vindo ao Sistema Acad&ecirc;mico.</h3>
+                        <h3>Bem-vindo ao Sistema Acad&ecirc;mico.</h3>
                         Para iniciar entre com os dados de sua conta e selecione um m&oacute;dulo.<br />
                         Caso n&atilde;o possua uma conta cadastre-se junto a secretaria do campus.
                         <br />
