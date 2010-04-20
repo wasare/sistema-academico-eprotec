@@ -7,56 +7,31 @@ $aluno   = $user;
 $periodo = $_GET["p"];
 $curso   = $_GET["c"];
 
-//$aluno   = '2223';
-//$periodo = '0901';
-//$curso   = '501';
-
 $rs_pessoa   = $conn->get_one("SELECT nome FROM pessoas WHERE id = $aluno");
 $rs_curso    = $conn->get_one("SELECT descricao FROM cursos WHERE id = $curso");
 $rs_periodo  = $conn->get_one("SELECT descricao FROM periodos WHERE id = '$periodo'");
 
-/*
-$sql_diarios = "SELECT id FROM disciplinas_ofer
-                WHERE ref_curso = '$curso' AND ref_periodo = '$periodo' AND is_cancelada = '0'";
-*/
-
-$sql_diarios_matriculados = "SELECT ref_disciplina_ofer 
-                               FROM 
-                                    matricula m 
-                                LEFT OUTER JOIN 
-                                    disciplinas_ofer o ON (m.ref_disciplina_ofer = o.id)
-								WHERE
-									(m.dt_cancelamento is null) AND
-									m.ref_pessoa = $aluno AND
-									m.ref_contrato IN ( 
-											SELECT id 
-												FROM 
-													contratos 
-												WHERE 
-													ref_pessoa = $aluno AND 
-													ref_curso = $curso
-									) AND
-									m.ref_motivo_matricula = 0 AND 
-									o.is_cancelada = '0' AND
-									o.ref_periodo = '$periodo'";
-
+$sql_diarios_matriculados = "
+SELECT ref_disciplina_ofer 
+FROM
+    matricula m LEFT OUTER JOIN disciplinas_ofer o ON (m.ref_disciplina_ofer = o.id)
+WHERE
+    (m.dt_cancelamento is null) AND
+    m.ref_pessoa = $aluno AND
+    m.ref_contrato IN (
+        SELECT id FROM contratos
+	WHERE 
+            ref_pessoa = $aluno AND
+            ref_curso = $curso
+	) AND
+	m.ref_motivo_matricula = 0 AND 
+	o.is_cancelada = '0' AND
+	o.ref_periodo = '$periodo';
+";
 
 $rs_diarios = $conn->get_col($sql_diarios_matriculados);
-
 $rs_diarios_matriculados = count($rs_diarios);
 
-
-
-/*
-foreach ($rs_diarios as $diario) {
-    $str_in .= $diario[0] . ', ';
-}
-
-//Retorna o tamanho da string menos 2
-$tam_str = strlen($str_in) - 2;
-//Retorna os caracters comecando de Zero ate o valor especificado
-$str_in = substr($str_in, 0, $tam_str);
-*/
 ?>
 <p>
     <strong>Aluno: </strong><?=$aluno?> - <?=$rs_pessoa?><br />
@@ -92,8 +67,8 @@ $str_in = substr($str_in, 0, $tam_str);
             matricula a, pessoas b, diario_notas c, disciplinas_ofer d
         WHERE
             (a.dt_cancelamento is null) AND
-            a.ref_disciplina_ofer =  ".$diario[0]." AND
-            d.id =  ".$diario[0]." AND
+            a.ref_disciplina_ofer =  ".$diario." AND
+            d.id =  ".$diario." AND
             b.id = $aluno AND
             a.ref_pessoa = b.id AND
             b.ra_cnec = c.ra_cnec AND
