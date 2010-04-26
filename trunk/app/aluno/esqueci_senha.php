@@ -15,18 +15,25 @@ if($_POST) {
         //Seleciona o usuario atraves do email
         $sql_usuario = "
             SELECT
-                acesso_aluno.ref_pessoa, acesso_aluno.senha, pessoas.nome
+                acesso_aluno.ref_pessoa, acesso_aluno.senha, 
+                pessoas.nome, pessoas.email, pessoas.email_alt
             FROM
                 acesso_aluno, pessoas
             WHERE
                 acesso_aluno.ref_pessoa = pessoas.id AND
-                email = '".$email."';";
+                pessoas.email = '".$email."';";
 
         //Cria um resultset com a sql
         $RsUsuario = $conn->Execute($sql_usuario);
 
         //Pega o login/username do usuario no caso o id do aluno
         $usuario = $RsUsuario->fields[0];
+
+        $nome_completo     = $RsUsuario->fields[2];
+        $email_principal   = $RsUsuario->fields[3];
+        $email_alternativo = $RsUsuario->fields[4];
+
+        $msg = '';
 
         //Verifica se existe o usuario com o email
         if($RsUsuario->RecordCount() === 1) {
@@ -47,13 +54,19 @@ if($_POST) {
                             $usuario.' - Nova senha: '.$nova_senha;
 
                 //Verifica se o email foi enviado
-                if(mail($email, 'SA - Envio de senha', $message, 'From: SA')) {
+                if( mail($email, 'SA - Envio de senha', $message, 'From: SA') ) {
 
-                    $msg = '<font color=green>
-                            Procedimento efetuado com sucesso!
-			    Acesse a sua conta de email para ter acesso a nova senha.
-                        </font>';
-
+                    $msg = "<font color=green>
+                            Procedimento efetuado com sucesso!</font><br />
+                            <font color=black>
+			    A nova senha foi enviada para o(s) email(s): <br />
+                            <b>$email_principal</b>";
+                    
+                    if($email_alternativo != '') {
+                        if(mail($email_alternativo, 'SA - Envio de senha', $message, 'From: SA'))
+                            $msg .= " e para <b>$email_alternativo</b> ";
+                    }
+                    $msg .= "</font>";
                 }else {
                     $msg = 'Erro ao enviar email! Efetue o procedimento novamente.';
                 }
