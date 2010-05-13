@@ -163,11 +163,14 @@ if($total_nota_distribuida > 100) {
 }
 else {  
   $flag_nota_distribuida_maior = 0;
-}  /* FIM NOTA DISTRIBUIDA*/
+}  
+/* FIM NOTA DISTRIBUIDA*/
+
+$flag_elimina_notas = (array_sum($notas) == 0 && $nota_distribuida == 0) ? 1 : 0;
 
 // SOMENTE PROCESSA AS NOTAS SE A NOTA DISTRIBUÍDA FOR VÁLIDA
 // E O SOMATÓRIO DAS NOTAS DISTRIBUÍDAS NÃO PASSAR DE 100
-if($flag_nota_distribuida == 0 && $flag_nota_distribuida_maior == 0) {
+if(($flag_nota_distribuida == 0 && $flag_nota_distribuida_maior == 0) || $flag_elimina_notas == 1) {
 
    // SQL NOTA DISTRIBUIDA
   $sql_update .= "UPDATE diario_formulas SET nota_distribuida = $nota_distribuida

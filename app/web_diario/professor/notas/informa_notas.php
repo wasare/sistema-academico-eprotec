@@ -219,10 +219,12 @@ function validate_nota(field) {
 	<input type="hidden" name="codprova" id="codprova" value="<?=$prova?>">
 	<input type="hidden" name="diario_id" id="diario_id" value="<?=$diario_id?>">
 	<input type="hidden" name="operacao" id="operacao" value="<?=$operacao?>">
-
+    
 <?php
 		if($prova != 7) :
-?>
+?>        
+            <span class="obrigatorio">Para eliminar todas as notas informe 0 para todas as notas.</span><br />
+
 			<p><strong>Nota distribu&iacute;da:</strong>
 			<input name="valor_avaliacao" type="text" id="valor_avaliacao" size="5" maxlength="4" value="<?=$nota_distribuida?>" tabindex="1" />&nbsp;
 			<span class="obrigatorio">* obrigatória</span>

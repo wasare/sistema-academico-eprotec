@@ -49,9 +49,10 @@ if($_POST) {
         <h2>Configura&ccedil;&atilde;o da &aacute;rea do aluno</h2>
         <div class="panel">
             <form action="config_area_aluno.php" method="post" >
-                <label for="">Reiniciar senha do aluno de código:</label>
+                <label for="">Reiniciar a senha de acesso do aluno com matr&iacute;cula:</label>
                 <br />
                 <input name="reiniciar_senha" type="text" />
+                <br /> <span class="dica">Este procedimento reinicia a senha do aluno para a senha inicial</span>
                 <p>
                     <input type="submit" value="Salvar" />
                 </p>
