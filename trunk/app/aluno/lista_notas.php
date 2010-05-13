@@ -93,7 +93,7 @@ $rs_diarios_matriculados = count($rs_diarios);
                 else 
                     echo '<td align="center">'. number::numeric2decimal_br($diario_info[7],1) .'</td>';
             }
-            echo '<td align="center">'.$rs_diarios_info[0][5].'</td>';
+            echo '<td align="center">'. number::numeric2decimal_br($diario_info[0][5],1) .'</td>';
             echo '<td align="center">'.$rs_diarios_info[0][9].'</td>';
             echo '<td align="center">'.$rs_diarios_info[0][8].'</td>';
             echo '</tr>';
