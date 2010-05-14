@@ -2,9 +2,11 @@
 
 require_once(dirname(__FILE__). '/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
+require_once($BASE_DIR .'core/reports/header.php');
 require_once($BASE_DIR .'core/number.php');
 
 $conn = new connection_factory($param_conn);
+$header  = new header($param_conn);
 
 $diario_id = (int) $_GET['diario_id'];
 
@@ -113,11 +115,14 @@ table.papeleta {
 <body>
 <font size="2">
 
+<div align="left">
+     <?=$header->get_empresa($PATH_IMAGES)?>
+</div>
+
+
 <?php
 
-
 echo papeleta_header($diario_id);
-
 
 if($fl_digitada == 'f' && $fl_concluida == 'f') {
         $fl_situacao = '<font color="green"><b>Aberto</b></font>';

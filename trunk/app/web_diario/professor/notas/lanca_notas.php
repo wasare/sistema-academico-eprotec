@@ -76,6 +76,8 @@ else
 // ^ ATUALIZA NOTAS E FALTAS CASO O DIARIO TENHA SIDO INICIALIZADO ^//
 
 }
+// técnico integrado 7
+$curso_tipo = get_curso_tipo($diario_id);
 
 ?>
 
@@ -120,6 +122,10 @@ $sql2 = "SELECT
 
 $provas = $conn->get_all($sql2);
 
+$formula = ($curso_tipo == 7) ? substr($formula, 0, 11) : $formula;
+
+$qtde_notas = ($curso_tipo == 7) ? 4 : 6;
+
 if (!empty($formula)) 
 { 
      echo '<table cellspacing="0" cellpadding="0" class="papeleta"><tr bgcolor="#CCCCCC"> <td><b>Descrição</b></td></tr>';
@@ -141,11 +147,14 @@ else
  	
 		<select id="getprova" name="getprova" class="select">
 <?php
+         $cont = 1;
          foreach($provas as $p)
          {
             $qid = $p['prova'];
             $qdesc = $p['descricao'];
-            echo '<option value="'. $p['prova'] .'">'. $p['descricao'] .'</option>';
+            if (($p['prova'] == 5 || $p['prova'] == 6) && $curso_tipo == 7)
+				continue;
+		    echo '<option value="'. $p['prova'] .'">'. $p['descricao'] .'</option>';
          }
 ?>
 		 <option value="7">Nota Extra</option>
@@ -158,12 +167,24 @@ else
         </div>
     </form>
 <h3>INSTRU&Ccedil;&Otilde;ES</h3>
-<font color="#330099">* Professor, conforme descrito pela f&oacute;rmula acima voc&ecirc; ter&aacute; no m&aacute;ximo seis (6) notas para lan&ccedil;ar.<br />
-* Estas notas representam as avalia&ccedil;&otilde;es aplicadas durante o per&iacute;odo (Provas, Trabalhos, Relatórios, Monitorias, etc).<br /> * As notas (de uma a seis) ser&atilde;o somadas e o total final n&atilde;o poder&aacute; exceder a 100 pontos!
+<font color="#330099">* Professor, conforme descrito pela f&oacute;rmula acima voc&ecirc; ter&aacute; no m&aacute;ximo <?=$qtde_notas?> notas para lan&ccedil;ar.<br />
+<?php 
+	if ($curso_tipo == 7) :
+?>
+* Os espa&ccedil;os dispon&iacute;veis para lan&ccedil;amentos se referem aos bimestres, de 1 at&eacute; 4.<br />
+<?php
+  else: 
+?>
+* Estas notas representam as avalia&ccedil;&otilde;es aplicadas durante o per&iacute;odo (Provas, Trabalhos, Relatórios, Monitorias, etc).<br /> 
+<?php
+ endif;
+?>
+
+* As notas (de 1 a <?=$qtde_notas?>) ser&atilde;o somadas e o total final n&atilde;o poder&aacute; exceder a 100 pontos!
 <br />
 * Para nota de <font color="red">recupera&ccedil;&atilde;o/reavalia&ccedil;&atilde;o</font> utilize a op&ccedil;&atilde;o "Nota Extra" na lista de "Lan&ccedil;amento referente &agrave;".
 <br />
-* <font color="red">IMPORTANTE:</font> Uma vez lan&ccedil;ada a "Nota Extra" as notas de 1 a 6 n&atilde;o poder&atilde;o ser alteradas!
+* <font color="red">IMPORTANTE:</font> Uma vez lan&ccedil;ada a "Nota Extra" as notas de 1 a <?=$qtde_notas?> n&atilde;o poder&atilde;o ser alteradas!
 </font>
 
 </body>
