@@ -37,13 +37,14 @@ $aula_tipo = $_POST['aula_tipo'];
 $conteudo = trim($_POST['conteudo']);
 
 $_SESSION['conteudo'] = $conteudo;
+$conteudo = addslashes($conteudo);
 
 $_SESSION['aula_tipo'] = $aula_tipo;
 
-$num_aulas = $aula_tipo[strlen($aula_tipo) - 1];
+$num_aulas = ($aula_tipo[strlen($aula_tipo) - 1] == 0) ? 10 : $aula_tipo[strlen($aula_tipo) - 1];
 
 
-if(!is_numeric($aula_tipo) || (strlen($aula_tipo) < 1 || strlen($aula_tipo) > 8 ))
+if(!is_numeric($aula_tipo) || (strlen($aula_tipo) < 1 || strlen($aula_tipo) > 10 ))
    die('<script language="javascript" type="text/javascript"> window.alert("Você deverá selecionar a quantidade de aulas para esta chamada."); window.history.back(1);</script>');
 
 
@@ -122,19 +123,11 @@ $curso = get_curso($diario_id);
 
 <script language="JavaScript" type="text/JavaScript">
 <!--
-function validate(field) {
-	var valid = "0" + "<?=$aula_tipo?>"
-	var ok = "yes";
-	var temp;
-	for (var i=0; i<field.value.length; i++) {
-		temp = "" + field.value.substring(i, i+1);
-		if (valid.indexOf(temp) == "-1") ok = "no";
-	}
-	
-	if (ok == "no") {
-		alert("Você não pode lançar " + field.value + " faltas para uma chamada de " + <?=$num_aulas?> + " aulas !");
+function validate(field, total) {
+	if (field.value > total || field.value < 0) {
+		alert("Você não pode lançar " + field.value + " faltas para uma chamada de " + total + " aulas !");
         field.focus();
-		field.value = "<?=$num_faltas?>";	
+		field.value = total;	
    }
 }
 
@@ -227,7 +220,18 @@ $ordem = 1;
 	<tr bgcolor="<?=$st?>">
 		<td align="center"><?=$ordem?></td>
 		<td align="center">
-        <input type="text" name="faltas[<?=$matricula?>]" value="" maxlength="1" size="1" onblur="validate(this);" onkeyup="return autoTab(this, 1, event);"/>
+<?php
+		if ($num_aulas != 10) :
+?>  
+        <input type="text" name="faltas[<?=$matricula?>]" value="" maxlength="1" size="1" onblur="validate(this, <?=$num_aulas?>);" onkeyup="return autoTab(this, 1, event);"/>
+<?php
+		else :
+?>
+	   <input type="text" name="faltas[<?=$matricula?>]" value="" maxlength="2" size="1" onblur="validate(this, <?=$num_aulas?>);" onkeyup="return autoTab(this, 2, event);"/>
+
+<?php
+		endif;
+?>
         </td>
         <td align="center"><?=$matricula?></td>
         <td><?=$nome?></td>

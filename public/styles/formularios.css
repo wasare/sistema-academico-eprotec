@@ -129,3 +129,11 @@ td {
 .btn_action a:hover {
     text-decoration:none;
 }
+
+.dica {
+   color: teal;
+   font-size: 0.75em;
+   font-weight: bold;
+   font-style: italic;
+}
+

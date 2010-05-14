@@ -106,6 +106,9 @@ $meses = array("Janeiro","Fevereiro", "Mar&ccedil;o", "Abril", "Maio", "Junho", 
                 <option value="12345678" <?php if($_SESSION['aula_tipo'] == "12345678") {
                     echo 'selected="selected"';
                         } ?>>8 Aulas (8 Aulas seguidas)</option>
+               <option value="1234567890" <?php if($_SESSION['aula_tipo'] == "1234567890") {
+                    echo 'selected="selected"';
+                        } ?>>10 Aulas (10 Aulas seguidas)</option> 
             </select>
             <br />
             <br />

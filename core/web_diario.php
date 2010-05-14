@@ -35,12 +35,13 @@ function papeleta_header($diario_id) {
     $ret .= 'Professor(a): ';
 
     $i = 1;
+    $count = count($profs);
     foreach($profs as $p) {
 
         $ret .= '<b>'. $p .'</b><br />';
 
-        if($profs != $i) {
-            $ret .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';//&nbsp;';
+        if($count != $i) {
+            $ret .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 
         }
         $i++;
@@ -370,7 +371,7 @@ function acessa_diario($diario_id,$sa_ref_pessoa) {
 
     $acesso = $conn->get_one($sql);
 
-    if($acesso > 0 && $acesso <= 2)
+    if($acesso > 0)
         return TRUE;
     else
         return FALSE;

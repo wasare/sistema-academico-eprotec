@@ -126,6 +126,47 @@ $periodo = $conn->get_row($qryPeriodo);
 </table>
 
 <h4><strong>Curso: </strong><font color="blue"><?=$curso['id'] .' - '. $curso['nome']?></font></h4>
+
+<span>
+<input type="button" value="Relat&oacute;rio de notas e faltas do curso no período" id="notas_faltas"/>
+</span>
+
+<!-- panel para selecao de turma para o relatorio // inicio //-->
+<div id="notas_faltas_pane" style="display:none; border: 0.0015em solid; width:200px; text-align:center;">
+<h4>clique na turma para exibir o relat&oacute;rio:</h4>
+<?php
+	$sql = "
+		SELECT DISTINCT turma
+			FROM contratos
+			WHERE
+    			ref_curso = ". $curso_id ." AND
+    			turma is not null AND turma <> ''; ";
+
+	$arr_turmas = $conn->get_all($sql);
+
+	$count = 0;
+
+    //$periodo_id = (string) $_GET['periodo_id'];
+	//$curso_id = (int) $_GET['curso_id'];
+	//$campus = (int) $_GET['campus'];
+	//$turma = (string) $_POST['turma'];
+
+	foreach($arr_turmas as $turma) :
+        $url = '';
+        $url .= $BASE_URL .'app/web_diario/coordenacao/exibe_notas_faltas_global.php?curso_id='. $curso_id;
+        $url .= '&periodo_id='. $periodo_id;
+        $url .= '&campus=1'; // TODO: selecionar campus de outra maneira
+        $url .= '&turma='. $turma['turma'];
+?>
+		<a href="#" onclick="abrir('Sistema Acadêmico', '<?=$url?>')" title="clique para visualizar"><?=$turma['turma']?></a>		     <br />
+<?php
+    endforeach;
+?>
+<br />
+</div>
+<!-- panel para selecao de turma para o relatorio \\ fim \\ -->
+
+
 <h5>Clique em "Acessar" para exibir as op&ccedil;&otilde;es do di&aacute;rio:</h5>
 
 <form id="change_acao" name="change_acao" method="get" action="">
@@ -241,6 +282,8 @@ foreach($diarios as $row3) :
 <a href="#" onclick="javascript:window.close();">Fechar</a>
 </form>
 <script language="javascript" type="text/javascript">
+
+ $('notas_faltas').observe('click', function() { $('notas_faltas_pane').toggle(); });
 
 <?php
     foreach($diarios_pane as $diario_id) :

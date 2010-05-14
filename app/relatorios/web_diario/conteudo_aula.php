@@ -2,9 +2,11 @@
 
 require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
+require_once($BASE_DIR .'core/reports/header.php');
 require_once($BASE_DIR .'core/date.php');
 
 $conn = new connection_factory($param_conn);
+$header  = new header($param_conn);
 
 $diario_id = (int) $_GET['diario_id'];
 
@@ -51,10 +53,14 @@ $fl_finalizado = is_finalizado($diario_id);
 
 <body>
 
+<div align="left">
+     <?=$header->get_empresa($PATH_IMAGES)?>
+</div>
+<br />
 <div align="left" class="titulo1">
    Conte&uacute;do de Aula
 </div>
-<br /><br />
+<br />
 <?=papeleta_header($diario_id)?>
 
 <br />

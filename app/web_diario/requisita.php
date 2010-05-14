@@ -48,7 +48,7 @@ if ($_SESSION['sa_modulo'] == 'web_diario_login') {
         $menu_superior .= '<a href="#" onclick="window.opener.reload_parent_pane(\'pane_coordenacao\');window.close();">Coordena&ccedil;&atilde;o</a>&nbsp;|&nbsp;';
 
 
-    $menu_superior .= '<a href="#" onclick="window.opener.location.href=\''. $BASE_URL .'\';window.close();">Encerrar a sess&atilde;o</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+    $menu_superior .= '<a href="#" onclick="window.opener.location.href=\''. $BASE_URL .'\';window.close();">Sair</a>&nbsp;&nbsp;&nbsp;&nbsp;';
     $menu_superior .= '<img src="'. $BASE_URL .'public/images/icons/bola_verde.gif" width="10" height="10" />&nbsp;' . $sa_usuario .'&nbsp;&nbsp;';
 
     $menu_superior .= '<br /></div>';

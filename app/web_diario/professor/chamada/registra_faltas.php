@@ -29,8 +29,7 @@ if (is_finalizado($diario_id)){
 }
 
 $periodo = $_SESSION['web_diario_periodo_id'];
-$conteudo = $_SESSION['conteudo'];
-
+$conteudo = addslashes($_SESSION['conteudo']);
 $aula_tipo = $_POST['aula_tipo'];
 
 if(!isset($_POST['num_aulas']) || empty($_POST['num_aulas']))

@@ -11,7 +11,6 @@ $header  = new header($param_conn);
  * Parametros do formulario
  */
 $periodo = $_POST['periodo'];
-;
 $campus  = $_POST['campus'];
 $curso   = $_POST['curso'];
 $turma   = $_POST['turma'];
