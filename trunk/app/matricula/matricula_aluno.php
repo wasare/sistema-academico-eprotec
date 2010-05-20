@@ -109,7 +109,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
         <form method="post" name="form1">
 
             <div align="center" style="height:600px;">
-                <h1>Processo de Matr�cula</h1>
+                <h1>Processo de Matr&iacute;cula</h1>
                 <h4>Identifica&ccedil;&atilde;o do Per&iacute;odo e do Aluno: Etapa 1/2</h4>
 
                 <div class="panel">
