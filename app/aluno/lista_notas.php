@@ -62,7 +62,7 @@ $rs_diarios_matriculados = count($rs_diarios);
             descricao_disciplina (get_disciplina_de_disciplina_of(a.ref_disciplina_ofer)),
             a.ref_disciplina_ofer, b.nome, b.ra_cnec, a.ordem_chamada,
             a.nota_final, c.ref_diario_avaliacao, c.nota, a.num_faltas,
-            nota_distribuida(a.ref_disciplina_ofer) as \"total_distribuido\", fl_concluida
+            nota_distribuida(a.ref_disciplina_ofer) as \"total_distribuido\", fl_digitada
         FROM
             matricula a, pessoas b, diario_notas c, disciplinas_ofer d
         WHERE
@@ -76,11 +76,12 @@ $rs_diarios_matriculados = count($rs_diarios);
             a.ref_motivo_matricula = 0
         ORDER BY descricao_disciplina, ref_diario_avaliacao;";
 
+        //echo $sql_diario_info;
         $rs_diarios_info = $conn->get_all($sql_diario_info);
 
         if ($rs_diarios_info[0][0] != '') {
 
-            $nao_finalizada = ($rs_diarios_info[0][10] == 'f') ? '<strong>*</strong>' : '';
+            $nao_finalizada = ($rs_diarios_info[0][10] == 'f') ? '<strong>*</strong>' : ' ';
 			$color =  ($color != '#ffffff') ? '#ffffff' : '#cce5ff';
 
             echo '<tr bgcolor="'.$color.'">';
@@ -93,7 +94,7 @@ $rs_diarios_matriculados = count($rs_diarios);
                 else 
                     echo '<td align="center">'. number::numeric2decimal_br($diario_info[7],1) .'</td>';
             }
-            echo '<td align="center">'. number::numeric2decimal_br($diario_info[0][5],1) .'</td>';
+            echo '<td align="center">'. number::numeric2decimal_br($rs_diarios_info[0][5],1) .'</td>';
             echo '<td align="center">'.$rs_diarios_info[0][9].'</td>';
             echo '<td align="center">'.$rs_diarios_info[0][8].'</td>';
             echo '</tr>';

@@ -56,6 +56,26 @@ Instalação do banco de dados:
    que auxilia o processo de criação do banco de dados, basta executá-lo no terminal
    Linux.
 
+Dica para conseguir criar banco de dados LATIN1 no PostgreSQL
+=============================================================
+
+Quando se utiliza UTF8 para criar o cluster inicial do PostgreSQL não conseguimos
+criar banco de dados outros tipos enconding, principalmente LATIN1. Este problema 
+é conhecido e documentado. A melhor opção é setar o locale para "C" antes de 
+criar o cluster, desta forma será possível criar bancos de dados com qualquer encoding 
+suportado pelo PostgreSQL. Siga estes passos para conseguir criar um banco LATIN1:
+
+1. Remova completamente o PostgreSQL, se for debian like no prompt execute "aptitute purge postgresql-8.3"
+2. No mesmo prompt como usuário root (#) seta seu locale excutando "export LC_ALL=C && export LANG=C && locale"
+3. Instale novamente o PosgreSQL, ele vai detectar seu locale e criar o cluster 
+   preparado para banco com qualquer enconding. 
+4. Depois basta criar o banco especificando o template0 como modelo, execute: 
+   createdb  -T template0 -E latin1 --lc-collate=pt_BR.ISO-8859-1 --lc-ctype=pt_BR.ISO-8859-1 <nome do banco> 
+
+Executando os passos de 1 a 3, você poderá utilizar o script instala_banco-0.2.0.sh normalmente para terminar
+a criação e instalação do banco de dados.
+
+
 
 Instalação do sistema no Apache:
 =================================
