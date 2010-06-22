@@ -3,14 +3,16 @@
 header("Cache-Control: no-cache");
 
 //INCLUSAO DE BIBLIOTECAS
-require_once("../../../app/setup.php");
+require("../../../lib/common.php");
+require("../../../configuracao.php");
+require("../../../lib/adodb/adodb.inc.php"); 
 
 
-//Criando a classe de conexï¿½o
+//Criando a classe de conexão
 $Conexao = NewADOConnection("postgres");
 	
-//Setando como conexï¿½o persistente
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+//Setando como conexão persistente
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 //EXECUTANDO SQL COM ADODB
 $Result1 = $Conexao->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
@@ -29,7 +31,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>SA</title>
-<link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../../Styles/formularios.css" rel="stylesheet" type="text/css" />
 <script src="../../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
 <script language="javascript">
 <!--
@@ -63,7 +65,7 @@ function ChangeCode(fld_name,op_name){
     }
   }
 
-  alert(code + ' nï¿½o ï¿½ um cï¿½digo vï¿½lido!');
+  alert(code + ' não é um código válido!');
 
   field.focus();
 
@@ -86,7 +88,7 @@ function submit_opt(arq){
 <form id="form1" name="form1" method="post" action="lista_cursos.php">
   <div align="center">
     <h1>Excluir Matr&iacute;cula</h1>
-    <div class="panel">
+    <div class="box_geral"> 
       Per&iacute;odo:<br />
       <span id="sprytextPeriodo">
       <input name="periodo1" type="text" id="periodo2" size="10" value="<?=$sa_periodo_id?>" 
@@ -100,7 +102,7 @@ onchange="ChangeCode('periodo1','periodo')" />
       <input type="text" name="nome_pessoa" id="nome_pessoa" size="35" />
       <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span></span>
       <a href="javascript:abre_consulta_rapida('../../consultas_rapidas/pessoas/index.php')">
-      <img src="../../../public/images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
+      <img src="../../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
       </a>
       <br /><br />
       <div align="center">

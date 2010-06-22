@@ -1,4 +1,4 @@
-<?php require_once("../../common.php"); ?>
+<? require("../../../../lib/common.php"); ?>
 
 <html>
 <head>
@@ -7,17 +7,18 @@
 
 CheckFormParameters(array("id"));
 
-$pai_nome			= trim($_POST['pai_nome']);
-$pai_fone			= trim($_POST['pai_fone']);
-$pai_profissao		= trim($_POST['pai_profissao']);
-$pai_instrucao		= trim($_POST['pai_instrucao']);
-$pai_loc_trabalho	= trim($_POST['pai_loc_trabalho']);
-$mae_nome			= trim($_POST['mae_nome']);
-$mae_fone			= trim($_POST['mae_fone']);
-$mae_profissao		= trim($_POST['mae_profissao']);
-$mae_instrucao		= trim($_POST['mae_instrucao']);
-$mae_loc_trabalho	= trim($_POST['mae_loc_trabalho']);
-$id					= trim($_POST['id']);
+$pai_nome           = trim($_POST['pai_nome']);
+$pai_fone           = trim($_POST['pai_fone']);
+$pai_profissao      = trim($_POST['pai_profissao']);
+$pai_instrucao      = trim($_POST['pai_instrucao']);
+$pai_loc_trabalho   = trim($_POST['pai_loc_trabalho']);
+$mae_nome           = trim($_POST['mae_nome']);
+$mae_fone           = trim($_POST['mae_fone']);
+$mae_profissao      = trim($_POST['mae_profissao']);
+$mae_instrucao      = trim($_POST['mae_instrucao']);
+$mae_loc_trabalho   = trim($_POST['mae_loc_trabalho']);
+$id                 = trim($_POST['id']);
+
 
 SaguAssert($pai_nome || $mae_nome, "É necessário informar pelo menos o nome do pai ou da mãe!!!");
 

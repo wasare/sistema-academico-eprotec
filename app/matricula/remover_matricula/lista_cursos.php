@@ -1,24 +1,43 @@
 <?php
 
 //INCLUSAO DE BIBLIOTECAS
-require_once(dirname(__FILE__) .'/../../setup.php');
-require_once($BASE_DIR .'lib/adodb5/tohtml.inc.php');
+require("../../../lib/common.php");
+require("../../../configuracao.php");
+require("../../../lib/adodb/adodb.inc.php"); 
+require("../../../lib/adodb/tohtml.inc.php");
 
-$conn = new connection_factory($param_conn);
 
 //error_reporting(E_ALL & ~E_NOTICE);
 //ini_set("display_errors", 1);
 
+
+//Criando a classe de conexão
+$Conexao = NewADOConnection("postgres");
+	
+//Setando como conexão persistente
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+
+
 $cod_aluno = $_POST["codigo_pessoa"];
 $periodo = $_POST["periodo1"];
 
+
+
 $sqlAluno = "SELECT id, nome FROM pessoas WHERE id = $cod_aluno;";
 
-$RsAluno = $conn->Execute($sqlAluno);
+$RsAluno = $Conexao->Execute($sqlAluno);
+
+//Se Result1 falhar	
+if (!$RsAluno){
+	print $Conexao->ErrorMsg();			
+    die();
+}	
+
+
 
 $sqlDiarios = "
 SELECT 
-m.id, m.ref_disciplina_ofer, d.id, d.descricao_disciplina, m.ref_curso, c.descricao, o.is_cancelada
+m.id, m.ref_disciplina_ofer, d.id, d.descricao_disciplina, m.ref_curso, c.descricao
 FROM 
 matricula m, cursos c, disciplinas_ofer o, disciplinas d
 WHERE 
@@ -29,8 +48,14 @@ o.id = m.ref_disciplina_ofer AND
 o.ref_disciplina = d.id
 ORDER BY c.descricao;";
 
-$RsDiarios = $conn->Execute($sqlDiarios);
+$RsDiarios = $Conexao->Execute($sqlDiarios);
 	
+if (!$RsDiarios){
+	print $Conexao->ErrorMsg();			
+    die();
+}
+
+
 if ( $RsDiarios->RecordCount() > 0 ) {
 
 $exibe_diarios = ' <table border="0" cellpadding="0" cellspacing="2">      <tr>
@@ -49,10 +74,10 @@ while(!$RsDiarios->EOF) {
 	{
 		$cor = "#E1E1FF";
 	}
-	$cancelado = ($RsDiarios->fields[6] == 1) ? '&nbsp;<strong>*</strong>' : '';
+		
 	$exibe_diarios .= "<tr bgcolor=\"$cor\">";
 	$exibe_diarios .= "<td><input name=\"id_matricula[]\" type=\"checkbox\" value=\"" . $RsDiarios->fields[0] . "\" /></td>";
-	$exibe_diarios .= "<td>" . $RsDiarios->fields[1] . $cancelado ."</td>";
+	$exibe_diarios .= "<td>" . $RsDiarios->fields[1] . "</td>";
 	$exibe_diarios .= "<td>" . $RsDiarios->fields[2] . " - " . $RsDiarios->fields[3] . "</td>";
 	$exibe_diarios .= "<td>" . $RsDiarios->fields[4] . " - " . $RsDiarios->fields[5] . "</td>";
 	$exibe_diarios .= "</tr>";
@@ -61,8 +86,7 @@ while(!$RsDiarios->EOF) {
 		
 }
   $exibe_diarios .= "</table>";
-  $exibe_diarios .= '<strong>(*) Disciplina cancelada.</strong>';
-  $exibe_botao = '<p class="msg_erro"><strong>Aten&ccedil;&atilde;o! Esta a&ccedil;&atilde;o n&atilde;o pode ser desfeita!
+  $exibe_botao = '<p class="style2"><strong>Aten&ccedil;&atilde;o! Esta a&ccedil;&atilde;o n&atilde;o pode ser retomada! 
 </strong></p>';
   $exibe_botao .= '<input type="submit" value="Excluir a matr&iacute;cula nas disciplinas selecionadas" />';
    
@@ -76,7 +100,7 @@ else
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>SA</title>
-<link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../../Styles/formularios.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <form action="excluir_action.php" name="form1" method="post">
@@ -84,7 +108,7 @@ else
   <input type="hidden" name="periodo" id="cod_aluno" value="<?=$periodo?>" />
   <div align="center">
     <h1>Excluir Matr&iacute;cula</h1>  
-    <div class="panel">
+    <div class="box_geral">
       <strong>Aluno: </strong><?=$RsAluno->fields[0]?> - <?=$RsAluno->fields[1]?><br />
       <strong>Per&iacute;odo: </strong> <?=$periodo?>
     </div>

@@ -1,7 +1,7 @@
 <?php 
 
 header("Cache-Control: no-cache");
-require("../../common.php");
+require("../../../../lib/common.php");
 require("../../lib/InvData.php3");
  
 

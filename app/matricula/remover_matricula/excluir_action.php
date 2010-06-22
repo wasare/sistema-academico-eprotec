@@ -1,16 +1,22 @@
 <?php
 
-//INCLUSAO DE BIBLIOTECAS
-require_once(dirname(__FILE__) .'/../../setup.php');
-require_once($BASE_DIR .'lib/adodb5/tohtml.inc.php');
+/* DEBUG
+print_r($_POST);
+error_reporting(E_ALL & ~E_NOTICE);
+ini_set("display_errors", 1);
+*/
 
-$conn = new connection_factory($param_conn);
+//INCLUSAO DE BIBLIOTECAS
+require("../../../lib/common.php");
+require("../../../configuracao.php");
+require("../../../lib/adodb/adodb.inc.php");
+require("../../../lib/adodb/tohtml.inc.php");
 
 
 //BOTAO CONFIRMA
 //Param: lista id de matriculas, conexao
-function bt_confirma($listaMatriculas, $Con) {
-  
+function bt_confirma($listaMatriculas, $Con)
+{
 	$sql = "DELETE FROM matricula WHERE id IN(" . $listaMatriculas . ");";
 	
 	//echo $sql;die;
@@ -33,14 +39,16 @@ function bt_confirma($listaMatriculas, $Con) {
 
 
 //BOTAO CANCELA
-function bt_cancel() {
+function bt_cancel()
+{
 	header("location: filtro.php");
 }
 
 
 // EXIBE PESSOA
 //Param: id pessoa, conexao
-function exibeDadosAluno($aluno, $Con) {
+function exibeDadosAluno($aluno, $Con)
+{
 	
 	$sqlAluno = "SELECT id, nome FROM pessoas WHERE id = $aluno;";
 	
@@ -60,7 +68,8 @@ function exibeDadosAluno($aluno, $Con) {
 
 //MONTA LISTA DE MATRICULAS
 //Param: vetor matriculas
-function montaListaMatriculas($vetMatriculas) {
+function montaListaMatriculas($vetMatriculas)
+{
 	$matriculas = '';
 	
 	foreach($vetMatriculas as $i)
@@ -80,13 +89,14 @@ function montaListaMatriculas($vetMatriculas) {
 
 // EXIBE MATRICULADAS 
 // Param: lista de matriculas, conexao
-function exibeMatriculadas($matriculas, $Con) {
+function exibeMatriculadas($matriculas, $Con)
+{
 
 	//echo $matriculas;die;
 	
 	$sqlDiarios = "
 	SELECT
-	m.id, m.ref_disciplina_ofer, d.id, d.descricao_disciplina, m.ref_curso, c.descricao, o.is_cancelada
+	m.id, m.ref_disciplina_ofer, d.id, d.descricao_disciplina, m.ref_curso, c.descricao
 	FROM
 	matricula m, cursos c, disciplinas_ofer o, disciplinas d
 	WHERE
@@ -113,9 +123,9 @@ function exibeMatriculadas($matriculas, $Con) {
 		{
 			$cor = "#E1E1FF";
 		}
-	    $cancelado = ($RsDiarios->fields[6] == 1) ? '&nbsp;<strong>*</strong>' : '';
+	
 		$exibe_diarios .= "<tr bgcolor=\"$cor\">";
-		$exibe_diarios .= "<td>" . $RsDiarios->fields[1] . $cancelado ." </td>";
+		$exibe_diarios .= "<td>" . $RsDiarios->fields[1] . "</td>";
 		$exibe_diarios .= "<td>" . $RsDiarios->fields[2] . " - " . $RsDiarios->fields[3] . "</td>";
 		$exibe_diarios .= "<td>" . $RsDiarios->fields[4] . " - " . $RsDiarios->fields[5] . "</td>";
 		$exibe_diarios .= "</tr>";	
@@ -129,24 +139,32 @@ function exibeMatriculadas($matriculas, $Con) {
 }//fim exibeMatriculadas
 
 
-// VERIFICA SE HOUVE ENVIO DESTE FORMULARIO
-if($_POST["lista_matriculas"]) {
-	/** ACOES DOS BOTOES DO FORMULARIO  **/
-	if($_POST["opcao"] == "confirm") {
-		bt_confirma($_POST["lista_matriculas"],$conn);
-	}
-	elseif($_POST["opcao"] == "cancel")	{
-		bt_cancel();
-	}	
-}
-else {
-	//POST lista_cursos.php
-	$id_mat = (array) $_POST["id_matricula"]; //vetor matriculas
-	$cod_aluno = (int) $_POST["cod_aluno"];
-	$periodo = (string) $_POST["periodo"];
+//Criando a classe de conexão
+$Conexao = NewADOConnection("postgres");
 
-    if (count($id_mat) == 0)
-      bt_cancel();
+//Setando como conexão persistente
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+
+// VERIFICA SE HOUVE ENVIO DESTE FORMULARIO
+if($_POST["lista_matriculas"])
+{
+	/** ACOES DOS BOTOES DO FORMULARIO  **/
+	if($_POST["opcao"] == "confirm")
+	{
+		bt_confirma($_POST["lista_matriculas"],$Conexao);
+	}
+	elseif($_POST["opcao"] == "cancel")			
+	{
+		bt_cancel();
+	}
+	
+}
+else
+{
+	//POST lista_cursos.php
+	$id_mat = $_POST["id_matricula"];//vetor matriculas
+	$cod_aluno = $_POST["cod_aluno"];
+	$periodo = $_POST["periodo"];
 }
 
 ?>
@@ -155,17 +173,17 @@ else {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>SA</title>
-<link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../../Styles/formularios.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div align="center">
   <h1>Excluir Matr&iacute;cula</h1>
-  <div class="panel"> <strong>Aluno: </strong><?php echo exibeDadosAluno($cod_aluno, $conn); ?><br />
+  <div class="box_geral"> <strong>Aluno: </strong><?php echo exibeDadosAluno($cod_aluno, $Conexao); ?><br />
     <strong>Per&iacute;odo: </strong>
     <?=$periodo?>
   </div>
   <p>
-  <font color="red" class="msg_erro">
+  <font color="red" class="style2">
      <strong>Tem certeza que deseja excluir a(s) matr&iacute;cula(s) na(s) disciplina(s) listada(s)?</strong>
   </font>
   </p>
@@ -175,9 +193,8 @@ else {
       <td height="32" align="center" bgcolor="#CCCCFF">Disciplina</td>
       <td height="32" align="center" bgcolor="#CCCCFF">Curso</td>
     </tr>
-    <?php echo exibeMatriculadas(montaListaMatriculas($id_mat), $conn); ?>
+    <?php echo exibeMatriculadas(montaListaMatriculas($id_mat), $Conexao); ?>
   </table>
-  <strong>(*) Disciplina cancelada.</strong>
   <br /><br />
   <form id="form1" name="form1" method="post" action="">
     <input name="lista_matriculas" type="hidden" value="<?php echo montaListaMatriculas($id_mat);?>" />

@@ -3,17 +3,22 @@
 header("Cache-Control: no-cache");
 
 //-- ARQUIVO E BIBLIOTECAS
-require_once(dirname(__FILE__) .'/../setup.php');
+require_once("../../lib/common.php");
+require_once("../../configuracao.php");
+require_once("../../lib/adodb/adodb.inc.php");
 
-$conn = new connection_factory($param_conn);
+//-- Conectando com o PostgreSQL
+$Conexao = NewADOConnection("postgres");
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+
 
 //-- PARAMETROS
-$sa_periodo_id  = (string) $_POST['periodo_id'];
-$curso_id    = (int) $_POST["curso_id"];
-$aluno_id    = (int) $_POST["aluno_id"];
-$contrato_id = (int) $_POST['contrato_id'];
-$ref_campus  = (int) $_POST["ref_campus"];
-$id_diarios  = (array) $_POST["id_diarios"]; //Array com todos os diarios a matricular
+$sa_periodo_id  = $_POST['periodo_id'];
+$curso_id    = $_POST["curso_id"];
+$aluno_id    = $_POST["aluno_id"];
+$contrato_id = $_POST['contrato_id'];
+$ref_campus  = $_POST["ref_campus"];
+$id_diarios  = $_POST["id_diarios"]; //Array com todos os diarios a matricular
 
 // SOMENTE PROCESSA OS DADOS SE EXISTIR PELO MENOS UMA MATRICULA A SER FEITA
 if (count($id_diarios) > 0)
@@ -35,7 +40,7 @@ if (count($id_diarios) > 0)
 				ref_periodo = '$sa_periodo_id' AND
 				ref_pessoa  = '$aluno_id'";
 	
-		$RsMatriculado = $conn->Execute($sqlMatriculado);
+		$RsMatriculado = $Conexao->Execute($sqlMatriculado);
 		$Result1 = $RsMatriculado->fields[0];
 
          	
@@ -52,7 +57,7 @@ if (count($id_diarios) > 0)
 			WHERE 
 				id = $diario";
 		
-			$RsDisciplina = $conn->Execute($sqlDisciplina);
+			$RsDisciplina = $Conexao->Execute($sqlDisciplina);
 		
 			$disciplina_descricao = $RsDisciplina->fields[0];
 			$disciplina_id = $RsDisciplina->fields[1];
@@ -70,7 +75,7 @@ if (count($id_diarios) > 0)
 					ref_disciplina_ofer = '$diario' AND
 					dt_cancelamento is null";
 	  
-			$RsVerificaVagas = $conn->Execute($sqlVerificaVagas);
+			$RsVerificaVagas = $Conexao->Execute($sqlVerificaVagas);
 	
 			if ($RsVerificaVagas)
 			{
@@ -154,14 +159,14 @@ if ( is_numeric(count($diarios_matriculados)) AND count($diarios_matriculados) >
 {
     //echo $sqlInsereDiario; die;
 	//-- Inserindo a matricula
-	$RsInsereDiario = $conn->Execute($sqlInsereDiario);
+	$RsInsereDiario = $Conexao->Execute($sqlInsereDiario);
 
 	
 	if (!$RsInsereDiario)
 	{
 		$title = "<h3><font color=\"#FF0000\">Erro: matr&iacute;cula n&atilde;o efetuada!</font></h3>";
 		$msg = ">> Di&aacute;rio: $diario<br>";
-	    $msg .= "<p><b>Informa&ccedil;&otilde;es sobre o erro:</b><br>$conn->ErrorMsg()</p>";
+	    $msg .= "<p><b>Informa&ccedil;&otilde;es sobre o erro:</b><br>$Conexao->ErrorMsg()</p>";
 	}
 	else
 	{
@@ -174,9 +179,9 @@ if ( is_numeric(count($diarios_matriculados)) AND count($diarios_matriculados) >
 			WHERE
   				id = '$contrato_id';";
 
-		if($conn->Execute($sqlAtualizaContrato) === false)
+		if($Conexao->Execute($sqlAtualizaContrato) === false)
 		{
-    		$msg .= ">> <font color=\"#FF0000\">Erro ao atualizar contrato: $conn->ErrorMsg()</font><br>";
+    		$msg .= ">> <font color=\"#FF0000\">Erro ao atualizar contrato: $Conexao->ErrorMsg()</font><br>";
 		}
 		else
 		{
@@ -212,7 +217,7 @@ $cabecalho .= ">> <strong>Curso</strong>: $curso_id  - <strong>Per&iacute;odo</s
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>SA</title>
-<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
 <script language="JavaScript">
 <!--
 //JavaScript Document
@@ -257,11 +262,11 @@ function deselecionar_tudo(){
 <body>
 <div align="center">
   <h1>Processo de Matr&iacute;cula</h1>
-  <div class="panel">
+  <div class="box_geral"> 
 	<?=$title?>
        <?=$cabecalho?>
     <?=$msg?>
   </div>
-  <a href="matricula_aluno.php">Nova matr&iacute;cula</a> <a href="<?=$BASE_URL .'app/'?>">P&aacute;gina inicial</a> </div>
+  <a href="matricula_aluno.php">Nova matr&iacute;cula</a> <a href="../../diagrama.php">P&aacute;gina inicial</a> </div>
 </body>
 </html>

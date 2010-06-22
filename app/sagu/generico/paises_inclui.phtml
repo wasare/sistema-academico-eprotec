@@ -1,6 +1,6 @@
 <?php
 
-require("../common.php");
+require("../../../lib/common.php");
 
 ?>
 
@@ -27,7 +27,7 @@ function MostraPaises()
 
 	$conn->Open();
 
-	$sql= "select id, nome from pais order by nome";
+	$sql= "select id, nome from aux_paises order by nome";
 
 	$query = $conn->CreateQuery($sql);
 

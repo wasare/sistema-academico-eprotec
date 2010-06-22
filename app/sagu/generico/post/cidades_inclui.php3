@@ -1,6 +1,6 @@
 <? 
 
-require("../../common.php");
+require("../../../../lib/common.php");
 
 
 $nome       = $_POST['nome'];
@@ -14,14 +14,14 @@ CheckFormParameters(array("nome",
                           "ref_pais",
                           "ref_estado"));
 
-$id = GetIdentity('cidade_id_seq');
+$id = GetIdentity('seq_aux_cidades');
 
 $conn = new Connection;
 
 $conn->Open();
 $conn->Begin();
 
-$sql = "insert into cidade (" .
+$sql = "insert into aux_cidades (" .
        "     id," .
        "     nome," .
        "     cep," .

@@ -1,7 +1,9 @@
 <?php
 
 header ("Cache-Control: no-cache");
-require_once("../../app/setup.php");
+require("../../lib/common.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php");
 
 
 $id_pessoa = $_GET['codigo_pessoa'];
@@ -23,7 +25,7 @@ if($id_pessoa != ''){
 
 
 	$Conexao = NewADOConnection("postgres");
-	$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+	$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 	$RsContrato = $Conexao->Execute($sql);
 

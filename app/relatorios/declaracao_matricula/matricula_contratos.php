@@ -1,6 +1,9 @@
 <?php
 
-require("../../../app/setup.php");
+require("../../../lib/common.php");
+require("../../../configuracao.php");
+require("../../../lib/adodb/adodb.inc.php");
+
 
 $id_pessoa = $_GET['codigo_pessoa'];
 

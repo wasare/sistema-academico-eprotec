@@ -1,9 +1,12 @@
 <?php
-require_once("../../app/setup.php");
+
+require("../../lib/common.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php"); 
 
 
 $Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 
 $contratos = $_POST["contrato"];
@@ -53,12 +56,12 @@ else{
 <head>
     <title>SA</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <link href="../../public/styles/formularios.css" rel="stylesheet"	type="text/css" />
+    <link href="../../Styles/formularios.css" rel="stylesheet"	type="text/css" />
 </head>
 <body>
 <center>
 	<h1>Cola&ccedil;&atilde;o de grau</h1>
-	<div class="panel">
+	<div class="box_geral">
 		<?php echo $resp; ?>
 		<p>
 		<a href="index.php">Realizar nova Cola&ccedil;&atilde;o de Grau</a>

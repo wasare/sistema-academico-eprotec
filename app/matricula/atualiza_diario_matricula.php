@@ -1,25 +1,44 @@
 <?php
 
-require_once(dirname(__FILE__) .'/../setup.php');
-
-$conn = new connection_factory($param_conn);
-
-
 function envia_erro($msg) {
 
 	// ENVIA EMAIL PARA O ADMINISTRADOR
-	// TODO: buscar o email do administrador dos parametros
-    $mail_header = "FROM: gti.bambui@ifmg.edu.br";
-    @mail( 'gti.bambui@ifmg.edu.br', '[ Erro ao atualizar diario ] ', $msg, $mail_header);
+        $mail_header = "FROM: webmaster@cefetbambui.edu.br";
+        @mail( 'webmaster@cefetbambui.edu.br', '[ Erro ao atualizar diario ] ', $msg, $mail_header);
 
 }
 
+function sa_consulta_sql($sql_query) {
+	global $conn, $error_msg;
+
+	if (!$conn) {
+		if (!($conn = diario_open_db())) {
+			return null;
+		}
+	}
+
+	if (( $result_sql = pg_exec($conn, $sql_query)) == false) {
+		$error_msg = "Error ao executar a consulta: " . $sql_query;
+		$error_msg .= '<br /> <br />Entre em contato com o respons&aacute;vel: ';
+		$error_msg .= '<a href="javascript:history.go(-1)">Voltar</a></b>';
+		return $error_msg;
+	} else {
+		//$rows = pg_fetch_array($result_sql);
+		//echo pg_result_error($result_sql);
+
+		return $result_sql;
+	}
+}
+
+
 function sa_getCurso($p,$d,$o) {
 
-	global $conn;
 
 	// VAR CONSULTA
 	$sql9 = "SELECT
+	a.descricao as cdesc,
+	b.descricao_extenso,
+	c.descricao as perdesc,
 	d.ref_curso
 	FROM
 	cursos a,
@@ -29,16 +48,31 @@ function sa_getCurso($p,$d,$o) {
 	d.ref_periodo = '$p' AND
 	b.id = '$d' AND
 	c.id = '$p' AND
-	d.id = $o AND
+	d.id = '$o' AND
 	a.id = d.ref_curso;";
 
-	return $conn->get_one($sql9);
+	//echo $sql9;
+	//exit;
+
+	$qry9 = sa_consulta_sql($sql9);
+
+	if(is_string($qry9)) {
+
+		envia_erro($qry9);
+		exit;
+	}
+
+	while($linha9 = pg_fetch_array($qry9)) {
+		$curso   = $linha9["ref_curso"];
+	}
+
+	return $curso;
+
 }
 
 
 function sa_calcNotaReavaliacao($o,$nd,$ne) {
 
-	global $conn;
 
 	// CONSULTA O NIVEL DO CURSO
 	$sqlCursoTipo = 'SELECT
@@ -49,7 +83,19 @@ function sa_calcNotaReavaliacao($o,$nd,$ne) {
                      c.id = ref_curso AND
                      d.id = '.$o.';';
 
-	$CursoTipo = $conn->get_one($sqlCursoTipo);
+	$qryCursoTipo = sa_consulta_sql($sqlCursoTipo);
+
+	if(is_string($qryCursoTipo))
+	{
+		envia_erro($qryCursoTipo);
+		exit;
+	}
+	else
+	{
+
+		$CursoTipo = pg_fetch_array($qryCursoTipo);
+		$CursoTipo = $CursoTipo['ref_tipo_curso'];
+	}
 
 	/*
 	 1     Tecnico
@@ -77,33 +123,44 @@ function sa_calcNotaReavaliacao($o,$nd,$ne) {
 
 function atualiza_matricula($aluno,$getofer){
 
-	global $conn;
-
 	// RECUPERA INFORMACOES DO DIARIO
 	$qryDisc = " SELECT DISTINCT
 				prof.ref_professor, o.ref_disciplina, o.ref_periodo 
 				FROM 
 				disciplinas_ofer o, disciplinas_ofer_prof prof
             	WHERE
-                 o.id = " . $getofer . " AND 
-				 o.is_cancelada = '0' AND
+                 o.id = '" . $getofer . "' AND 
+				 o.is_cancelada = 0 AND
 				 o.id = prof.ref_disciplina_ofer ;";
 
 
-	$diario_info = $conn->get_all($qryDisc);
+	$qry1 = sa_consulta_sql($qryDisc);
 
-	// A DISCIPLINA EXISTE
+	//echo $qryDisc;
+	//die;
 
-	if(count($diario_info) > 0) {
+	if(is_string($qry1)) {
 
-		foreach($diario_info as $linha)
-		{
-			$getdisciplina = @$linha['ref_disciplina'];
-			$getperiodo = @$linha['ref_periodo'];
-			$id = @$linha['ref_professor'];
-		}
+		envia_erro($qry1);
+		exit;
+	}
+	else {
 
-	} // ^ A DISCIPLINA EXISTE
+		// A DISCIPLINA EXISTE
+
+		if(pg_numrows($qry1) > 0) {
+
+			while($linha = pg_fetch_array($qry1))
+			{
+				$getdisciplina = @$linha['ref_disciplina'];
+				$getperiodo = @$linha['ref_periodo'];
+				$id = @$linha['ref_professor'];
+			}
+
+		} // ^ A DISCIPLINA EXISTE
+	}
+
+
 
 	$grupo = ($id . "-" . $getperiodo . "-" . $getdisciplina . "-" . $getofer);
 
@@ -114,26 +171,38 @@ function atualiza_matricula($aluno,$getofer){
 
 	$qryDiario = 'BEGIN;';
 
+	// $msg = 'Encontradas e resolvidas as seguintes pendencias:\n\n';
+	//echo $getperiodo . " - ". $getdisciplina ." - ". $getofer;
+	//die;
+
 	$getcurso = sa_getCurso($getperiodo,$getdisciplina,$getofer);
 
 
 	// VERIFICA PENDENCIAS RELACIONADAS AO LANCAMENTO DE NOTAS
 	$sql1 = "SELECT
-	COUNT(grupo)
+	grupo
 	FROM diario_formulas
 	WHERE
 	grupo ILIKE '$grupo_novo';";
 
 
-	$num_formula = $conn->get_one($sql1);
+	$qryFormula = sa_consulta_sql($sql1);
 
-	if($num_formula == 6) {
+	if(is_string($qry))
+	{
+		envia_erro($qry);
+		exit;
+	}
+
+	$numformula = pg_numrows($qryFormula);
+
+	if($numformula == 6) {
 
 		$qryNotas = 'SELECT
 		    m.ref_pessoa, id_ref_pessoas 
 	        FROM 
 	    	matricula m 
-	        LEFT JOIN (
+	        LEFT JOIN ( 
 		    	SELECT DISTINCT 
 				d.id_ref_pessoas 
 				FROM 
@@ -151,25 +220,36 @@ function atualiza_matricula($aluno,$getofer){
 			    (m.ref_motivo_matricula = 0)
 	        ORDER BY id_ref_pessoas;';
 
-		$alunos_sem_registro_notas = $conn->get_all($qryNotas);
+		//echo $qryNotas;
 
-		$num_registros = count($alunos_sem_registro_notas);
 
-		$num_notas = 6;
+		$qry = sa_consulta_sql($qryNotas);
 
-		if ($num_registros > 0)
+		if(is_string($qry))
 		{
-			foreach($alunos_sem_registro_notas as $registro)
+			envia_erro($qry);
+			exit;
+		}
+
+		$NumReg = pg_numrows($qry);
+
+		$NumNotas = 6;
+
+		if ($NumReg > 0)
+		{
+			$getcurso = sa_getCurso($getperiodo,$getdisciplina,$getofer);
+
+			while($registro = pg_fetch_array($qry))
 			{
 				$ref_pessoa = $registro['ref_pessoa'];
 
-				for($i = 1 ; $i <= $num_notas; $i++)
+				for($i = 1 ; $i <= $NumNotas; $i++)
 				{
 					$qryDiario .= ' INSERT INTO diario_notas(ra_cnec, ';
 					$qryDiario .= ' ref_diario_avaliacao,nota,peso,id_ref_pessoas,';
 					$qryDiario .= ' id_ref_periodos,id_ref_curso,d_ref_disciplina_ofer,';
 					$qryDiario .= ' rel_diario_formulas_grupo)';
-					$qryDiario .= " VALUES($ref_pessoa,$i,0,0,$ref_pessoa,'$getperiodo',$getcurso,";
+					$qryDiario .= " VALUES($ref_pessoa,'$i','0','0',$ref_pessoa,'$getperiodo',$getcurso,";
 					$qryDiario .= " $getofer,'$grupo');";
 				}
 
@@ -177,12 +257,12 @@ function atualiza_matricula($aluno,$getofer){
 				$qryDiario .= ' ref_diario_avaliacao,nota,peso,id_ref_pessoas,';
 				$qryDiario .= ' id_ref_periodos,id_ref_curso,d_ref_disciplina_ofer,';
 				$qryDiario .= ' rel_diario_formulas_grupo)';
-				$qryDiario .= " VALUES($ref_pessoa,7,-1,0,$ref_pessoa,'$getperiodo',$getcurso,";
+				$qryDiario .= " VALUES($ref_pessoa,'7','-1','0',$ref_pessoa,'$getperiodo',$getcurso,";
 				$qryDiario .= " $getofer,'$grupo');";
 			}
 
 			$flag_pendencia = 1;
-			// $msg .= $num_registros .' alunos com problemas no lancamento de notas\n';
+			// $msg .= $NumReg . ' alunos com problemas no lancamento de notas\n';
 
 		}
 
@@ -211,18 +291,18 @@ function atualiza_matricula($aluno,$getofer){
 		matricula a
 		WHERE
 		a.ref_periodo = '$getperiodo' AND
-		a.ref_disciplina_ofer = $getofer AND
-		a.ref_pessoa = $aluno
+		a.ref_disciplina_ofer = '$getofer' AND
+		a.ref_pessoa = '$aluno'
 		) AS T1
 		FULL OUTER JOIN
 		(
 		SELECT
-		CAST(a.ra_cnec AS INTEGER) AS registro_id, count(CAST(a.ra_cnec AS INTEGER)) AS faltas_diario
+		CAST(a.ra_cnec AS INTEGER) AS registro_id, count(a.ra_cnec) AS faltas_diario
 		FROM
 		diario_chamadas a
 		WHERE
 		(a.ref_periodo = '$getperiodo') AND
-		(a.ref_disciplina_ofer = $getofer) AND
+		(a.ref_disciplina_ofer = '$getofer') AND
 		a.ra_cnec = '$aluno'
 		GROUP BY ra_cnec
 		) AS T4
@@ -234,14 +314,21 @@ function atualiza_matricula($aluno,$getofer){
 		WHERE
 		(num_faltas <> faltas_diario);";
 
-		$diario_faltas = $conn->get_all($sqlDiarioFaltas);
+		$qryFaltas = sa_consulta_sql($sqlDiarioFaltas);
 
-		$numFalta = count($diario_faltas);
+
+		if(is_string($qryFaltas))
+		{
+			envia_erro($qryFaltas);
+			exit;
+		}
+
+		$numFalta = pg_numrows($qryFaltas);
 
 
 		if ($numFalta != 0) {
 
-			foreach($diario_faltas as $registro)
+			while($registro = pg_fetch_array($qryFaltas))
 			{
 				$ref_pessoa = $registro['registro_id'];
 				$faltas = $registro['faltas_diario'];
@@ -274,9 +361,9 @@ function atualiza_matricula($aluno,$getofer){
 		matricula a, pessoas b, diario_notas c
 		WHERE
 		a.ref_periodo = '$getperiodo' AND
-		a.ref_disciplina_ofer = $getofer AND
+		a.ref_disciplina_ofer = '$getofer' AND
 		b.ra_cnec = c.ra_cnec AND
-		c.d_ref_disciplina_ofer = $getofer AND
+		c.d_ref_disciplina_ofer = '$getofer' AND
 		a.ref_pessoa = b.id AND
 		b.ra_cnec = '$aluno'  AND
 		ref_diario_avaliacao < 7
@@ -290,9 +377,9 @@ function atualiza_matricula($aluno,$getofer){
 		matricula a, pessoas b, diario_notas c
 		WHERE
 		a.ref_periodo = '$getperiodo' AND
-		a.ref_disciplina_ofer = $getofer AND
+		a.ref_disciplina_ofer = '$getofer' AND
 		b.ra_cnec = c.ra_cnec AND
-		c.d_ref_disciplina_ofer = $getofer AND
+		c.d_ref_disciplina_ofer = '$getofer' AND
 		a.ref_pessoa = b.id AND
 		b.ra_cnec = '$aluno'  AND
 		ref_diario_avaliacao = 7
@@ -308,8 +395,8 @@ function atualiza_matricula($aluno,$getofer){
 		matricula a
 		WHERE
 		a.ref_periodo = '$getperiodo' AND
-		a.ref_disciplina_ofer = $getofer AND
-		a.ref_pessoa = $aluno
+		a.ref_disciplina_ofer = '$getofer' AND
+		a.ref_pessoa = '$aluno'
 		) AS T3
 
 		USING (registro_id)
@@ -317,18 +404,25 @@ function atualiza_matricula($aluno,$getofer){
 		WHERE
 		nota_diario <> nota_final;";
 
-		$diario_notas = $conn->get_all($sqlNotas);
+		$qryNotas = sa_consulta_sql($sqlNotas);
 
-		$numNotas = count($diario_notas);
+		if(is_string($qryNotas))
+		{
+			envia_erro($qryFaltas);
+			exit;
+		}
+
+
+		$numNotas = pg_numrows($qryNotas);
 
 
 		if ($numNotas != 0) {
 
 			$numNotas = 0;
 
-			foreach($diario_notas as $registro)
+			while($registro = pg_fetch_array($qryNotas))
 			{
-			
+					
 				$ref_pessoa = $registro['registro_id'];
 				$nota_diario = $registro['nota_diario'];
 				$nota_final = $registro['nota_final'];
@@ -348,6 +442,7 @@ function atualiza_matricula($aluno,$getofer){
 					// NOTA EXTRA LANCADA
 					if($nota_diario < 60 || $nota_final < 60) {
 
+
 						// CALCULA NOTA FINAL E VERIFICA NOTA EXTRA SOMENTE COM NOTA < 60
 						// NOTA < 60 RATIFICA O LANCAMENTO DA NOTA EXTRA
 
@@ -364,6 +459,7 @@ function atualiza_matricula($aluno,$getofer){
 							$numNotas++;
 						}
 					}
+
 				}
 			}
 
@@ -384,13 +480,14 @@ function atualiza_matricula($aluno,$getofer){
 			$qryDiario .= "COMMIT;";
 
 			// GRAVA AS ALTERACOES
-			$conn->Execute($qryDiario);
-/*
-			if($res === FALSE) {
+			$res = sa_consulta_sql($qryDiario);
+                        // echo $qryDiario;
+
+			if(is_string($res)) {
 
 				// MENSAGEM DE ERRO AO GRAVAR AS ALTERACOES OU ENVIA EMAIL AVISANDO ALGUEM
 				$msg_erro = "";
-                envia_erro($res ."\n\n". $qryDiario);
+                                envia_erro($res);
 
 				//^ MENSAGEM DE ERRO AO GRAVAR AS ALTERACOES OU ENVIA EMAIL AVISANDO ALGUEM
 
@@ -400,7 +497,7 @@ function atualiza_matricula($aluno,$getofer){
 				$msg_sucesso = "";
 				//^ MENSAGEM PENDENCIAS RESOLVIDAS COM SUCESSO
 			}
-*/
+
 		}
 		else {
 

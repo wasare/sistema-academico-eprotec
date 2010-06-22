@@ -7,23 +7,31 @@
 * @since 03-04-2009
 **/
 
-require_once(dirname(__FILE__) .'/../setup.php');
-require_once($BASE_DIR .'core/situacao_academica.php');
+//Arquivos de configuracao e biblioteca
+require_once("../../lib/common.php");
+require_once("../../configuracao.php");
+require_once("../../lib/adodb/adodb.inc.php");
 
-$conn = new connection_factory($param_conn);
+require_once('../../lib/aluno.inc.php');
+
+//Criando a classe de conexao ADODB
+$Conexao = NewADOConnection("postgres");
+
+//Setando como conexao persistente
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 /**
  * @var string 
  */
-$sa_periodo_id = (string) $_POST['periodo_id'];
+$sa_periodo_id = $_POST['periodo_id'];
 /**
  * @var string 
  */
-$aluno_id = (int) $_POST['codigo_pessoa'];
+$aluno_id = $_POST['codigo_pessoa'];
 /**
  * @var string 
  */
-$contrato_id = (int) $_POST['contrato_id'];
+$contrato_id = $_POST['contrato_id'];
 /**
  * @var string 
  */
@@ -48,7 +56,7 @@ WHERE
   contratos.id = $contrato_id;";
 
 //Exibindo a descricao do curso caso setado
-$RsCurso = $conn->Execute($sqlCurso);
+$RsCurso = $Conexao->Execute($sqlCurso);
 
 
 /**
@@ -68,16 +76,22 @@ $ref_campus = $RsCurso->fields[2];
  */
 $turma = $RsCurso->fields[3];
 
+
+$sqlCampus = "SELECT get_campus($ref_campus)";
+$RsCampus = $Conexao->Execute($sqlCampus);
+$ref_campus = $RsCurso->fields[2];
 /**
  * @var string Descricao no campus
  */
-$campus_nome = $conn->get_one("SELECT get_campus($ref_campus);");
+$campus_nome = $RsCampus->fields[0];
 
+$sqlAluno = "SELECT nome FROM pessoas WHERE id = $aluno_id;";
+$RsAluno = $Conexao->Execute($sqlAluno);
+$ref_campus = $RsCurso->fields[2];
 /**
  * @var string Nome do aluno
  */
-$aluno_nome = $conn->get_one("SELECT nome FROM pessoas WHERE id = $aluno_id;");
-
+$aluno_nome = $RsAluno->fields[0];
 
 $disciplinas_liberadas = 0;
 
@@ -100,8 +114,7 @@ if ($first){
         professor_disciplina_ofer_todos(B.id),
         get_dia_semana_abrv(dia_disciplina_ofer_todos(B.id)),
         turno_disciplina_ofer_todos(B.id),
-        A.status_disciplina,
-        B.is_cancelada
+        A.status_disciplina
     FROM
         matricula A, disciplinas_ofer B
     WHERE
@@ -113,7 +126,7 @@ if ($first){
         A.dt_cancelamento IS NULL
     ORDER BY A.id";
 
-    $RsDisciplinas = $conn->Execute($sqlDisciplinas);
+    $RsDisciplinas = $Conexao->Execute($sqlDisciplinas);
 
     while(!$RsDisciplinas->EOF){
 
@@ -129,17 +142,14 @@ if ($first){
         $dia_semana           = $RsDisciplinas->fields[9];
         $turno                = $RsDisciplinas->fields[10];
         $status_disciplina    = $RsDisciplinas->fields[11];
-        $is_cancelada         = $RsDisciplinas->fields[12];
 
         $code1[] = $ref_disciplina;
         $code2[] = $ref_disciplina_subst == 0 ? '' : $ref_disciplina_subst;
         $desc2[] = $nome2;
 
-        $disc_cancelada = ($is_cancelada == 1) ? '&nbsp;<strong>*</strong>&nbsp;' : '&nbsp;&nbsp;&nbsp;&nbsp;';
-
         if ( !$ref_disciplina_subst ){
 
-            $desc1[] = $disc_cancelada . $ref_disciplina_ofer.' - '.$nome1;
+            $desc1[] = $ref_disciplina_ofer.' - '.$nome1;
             $ofer1[]   = $ref_disciplina_ofer;
             $ofer2[]   = '';
             $curso1[]  = $ref_curso_ofer;
@@ -156,7 +166,7 @@ if ($first){
         }
         else {
 
-            $desc1[] = $disc_cancelada . $ref_disciplina_ofer.' - '.$nome1;
+            $desc1[] = $ref_disciplina_ofer.' - '.$nome1;
 
             $ofer1[]   = '';
             $ofer2[]   = $ref_disciplina_ofer;
@@ -186,7 +196,9 @@ if ( $count != 0 ) {
     for ( $i=0; $i<$count; $i++ ) {
 
         if ( $code1[$i] == '' )
+        {
             continue;
+        }
 
         $DisciplinasMatriculadas .= "<strong>".$desc1[$i]."</strong> (".$code1[$i].") - ".$prof1[$i]."<br />";
     }
@@ -215,6 +227,7 @@ SELECT DISTINCT
   A.ref_curso,
   get_color_campus(A.ref_campus),
   get_campus(A.ref_campus),
+  get_status_disciplina('$aluno_id', '$curso_id', A.ref_disciplina),
   get_creditos(A.ref_disciplina),
   get_num_matriculados(A.id)
 FROM 
@@ -223,7 +236,7 @@ WHERE
   A.ref_disciplina = B.ref_disciplina and
   A.ref_periodo = '$sa_periodo_id' and
   A.ref_curso = $curso_id and
-  A.is_cancelada = '0' ";
+  A.is_cancelada <> '1' ";
 // B.ref_curso
 if(!empty($turma)){
     if($checar_turma == 1){
@@ -238,7 +251,7 @@ ORDER BY 2,
     get_dia_semana_abrv(dia_disciplina_ofer_todos(A.id));";
 
 
-$RsDiarioMatricular = $conn->Execute($sqlDiarioMatricular);
+$RsDiarioMatricular = $Conexao->Execute($sqlDiarioMatricular);
 
 
 while(!$RsDiarioMatricular->EOF){
@@ -254,8 +267,9 @@ while(!$RsDiarioMatricular->EOF){
     $ref_curso        = $RsDiarioMatricular->fields[7];
     $color2           = $RsDiarioMatricular->fields[8];
     $campus           = $RsDiarioMatricular->fields[9];
-    $creditos         = $RsDiarioMatricular->fields[10];
-    $num_matriculados = $RsDiarioMatricular->fields[11];
+    $status           = $RsDiarioMatricular->fields[10];
+    $creditos         = $RsDiarioMatricular->fields[11];
+    $num_matriculados = $RsDiarioMatricular->fields[12];
 
 
 
@@ -272,9 +286,10 @@ while(!$RsDiarioMatricular->EOF){
             ref_pessoa = $aluno_id
     );";
 
-    $RsConfereDiario = $conn->Execute($sqlConfereDiario);
+    $RsConfereDiario = $Conexao->Execute($sqlConfereDiario);
 
-    if ($RsConfereDiario) {
+    if ($RsConfereDiario)
+    {
         $ConfereDiario = $RsConfereDiario->fields[0];
     }
 

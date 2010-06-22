@@ -9,13 +9,16 @@
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require_once('../../app/setup.php');
+require("../../lib/common.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php");
+
 
 //Criando a classe de conexao ADODB
 $Conexao = NewADOConnection("postgres");
 
 //Setando como conexao persistente
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 /**
  * @var string 
@@ -109,7 +112,7 @@ SELECT DISTINCT
         WHERE
                 d.id = o.ref_disciplina AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 o.ref_campus = '$ref_campus' AND
                 o.id IN 
@@ -130,7 +133,7 @@ SELECT DISTINCT
                 p.id = '$aluno_id' AND
                 m.ref_disciplina_ofer = o.id AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 d.id IN (
                   select distinct ref_disciplina
                         from cursos_disciplinas
@@ -153,7 +156,7 @@ SELECT DISTINCT
                 c.ref_disciplina = d.id AND
                 d.id = o.ref_disciplina AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 d.id IN (
                   select distinct ref_disciplina
@@ -168,16 +171,16 @@ SELECT DISTINCT
 						                 from matricula m
 									where
 										m.ref_pessoa = $aluno_id AND
-                                        m.ref_contrato = $id_contrato )
+										m.ref_contrato = $id_contrato)
 				)
 
 ) AS T2 USING (ref_disciplina)
 WHERE matriculada is null 
 ) ORDER BY 2, 4 DESC, 3; ";
 
-// -- o.fl_finalizada = 'f' AND -- somente em diario aberto/finalizado
+// -- o.fl_digitada = 'f' AND -- somente em diario aberto/finalizado
 //
-//echo  $sqlDisciplinas;
+//echo  '<pre>'. $sqlDisciplinas .'</pre>';
 
     $RsDisciplinas = $Conexao->Execute($sqlDisciplinas);
 
@@ -219,7 +222,7 @@ if ( $count == 0 ) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>SA</title>
-<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css">
+<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="../../lib/prototype.js"></script>
 <script language="JavaScript" src="dispensa.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -229,7 +232,7 @@ if ( $count == 0 ) {
   <h1>Processo de Dispensa de Disciplina</h1>
   <h4>Sele&ccedil;&atilde;o da disciplina: Etapa 2/3</h4>
   <!--<strong>Identifica&ccedil;&atilde;o do aluno</strong>-->
-  <div class="panel"> <strong>Aluno: </strong>
+  <div class="box_geral"> <strong>Aluno: </strong>
     <?=$aluno_id?>
     -
     <?=$aluno_nome?>
@@ -247,7 +250,7 @@ if ( $count == 0 ) {
     <?=$campus_nome?>
   </div>
   <form name="form1" method="post" action="dispensa_disciplina_tipo.php">
-  <div class="panel"> <strong>Disciplinas dispon&iacute;veis para dispensa</strong> <br />( Di&aacute;rio - Disciplina / Curso  / Turma (Per&iacute;odo de oferta)) <br />
+  <div class="box_geral"> <strong>Disciplinas dispon&iacute;veis para dispensa</strong> <br />( Di&aacute;rio - Disciplina / Curso  / Turma (Per&iacute;odo de oferta)) <br />
     <br />
     <?=$DisciplinasNaoCursadas?>
   </div>

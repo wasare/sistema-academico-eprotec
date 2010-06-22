@@ -3,10 +3,10 @@
  * Logiciel : HTML2PDF - classe ParsingHTML
  * 
  * Convertisseur HTML => PDF, utilise fpdf de Olivier PLATHEY 
- * Distribué sous la licence LGPL. 
+ * Distribué sous la licence GPL. 
  *
  * @author		Laurent MINGUET <webmaster@spipu.net>
- * @version		3.24 - 05/08/2009
+ * @version		3.08 - 24/06/2008
  */
  
 if (!defined('__CLASS_PARSINGHTML__'))
@@ -55,60 +55,32 @@ if (!defined('__CLASS_PARSINGHTML__'))
 			$parents = array();
 			// récupérer le code à parser
 			$content = $this->html;
-						
+			
 			// chercher les balises HTML du code
 			$tmp = array();
 			$this->searchCode($content, $tmp);
 			
 			// identifier les balises une à une
-			$pre_in = false;
-			$pre_br = array(
-						'name' => 'br',
-						'close' => false,
-						'param' => array(
-							'style' => array(),
-							'num'	=> 0
-						)
-					);
-
 			$todos = array();
 			foreach($tmp as $part)
 			{
 				// si c'est un texte
 				if ($part[0]=='txt')
 				{
-					// enregistrer l'action correspondante
-					if (!$pre_in)
-					{
-						if (trim($part[1])!=='')
-						{
-							// remplacer tous les espaces, tabulations, saufs de ligne multiples par de simples espaces
-							$part[1] = preg_replace('/([\s]+)/is', ' ', $part[1]);
+					// remplacer tous les espaces, tabulations, saufs de ligne multiples par de simples espaces
+					$part[1] = preg_replace('/([\s]+)/is', ' ', $part[1]);
 					
-							$todos[] = array(
-											'name'	=> 'write',
-											'close'	=> false,
-											'param' => array('txt' => $part[1]),
-										);
-						}
-					}
-					else
+					// si un texte est présent
+					if (trim($part[1])!=='')
 					{
-						$part[1] = str_replace("\r", '', $part[1]);
-						$part[1] = explode("\n", $part[1]);
-						
-						foreach($part[1] as $k => $txt)
-						{
-							$txt = str_replace("\t", '        ', $txt);
-							$txt = str_replace(' ', '&nbsp;', $txt);
-							if ($k>0) $todos[] = $pre_br;
-
-								$todos[] = array(
-											'name'	=> 'write',
-											'close'	=> false,
-											'param' => array('txt' => $txt),
+						// enregistrer l'action correspondante
+						$todos[] = array(
+										'name'	=> 'write',
+										'close'	=> false,
+										'param' => array(
+														'txt' => $part[1]
+													),
 										);
-						}
 					}
 				}
 				// sinon, analyser le code
@@ -122,9 +94,9 @@ if (!defined('__CLASS_PARSINGHTML__'))
 							if ($res['close'])
 							{
 								if (count($parents)<1)
-									@HTML2PDF::makeError(3, __FILE__, __LINE__, $res['name']);
+									HTML2PDF::makeError(3, __FILE__, __LINE__, $res['name']);
 								else if ($parents[count($parents)-1]!=$res['name'])
-									@HTML2PDF::makeError(4, __FILE__, __LINE__, $parents);
+									HTML2PDF::makeError(4, __FILE__, __LINE__, $parents);
 								else
 									unset($parents[count($parents)-1]);
 							}
@@ -133,33 +105,28 @@ if (!defined('__CLASS_PARSINGHTML__'))
 								$parents[count($parents)] = $res['name'];						
 							}
 						}
-						if ($res['name']=='pre' || $res['name']=='code')
-						{
-							$pre_in = !$res['close'];
-						}
 						$todos[] = $res;
 					}
 				}	
 			}
 
-			// pour chaque action identifiée, il faut nettoyer le début et la fin des textes
-			// en fonction des balises qui l'entourent.
-			$nb = count($todos);
-			for($k=0; $k<$nb; $k++)
+			// pour chaque action identifiée, il faut nettoyer le début des textes
+			// en fonction des balises qui le précèdent.
+			for($k=0; $k<count($todos); $k++)
 			{
 				//si c'est un texte
 				if ($todos[$k]['name']=='write')
 				{
 					// et qu'une balise spécifique le précède => on nettoye les espaces du début du texte
-					if ($k>0 && in_array($todos[$k-1]['name'], array('table', 'tr', 'td', 'th', 'br', 'div', 'hr', 'p', 'ul', 'ol', 'li')))
+					if ($k>0 && in_array($todos[$k-1]['name'], array('table', 'tr', 'td', 'th', 'br', 'div', 'hr')))
 						$todos[$k]['param']['txt'] = preg_replace('/^([\s]*)([^\s])/isU', '$2', 	$todos[$k]['param']['txt']);
 
 					// et qu'une balise spécifique le suit => on nettoye les espaces de la fin du texte
-					if ($k<count($todos)-1 && in_array($todos[$k+1]['name'], array('table', 'tr', 'td', 'th', 'br', 'div', 'hr', 'p', 'ol', 'ul', 'li')))
+					if ($k<count($todos)-1 && in_array($todos[$k+1]['name'], array('table', 'tr', 'td', 'th', 'br', 'div', 'hr')))
 						$todos[$k]['param']['txt'] = preg_replace('/([^\s])([\s]*)$/isU', '$1', 	$todos[$k]['param']['txt']);
 				}
 			}
-			if (count($parents)) @HTML2PDF::makeError(5, __FILE__, __LINE__, $parents);
+			if (count($parents)) HTML2PDF::makeError(5, __FILE__, __LINE__, $parents);
 			
 			// liste des actions sauvée
 			$this->code = $todos;
@@ -176,21 +143,20 @@ if (!defined('__CLASS_PARSINGHTML__'))
 		{
 			// séparer les balises du texte
 			$tmp = array();
-			$reg = '/(<[^>]+>)|([^<]+)+/isU';
+			preg_match_all('/(<[^>]+>)|([^<]+)+/isU', $content, $parse);
 
 			// pour chaque élément trouvé :
 			$str = '';
-			$offset = 0;
-			while(preg_match($reg, $content, $parse, PREG_OFFSET_CAPTURE, $offset))
+			for($k=0; $k<count($parse[0]); $k++)
 			{
 				// si une balise a été détectée
-				if ($parse[1][0])
+				if ($parse[1][$k])
 				{
 					// sauvegarde du texte précédent si il existe
 					if ($str!=='')	$tmp[] = array('txt',$str);
-		
+
 					// sauvegarde de la balise
-					$tmp[] = array('code',trim($parse[1][0]));
+					$tmp[] = array('code',trim($parse[1][$k]));
 					
 					// initialisation du texte suivant
 					$str = ''; 	
@@ -198,15 +164,11 @@ if (!defined('__CLASS_PARSINGHTML__'))
 				else
 				{
 					// ajout du texte à la fin de celui qui est déjà détecté
-					$str.= $parse[2][0];
+					$str.= $parse[2][$k];
 				}
-				// Update offset to the end of the match
-				$offset = $parse[0][1] + strlen($parse[0][0]);
-				unset($parse);					
 			}
 			// si un texte est présent à la fin, on l'enregistre
-			if ($str!='') $tmp[] = array('txt',$str);
-			unset($str);
+			if ($str!='') $tmp[] = array('txt',$str); 
 		}
 		
 		/**
@@ -260,19 +222,6 @@ if (!defined('__CLASS_PARSINGHTML__'))
 						$param['style'] = 'width: '.$val.'px; '.$param['style'];
 						break;	
 
-					case 'align':
-						if ($name!=='table')
-						{
-							unset($param[$key]);
-							$param['style'] = 'text-align: '.$val.'; '.$param['style'];
-						}
-						break;
-						
-					case 'valign':
-						unset($param[$key]);
-						$param['style'] = 'vertical-align: '.$val.'; '.$param['style'];
-						break;
-						
 					case 'height':
 						unset($param[$key]);
 						$param['style'] = 'height: '.$val.'px; '.$param['style'];	
@@ -319,15 +268,11 @@ if (!defined('__CLASS_PARSINGHTML__'))
 			foreach($styles as $style)
 			{
 				$tmp = explode(':', $style);
-				if (count($tmp)>1)
-				{
-					$cod = $tmp[0]; unset($tmp[0]); $tmp = implode(':', $tmp); 
-					$param['style'][trim(strtolower($cod))] = preg_replace('/[\s]+/isU', ' ', trim($tmp));
-				}
+				if (count($tmp)==2)	$param['style'][trim(strtolower($tmp[0]))] = trim($tmp[1]);
 			}
 			
 			// détermination du niveau de table pour les ouverture, avec ajout d'un level
-			if (in_array($name, array('ul', 'ol', 'table')) && !$close)
+			if ($name=='table' && !$close)
 			{
 				$this->num++;
 				$this->level[count($this->level)] = $this->num;
@@ -337,7 +282,7 @@ if (!defined('__CLASS_PARSINGHTML__'))
 			if (!isset($param['num'])) $param['num'] = $this->level[count($this->level)-1];
 
 			// pour les fins de table : suppression d'un level
-			if (in_array($name, array('ul', 'ol', 'table')) && $close)
+			if ($name=='table' && $close)
 			{
 				unset($this->level[count($this->level)-1]);			
 			} 
@@ -380,7 +325,7 @@ if (!defined('__CLASS_PARSINGHTML__'))
 					{
 						if ($level==0) { $not = true; }					// si on est à la premiere balise : on l'ignore
 						$level+= ($row['close'] ? -1 : 1);				// modification du niveau en cours en fonction de l'ouvertre / fermeture
-						if ($level==0) { $not = true; $end = true; }	// si on est au niveau 0 : on a fini
+						if ($level==0) { $not = true; $end = true; }	// si on est au niveau 0 : on a finit
 					}
 					
 					// si on doit prendre en compte la balise courante
@@ -395,14 +340,15 @@ if (!defined('__CLASS_PARSINGHTML__'))
 								$tmp = '';
 								if (isset($val['text-align'])) unset($val['text-align']);
 								foreach($val as $ks => $vs) $tmp.= $ks.':'.$vs.'; ';
-								if (trim($tmp)) $code.= ' '.$key.'="'.$tmp.'"';
+								$val = $tmp;
+								if (trim($val)) $code.= ' '.$key.'="'.$tmp.'" ';
 							}
 							else
 							{
-								$code.= ' '.$key.'="'.$val.'"';
+								$code.= ' '.$key.'="'.$val.'" ';
 							}	
 						}
-						$code.= '>';
+						$code.= ' >';
 					}
 				}
 				

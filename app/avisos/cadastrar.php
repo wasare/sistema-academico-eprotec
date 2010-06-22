@@ -2,7 +2,9 @@
 
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header("Cache-Control: no-cache");
-require_once("../../app/setup.php");
+require("../../lib/common.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php");
 
 //Criando a classe de conexão
 $Conexao = NewADOConnection("postgres");

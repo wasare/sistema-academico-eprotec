@@ -1,12 +1,12 @@
 <?php 
+	require("../../../../lib/common.php"); 
 
-	require_once("../../common.php"); 
 	$id = $_POST['id'];
-    $area = $_POST['area']
+	$area = $_POST['area'];
 ?>
 <html>
 <head>
-<title><?=$title?></title>
+<title><?echo($title);?></title>
 <script language="JavaScript">
 function _select(area_id,area)
 {
@@ -75,11 +75,11 @@ if ( $id != '' || $area != '' )
 
   if ( $area != '' )
     if ( $where != '' )
-		$where .= " AND lower(to_ascii(area)) SIMILAR TO lower(to_ascii('%". $area."%'))";
+       $where .= " AND lower(to_ascii(area)) SIMILAR TO lower(to_ascii('%". $area."%'))";
     else
-		$where .= " lower(to_ascii(area)) SIMILAR TO lower(to_ascii('%". $area."%'))";
-  
-	$sql .= " where" . $where . " order by id;";
+       $where .= " lower(to_ascii(area)) SIMILAR TO lower(to_ascii('%". $area."%'))";
+
+  $sql .= " where" . $where . " order by id;";
 
   $query = $conn->CreateQuery($sql);
 

@@ -1,6 +1,6 @@
 <?php 
 
-require("../../common.php"); 
+require("../../../../lib/common.php"); 
 
 $id               = $_POST['id'];
 $pai_nome         = $_POST['pai_nome'];

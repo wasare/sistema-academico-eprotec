@@ -1,6 +1,6 @@
 <?php
 
-require("../../common.php");
+require("../../../../lib/common.php");
 
 
 $ref_campus    = $_GET['ref_campus'];
@@ -11,7 +11,7 @@ $ref_professor = $_GET['ref_professor'];
 $conn = new Connection;
 $conn->Open();
 
-$sql = "delete from coordenador 
+$sql = "delete from coordenadores 
 		where 
 		ref_campus = '$ref_campus' and 
 		ref_curso = '$ref_curso' and 

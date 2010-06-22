@@ -1,6 +1,6 @@
 <?php
 
-require("../../common.php");
+require("../../../../lib/common.php");
 
 
 $id = $_POST['id'];
@@ -16,7 +16,7 @@ $conn->Open();
 
 $conn->Begin();
 
-$sql = " update estado set " .
+$sql = " update aux_estados set " .
        "    id = '$id'," .
        "    nome = '$nome'," .
        "    ref_pais = '$ref_pais'" .

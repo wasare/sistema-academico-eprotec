@@ -1,0 +1,32 @@
+/* CSS Document */
+
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+
+body td {
+	padding: 2px;
+}
+.box_geral {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000066;
+	text-decoration: none;
+	background-color: #EFEFEF;
+	/*border: 2px ridge #333333;*/
+}
+.tabela_geral {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+	/*border: 2px ridge #333333;*/
+}
+
+.style1 {
+	font-size: 20px;
+	font-weight:bold;
+}
+.style2 {
+	color: #FF0000;
+}

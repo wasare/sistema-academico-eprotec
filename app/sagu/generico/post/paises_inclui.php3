@@ -1,6 +1,6 @@
 <?php 
 
-require("../../common.php"); 
+require("../../../../lib/common.php"); 
 
 $nome = $_POST['nome'];
 
@@ -12,7 +12,7 @@ $conn = new Connection;
 $conn->Open();
 $conn->Begin();
 
-$sql = "select nextval('pais_id_seq')";
+$sql = "select nextval('seq_aux_paises')";
 
 $query = $conn->CreateQuery($sql);
 
@@ -29,7 +29,7 @@ $query->Close();
 
 SaguAssert($success,"Nao foi possivel obter um numero do País!");    
 
-$sql = " insert into pais (id," .
+$sql = " insert into aux_paises (id," .
        "                         nome)" .
        " values (" .
        "                         '$id_paises'," .

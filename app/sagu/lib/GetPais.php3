@@ -4,7 +4,7 @@
    */
   function GetPais($id,$SaguAssert)
   {
-    $sql = "select nome from pais where id = '$id'";
+    $sql = "select nome from aux_paises where id = '$id'";
 
     $conn = new Connection;
 

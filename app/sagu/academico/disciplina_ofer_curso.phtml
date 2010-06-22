@@ -1,6 +1,6 @@
 <?php
 
-require("../common.php");
+require("../../../lib/common.php");
 require("../lib/SQLCombo.php3");
 
 $ref_periodo         = $_POST['ref_periodo'];
@@ -15,6 +15,12 @@ $ref_disciplina_nome = $_POST['ref_disciplina_nome'];
 CheckFormParameters(array("ref_campus",
                			     "ref_curso" ,
 			                 "ref_periodo")); 
+
+
+$op1_opcoes = SQLArray("select nome, id from dias order by id");
+$op2_opcoes = SQLArray("select turno || ' - ' || hora_ini || ' às ' || hora_fim || ' / ' || descricao, id from horarios where ref_periodo = '$ref_periodo' order by id;");
+$op3_opcoes = SQLArray("select id || ' - ' || descricao, id from regimes_disciplinas order by id");
+
 
 $conn = new Connection;
 

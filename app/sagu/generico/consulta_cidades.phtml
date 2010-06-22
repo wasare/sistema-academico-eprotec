@@ -1,6 +1,6 @@
 <?php
 
-require("../common.php");
+require("../../../lib/common.php");
 
 
 $id   = $_POST['id'];
@@ -62,7 +62,7 @@ function ListaCidades()
 
 		// note the parantheses in the where clause !!!
 		$sql = "select id, nome, ref_estado" .
-                 "  from cidade";
+                 "  from aux_cidades";
 
 		$where = '';
 

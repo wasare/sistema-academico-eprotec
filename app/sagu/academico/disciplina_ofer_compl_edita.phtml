@@ -1,6 +1,6 @@
 <?php
 
-require("../common.php");
+require("../../../lib/common.php");
 require("../lib/InvData.php3"); 
 require("../lib/SQLCombo.php3");
 
@@ -10,7 +10,10 @@ $ref_campus    = $_GET['ref_campus'];
 $ref_professor = $_GET['ref_professor'];
 
 
+$op1_opcoes = SQLArray("select nome, id from dias order by id");
 $op3_opcoes = SQLArray("select nome, id from dias order by id");
+$op5_opcoes = SQLArray("select descricao || ' - ' || id, id from regimes_disciplinas order by id");
+
 
 $conn = new Connection;
 
@@ -90,6 +93,10 @@ list ($ref_periodo) = $query->GetRowValues();
 $query->Close();
 
 $conn->Close();
+
+$op2_opcoes = SQLArray("select turno || ' - ' || hora_ini || ' às ' || hora_fim || ' / ' || descricao, id from horarios where ref_periodo = '$ref_periodo' order by id;");
+
+$op4_opcoes = SQLArray("select turno || ' - ' || hora_ini || ' às ' || hora_fim || ' / ' || descricao, id from horarios where ref_periodo = '$ref_periodo' order by id;");
 
 ?>
 <html>
@@ -318,6 +325,16 @@ function setResult(arg1,arg2,arg3)
         <input name="dia_semana_aux" type=text size="6" value="<?echo($dia_semana_aux)?>" onChange="ChangeCode('dia_semana_aux','op3')">
         <font color="#000000"> 
         <?php ComboArray("op3",$op3_opcoes,$dia_semana_aux,"ChangeOp3()");?>
+        </font>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Horário Auxiliar</font>
+      </td>
+      <td width="70%"> 
+        <input name="ref_horario_aux" type=text size="6" value="<?echo($ref_horario_aux)?>" onChange="ChangeCode('ref_horario_aux','op4')">
+        <font color="#000000"> 
+        <script language="PHP">ComboArray("op4",$op4_opcoes,$ref_horario_aux,"ChangeOp4()");</script>
         </font>
       </td>
     </tr>

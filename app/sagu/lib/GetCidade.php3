@@ -4,7 +4,7 @@
    */
   function GetCidade($id,$SaguAssert)
   {
-    $sql = "select nome from cidade where id = '$id'";
+    $sql = "select nome from aux_cidades where id = '$id'";
 
     $conn = new Connection;
 

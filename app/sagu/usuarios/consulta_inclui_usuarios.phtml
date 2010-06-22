@@ -1,6 +1,6 @@
 <?php
 
-require_once("../common.php");
+require_once("../../../lib/common.php");
 
 $nome = $_POST['nome'];
 $nome_completo = $_POST['nome_completo'];
@@ -45,7 +45,7 @@ function ListaPessoas()
 
 		$sql = " select nome, " .
            "        nome_completo " .
-           " from usuario ";
+           " from sagu_usuarios ";
 
 		$where = '';
 

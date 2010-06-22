@@ -1,6 +1,6 @@
 <?php 
 
-require("../common.php");
+require("../../../lib/common.php");
 require("../lib/InvData.php3");
 require("../lib/GetField.php3");
 
@@ -174,7 +174,17 @@ function setResult(id,nome)
       </td>
     </tr>
 
-    <input type="hidden" id="tipo" name="tipo" value="<?php echo $tipo;?>" />
+   <!-- <tr>
+      <td bgcolor="#CCCCFF" width="147"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Tipo&nbsp;</font></td>
+      <td width="341">
+       <select name="tipo" size="1">
+         <option selected><?echo($requisitos[$tipo]);?></option>
+         <option value="P">Pré-Requisito</option>
+         <option value="C">Co-Requisito</option>
+       </select>
+      </td>
+    </tr>-->
+    <input type="hidden" id="tipo" name="tipo" value="<?php echo ($requisitos[$tipo]);?>" />
     <!--<tr>
       <TD colspan="2"><hr></td>
     </tr>

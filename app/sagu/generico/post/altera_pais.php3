@@ -1,6 +1,6 @@
 <?php 
 
-require("../../common.php"); 
+require("../../../../lib/common.php"); 
 
 $id = $_POST['id'];
 $nome = $_POST['nome'];
@@ -13,7 +13,7 @@ $conn = new Connection;
 $conn->Open();
 $conn->Begin();
 
-$sql = " update pais set " .
+$sql = " update aux_paises set " .
        "    id = '$id'," .
        "    nome = '$nome'" .
        " where id = '$id'";

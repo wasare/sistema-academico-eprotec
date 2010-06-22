@@ -9,7 +9,9 @@
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require_once('../../app/setup.php');
+require("../../lib/common.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php");
 
 
 $diario_id = $_POST['id_diario'];
@@ -22,7 +24,7 @@ $ref_campus = $_POST['ref_campus'];
 $Conexao = NewADOConnection("postgres");
 
 //Setando como conexao persistente
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 $sa_periodo_id = $_POST['periodo_id'];
 //$first = $_POST['first'];
@@ -108,7 +110,7 @@ $periodo_id = $RsDisciplina->fields[1];
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>SA</title>
-<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css">
+<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="../../lib/prototype.js"></script>
 <script language="javascript" src="../../lib/functions.js"></script>
 
@@ -146,7 +148,7 @@ function escreve(request){
   <h1>Processo de Dispensa de Disciplina</h1>
   <h4>Tipo e informa&ccedil;&otilde;es sobre a dispensa: Etapa 3/3</h4>
   <!--<strong>Identifica&ccedil;&atilde;o do aluno</strong>-->
-  <div class="panel"> <strong>Aluno: </strong>
+  <div class="box_geral"> <strong>Aluno: </strong>
     <?=$aluno_id?>
     -
     <?=$aluno_nome?>
@@ -164,7 +166,7 @@ function escreve(request){
     <?=$campus_nome?>
   </div>
   <form name="dispensa_frm" id="dispensa_frm" method="post" action="dispensa_disciplina.post.php">
-  <div class="panel">
+  <div class="box_geral"> 
         <!-- FIXME: exibir informações da disciplina sendo dispensada -->
 				&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; ( Di&aacute;rio - Disciplina  - Turma(Per&iacute;odo de oferta)) <br />
                  <strong>Disciplina a dispensar: </strong>&nbsp; <?=$nome_disciplina?> <br /> <br />

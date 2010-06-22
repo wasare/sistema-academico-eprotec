@@ -1,6 +1,6 @@
 <?php 
 
-require("../../common.php"); 
+require("../../../../lib/common.php"); 
 
 $id           = $_POST['id'];
 $razao_social = $_POST['razao_social'];

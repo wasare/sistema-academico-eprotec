@@ -1,6 +1,6 @@
 <?
 
-require("../../common.php");
+require("../../../../lib/common.php");
 
 
 $pnome = $_POST['pnome'];
@@ -18,7 +18,7 @@ $hasmore = false;
 
 function ListaPessoas()
 {
-	global $pnome, $snome, $so_prof, $hasmore, $limite_list;
+	global $pnome, $snome, $so_prof, $hasmore, $g_pessoas_list;
 	global $like;
 
 	$pnome = strtoupper($pnome);
@@ -84,7 +84,7 @@ function ListaPessoas()
 		echo "        <td width=\"7%\"><b><font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"$fg0\">Nome</font></b></td>\n";
 		echo "      </tr>\n";
 
-		for ( $i=1; $i <= $limite_list; $i++ )
+		for ( $i=1; $i <= $g_pessoas_list; $i++ )
 		{
 			if ( !$query->MoveNext() )
 			{

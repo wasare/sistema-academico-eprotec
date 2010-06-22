@@ -1,7 +1,7 @@
 <?php
 
 require_once('declaracao_matricula.inc.php');
-require_once('../../../lib/fpdf16/fpdf.php');
+require_once('../../../lib/fpdf153/fpdf.php');
 
 class PDF extends FPDF
 {
@@ -23,7 +23,7 @@ $pdf->Ln(15);
 $pdf->SetFont('Times','',13);
 $pdf->MultiCell(0,5,$corpo,0,'J');
 $pdf->Ln(10);
-$pdf->Cell(0,5,$data_declaracao,0,1,'J',0,0,0);
+$pdf->Cell(0,5,$data_declaracao,0,1,'C',0,0,0);
 $pdf->Ln(15);
 $pdf->Cell(44);
 $pdf->Cell(70,5,$carimbo_nome,0,1,'C',0,0,0);

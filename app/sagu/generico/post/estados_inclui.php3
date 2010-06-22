@@ -1,6 +1,6 @@
 <?php 
 
-require("../../common.php");
+require("../../../../lib/common.php");
 require("../../lib/GetPais.php3"); 
 
 $id = $_POST['id'];
@@ -21,7 +21,7 @@ $conn = new Connection;
 $conn->Open();
 $conn->Begin();
     
-$sql = " insert into estado ( id, nome, ref_pais)" .
+$sql = " insert into aux_estados ( id, nome, ref_pais)" .
        " values ( '$id', '$nome', $ref_pais )";
 
 $ok = $conn->Execute($sql);

@@ -1,6 +1,6 @@
 <?php 
 
-require("../../common.php");
+require("../../../../lib/common.php");
 
 $id = $_GET['id'];
 
@@ -11,7 +11,7 @@ $conn = new Connection;
 $conn->Open();
 $conn->Begin();
 
-$sql = "delete from estado" .
+$sql = "delete from aux_estados" .
        "  where id = '$id'";
 
 $ok = $conn->Execute($sql);

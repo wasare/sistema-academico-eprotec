@@ -3,11 +3,13 @@
 header("Cache-Control: no-cache");
 
 //-- ARQUIVO E BIBLIOTECAS
-require_once("../../app/setup.php");
+require_once("../../lib/common.php");
+require_once("../../configuracao.php");
+require_once("../../lib/adodb/adodb.inc.php");
 
 //-- Conectando com o PostgreSQL
 $Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 $cabecalho = '';
 
@@ -15,10 +17,10 @@ if ($_POST['btnOK'] == 10)
 {
 	//-- PARAMETROS
 	$aluno_id    = $_POST['aluno_id']; // matricula do aluno
-	$diarios  = explode("|", $_POST['diarios']); // diarios a ajustar quando for mais de um separï¿½-los por um |
+	$diarios  = explode("|", $_POST['diarios']); // diarios a ajustar quando for mais de um separá-los por um |
 
 	/* 
-		Exemplos de URLs para efetivaï¿½ï¿½o do ajuste de nota e/ou faltas
+		Exemplos de URLs para efetivação do ajuste de nota e/ou faltas
 
 		ajusta_notas_faltas.php?d=2483|2484|2485|2486|2487|2488&id=2735
 		ajusta_notas_faltas.php?d=2483&id=2735
@@ -33,7 +35,7 @@ if ($_POST['btnOK'] == 10)
 		// FIXME: migrar para conexao ADODB
 		if(($conn = pg_Pconnect("host=$host user=$user password=$password dbname=$database")) == false)
 		{
-			$error_msg = "Nï¿½o foi possï¿½vel estabeler conexï¿½o com o Banco: " . $database;
+			$error_msg = "Não foi possível estabeler conexão com o Banco: " . $database;
 		}
 		require_once('atualiza_diario_matricula.php');
 
@@ -54,12 +56,12 @@ if ($_POST['btnOK'] == 10)
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>SA</title>
-<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div align="center">
   <h1>Ajuste de Notas e Faltas</h1>
-  <div class="panel">
+  <div class="box_geral"> 
 	<?=$title?>
 
 	<?php

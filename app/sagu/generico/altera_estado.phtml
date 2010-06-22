@@ -1,6 +1,6 @@
 <?php
 
-require("../common.php");
+require("../../../lib/common.php");
 require("../lib/GetPais.php3"); 
 
 
@@ -36,7 +36,7 @@ $sql = "select " .
        "    id," .
        "    nome," .
        "    ref_pais" .
-       "  from estado where id = '$id'";
+       "  from aux_estados where id = '$id'";
 
 $query = $conn->CreateQuery($sql);
 

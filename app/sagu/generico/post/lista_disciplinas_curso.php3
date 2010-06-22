@@ -1,6 +1,6 @@
 <?php
 
-require("../../common.php");
+require("../../../../lib/common.php");
 
 $ref_curso = $_GET['ref_curso'];
 

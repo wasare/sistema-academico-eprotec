@@ -1,4 +1,4 @@
-<?php require("../common.php"); ?>
+<?php require("../../../lib/common.php"); ?>
 <HTML>
 <HEAD>
 <?php
@@ -37,7 +37,7 @@ $mensagem = "Alteração de Usuário...";
 $ok = $conn->Execute($sql);  
 
 // Altera usuário na tabela SAGU_USUARIOS no banco de dados sagu.
-$sql2 = " update usuario set " .
+$sql2 = " update sagu_usuarios set " .
         "        nome = '$nome', " .
         "        nome_completo = '$nome_completo', " .
         "        email = '$email', " .
@@ -56,7 +56,7 @@ SaguAssert($ok2,"Erro ao alterar o usuário!");
 
 SuccessPage("$mensagem",
             "",
-            "O login do usuário é <b>$nome</b>.<br> Efetue o login novamente clicando <A href=\"../../../index.php\" target=\"_top\"><font color=\"#0000CC\"><b>aqui</b></font></a>");
+            "O login do usuário é <b>$nome</b>.<br> Efetue o login novamente clicando <A href=\"../index.php3\" target=\"_top\"><font color=\"#0000CC\"><b>aqui</b></font></a>");
 
 ?>
 </HEAD>

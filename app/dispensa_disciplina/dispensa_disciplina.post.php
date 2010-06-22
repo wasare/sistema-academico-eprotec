@@ -2,8 +2,10 @@
 
 header("Cache-Control: no-cache");
 
-//-- ARQUIVO CONFIGURACAO E BIBLIOTECAS
-require_once('../../app/setup.php');
+//-- ARQUIVO E BIBLIOTECAS
+require("../../lib/common.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php");
 
 
 // PROCESSA A DISPENSA SE NAO HOUVER ERROS
@@ -16,7 +18,7 @@ require_once('dispensa_valida.php');
 
 //-- Conectando com o PostgreSQL
 $Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 
 // Array ( [dispensa_tipo] => 4 [ref_liberacao_ed_fisica] => 1 ) 
@@ -242,17 +244,17 @@ $cabecalho .= ">> <strong>Curso</strong>: $curso_id  - <strong>Per&iacute;odo</s
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>SA</title>
-<link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css">
+<link href="../../Styles/formularios.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="matricula.js"></script>
 </head>
 <body>
 <div align="center">
   <h1>Processo de Dispensa de Disciplina</h1>
-  <div class="panel">
+  <div class="box_geral"> 
 	<?=$title?>
        <?=$cabecalho?>
     <?=$msg?>
   </div>
-  <a href="dispensa_aluno.php">Nova Dispensa</a> <a href="<?=$BASE_URL .'app/index.php'?>">P&aacute;gina inicial</a> </div>
+  <a href="dispensa_aluno.php">Nova Dispensa</a> <a href="../../diagrama.php">P&aacute;gina inicial</a> </div>
 </body>
 </html>

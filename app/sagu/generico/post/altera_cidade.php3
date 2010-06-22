@@ -1,6 +1,6 @@
 <?php 
 
-require("../../common.php");
+require("../../../../lib/common.php");
 
 
 $id         = $_POST['id'];
@@ -17,7 +17,7 @@ $conn = new Connection;
 $conn->Open();
 $conn->Begin();
 
-$sql = "update cidade set " .
+$sql = "update aux_cidades set " .
        "    nome = '$nome'," .
        "    cep = '$cep'," .
        "    ref_pais = '$ref_pais'," .

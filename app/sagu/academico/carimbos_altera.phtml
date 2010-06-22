@@ -1,12 +1,12 @@
 <?php
 
-require("../common.php");
+require("../../../lib/common.php");
 require("../lib/SQLCombo.php3");
 
 
 $id = $_GET['id'];
 
-$op_opcoes = SQLArray("select nome_setor, id from setor order by nome_setor");
+$op_opcoes = SQLArray("select nome_setor, id from sagu_setores order by nome_setor");
 
 
 CheckFormParameters(array("id"));

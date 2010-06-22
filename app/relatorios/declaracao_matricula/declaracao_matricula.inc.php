@@ -1,26 +1,97 @@
 <?php 
 
-require("../../../app/setup.php");
-require("../../../core/reports/carimbo.php");
-require("../../../core/date.php");
+require("../../../lib/common.php");
+require("../../../configuracao.php");
+require("../../../lib/adodb/adodb.inc.php");
 
-$conn = new connection_factory($param_conn);
-$date = new date();
 
-$contrato 	= $_POST["id_contrato"];
-$data 		= $_POST["data"];
-$carimbo_id = $_POST['carimbo'];
+$Conexao = NewADOConnection("postgres");
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
+
+
+
+$contrato = $_POST["id_contrato"];
+$data = $_POST["data"];
+$carimbo = $_POST['carimbo'];
+
+
+
+function mes($mes_num){
+
+
+	switch ($mes_num) {
+		case 1:
+			$mes = "janeiro";
+			break;
+		case 2:
+			$mes = "fevereiro";
+			break;
+		case 3:
+			$mes = "mar&ccedil;o";
+			break;
+		case 4:
+			$mes = "abril";
+			break;
+		case 5:
+			$mes = "maio";
+			break;
+		case 6:
+			$mes = "junho";
+			break;
+		case 7:
+			$mes = "julho";
+			break;
+		case 8:
+			$mes = "agosto";
+			break;
+		case 9:
+			$mes = "setembro";
+			break;
+		case 10:
+			$mes = "outubro";
+			break;
+		case 11:
+			$mes = "novembro";
+			break;
+		case 12:
+			$mes = "dezembro";
+			break;
+	}
+	return $mes;
+}
 
 
 /* Formatando a data */
+
 if($data == ''){
 	$data = date("d/m/Y");
 }
 
 $data = explode("/",$data,3);
-$mes  = $date->mes($data[1]);
+$mes = mes($data[1]);
+
+
+
+/* Dados de Assinatura/Carimbo */
+
+$sqlCarimbo = "
+SELECT 
+	id, nome, texto, ref_setor
+FROM 
+	carimbos 
+WHERE	id = $carimbo;";
+
+$RsCarimbo = $Conexao->Execute($sqlCarimbo);
+
+if (!$RsCarimbo){
+	print $Conexao->ErrorMsg();
+	die();
+}
+
+
 
 /* Dados da Empresa */
+
 $sqlEmpresa = "
 SELECT 
 	c.razao_social, 
@@ -36,14 +107,22 @@ SELECT
 	a.cep, 
 	a.ref_estado
 FROM 
-	configuracao_empresa c, cidade a
+	configuracao_empresa c, aux_cidades a
 WHERE
 	c.id = 1 AND
 	a.id = c.ref_cidade;";
 
-$RsEmpresa = $conn->Execute($sqlEmpresa);
+$RsEmpresa = $Conexao->Execute($sqlEmpresa);
+
+if (!$RsEmpresa){
+	print $Conexao->ErrorMsg();
+	die();
+}
+
+
 
 /* Dados do aluno e curso */
+
 $sqlContrato = "
 SELECT 
 	a.id, 
@@ -56,7 +135,7 @@ SELECT
 	f.pai_nome,
 	f.mae_nome
 FROM 
-	contratos a, campus b, cursos c, pessoas d, cidade e, filiacao f
+	contratos a, campus b, cursos c, pessoas d, aux_cidades e, filiacao f
 WHERE
 	a.id = $contrato AND
 	a.ref_campus = b.id AND
@@ -65,28 +144,34 @@ WHERE
 	ref_naturalidade = e.id AND
 	d.ref_filiacao = f.id;";
 
-$RsContrato = $conn->Execute($sqlContrato);
+$RsContrato = $Conexao->Execute($sqlContrato);
+
+if (!$RsContrato){
+	print $Conexao->ErrorMsg();
+	die();
+}
 
 /* Formatando a data de nascimento */
+
 if($RsContrato->fields[6] != ''){
 	
 	$data_nascimento = explode("-",$RsContrato->fields[6],3);
-	$mes_nascimento = $date->mes($data_nascimento[1]);
+	$mes_nascimento = mes($data_nascimento[1]);
 }
+
 
 $corpo = '        Declaro para os devidos fins que '.$RsContrato->fields[3].
 ', filho(a) de '.$RsContrato->fields[7].' e '.$RsContrato->fields[8].
 ', nascido(a) em '.$data_nascimento[2].' de '.$mes_nascimento.' de '.
 $data_nascimento[0].', natural de '.$RsContrato->fields[4].'/'.$RsContrato->fields[5].
-', encontra-se devidamente matriculado(a) no '.$RsContrato->fields[2].
+', encontra-se devidamente matriculado(a) no curso '.$RsContrato->fields[2].
 ', neste estabelecimento de ensino.
-          Por ser verdade e estar de acordo com nossos arquivos, assino a presente.';
+            Por ser verdade e estar de acordo com nossos arquivos, assino a presente.';
 
-$data_declaracao = '          '. $RsContrato->fields[1].', '.$data[0].' de '.$mes.' de '.$data[2] .'.';
+$data_declaracao = $RsContrato->fields[1].', '.$data[0].' de '.$mes.' de '.$data[2];
+$carimbo_nome = $RsCarimbo->fields[1];
+$carimbo_dados = $RsCarimbo->fields[2];
 
-$carimbo = new carimbo($param_conn);
-$carimbo_nome = $carimbo->get_nome($carimbo_id);
-$carimbo_dados = $carimbo->get_funcao($carimbo_id);
 
 $decretos = 'Obs.:
 Decreto Nº 3.864/A de 24/01/61 - Criação da Escola

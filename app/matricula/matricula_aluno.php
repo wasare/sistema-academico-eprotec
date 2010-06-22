@@ -10,14 +10,16 @@
 header("Cache-Control: no-cache");
 
 //INCLUSAO DE BIBLIOTECAS
-require_once("../../app/setup.php");
+require("../../lib/common.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php"); 
 
 
-//Criando a classe de conexï¿½o
+//Criando a classe de conexão
 $Conexao = NewADOConnection("postgres");
 
-//Setando como conexï¿½o persistente
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+//Setando como conexão persistente
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 //EXECUTANDO SQL COM ADODB
 $Result1 = $Conexao->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
@@ -91,7 +93,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
                     }
                 }
 
-                alert(code + ' nï¿½o ï¿½ um cï¿½digo vï¿½lido!');
+                alert(code + ' não é um código válido!');
                 field.focus();
                 return true;
             }
@@ -99,7 +101,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
             -->
         </script>
 
-        <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+        <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
         <link href="../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
 
         <title>SA</title>
@@ -109,10 +111,10 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
         <form method="post" name="form1">
 
             <div align="center" style="height:600px;">
-                <h1>Processo de Matr&iacute;cula</h1>
+                <h1>Processo de Matrícula</h1>
                 <h4>Identifica&ccedil;&atilde;o do Per&iacute;odo e do Aluno: Etapa 1/2</h4>
 
-                <div class="panel">
+                <div class="box_geral">
 
                     <!-- Entrada do Periodo -->
                     Selecione um per&iacute;odo:<br />
@@ -130,7 +132,7 @@ $sa_periodo_id = $_SESSION['sa_periodo_id'];
                     <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span></span>
 
                     <a href="javascript:abre_consulta_rapida('../consultas_rapidas/pessoas/index.php')">
-                        <img src="../../public/images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
+                        <img src="../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" />
                     </a>
                     <br /><br />
                     <input type="button" name="teste" id="teste" value="Exibir cursos" onclick="Exibe('regular');Exibe('avulsa');ConsultaCursos();" />

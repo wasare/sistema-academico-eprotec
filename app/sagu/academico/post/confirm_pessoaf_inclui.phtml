@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) .'/../../common.php');
+require("../../../../lib/common.php");
 require("../../lib/GetPais.php3");
 require("../../lib/GetCidade.php3"); 
 require("../../lib/GetEscola.php3"); 
@@ -59,17 +59,57 @@ $cod_externo            = $_POST['cod_externo'];
 $fl_cartao              = $_POST['fl_cartao'];
 
 
-$ok = ValidaCpf($cod_cpf_cgc);
+$ok=ValidaCpf($cod_cpf_cgc);
 SaguAssert($ok,"Número de CPF inválido!");
 
+
 CheckFormParameters(array("nome",
-                          "cep",
-                          "ref_cidade",
-                          "dt_cadastro",
-                          "dt_nascimento",
-                          "sexo",
-                          "fl_dados_pessoais",
-                   ""));
+                            "rua",
+        //                          "complemento",
+        //                          "bairro",
+                            "cep",
+                            "ref_cidade",
+        //                          "fone_particular",
+        //                          "fone_profissional",
+        //                          "fone_celular",
+        //                          "fone_recado",
+        //                          "email",
+        //                          "email_alt",
+        //                          "estado_civil",
+                            "dt_cadastro",
+                            "dt_nascimento",
+        //                          "rg_data",
+                            "sexo",
+        //                          "rg_numero",
+        //                          "rg_orgao",
+        //                          "rg_cidade",
+        //                          "ref_filiacao",
+        //                          "ref_naturalidade",
+        //                          "ref_nacionalidade",
+        //                          "cod_cpf_cgc",
+        //                          "titulo_eleitor",
+        //                          "placa_carro",
+                            "fl_dados_pessoais",
+
+        //                          "rg_num",
+        //                          "cpf",
+        //                          "titulo_eleitord",
+        //                          "quitacao_eleitoral",
+        //                          "hist_original",
+        //                          "hist_escolar",
+        //                          "doc_militar",
+        //                          "foto",
+        //                          "atestado_medico",
+        //                          "diploma_autenticado",
+        //                          "solteiro_emancipado",
+
+        //                          "ano_2g",
+        //                          "ref_escola_2g",
+        //                          "cidade_2g",
+        //                          "ref_curso_2g",
+        //                          "cod_passivo",
+        //			                "obs"
+                            ""));
 
 if ( $ref_cidade )
 $ref_cidade_ = GetCidade($ref_cidade,true);
@@ -236,10 +276,9 @@ echo($estados_civis[$estado_civil]);
                 <tr>
                     <td bgcolor="#EFEFFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sexo</font></td>
                     <td bgcolor="#FFFFEF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C"><b>&nbsp;
-					<?php
-						if($sexo == 'M') echo 'Masculino';
-						if($sexo == 'F') echo 'Feminino';
-					?>
+                                <script language="PHP">
+echo($sexos[$sexo]);
+                                </script>
                     </b></font></td>
                 </tr>
                 <tr>
@@ -560,5 +599,3 @@ echo($cidade_2g . " " . $d_cidade_2g);
         </form>
     </body>
 </html>
-
-

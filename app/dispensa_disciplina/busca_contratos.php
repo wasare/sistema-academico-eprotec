@@ -9,7 +9,10 @@
 
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
 header ("Cache-Control: no-cache");
-require_once('../../app/setup.php');
+require("../../lib/common.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php");
+
 
 /**
  * @var string com o codigo do aluno
@@ -31,11 +34,11 @@ $sql = "SELECT
         	a.ref_curso = b.id";
 
 
-//Criando a classe de conexï¿½o ADODB
+//Criando a classe de conexão ADODB
 $Conexao = NewADOConnection("postgres");
 
-//Setando como conexï¿½o persistente
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+//Setando como conexão persistente
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 //Exibindo a descricao do cuso caso setado
 $RsContrato = $Conexao->Execute($sql);
@@ -47,7 +50,7 @@ $aluno_nome = $RsAluno->fields[0];
 if ( @$RsContrato->RecordCount() > 0 )
 {
 
-$Result1 .= '<div class="panel"><strong>Aluno: </strong>' .  $id_pessoa .' - '. $aluno_nome ;
+$Result1 .= '<div class="box_geral"><strong>Aluno: </strong>' .  $id_pessoa .' - '. $aluno_nome ;
 $Result1 .= '<h4>Selecione o curso: </h4>';
 
 $cont = 0;
@@ -78,5 +81,5 @@ $Result1 .= '<input type="submit" name="processeguir" id="prosseguir"  value=" >
 echo $Result1;
 }
 else
-   echo '<div class="panel"><div align="center"><b><font color="#CC0000">nenhum curso encontrado.</font></b> </div></div>';
+   echo '<div class="box_geral"><div align="center"><b><font color="#CC0000">nenhum curso encontrado.</font></b> </div></div>';
 ?>

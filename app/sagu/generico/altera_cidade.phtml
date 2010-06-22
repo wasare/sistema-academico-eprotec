@@ -1,6 +1,6 @@
 <? 
 
-require("../common.php");
+require("../../../lib/common.php");
 require("../lib/GetPais.php3"); 
 require("../lib/GetEstado.php3"); 
 
@@ -55,7 +55,7 @@ $sql = "select " .
        "    cep," .
        "    ref_estado," .
        "    ref_pais, praca" .
-       "  from cidade where id = '$id'";
+       "  from aux_cidades where id = '$id'";
 
 $query = $conn->CreateQuery($sql);
 

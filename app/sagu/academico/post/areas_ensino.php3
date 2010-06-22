@@ -1,6 +1,6 @@
 <?php
 
-require("../../common.php");
+require("../../../../lib/common.php");
 
 $area = $_POST['area'];
 

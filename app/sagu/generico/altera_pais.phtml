@@ -1,6 +1,6 @@
 <? 
 
-require("../common.php");
+require("../../../lib/common.php");
 require("../lib/GetPais.php3"); 
 
 $id = $_GET['id'];
@@ -20,7 +20,7 @@ $conn->Open();
 $sql = " select " .
        "    id," .
        "    nome" .
-       " from pais where id = '$id'";
+       " from aux_paises where id = '$id'";
 
 $query = $conn->CreateQuery($sql);
 

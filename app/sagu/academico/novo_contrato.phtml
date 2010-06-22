@@ -1,17 +1,17 @@
 <? 
 
 require("../lib/SQLCombo.php3");
-require("../common.php");
+require("../../../lib/common.php");
 
 
 $op_opcoes1 = SQLArray("select nome_campus, id from campus order by nome_campus");
-$op_opcoes2 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivo order by id");
-$op_opcoes3 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivo order by id");
-$op_opcoes4 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivo order by id");
-$op_opcoes5 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivo order by id");
+$op_opcoes2 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivos order by id");
+$op_opcoes3 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivos order by id");
+$op_opcoes4 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivos order by id");
+$op_opcoes5 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivos order by id");
 $op_opcoes6 = SQLArray("$sql_periodos_academico");
 $op_opcoes7 = SQLArray("$sql_periodos_academico");
-$op_opcoes8 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivo order by id");
+$op_opcoes8 = SQLArray("select id || '  ' || substr(descricao,1,30),id from motivos order by id");
 $op_opcoes9 = SQLArray("$sql_periodos_academico");
 
 ?>
@@ -136,7 +136,7 @@ function _init()
 </script>
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20" onload="_init()">
-<form method="post" action="post/novo_contrato.php" name="myform">
+<form method="post" action="post/novo_contrato.php3" name="myform">
 <table width="90%" align="center">
     <tr> 
       <td bgcolor="#000099" colspan="2" height="35" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>Inclusão de Contrato</b></font></td>

@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../common.php");
+require_once("../../../../lib/common.php");
 require("../../lib/InvData.php3");
 
 

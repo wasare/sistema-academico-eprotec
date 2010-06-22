@@ -8,13 +8,16 @@
 
 //Arquivos de configuracao e biblioteca
 header("Cache-Control: no-cache");
-require_once("../../app/setup.php");
+require("../../lib/common.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php");
+
 
 //Criando a classe de conexao ADODB
 $Conexao = NewADOConnection("postgres");
 
 //Setando como conexao persistente
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 
 /**
@@ -74,7 +77,7 @@ if($_POST)
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <title>SA</title>
-        <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+        <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
         <style>
         .tabela td{
             font-family:verdana;
@@ -93,14 +96,14 @@ if($_POST)
     </head>
     <body>
         <h1>Pesquisar Di&aacute;rio</h1>
-        <div class="panel" style="width:300px;">
+        <div class="box_geral" style="width:300px;">
             <form method="POST" action="matricula_avulsa_pesquisar.php">
                 Disciplina:<br />
                 <input type="text" name="disciplina" value="" size="30" />
                 <input type="submit" value="Pesquisar" />
             </form>
         </div>
-        <font color="red">Caso o resultado n&atilde;o apareï¿½a seja mais espec&iacute;fico!</font>
+        <font color="red">Caso o resultado n&atilde;o apareça seja mais espec&iacute;fico!</font>
         <?php
         echo $tbl_diarios;
         ?>

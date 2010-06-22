@@ -1,4 +1,4 @@
-<?php require_once("../common.php"); ?>
+<?php require_once("../../../lib/common.php"); ?>
 <HTML>
 <HEAD>
 <?php
@@ -17,8 +17,8 @@ $mensagem = "Exclusão de Usuário...";
 
 $ok = $conn->Execute($sql);  
 
-// Exclui usuário na tabela SAGU_USUARIOS no banco de dados sagu.
-$sql2 = " DELETE FROM usuario " .
+// exclui usuário na tabela SAGU_USUARIOS no banco de dados sagu.
+$sql2 = " DELETE FROM sagu_usuarios " .
         " WHERE nome = '$nome';";
 
 $ok2 = $conn->Execute($sql2);  

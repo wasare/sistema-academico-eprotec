@@ -1,6 +1,6 @@
 <?php
 
-require("../../common.php"); 
+require("../../../../lib/common.php"); 
 
 $ref_campus    = $_POST['ref_campus'];
 $ref_cursos    = $_POST['ref_cursos'];
@@ -16,7 +16,7 @@ $conn = new Connection;
 
 $conn->Open();
 
-$sql = " insert into coordenador ( " .
+$sql = " insert into coordenadores ( " .
        "        ref_professor," .
        "        ref_campus," .
        "        ref_curso)" . 

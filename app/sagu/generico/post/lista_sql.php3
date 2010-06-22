@@ -1,7 +1,7 @@
-<?php require_once("../../common.php"); ?>
+<? require("../../../../lib/common.php"); ?>
 <html>
 <head>
-<title><?=$title?></title>
+<title><?echo($title);?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <?php 
 
@@ -134,7 +134,7 @@ function ListaResultado($sql)
       <font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><b><font color="#FF0000">
       <script language="PHP">
 if ( $hasmore )
-  echo("<br><br>A Pesquisa excedeu " . $limite_list . " registros.");
+  echo("<br><br>A Pesquisa excedeu " . $g_pessoas_list . " registros.");
 </script>
       </font></b></font></font> </td>
   </tr>

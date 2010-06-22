@@ -1,10 +1,10 @@
 <?php 
 
-require_once("../common.php");
+require_once("../../../lib/common.php");
 require("../lib/InvData.php3");
 require("../lib/VerificaContrato.php3"); 
 
-$id = (int) $_GET['id'];
+$id = $_GET['id'];
 
 ?>
 
@@ -100,13 +100,13 @@ $sql = "select " .
        "    curso_desc(ref_curso)," .
        "    dt_ativacao," .
        "    ref_motivo_entrada," .
-       "    get_motivo(ref_motivo_entrada)," .
+       "    motivo(ref_motivo_entrada)," .
        "    ref_motivo_ativacao," .
-       "    get_motivo(ref_motivo_ativacao)," .
+       "    motivo(ref_motivo_ativacao)," .
        "    ref_motivo_desativacao," .
-       "    get_motivo(ref_motivo_desativacao)," .
+       "    motivo(ref_motivo_desativacao)," .
        "    ref_motivo_inicial," .
-       "    get_motivo(ref_motivo_inicial)," .
+       "    motivo(ref_motivo_inicial)," .
        "    dt_desativacao," .
        "    obs_desativacao," .
        "    obs," .
@@ -123,12 +123,13 @@ $sql = "select " .
        "    ref_periodo_formatura," . 
        "    id_vestibular," . 
        "    cod_status, " .
+       "    get_status(cod_status)," .
        "    dia_vencimento,".
        "    semestre,".
        "    turma,".
        "    ref_periodo_turma".
        "  from contratos" .
-       "  where id = $id;";
+       "  where id = '$id'";
 
 $query = $conn->CreateQuery($sql);
 
@@ -164,7 +165,8 @@ list ( $ref_campus,
        $dt_conclusao,
        $ref_periodo_formatura,
        $id_vestibular, 
-       $status,
+       $status, 
+       $desc_status,
        $dia_vencimento,
        $semestre,
        $turma,

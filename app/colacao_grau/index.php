@@ -1,9 +1,11 @@
 <?php 
 
-require_once("../../app/setup.php");
+require("../../lib/common.php");
+require("../../configuracao.php");
+require("../../lib/adodb/adodb.inc.php"); 
 
 $Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 $Result1 = $Conexao->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
 
@@ -19,7 +21,7 @@ if (!$Result1){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <script language="javascript">
 </script>
-<link href="../../public/styles/formularios.css" rel="stylesheet"	type="text/css" />
+<link href="../../Styles/formularios.css" rel="stylesheet"	type="text/css" />
 <title>SA</title>
     <script src="../../lib/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
     <link href="../../lib/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
@@ -57,7 +59,7 @@ if (!$Result1){
                 }
             }
 
-            alert(code + ' nï¿½o ï¿½ um cï¿½digo vï¿½lido!');
+            alert(code + ' não é um código válido!');
 
             field.focus();
 
@@ -78,7 +80,7 @@ if (!$Result1){
 <body>
 <div align="center" style="height: 600px;">
 <h1>Cola&ccedil;&atilde;o de grau</h1>
-<div class="panel">
+<div class="box_geral">
 <form method="post" name="form1" action="lista_alunos.php">
 <table>
 <tr>
@@ -87,7 +89,7 @@ if (!$Result1){
 <span id="sprytextfield2">
    <input name="codigo_curso" type="text" id="codigo_curso" size="10" />
    <input name="descricao_curso" disabled="disabled" id="descricao_curso" value="" size="40" />
-   <a href="javascript:abre_consulta_rapida('../consultas_rapidas/cursos/index.php')"><img src="../../public/images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" /></a>
+   <a href="javascript:abre_consulta_rapida('../consultas_rapidas/cursos/index.php')"><img src="../../images/icons/lupa.png" alt="Pesquisar usu&aacute;rio" width="20" height="20" /></a>
    <span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>
 </span>
 </td>

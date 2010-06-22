@@ -9,7 +9,7 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>SA</title>
-        <link href="../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+        <link href="../../Styles/formularios.css" rel="stylesheet" type="text/css" />
         <script language="javascript" src="../../lib/prototype.js"></script>
         <script language="javascript">
             <!--
@@ -42,18 +42,16 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
         <div align="center" style="height:600px;">
             <h1>Processo de Matr&iacute;cula Avulsa</h1>
             <h4>Sele&ccedil;&atilde;o das disciplinas: Etapa 2/2</h4>
-            <div class="panel"> <strong>Aluno: </strong>
+            <div class="box_geral"> <strong>Aluno: </strong>
                 <?=$aluno_id?> - <?=$aluno_nome?><br />
                 <strong>Curso: </strong><?=$curso_id?> - <?=$curso_nome?> <strong>Turma: </strong><?=$turma?><br />
                 <strong>Per&iacute;odo: </strong><?=$periodo_id?>
                 <strong>Contrato: </strong><?=$contrato_id?>
                 <strong>Cidade: </strong><?=$campus_nome?>
             </div>
-            <div class="panel"> <strong>Di&aacute;rios matriculados</strong> (Di&aacute;rio / Disciplina / Professor) <br />
+            <div class="box_geral"> <strong>Di&aacute;rios matriculados</strong> (Di&aacute;rio / Disciplina / Professor) <br />
                 <br />
                 <?=$DisciplinasMatriculadas?>
-                <br />
-                <strong>(*) Disciplina cancelada.</strong>
             </div>
 
             <form name="form1" method="post" action="matricula.post.php">
@@ -62,10 +60,10 @@ unset($_SESSION['sa_diarios_matricula_avulsa']);
                 </label>
                 <input type="button" name="adicionar" id="adicionar" onclick="BuscaDiarios();" value="Adicionar di&aacute;rio" />
                 <a href="#" onclick="window.open('matricula_avulsa_pesquisar.php','consulta_diaro','resizable=yes, toolbar=no,width=500,height=500,scrollbars=yes,top=0,left=0');">
-                    <img src="../../public/images/icons/lupa.png" alt="" /> Buscar di&aacute;rio
+                    <img src="../../images/icons/lupa.png" alt="" /> Buscar di&aacute;rio
                 </a>
 
-                <div class="panel">
+                <div class="box_geral">
                     <strong>Di&aacute;rios para matricular</strong>
                     (Di&aacute;rio / Disciplina / Professor)
                     <br /><br />

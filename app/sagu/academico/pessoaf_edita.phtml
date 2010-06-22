@@ -1,6 +1,6 @@
 <?php
 
-require("../common.php");
+require("../../../lib/common.php");
 require("../lib/GetCidade.php3");
 require("../lib/GetFiliacao.php3");
 require("../lib/SQLCombo.php3");
@@ -12,16 +12,38 @@ require("../lib/GetCursoExterno.php3");
 $id = $_GET['id'];
 
 
-$op_opcoes = SQLArray("select id || ' - ' || nome, id from pais order by id");
+$op_opcoes = SQLArray("select id || ' - ' || nome, id from aux_paises order by id");
 
 ?>
+
+
 <html>
 <head>
 <script language="JavaScript">
-function _init(){
-	document.myform.nome.focus();
-}
-</script>
+            function _init()
+            {
+                document.myform.nome.focus();
+            }
+
+            function Pede_Periodo(pessoa,periodo)
+            {
+
+                var periodo = prompt("Qual o Período Atual?", periodo);
+
+                if (periodo == "" || periodo == 0 || periodo==null)
+                {
+                    alert("Cancelar OK");
+                }
+                else
+                {
+
+                    var url = "consultas_diversas.phtml" +
+                        "?pessoa=" + escape(pessoa) + "&periodo=" + escape(periodo);
+                    location = url;
+                }
+            }
+
+        </script>
 <?php
 
 CheckFormParameters(array("id"));
@@ -80,12 +102,11 @@ $sql = "select " .
        "    B.foto," .
        "    B.atestado_medico, " .
        "    B.diploma_autenticado," .
-       "    B.solteiro_emancipado, " .
-       "    C.ref_estado AS cidade_uf, " .
-       "    D.ref_estado AS naturalidade_uf " .
-       " from pessoas A LEFT OUTER JOIN documentos B ON (A.id = B.ref_pessoa) LEFT OUTER JOIN cidade C ON (A.ref_cidade = C.id) LEFT OUTER JOIN cidade D ON (A.ref_naturalidade = D.id)" .
-       " where " .
-       "       A.id = '$id' ";
+       "    B.solteiro_emancipado " .
+       " from pessoas A, documentos B " .
+       " where A.id = B.ref_pessoa and " .
+       "       A.id = '$id' and " .
+       "       B.ref_pessoa= '$id'";
 
 //echo $sql; die;
 
@@ -142,9 +163,7 @@ $doc_militar,
 $foto,
 $atestado_medico,
 $diploma_autenticado,
-$solteiro_emancipado,
-$cidade_uf,
-$naturalidade_uf) = $query->GetRowValues();
+$solteiro_emancipado) = $query->GetRowValues();
 
 $query->Close();
 
@@ -330,7 +349,7 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 		editar</font><br />
 		<a
 			href="form_foto.php?id=<?php echo $id; ?>&pessoa=<?php echo $nome; ?>"><img
-			title="<? echo($nome); ?>" src="../../../core/pessoa_foto.php?id=<? echo($id); ?>"
+			title="<? echo($nome); ?>" src="foto.php?id=<? echo($id); ?>"
 			alt="<?echo($nome);?>" border="1" width="120" /></a></th>
 
 	</tr>
@@ -372,8 +391,7 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 				</td>
 				<td width="100%">
 				<div align="left"><font color="#000000"> <input type="text"
-					name="cnome" size="25" value="<?echo($cnome);?>"> 
-                   <font face="Verdana, Arial, Helvetica, sans-serif" size="2"> - <strong><?php echo($cidade_uf); ?></strong></font>&nbsp;&nbsp;&nbsp;&nbsp;<input
+					name="cnome" size="35" value="<?echo($cnome);?>"> &nbsp;&nbsp;<input
 					type="button" value="..." onClick="buscaCidade(1)" name="button2">
 				</font></div>
 				</td>
@@ -462,9 +480,10 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sexo&nbsp;</font></td>
 		<td><select name="sexo">
-			<option value="" selected="selected"> --- selecione ---</option>
-			<option value="M" <?php if($sexo == 'M') echo 'selected="selected"';?>>Masculino</option>
-			<option value="F" <?php if($sexo == 'F') echo 'selected="selected"';?>>Feminino</option>
+			<option value="<?=$sexo?>" selected><?echo($sexos[$sexo]); ?></option>
+			<option value="M">Masculino</option>
+			<option value="F">Feminino</option>
+			<option value="O">Outros</option>
 		</select></td>
 	</tr>
 	<tr>
@@ -590,8 +609,7 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 				</td>
 				<td width="100%">
 				<div align="left"><font color="#000000"> <input type="text"
-					name="naturalidade" size="25" value="<?echo($naturalidade);?>"> </font> 
-					<font face="Verdana, Arial, Helvetica, sans-serif" size="2"> - <strong><?php echo($naturalidade_uf); ?></strong></font></div>
+					name="naturalidade" size="35" value="<?echo($naturalidade);?>"> </font></div>
 				</td>
 				<td width="0">
 				<div align="right"><font color="#000000"><font color="#000000"> <font
@@ -895,6 +913,20 @@ ComboArray("op",$op_opcoes, $ref_nacionalidade ,"ChangeOp()");
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Observa&ccedil;&otilde;es&nbsp;</font></td>
 		<td><textarea name="obs" cols="40" rows="2"><?echo($obs);?></textarea>
 		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<hr size="1">
+		</td>
+	</tr>
+	<td colspan="2" align="center"><?
+	if (date("m") >= '7')
+	{ $periodo = date("Y") . 'B'; }
+	else
+	{ $periodo = date("Y") . 'A'; }
+	?> <input type="button" name="Button1" value=" Consultas Diversas "
+		onClick="Pede_Periodo('<? echo($id); ?>','<? echo($periodo); ?>')"></td>
+	<tr>
 	</tr>
 	<tr>
 		<td colspan="2">

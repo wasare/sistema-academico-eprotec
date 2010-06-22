@@ -1,8 +1,10 @@
 <?php
 
 //ARQUIVO DE CONFIGURACAO E CLASSE ADODB
-header("Cache-Control: no-cache");
-require_once("../../../app/setup.php");
+header ("Cache-Control: no-cache");
+require_once("../../../lib/common.php");
+require_once("../../../configuracao.php");
+require_once("../../../lib/adodb/adodb.inc.php");
 
 $s_periodo = '';
 
@@ -28,11 +30,11 @@ $sql = "SELECT DISTINCT c.id, descricao
 //echo $sql;
 //die;
 
-//Criando a classe de conexï¿½o ADODB
+//Criando a classe de conexão ADODB
 $Conexao = NewADOConnection("postgres");
 
-//Setando como conexï¿½o persistente
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+//Setando como conexão persistente
+$Conexao->PConnect("host=$host dbname=$database user=$user password=$password");
 
 //Exibindo a descricao do curso caso setado
 $RsCurso = $Conexao->Execute($sql);
@@ -52,10 +54,10 @@ while(!$RsCurso->EOF){
     $tabela.= "   <td align=\"left\">" . $RsCurso->fields[0] . "</td>";
     //$tabela.= "   <td align=\"left\">" . iconv("iso-8859-1", "utf-8", $RsCurso->fields[1]) . "</td>";
     //$tabela.= "   <td align=\"left\"><a href=\"javascript:send('" . $RsCurso->fields[0] . "','". 
-iconv("iso-8859-1", "utf-8", $RsCurso->fields[1]) ."'); \"><img src=\"../../../public/images/icons/apply.png\" alt=\"Enviar\" /></a></td>";
+iconv("iso-8859-1", "utf-8", $RsCurso->fields[1]) ."'); \"><img src=\"../../../images/icons/apply.png\" alt=\"Enviar\" /></a></td>";
     $tabela.= "   <td align=\"left\">" . $RsCurso->fields[1] . "</td>";
     $tabela.= "   <td align=\"left\"><a href=\"javascript:send('" . $RsCurso->fields[0] . "','".
- $RsCurso->fields[1] ."'); \"><img src=\"../../../public/images/icons/apply.png\" alt=\"Enviar\" 
+ $RsCurso->fields[1] ."'); \"><img src=\"../../../images/icons/apply.png\" alt=\"Enviar\" 
 /></a></td>";
         $tabela.= "</tr>";
 

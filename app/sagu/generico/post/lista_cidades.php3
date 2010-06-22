@@ -1,4 +1,4 @@
-<?php require_once("../../common.php"); ?>
+<? require("../../../../lib/common.php"); ?>
 
 <html>
 <head>
@@ -58,7 +58,7 @@ function ListaCidades()
            "        A.ref_pais, " .
            "        A.ref_estado, " .
            "        B.nome " .
-           " from cidade A, pais B ";
+           " from aux_cidades A, aux_paises B ";
 
 
 		$where = '';

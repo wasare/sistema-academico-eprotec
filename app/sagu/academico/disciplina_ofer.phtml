@@ -1,7 +1,7 @@
 <?php
 
-require("../common.php");
-require("../properties.php");
+require("../../../lib/common.php");
+require("../../../lib/properties.php");
 require("../lib/SQLCombo.php3");
 
 $ref_periodo = $properties->Get("ref_periodo");
@@ -13,7 +13,7 @@ $op4_opcoes = SQLArray($sql_periodos_academico);
 ?>
 <html>
 <head>
-<script language="javascript">
+<script language="JavaScript">
 var tipo_busca;
 
 function ChangeOption(opt,fld)
@@ -126,7 +126,7 @@ function AlteraSala()
 <link href="../estilo.css" rel="stylesheet" type="text/css" />
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20">
-<div class="titulo" align="center"><h2>Disciplinas oferecidas</h2></div>
+<div class="titulo" align="center"><h2>Disciplinas oferecidas (Di&aacute;rios)</h2></div>
 <form method="post" action="disciplina_ofer_curso.phtml" name="myform">
 <table cols=2 width="90%" align="center">
 	<tr bgcolor="#000099">

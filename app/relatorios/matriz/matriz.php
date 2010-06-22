@@ -2,9 +2,10 @@
 
 header("Cache-Control: no-cache");
 //INCLUSAO DE BIBLIOTECAS
-require_once("../../../app/setup.php");
-require("../../../lib/adodb5/adodb.inc.php"); 
-require("../../../lib/adodb5/tohtml.inc.php");
+require("../../../lib/common.php");
+require_once("../../../configuracao.php");
+require("../../../lib/adodb/adodb.inc.php"); 
+require("../../../lib/adodb/tohtml.inc.php");
 
 
 $pessoa = $_GET["aluno"];
@@ -62,7 +63,7 @@ $RsDisciplina = $Conexao->Execute($sqlDisciplinas);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Untitled Document</title>
-<link href="../../../public/styles/formularios.css" rel="stylesheet" type="text/css" />
+<link href="../../../Styles/formularios.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="../../../lib/prototype.js"></script>
 <script language="javascript" src="../../../matriz/index.js"></script>
 <script src="../../../lib/functions.js" type="text/javascript"></script>
