@@ -122,9 +122,12 @@ $sql2 = "SELECT
 
 $provas = $conn->get_all($sql2);
 
-$formula = ($curso_tipo == 7) ? substr($formula, 0, 11) : $formula;
+$sql_quantidade_notas = "SELECT quantidade_notas_diario 
+                                FROM tipos_curso 
+                                WHERE id = get_tipo_curso(". get_curso($diario_id) .");";
+$qtde_notas = $conn->get_one($sql_quantidade_notas);
 
-$qtde_notas = ($curso_tipo == 7) ? 4 : 6;
+$formula = substr($formula, 0, ($qtde_notas * 3 - 1));
 
 if (!empty($formula)) 
 { 
@@ -152,7 +155,7 @@ else
          {
             $qid = $p['prova'];
             $qdesc = $p['descricao'];
-            if (($p['prova'] == 5 || $p['prova'] == 6) && $curso_tipo == 7)
+            if ($p['prova'] > $qtde_notas)
 				continue;
 		    echo '<option value="'. $p['prova'] .'">'. $p['descricao'] .'</option>';
          }

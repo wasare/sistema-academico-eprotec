@@ -1187,10 +1187,10 @@ CREATE TABLE disciplinas_ofer (
     is_cancelada character(1),
     conteudo character varying(25),
     num_matriculados integer,
-    fl_digitada boolean DEFAULT false,
+    fl_finalizada boolean DEFAULT false,
     turma text,
     ref_periodo_turma character varying(10),
-    fl_concluida boolean DEFAULT false
+    fl_digitada boolean DEFAULT false
 );
 
 
@@ -1814,7 +1814,8 @@ CREATE TABLE setor (
 
 CREATE TABLE tipos_curso (
     id integer DEFAULT nextval(('seq_tipos_curso'::text)::regclass) NOT NULL,
-    descricao character varying(30)
+    descricao character varying(30),
+    quantidade_notas_diario smallint
 );
 
 

@@ -61,7 +61,7 @@ $periodo = $conn->get_row($qryPeriodo);
            "        get_campus(ref_campus), " .
            "        ref_curso, " .
            "        curso_desc(ref_curso), " .
-           "		fl_digitada, fl_concluida, ".
+           "		fl_finalizada, fl_digitada, ".
            "        descricao_disciplina(ref_disciplina) as descricao_extenso, " .
            "        ref_disciplina, " .
            "        get_num_matriculados(id) || '/' || num_alunos as qtde_alunos, " .
@@ -195,15 +195,15 @@ foreach($diarios as $row3) :
 	$descricao_disciplina = $row3["descricao_extenso"];
     $disciplina_id = $row3["idof"];
     $diario_id = $row3["idof"];
-	$fl_digitada = $row3['fl_digitada'];
-    $fl_concluida = $row3['fl_concluida'];
+	$fl_finalizada = $row3['fl_finalizada'];
+    $fl_digitada = $row3['fl_digitada'];
 	$professor = $row3['professor'];
 	$qtde_alunos = $row3['qtde_alunos'];
 	$turma = $row3['turma'];
 
     $diarios_pane[] = $diario_id;
 
-    $fl_encerrado = ($fl_digitada == 't')  ? 1 : 0;
+    $fl_encerrado = ($fl_finalizada == 't')  ? 1 : 0;
 
     $opcoes_diario = '';
     
@@ -213,16 +213,16 @@ foreach($diarios as $row3) :
 
 	$fl_opcoes = 0;
 
-	if($fl_digitada == 'f' && $fl_concluida == 'f') {
+	if($fl_finalizada == 'f' && $fl_digitada == 'f') {
         $fl_situacao = '<font color="green"><b>Aberto</b></font>';
     }
     else {
 
-        if($fl_concluida == 't') {
+        if($fl_digitada == 't') {
             $fl_situacao = '<font color="blue"><b>Conclu&iacute;do</b></font>';
         }
 
-        if($fl_digitada == 't') {
+        if($fl_finalizada == 't') {
             $fl_situacao = '<font color="red"><b>Finalizado</b></font>';
             $fl_encerrado = 1;
 			$fl_opcoes = 1;

@@ -19,8 +19,8 @@ $sql = "SELECT COUNT(*)
 			FROM
             disciplinas_ofer
          WHERE
-            fl_concluida = 't' AND
-            fl_digitada = 'f' AND
+            fl_digitada = 't' AND
+            fl_finalizada = 'f' AND
             ref_curso = ". get_curso($diario_id) ." AND
 			ref_periodo = periodo_disciplina_ofer($diario_id) AND
             is_cancelada = '0';";
@@ -35,10 +35,10 @@ else {
   $sql1 = "UPDATE
 			disciplinas_ofer
          SET
-            fl_digitada = 't' 
+            fl_finalizada = 't' 
          WHERE  
-		    fl_concluida = 't' AND
-            fl_digitada = 'f' AND
+		    fl_digitada = 't' AND
+            fl_finalizada = 'f' AND
 			ref_curso = ". get_curso($diario_id) ." AND
             ref_periodo = periodo_disciplina_ofer($diario_id) AND
             is_cancelada = '0';";

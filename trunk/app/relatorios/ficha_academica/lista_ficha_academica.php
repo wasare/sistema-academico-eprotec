@@ -42,7 +42,7 @@ $sql1 = "SELECT DISTINCT
     m.ref_motivo_matricula,
     professor_disciplina_ofer_todos(o.id),
     get_carga_horaria_realizada(o.id) as carga_horaria_realizada,
-    o.fl_concluida, o.fl_digitada
+    o.fl_digitada, o.fl_finalizada
     FROM 
         matricula m, disciplinas d, disciplinas_ofer o, periodos s, contratos c
     WHERE 
@@ -137,8 +137,8 @@ foreach ($ficha_academica as $disc) {
     $ref_motivo_matricula = $disc['ref_motivo_matricula'];
     $nota_final = $disc['nota_final'];
 	$professor = $disc['professor_disciplina_ofer_todos'];
-    $fl_concluida = $disc['fl_concluida'];
     $fl_digitada = $disc['fl_digitada'];
+    $fl_finalizada = $disc['fl_finalizada'];
 
     // APROVEITAMENTO DE ESTUDOS 2
     // CERTIFICACAO DE EXPERIENCIAS 3
@@ -200,7 +200,7 @@ foreach ($ficha_academica as $disc) {
     if ($situacao == 'R') { 
 		$fcolor = '#FF0000';
 	}
-    elseif ($fl_digitada == 'f' && $situacao == 'A') {
+    elseif ($fl_finalizada == 'f' && $situacao == 'A') {
         $fcolor = '#006FC7';
         $diarios_nao_finalizados++;
     }

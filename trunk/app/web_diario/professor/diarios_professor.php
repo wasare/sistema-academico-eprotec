@@ -40,7 +40,7 @@ $sql =  " SELECT o.id as idof, " .
            "        get_campus(ref_campus), " .
            "        ref_curso, " .
            "        curso_desc(ref_curso), " .
-           "		fl_digitada, fl_concluida, ".
+           "		fl_finalizada, fl_digitada, ".
            "        descricao_disciplina(o.ref_disciplina) as descricao_extenso, " .
            "        ref_disciplina, " .
            "        get_num_matriculados(o.id) || '/' || num_alunos as qtde_alunos, " .
@@ -61,8 +61,8 @@ $sql3 = 'SELECT DISTINCT
                 d.descricao_disciplina,
                 d.descricao_extenso,
                 o.id as idof,
-				o.fl_digitada,
-                o.fl_concluida
+				o.fl_finalizada,
+                o.fl_digitada
                 FROM disciplinas_ofer_prof f, disciplinas_ofer o, disciplinas d
                 WHERE
                 f.ref_professor = '. $sa_ref_pessoa .' AND
@@ -161,13 +161,13 @@ foreach($diarios as $row3) :
     $descricao_disciplina = $row3["descricao_extenso"];
     $disciplina_id = $row3["idof"];
     $diario_id = $row3["idof"];
-	$fl_digitada = $row3['fl_digitada'];
-    $fl_concluida = $row3['fl_concluida'];
+	$fl_finalizada = $row3['fl_finalizada'];
+    $fl_digitada = $row3['fl_digitada'];
 	$qtde_alunos = (!empty($row3['qtde_alunos'])) ? $row3['qtde_alunos'] : '-';
 	$turma = (!empty($row3['turma'])) ? $row3['turma'] : '-';
 
 
-    $fl_encerrado = ($fl_digitada == 't')  ? 1 : 0;
+    $fl_encerrado = ($fl_finalizada == 't')  ? 1 : 0;
 
     $opcoes_diario = '';
     if ($fl_encerrado == 0) {
@@ -187,18 +187,18 @@ foreach($diarios as $row3) :
     $opcoes_diario .= '<a href="#" onclick="enviar_diario(\'caderno_chamada\',\''. $diario_id .'\',\''. $fl_encerrado .'\',\''. $BASE_URL .'\',\''. $IEnome .'\');">Caderno de chamada</a>';
 
     	
-	if($fl_digitada == 'f' && $fl_concluida == 'f') {  
+	if($fl_finalizada == 'f' && $fl_digitada == 'f') {  
 		$fl_situacao = '<font color="green"><b>Aberto</b></font>';  
 	} 
 	else {
 
         $opcoes_diario .= '<br />';
 
-		if($fl_concluida == 't') {
+		if($fl_digitada == 't') {
         	$fl_situacao = '<font color="blue"><b>Conclu&iacute;do</b></font>';
     	}
 
-		if($fl_digitada == 't') {
+		if($fl_finalizada == 't') {
             $fl_situacao = '<font color="red"><b>Finalizado</b></font>';
         }
 

@@ -25,7 +25,7 @@ if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login'
 // MARCA O DIARIO COMO CONCLUIDO
 $sql1 = "UPDATE disciplinas_ofer
          SET
-            fl_digitada = 'f'
+            fl_finalizada = 'f'
          WHERE
             id = $diario_id;";
 
