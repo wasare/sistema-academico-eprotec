@@ -45,7 +45,7 @@ $qry3 = $conn->get_all($sql3);
 
 $matriculas = count($qry3);
 
-$sql5 = " SELECT fl_digitada, fl_concluida
+$sql5 = " SELECT fl_finalizada, fl_digitada
             FROM
                 disciplinas_ofer
             WHERE
@@ -53,8 +53,8 @@ $sql5 = " SELECT fl_digitada, fl_concluida
 		   
 $qry5 = $conn->get_row($sql5);
 
+$fl_finalizada = $qry5['fl_finalizada'];
 $fl_digitada = $qry5['fl_digitada'];
-$fl_concluida = $qry5['fl_concluida'];
 
 // APROVEITAMENTO DE ESTUDOS 2
 // CERTIFICACAO DE EXPERIENCIAS 3
@@ -124,15 +124,15 @@ table.papeleta {
 
 echo papeleta_header($diario_id);
 
-if($fl_digitada == 'f' && $fl_concluida == 'f') {
+if($fl_finalizada == 'f' && $fl_digitada == 'f') {
         $fl_situacao = '<font color="green"><b>Aberto</b></font>';
 }
 else {
-	if($fl_concluida == 't') {
+	if($fl_digitada == 't') {
             $fl_situacao = '<font color="blue"><b>Conclu&iacute;do</b></font>';
     }
 
-    if($fl_digitada == 't') {
+    if($fl_finalizada == 't') {
         $fl_situacao = '<font color="red"><b>Finalizado</b></font>';
         $fl_encerrado = 1;
     }
@@ -140,7 +140,7 @@ else {
 
 echo 'Situa&ccedil;&atilde;o: ' . $fl_situacao;
 
-if( $fl_digitada == 'f') {
+if( $fl_finalizada == 'f') {
 
     echo '<br /><font color="red" size="-2"><strong>SEM VALOR COMO DOCUMENTO, PASS&Iacute;VEL DE ALTERA&Ccedil;&Otilde;ES</strong></font>';
 

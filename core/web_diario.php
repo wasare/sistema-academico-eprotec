@@ -129,7 +129,7 @@ function is_finalizado($diario_id) {
 
     global $conn;
     $sql = 'SELECT
-                  fl_digitada
+                  fl_finalizada
                      FROM
                         disciplinas_ofer d
                      WHERE

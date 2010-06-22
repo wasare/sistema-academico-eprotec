@@ -23,15 +23,15 @@ if(isset($_SESSION['sa_modulo']) && $_SESSION['sa_modulo'] == 'web_diario_login'
 
 // INVERTE A MARCACAO DE ESTADO DO DIARIO
 $sql1 = "SELECT
-            fl_concluida
+            fl_digitada
 		 FROM
 			disciplinas_ofer
          WHERE
             id = $diario_id;";
 
-$fl_concluida = $conn->get_one($sql1);
+$fl_digitada = $conn->get_one($sql1);
 
-if($fl_concluida === 'f') 
+if($fl_digitada === 'f') 
 	$flag = 't';
 else
 	$flag = 'f';
@@ -41,7 +41,7 @@ else
 $sql2 = "UPDATE 
 			disciplinas_ofer
          SET
-            fl_concluida = '$flag' 
+            fl_digitada = '$flag' 
          WHERE  
             id = $diario_id;";
 

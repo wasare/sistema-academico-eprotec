@@ -13,6 +13,12 @@ chamava CEFET-Bambuí. O sistema teve como base inicial o
 sistema de controle acadêmico SAGU versão1.
 
 
+------------------------------------------------------------
+Notas sobre atualização
+------------------------------------------------------------
+
+Verifique procedimentos de atualização no arquivo ATUALIZACAO.TXT
+
 
 ------------------------------------------------------------
 Notas sobre a instalação
@@ -173,7 +179,8 @@ Antes de efetuar qualquer matrícula é necessário:
 
 
 Para instruções um pouco mais detalhadas acesse a "Ajuda e Documentação" no rodapé da 
-tela inicial do sistema.
+tela inicial do sistema. Ou procure ajuda no grupo de discussão sobre o sistema em
+http://groups.google.com/group/sistema-academico-eprotec
 
 
 

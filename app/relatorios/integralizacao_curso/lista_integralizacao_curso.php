@@ -47,7 +47,7 @@ $sql_disciplinas_aprovadas = "
                 m.dt_cancelamento IS NULL AND
                 ( 
                     ( m.nota_final >= 60 AND 
-                      o.fl_digitada = 't' AND
+                      o.fl_finalizada = 't' AND
                       ( m.num_faltas <= ( get_carga_horaria_realizada(o.id) ) * 0.25 ) ) OR
                     ref_motivo_matricula IN (2,3,4)
                 ); ";

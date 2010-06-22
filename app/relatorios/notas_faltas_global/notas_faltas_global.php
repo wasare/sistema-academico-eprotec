@@ -67,8 +67,8 @@ SELECT
     d.descricao_extenso,
     d.carga_horaria,
     professor_disciplina_ofer_todos(o.id) AS prof,
-    o.fl_concluida,
-    o.fl_digitada
+    o.fl_digitada,
+    o.fl_finalizada
 FROM
     disciplinas d, disciplinas_ofer o, disciplinas_ofer_prof dp
 WHERE
@@ -121,7 +121,7 @@ SELECT * FROM (
             SELECT
                 id from disciplinas_ofer
             WHERE
-                fl_digitada = 't' AND
+                fl_finalizada = 't' AND
                 is_cancelada = '0' AND
                 ref_curso = $curso AND
                 ref_periodo = '$periodo'
@@ -240,13 +240,13 @@ $num_alunos  = count($arr_alunosid);
                 <td>
                         <?php
                         //Situacao do diario
-                        if($legenda['fl_concluida'] == 't') {
+                        if($legenda['fl_digitada'] == 't') {
                             echo '<font color="red"><b>Finalizado</b></font>';
                         }
-                        elseif($legenda['fl_concluida'] == 'f' AND $legenda['fl_digitada'] == 't') {
+                        elseif($legenda['fl_digitada'] == 'f' AND $legenda['fl_finalizada'] == 't') {
                             echo '<font color="blue"><b>Conclu&iacute;do</b></font>';
                         }
-                        elseif($legenda['fl_concluida'] == 'f' AND $legenda['fl_digitada'] == 'f') {
+                        elseif($legenda['fl_digitada'] == 'f' AND $legenda['fl_finalizada'] == 'f') {
                             echo '<font color="green"><b>Aberto</b></font>';
                         }
                         ?>

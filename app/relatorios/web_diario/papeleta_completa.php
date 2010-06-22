@@ -98,7 +98,7 @@ if($matriculas === FALSE) {
 }
 
 
-$sql5 = " SELECT fl_digitada, fl_concluida
+$sql5 = " SELECT fl_finalizada, fl_digitada
             FROM
                 disciplinas_ofer
             WHERE
@@ -106,8 +106,8 @@ $sql5 = " SELECT fl_digitada, fl_concluida
 
 $qry5 = $conn->get_row($sql5);
 
+$fl_finalizada = $qry5['fl_finalizada'];
 $fl_digitada = $qry5['fl_digitada'];
-$fl_concluida = $qry5['fl_concluida'];
 
 
 // APROVEITAMENTO DE ESTUDOS 2
@@ -180,15 +180,15 @@ table.papeleta {
 echo papeleta_header($diario_id);
 
 
-if($fl_digitada == 'f' && $fl_concluida == 'f') {
+if($fl_finalizada == 'f' && $fl_digitada == 'f') {
     $fl_situacao = '<font color="green"><b>Aberto</b></font>';
 }
 else {
-    if($fl_concluida == 't') {
+    if($fl_digitada == 't') {
         $fl_situacao = '<font color="blue"><b>Conclu&iacute;do</b></font>';
     }
 
-    if($fl_digitada == 't') {
+    if($fl_finalizada == 't') {
         $fl_situacao = '<font color="red"><b>Finalizado</b></font>';
         $fl_encerrado = 1;
     }
@@ -196,11 +196,16 @@ else {
 
 echo 'Situação: ' . $fl_situacao;
 
-if( $fl_digitada == 'f') {
+if( $fl_finalizada == 'f') {
 
 	echo '<br /><font color="red" size="-2"><strong>SEM VALOR COMO DOCUMENTO, PASSÍVEL DE ALTERAÇÕES</strong></font>';
 
 }
+
+$sql_quantidade_notas = "SELECT quantidade_notas_diario 
+								FROM tipos_curso 
+								WHERE id = get_tipo_curso((SELECT ref_curso FROM disciplinas_ofer WHERE id = $diario_id));";
+$quantidade_notas_diario = $conn->get_one($sql_quantidade_notas);
 
 ?>
 </font>
@@ -209,12 +214,14 @@ if( $fl_digitada == 'f') {
 		<th><b>N&ordm;</b></th>
 		<th><b>Matr&iacute;cula</b></th>
 		<th><b>Nome</b></th>
-		<th align="center"><b>N1</b></th>
-		<th align="center"><b>N2</b></th>
-		<th align="center"><b>N3</b></th>
-		<th align="center"><b>N4</b></th>
-		<th align="center"><b>N5</b></th>
-		<th align="center"><b>N6</b></th>
+        <?php
+            for( $i = 1; $i <= $quantidade_notas_diario; $i++ ) :
+        ?>
+				<th align="center"><b>N<?=$i?></b></th>
+        <?php
+           endfor;
+        ?>
+
 		<th align="center"><b>N. Extra</b></th>
 		<th align="center"><b>Total</b></th>
 		<th align="center"><b>Faltas</b></th>
@@ -298,18 +305,25 @@ foreach($matriculas as $row3)
     //somatorio nota web diario
     $total_nota_webdiario += $N;
 
-    print ("<td align=\"center\">$N</td>\n ");	
-		
-	if ($row3['ref_diario_avaliacao'] == 7) 
-	{
-		print ("<td align=\"center\">$nota</td>\n ");
-   		print ("<td align=\"center\">$falta</td>\n ");
-   
-   		print ("</tr>\n ");
-	}
-   
-   	$i++;
+    if ($row3['ref_diario_avaliacao'] <= $quantidade_notas_diario || $row3['ref_diario_avaliacao'] == 7)
+		print ("<td align=\"center\">$N</td>\n ");
+	//else	
 
+    $i++;
+    if ($row3['ref_diario_avaliacao'] != 7)
+        continue;
+	//if ($row3['ref_diario_avaliacao'] == 7) 
+//	{
+		print ("<td align=\"center\">$nota</td>\n ");
+		print ("<td align=\"center\">$falta</td>\n ");
+   
+		print ("</tr>\n ");
+//	}
+  //  else
+	//	if ($row3['ref_diario_avaliacao'] <= $quantidade_notas_diario)
+	//		print ("<td align=\"center\">$N</td>\n ");
+   
+   	//$i++;
 }
 
 ?>
@@ -337,25 +351,29 @@ foreach($matriculas as $row3)
 	<h4>Notas distribu&iacute;das</h4>
 <table cellspacing="0" cellpadding="0" class="papeleta">
     <tr bgcolor="#cccccc">
-        <td align="center"><b>N1</b></td>
-        <td align="center"><b>N2</b></td>
-        <td align="center"><b>N3</b></td>
-        <td align="center"><b>N4</b></td>
-        <td align="center"><b>N5</b></td>
-        <td align="center"><b>N6</b></td>
+         <?php
+            for( $i = 1; $i <= $quantidade_notas_diario; $i++ ) :
+        ?>
+                <th align="center"><b>N<?=$i?></b></th>
+        <?php
+           endfor;
+        ?>
 		<td align="center"><b>Total</b></td>
     </tr>
 
     <tr bgcolor="#ffffff">
         <?php
 			$total_distribuido = 0;
+            $count = 1;
             foreach($notas_distribuidas as $nota)
 			{
 				$nota_d = number::numeric2decimal_br($nota['nota_distribuida'],'1');
 				if($nota_d == 0 || empty($nota_d))
 					$nota_d = '-';
-				echo '<td align="center">'. $nota_d .'</td>';
+                if ($count <= $quantidade_notas_diario)
+					echo '<td align="center">'. $nota_d .'</td>';
 				$total_distribuido += $nota['nota_distribuida'];
+				$count++;
 			}
 			echo '<td align="center">'. number::numeric2decimal_br($total_distribuido,1) .'</td>';
         ?>

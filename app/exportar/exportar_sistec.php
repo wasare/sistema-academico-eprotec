@@ -5,6 +5,7 @@ require_once("../../app/setup.php");
 $conn = new connection_factory($param_conn);
 
 $Result1 = $conn->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;");
+$RsCidades = $conn->Execute("SELECT nome_campus, id FROM campus WHERE ref_empresa = 1 ORDER BY 1;");
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -87,6 +88,23 @@ $Result1 = $conn->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;")
 </span>
 </td>
 </tr>
+
+<tr>
+<td>Campus:</td>
+<td>
+<?php  print $RsCidades->GetMenu('campus',null,true,false,0); ?>
+            <span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todos.</span>
+</td>
+</tr>
+
+<tr>
+<td>Turma:</td>
+<td>
+<input name="turma" type="text" id="turma" size="10" />
+                <span class="comentario">Caso n&atilde;o preenchido exibir&aacute; todas as turmas.</span>
+</td>
+</tr>
+
 </table>
 <p align="center">
 <input type="submit" value="Avan&ccedil;ar" />
