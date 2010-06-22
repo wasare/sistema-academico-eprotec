@@ -52,12 +52,12 @@ class connection_factory {
         $this->adodb = $GLOBALS['ADODB_SESS_CONN'];
 
         // reaproveita a conexao da sessao, caso exista uma e seja identica a conexao sendo criada
-        if(is_object($this->adodb) && $this->adodb->host == $this->host && $this->adodb->database == $this->database && $this->adodb->user == $this->user && $this->adodb->password == $this->passowrd) {
+        if(is_object($this->adodb) && $this->adodb->host == $this->host && $this->adodb->port == $this->port && $this->adodb->database == $this->database && $this->adodb->user == $this->user && $this->adodb->password == $this->passowrd) {
             ADOdb_session::Persist($connectMode = $this->conn_persistent);
         }
         else {
 
-            $conn_data = "host=$this->host dbname=$this->database user=$this->user password=$this->password";
+            $conn_data = "host=$this->host port=$this->port dbname=$this->database user=$this->user password=$this->password";
 
             $this->adodb = ADONewConnection("postgres");
 

@@ -18,6 +18,7 @@ class session {
 
         list($host, $database, $user, $password, $port) = array_values($conn_options);
 
+		$host.=':'.$port;
         $options['table'] = $sess_table;
         $this->session_table = $sess_table;
 
@@ -27,14 +28,14 @@ class session {
         if(isset($GLOBALS['ADODB_SESS_CONN']) && is_object($GLOBALS['ADODB_SESS_CONN'])) {
             ADOdb_session::Persist($connectMode = $persist);
             $GLOBALS['ADODB_SESS_CONN']->debug = $debug;
-            // limpa outras sessoes expiradas e inativas por mais de 15 minutos (padrão)
+            // limpa outras sessoes expiradas e inativas por mais de 15 minutos (padrï¿½o)
             $this->clear_expired_sessions();
             @session_start();
         }
     }
 
     /*
-     * Gera um novo ID para sessão
+     * Gera um novo ID para sessï¿½o
     */
     public static function refresh() {
         $random = rand(1,2);
@@ -56,7 +57,7 @@ class session {
     }
 
     /*
-     * Resume uma sessão criada anteriormente
+     * Resume uma sessï¿½o criada anteriormente
     */
     public static function resume() {
 
@@ -67,7 +68,7 @@ class session {
         }
     }
 
-    // forca eliminacao das sessões expiradas de acordo com o tempo definido por  $session_life_time
+    // forca eliminacao das sessï¿½es expiradas de acordo com o tempo definido por  $session_life_time
     protected function clear_expired_sessions() {
         if(is_object($GLOBALS['ADODB_SESS_CONN'])) {
             $time = $GLOBALS['ADODB_SESS_CONN']->OffsetDate(-$this->session_life_time/24/3600,$GLOBALS['ADODB_SESS_CONN']->sysTimeStamp);
@@ -76,7 +77,7 @@ class session {
     }
 
     /**
-     * Configura o tempo máximo de duração da sessão em segundos
+     * Configura o tempo mï¿½ximo de duraï¿½ï¿½o da sessï¿½o em segundos
      * @return void
      */
     public function session_life_time($time) {
