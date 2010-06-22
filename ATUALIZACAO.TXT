@@ -22,12 +22,17 @@ e os arquivos tem o seguinte nome atualiza_revXXX.sql, onde XXX é o
 número da revisão do sistema que foi disponibilizado. Este número de revisão
 também é encontrado no nome do pacote de instalação disponível para
 download: sistema_academico-0.2.0_revXXX.tar.gz. Será necessário executar 
-uma atualização no banco de dados quando existir um arquivo dentro de
-config/sql/atualizacao com o mesmo número de revisão do pacote de instalação,
-ou seja o XXX da atualização do banco será igual ao XXX do pacote de 
-instalação. Neste caso basta executar o script SQL no banco e verificar se
-não ocorreram erros. Para realizar uma atualização com sucesso siga os 
-seguintes passos:
+uma atualização no banco de dados quando existir arquivos dentro de
+config/sql/atualizacao com número de revisão maior ou igual do que a revisão do 
+pacote de instalação que você tem instalado, ou seja se o XXX da atualização do banco 
+for maior ou igual ao XXX do pacote de instalação. Neste caso basta executar 
+todos os scripts SQL de revisão maior ou igual a revisão da sua instalação 
+no banco e verificar se não ocorreram erros. Além da revisão do pacote de instalação
+estar no próprio nome do pacote, você também pode encontrá-la dentro do arquivo VERSAO.TXT.
+Se existir mais de um script SQL eles devem ser executados na sequência crescente da
+respectiva revisão. 
+
+Para realizar uma atualização com sucesso siga os seguintes passos:
 
 1. Edite o arquivo config/configurao.php e descomente a primeira linha comentada
    no arquivo. Isto vai evitar que o sistema seja acessado durante a atualização;
