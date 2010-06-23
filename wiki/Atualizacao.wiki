@@ -1,4 +1,4 @@
-#summary Atualização
+#summary Atualização do SA EPROTEC
 #labels Featured
 
 = Procedimentos de atualização =
