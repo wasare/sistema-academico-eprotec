@@ -1,6 +1,4 @@
 GRANT SELECT ON TABLE diario_seq_faltas TO "aluno";
-GRANT EXECUTE ON FUNCTION get_carga_horaria_realizada TO "aluno"; 
-
 GRANT SELECT ON TABLE tipos_curso TO "aluno";
 
 ALTER TABLE disciplinas_ofer RENAME COLUMN fl_digitada TO fl_finalizada;

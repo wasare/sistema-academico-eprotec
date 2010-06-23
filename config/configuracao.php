@@ -1,5 +1,5 @@
 <?php
-//die('<h3>O sistema esta em manuten&ccedil;&atilde;o no momento. Voltaremos em breve.</h3>');
+//die('<h3>Sistema em manuten&ccedil;&atilde;o no momento. Voltaremos em breve.</h3>');
 /**
  * Forca o fuso horario da aplicacao
  */
