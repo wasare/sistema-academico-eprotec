@@ -11,6 +11,7 @@ $id = $_GET['id'];
 ?>
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
 function _init()
 {
@@ -123,7 +124,7 @@ $dt_inicio_aula = InvData($dt_inicio_aula);
         <?php echo($id); ?></font></td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Descri&ccedil;&atilde;o&nbsp;</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Descri&ccedil;&atilde;o&nbsp;&nbsp;<span class="required">*</span>&nbsp;</font></td>
       <td>
         <input name="descricao" type=text value="<?echo($descricao);?>" size="40">
       </td>
@@ -135,33 +136,33 @@ $dt_inicio_aula = InvData($dt_inicio_aula);
         <?PHP ComboArray("op1",$op1_options,"$ref_anterior","ChangeOp1()") ?> </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Inicial<br>&nbsp;(dd/mm/aaaa)</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Inicial&nbsp;<span class="required">*</span>&nbsp;<br>&nbsp;(dd/mm/aaaa)</font></td>
       <td>
         <input name="dt_inicial" type=text value="<?echo($dt_inicial);?>" size="12" maxlength="10" />
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Final<br>&nbsp;(dd/mm/aaaa)</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data Final&nbsp;<span class="required">*</span>&nbsp;<br>&nbsp;(dd/mm/aaaa)</font></td>
       <td>
         <input name="dt_final" type=text value="<?echo($dt_final);?>" size="12" maxlength="10">
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;M&eacute;dia aprova&ccedil;&atilde;o sem reavalia&ccedil;&atilde;o</font>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;M&eacute;dia aprova&ccedil;&atilde;o sem reavalia&ccedil;&atilde;o&nbsp;<span class="required">*</span>&nbsp;</font>
       </td>
       <td>
         <input name="media" type=text size="5" maxlength="5" value="<?echo($media);?>">
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;M&eacute;dia final aprova&ccedil;&atilde;o</font>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;M&eacute;dia final aprova&ccedil;&atilde;o&nbsp;<span class="required">*</span>&nbsp;</font>
       </td>
       <td>
         <input name="media_final" type=text size="5" maxlength="5" value="<? echo($media_final); ?>">
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data in&iacute;cio aulas (Caderno de Chamadas)<br>&nbsp;(dd-mm-aaaa)</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data in&iacute;cio aulas (Caderno de Chamadas)&nbsp;<span class="required">*</span>&nbsp;<br>&nbsp;(dd-mm-aaaa)</font></td>
       <td>
         <input name="dt_inicio_aula" type=text value="<?echo($dt_inicio_aula);?>" size="10" maxlength="10">
       </td>
