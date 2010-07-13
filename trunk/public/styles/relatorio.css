@@ -32,3 +32,10 @@ table.relato {
 .relato tr:hover td {
   background: #e5ffcc; /*#ccccff/*#ccffe5;*/
 }
+
+.required {
+   color: red;
+   font-size: 0.75em;
+   font-weight: bold;
+}
+

@@ -148,7 +148,7 @@ table.papeleta {
 a, a:link, a:visited{ color: #2A5685; text-decoration: none; font-weight:bold;}
 a:hover, a:active{ color: #c61a1a; text-decoration: underline;}
 
- .obrigatorio {
+.obrigatorio {
    color: teal;
    font-size: 0.75em;
    font-weight: bold;
@@ -172,3 +172,10 @@ a:hover, a:active{ color: #c61a1a; text-decoration: underline;}
 	text-decoration:underline;
 	color:#003366;
 }
+
+.required {
+   color: red;
+   font-size: 0.75em;
+   font-weight: bold;
+}
+
