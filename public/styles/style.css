@@ -146,3 +146,10 @@ h2 {
 	font-size: 9px;
 	font-weight: bold;
 }
+
+.required {
+   color: red;
+   font-size: 0.75em;
+   font-weight: bold;
+}
+
