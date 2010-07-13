@@ -50,9 +50,9 @@ function Mostra_Carimbos()
 		{
 
 			echo("<tr bgcolor=\"#000000\">\n");
-			echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cód.</b></font></td>");
+			echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cod.</b></font></td>");
 			echo ("<td width=\"30%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Nome</b></font></td>");
-			echo ("<td width=\"30%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Função</b></font></td>");
+			echo ("<td width=\"30%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Fun&ccedil;&atilde;o</b></font></td>");
 			echo ("<td width=\"25%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Setor</b></font></td>");
 			echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;</b></font></td>");
 			echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>&nbsp;</b></font></td>");
@@ -111,7 +111,7 @@ Function Exclui_Area_Ensino($arg)
 
 	$conn->Close();
 
-	SaguAssert($ok,"Não foi possível de excluir o registro!");
+	SaguAssert($ok,"N&atilde;o foi poss&iacute;vel de excluir o registro!");
 
 }
 ?>
@@ -137,13 +137,14 @@ function Confirma_Exclui(arg1)
 {
   url = 'post/carimbos_exclui.php3?id=' + arg1;
 
-  if (confirm("Você tem certeza que deseja excluir o carimbo: "+arg1))
+  if (confirm("Voce tem certeza que deseja excluir o carimbo: "+arg1))
     location=(url)
   else
-    alert("Exclusão Cancelada.");
+    alert("Exclus&atilde;o Cancelada.");
 }
 </script>
 <link href="../estilo.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 </head>
 <body bgcolor="#FFFFFF" marginwidth="20" marginheight="20"
 	onload="_init()">
@@ -152,17 +153,17 @@ function Confirma_Exclui(arg1)
 <table width="90%" align="center">
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="nome" type=text size="35"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Função</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Fun&ccedil;&atilde;o&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="texto" type=text size="35"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Setor</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Setor&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td colspan="2"><font color="#000000"> <input type="text"
 			name="ref_setor" size="10" value="<?php echo($ref_setor);?>"> 
 			<?php ComboArray("op",$op_opcoes,$ref_setor,"ChangeOp()"); ?>
