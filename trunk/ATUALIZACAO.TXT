@@ -24,13 +24,13 @@ também é encontrado no nome do pacote de instalação disponível para
 download: sistema_academico-0.2.0_revXXX.tar.gz. Será necessário executar 
 uma atualização no banco de dados quando existir arquivos dentro de
 config/sql/atualizacao com número de revisão maior ou igual do que a revisão do 
-pacote de instalação que você tem instalado, ou seja se o XXX da atualização do banco 
-for maior ou igual ao XXX do pacote de instalação. Neste caso basta executar 
-todos os scripts SQL de revisão maior ou igual a revisão da sua instalação 
-no banco e verificar se não ocorreram erros. Além da revisão do pacote de instalação
-estar no próprio nome do pacote, você também pode encontrá-la dentro do arquivo VERSAO.TXT.
-Se existir mais de um script SQL eles devem ser executados na sequência crescente da
-respectiva revisão. 
+pacote de instalação que você tem instalado atualmente (antes de atualizar),
+ou seja se o XXX da atualização do banco for maior ou igual ao XXX do pacote 
+da sua instalação atual. Neste caso basta executar todos os scripts SQL de revisão 
+maior ou igual a revisão da sua instalação no banco e verificar se não ocorreram erros. 
+Além da revisão do pacote de instalação estar no próprio nome do pacote, você também 
+pode encontrá-la dentro do arquivo VERSAO.TXT. Se existir mais de um script SQL eles 
+devem ser executados na sequência crescente da respectiva revisão. 
 
 Para realizar uma atualização com sucesso siga os seguintes passos:
 
