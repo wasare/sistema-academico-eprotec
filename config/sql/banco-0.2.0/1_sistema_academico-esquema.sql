@@ -2690,6 +2690,29 @@ ALTER TABLE ONLY campus
 
 
 --
+-- Name: cursos_disciplinas_cursos_fkey; Type: FK CONSTRAINT; Schema: public; 
+--
+
+ALTER TABLE ONLY cursos_disciplinas
+    ADD CONSTRAINT cursos_disciplinas_cursos_fkey FOREIGN KEY (ref_curso) REFERENCES cursos(id) MATCH FULL;
+
+--
+-- Name: cursos_disciplinas_campus_fkey; Type: FK CONSTRAINT; Schema: public; 
+--
+
+ALTER TABLE ONLY cursos_disciplinas
+    ADD CONSTRAINT cursos_disciplinas_campus_fkey FOREIGN KEY (ref_campus) REFERENCES campus(id) MATCH FULL;
+
+--
+-- Name: cursos_disciplinas_disciplinas_fkey; Type: FK CONSTRAINT; Schema: public; 
+--
+
+ALTER TABLE ONLY cursos_disciplinas
+    ADD CONSTRAINT cursos_disciplinas_disciplinas_fkey FOREIGN KEY (ref_disciplina) REFERENCES disciplinas(id) MATCH FULL;
+
+
+
+--
 -- Name: campus_usuario_fkey; Type: FK CONSTRAINT; Schema: public; 
 --
 
