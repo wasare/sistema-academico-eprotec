@@ -62,14 +62,12 @@ else
 
 	$alunos = $conn->get_all($qryNotas);
 
-	require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
-
     if(count($alunos != 0))
 	{
 		foreach($alunos as $registro)
 		{
 			$ref_aluno = $registro['ref_pessoa'];
-			atualiza_matricula("$ref_aluno","$diario_id");
+			atualiza_diario("$ref_aluno","$diario_id");
 		}
 	}
 

@@ -4,7 +4,7 @@ require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'core/number.php');
 require_once($BASE_DIR .'core/reports/header.php');
-require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
+require_once($BASE_DIR .'core/web_diario.php');
 
 $conn = new connection_factory($param_conn);
 $header  = new header($param_conn);
@@ -66,7 +66,7 @@ $qry = $conn->get_all($qryNotas);
 foreach($qry as $registro)
 {
     $ref_pessoa = $registro['ref_pessoa'];
-    atualiza_matricula("$ref_pessoa","$diario_id");
+    atualiza_diario("$ref_pessoa","$diario_id");
 }
 
 // ^ ATUALIZA NOTAS E FALTAS CASO O DIARIO TENHA SIDO INICIALIZADO ^//

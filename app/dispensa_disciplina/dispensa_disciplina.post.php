@@ -3,8 +3,10 @@
 header("Cache-Control: no-cache");
 
 //-- ARQUIVO CONFIGURACAO E BIBLIOTECAS
-require_once('../../app/setup.php');
+require_once('../setup.php');
+require_once($BASE_DIR .'core/web_diario.php');
 
+$conn = new connection_factory($param_conn);//,TRUE,TRUE);
 
 // PROCESSA A DISPENSA SE NAO HOUVER ERROS
 if ( $_POST['second'] != 1 )
@@ -13,18 +15,6 @@ if ( $_POST['second'] != 1 )
 $flag_processa = 1;
 
 require_once('dispensa_valida.php');
-
-//-- Conectando com o PostgreSQL
-$Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
-
-
-// Array ( [dispensa_tipo] => 4 [ref_liberacao_ed_fisica] => 1 ) 
-
-// Array ( [dispensa_tipo] => 3 [nota_final] => 87 ) 
-
-// Array ( [dispensa_tipo] => 2 [ref_instituicao] => 182 [instituicao_nome] => CESEC Professor João de Oliveira Barbosa [obs_aproveitamento] => Física [nota_final] => 87 ) 
-
 
 //-- PARAMETROS
 $dispensa_tipo  = $_POST['dispensa_tipo'];
@@ -79,7 +69,6 @@ $sqlInsereDispensa = ""; //-- Variavel com a sql de insercao da dispensa
 
 
 	//-- Verifica se o aluno ja esta matriculado nesta disciplina oferecida
-
 	$sqlDispensado = "
   	SELECT 
     	count(ref_disciplina_ofer)
@@ -90,12 +79,9 @@ $sqlInsereDispensa = ""; //-- Variavel com a sql de insercao da dispensa
     	ref_periodo = '$periodo_id' AND
     	ref_pessoa  = '$aluno_id'";
 	
-	$RsDispensado = $Conexao->Execute($sqlDispensado);
-	$Result1 = $RsDispensado->fields[0];
-
+	$Result1 = $conn->get_one($sqlDispensado);
          	
 	if($Result1 == 0){
-	
 	
 		//-- Informacoes da disciplina
 		$sqlDisciplina = "
@@ -108,42 +94,41 @@ $sqlInsereDispensa = ""; //-- Variavel com a sql de insercao da dispensa
 		WHERE 
 	  		id = $diario_id";
 		
-		$RsDisciplina = $Conexao->Execute($sqlDisciplina);
+		$disciplina = $conn->get_row($sqlDisciplina);
 		
-		$disciplina_descricao = $RsDisciplina->fields[0];
-		$disciplina_id = $RsDisciplina->fields[1];
-		$ref_campus_ofer = $RsDisciplina->fields[2];
+		$disciplina_descricao = $disciplina['descricao_disciplina'];
+		$disciplina_id = $disciplina['ref_disciplina'];
+		$ref_campus_ofer = $disciplina['ref_campus'];
 		
 		
 		//-- Verifica se tem vaga
     	$sqlVerificaVagas = "
 		SELECT
-    	  count(*),
+    	  count(*) as total_matriculas,
 	      check_matricula_pessoa('$diario_id','$aluno_id'),
-    	  num_alunos('$diario_id')
+    	  num_alunos('$diario_id') as numero_vagas
 	    FROM
     	  matricula
 	    WHERE
     	  ref_disciplina_ofer = '$diario_id' AND
 	      dt_cancelamento is null";
 	  
-		$RsVerificaVagas = $Conexao->Execute($sqlVerificaVagas);
+		$verifica_vagas = $conn->get_row($sqlVerificaVagas);
 	
-	    if ($RsVerificaVagas)
+	    if ($verifica_vagas['total_matriculas'] > 0)
     	{
-        	$num_matriculados = $RsVerificaVagas->fields[0];
-	        $is_matriculado = $RsVerificaVagas->fields[1];
-    	    $tot_alunos = $RsVerificaVagas->fields[2];
+        	$num_matriculados = $verifica_vagas['total_matriculas'];
+	        $is_matriculado = $verifica_vagas['check_matricula_pessoa'];
+    	    $numero_vagas = (int) $verifica_vagas['numero_vagas'];
     	}
 	    else
     	{
         	$num_matriculados = 0;
-	        $tot_alunos = 0;
+	        $numero_vagas = (int) $verifica_vagas['numero_vagas'];
     	}
 	
-	
 		//-- Se o total de vagas excedeu não matricula
-		if (($num_matriculados+1) > $tot_alunos)
+		if (($num_matriculados+1) > $numero_vagas || $numero_vagas == 0)
     	{
 	       $msg .= "<p>>> <b><font color=\"#FF0000\">Aluno n&atilde;o dispensado!</font></b><br>";
 		   $msg .= "Disciplina <b>$disciplina_descricao</b> ($disciplina_id) excedeu n&uacute;mero m&aacute;ximo de alunos.</p>";
@@ -153,7 +138,7 @@ $sqlInsereDispensa = ""; //-- Variavel com a sql de insercao da dispensa
 			$alunos_matriculados = $num_matriculados + 1;
 			$msg .= "<p>>> <b>Di&aacute;rio: </b>$diario_id - "; 
 			$msg .= "<b>$disciplina_descricao</b> ($disciplina_id) - ";
-			$msg .= "<b>Matric./Vagas: </b> ".$alunos_matriculados."/$tot_alunos.</p>";
+			$msg .= "<b>Matric./Vagas: </b> ". $alunos_matriculados .'/'. $numero_vagas .'</p>';
 			
 			//-- Informacoes da disciplina substituta --  IMPLEMENTAR
 			$ref_curso_subst = 0;
@@ -195,38 +180,34 @@ $sqlInsereDispensa = ""; //-- Variavel com a sql de insercao da dispensa
 	           'f'
 			   $values_sql
     	    );";
-			
+           
+            // Registra a dispensa no banco
+            $RsInsereDiario = $conn->Execute($sqlInsereDispensa);			
+
 		}//fim total de vagas
 	}
 	else{
-	       $msg .= "<p>>> <b><font color=\"#FF0000\">Aluno j&aacute; matriculado no di&aacute;rio $diario_id!</font></b></p>";
+	       $msg .= "<p>>> <b><font color=\"#FF0000\">Aluno j&aacute; matriculado/dispensado no di&aacute;rio $diario_id!</font></b></p>";
 	}//fim matriculados
 	
 
-//echo $sqlInsereDispensa; //die;
+//echo '<pre>'. $sqlInsereDispensa .'</pre>'; die;
 
 //-- Inserindo a matricula
-$RsInsereDiario = $Conexao->Execute($sqlInsereDispensa);
+//$RsInsereDiario = $conn->Execute($sqlInsereDispensa);
 			
-if (!$RsInsereDiario)
+if ($RsInsereDiario == FALSE)
 {
 	$title = "<h3><font color=\"#FF0000\">Erro ao efetuar a dispensa!</font></h3>";
 	$msg .= ">> Di&aacute;rio: $diario_id<br>";
     
-	$msg .= "<p><b>Informa&ccedil;&otilde;es adicionais:</b>".$Conexao->ErrorMsg."</p>";
+	//$msg .= "<p><b>Informa&ccedil;&otilde;es adicionais:</b>".$Conexao->ErrorMsg."</p>";
 }
 else
 {
 
-   // EXCLUI FALTAS DO DIARIO PARA EVITAR REPROVAÇÃO POR FALTAS
-   $sqlFaltas = "DELETE FROM diario_chamadas WHERE ra_cnec = $aluno_id AND ref_disciplina_ofer = $diario_id;";
-   $RsFaltas = $Conexao->Execute($sqlFaltas);
-   // ^ EXCLUI FALTAS DO DIARIO PARA EVITAR REPROVAÇÃO POR FALTAS ^ //
-     
 	// ATUALIZA NOTAS E FALTAS NO DIARIO
-	require_once('atualiza_diario_dispensa.php');
-
-    atualiza_matricula($aluno_id,$diario_id,TRUE);
+    atualiza_dispensa($aluno_id,$diario_id,$dispensa_tipo);
     if(is_numeric($nota_final) AND $nota_final >= 50 )
 		$msg .= lanca_nota($aluno_id,$nota_final,$diario_id);
 

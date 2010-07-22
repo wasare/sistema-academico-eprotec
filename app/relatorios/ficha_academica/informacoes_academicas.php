@@ -29,7 +29,8 @@ $sql1 = "SELECT DISTINCT
     m.ref_curso,
     c.id as contrato_id,
     professor_disciplina_ofer_todos(o.id),
-    get_carga_horaria_realizada(o.id) as carga_horaria_realizada
+    get_carga_horaria_realizada(o.id) as carga_horaria_realizada,
+    o.fl_finalizada
     FROM 
         matricula m, disciplinas d, disciplinas_ofer o, periodos s, contratos c
     WHERE 
@@ -166,6 +167,7 @@ foreach ($ficha_academica as $disc) :
 	$professor = $disc['professor_disciplina_ofer_todos'];
     $curso_id = $disc['ref_curso'];
     $contrato_id = $disc['contrato_id'];
+    $fl_finalizada = $disc['fl_finalizada'];
 
     // APROVEITAMENTO DE ESTUDOS 2
     // CERTIFICACAO DE EXPERIENCIAS 3
@@ -198,7 +200,7 @@ foreach ($ficha_academica as $disc) :
     else
         $situacao = 'R'; 
    
-    if(!verificaPeriodo($ref_periodo))
+    if(!verificaPeriodo($ref_periodo) && $fl_finalizada == 'f')
         $situacao = 'M';
 
     if(verificaEquivalencia($curso_id,$oferecida))

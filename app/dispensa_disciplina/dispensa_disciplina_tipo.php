@@ -11,18 +11,14 @@
 header("Cache-Control: no-cache");
 require_once('../../app/setup.php');
 
+$conn = new connection_factory($param_conn);
+
 
 $diario_id = $_POST['id_diario'];
 $curso_id = $_POST['curso_id'];
 $aluno_id = $_POST['aluno_id'];
 $id_contrato = $_POST['id_contrato'];
 $ref_campus = $_POST['ref_campus'];
-
-//Criando a classe de conexao ADODB
-$Conexao = NewADOConnection("postgres");
-
-//Setando como conexao persistente
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
 
 $sa_periodo_id = $_POST['periodo_id'];
 //$first = $_POST['first'];
@@ -47,60 +43,60 @@ WHERE
   contratos.id = $id_contrato;";
 
 //Exibindo a descricao do curso caso setado
-$RsCurso = $Conexao->Execute($sqlCurso);
+$curso = $conn->get_row($sqlCurso);
 
 
 /**
  * @var integer
  */
-$curso_id   = $RsCurso->fields[0];
+$curso_id   = $curso['id'];
 /**
  * @var string   
  */
-$curso_nome = $RsCurso->fields[1];
+$curso_nome = $curso['descricao'];
 /**
  * @var integer   
  */
-$ref_campus = $RsCurso->fields[2];
+$ref_campus = $curso['ref_campus'];
 /**
  * @var string   
  */
-$turma = $RsCurso->fields[3];
+$turma = $curso['turma'];
 
 
 $sqlCampus = "SELECT get_campus($ref_campus)";
-$RsCampus = $Conexao->Execute($sqlCampus);
-$ref_campus = $RsCurso->fields[2];
 /**
  * @var string Descricao no campus
  */
-$campus_nome = $RsCampus->fields[0];
+$campus_nome = $conn->get_one($sqlCampus);
 
 $sqlAluno = "SELECT nome FROM pessoas WHERE id = $aluno_id;";
-$RsAluno = $Conexao->Execute($sqlAluno);
-$ref_campus = $RsCurso->fields[2];
 /**
  * @var string Nome do aluno
  */
-$aluno_nome = $RsAluno->fields[0];
+$aluno_nome = $conn->get_one($sqlAluno);
 
 $disciplinas_liberadas = 0;
 
-$sqlDisciplina = "SELECT o.id || ' - ' || d.descricao_disciplina || ' (' || o.ref_disciplina || ')' || ' - ' || o.turma || '(' || o.ref_periodo || ')'  as disciplina, o.ref_periodo
+$sqlDisciplina = "SELECT o.id || ' - ' || d.descricao_disciplina || ' (' || o.ref_disciplina || ')' as disciplina,
+                  o.turma, '(' || o.ref_periodo || ')'  as periodo_oferta, o.ref_periodo
         FROM
                 disciplinas d, disciplinas_ofer o
         WHERE
                 d.id = o.ref_disciplina AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 o.id = $diario_id;";
 
-$RsDisciplina = $Conexao->Execute($sqlDisciplina);
+
+
+
+$disciplina = $conn->get_row($sqlDisciplina);
 /**
  * @var string Nome da Disciplina
  */
-$nome_disciplina = $RsDisciplina->fields[0];
-$periodo_id = $RsDisciplina->fields[1];
+$nome_disciplina = $disciplina['disciplina'] .' - '. $disciplina['turma'] . $disciplina['periodo_oferta'];
+$periodo_id = $disciplina['ref_periodo'];
 
 
 ?>

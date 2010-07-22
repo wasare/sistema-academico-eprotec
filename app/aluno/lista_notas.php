@@ -44,6 +44,7 @@ $rs_diarios_matriculados = count($rs_diarios);
         <th><font color="#ffffff">Nota Total</font></th>
         <th><font color="#ffffff">Nota distribuida</font></th>
         <th><font color="#ffffff">Faltas</font></th>
+        <th><font color="#ffffff">Situa&ccedil;&atilde;o</font></th>
     </tr>
     <?php
     $count = 0;
@@ -52,7 +53,7 @@ $rs_diarios_matriculados = count($rs_diarios);
         $sql_diarios_info = "
         SELECT
             descricao_disciplina(get_disciplina_de_disciplina_of(m.ref_disciplina_ofer)),
-            m.ref_disciplina_ofer, m.nota_final, m.num_faltas,
+            m.ref_disciplina_ofer, m.nota_final, m.num_faltas, m.ref_contrato,
             nota_distribuida(m.ref_disciplina_ofer) as \"total_distribuido\", d.fl_finalizada
         FROM
             matricula m, disciplinas_ofer d
@@ -72,12 +73,24 @@ $rs_diarios_matriculados = count($rs_diarios);
 				$nao_finalizada = ($disciplina_aluno['fl_finalizada'] == 'f') ? '<strong>*</strong>' : ' ';
 				$color =  ($color != '#ffffff') ? '#ffffff' : '#cce5ff';
 
+                $situacao = '';
+
+                if(verificaAprovacao($aluno, $curso, $disciplina_aluno['ref_disciplina_ofer']))
+                    $situacao = 'A';
+                else
+                    $situacao = '<span style="color: red; font-weight: bold;">R</span>';
+
+    			if(!verificaPeriodo($periodo) && $disciplina_aluno['fl_finalizada'] == 'f')
+        			$situacao = 'M';
+
 				echo '<tr bgcolor="'. $color .'">';
 				echo '<td><a href="lista_notas_detalhe.php?c='. $curso .'&p='. $periodo .'&d='. $disciplina_aluno['ref_disciplina_ofer'] .'" alt="Clique para detalhar a disciplina" title="Clique para detalhar a disciplina">'. $disciplina_aluno['descricao_disciplina'] .'</a>'. $nao_finalizada .'</td>';
 				echo '<td align="center">'. number::numeric2decimal_br($disciplina_aluno['nota_final'],1) .'</td>';
 				echo '<td align="center">'. $disciplina_aluno['total_distribuido'] .'</td>';
 				echo '<td align="center">'. $disciplina_aluno['num_faltas'] .'</td>';
+                echo '<td align="center">'. $situacao .'</td>';
 				echo '</tr>';
+
 				$count++;
         }
     }
@@ -85,9 +98,15 @@ $rs_diarios_matriculados = count($rs_diarios);
 </table>
 <br />
 (<strong>*</strong>) Disciplina com lan&ccedil;amentos n&atilde;o finalizados, pass&iacute;vel de altera&ccedil;&otilde;es.
-<?php if ($rs_diarios_matriculados > $count) : ?>
 <br /><br />
-
+<div align="left" style="font-size: 0.85em;">
+    <h4>Legenda</h4>
+    <strong>A</strong> - Aprovado<br />
+    <strong>R</strong> - Reprovado <br />
+    <strong>M</strong> - Matriculado <br /><br />
+</div>
+<?php if ($rs_diarios_matriculados > $count) : ?>
+<br />
 <font color="red">
 <strong>
 Existem disciplinas matriculadas n&atilde;o exibidas. <br />
@@ -96,8 +115,8 @@ Qualquer d&uacute;vida entre em contato com seu professor(a) ou com a coordena&c
 </strong>
 </font>
 <?php endif; ?>
-<br /><br />
-<input type="button" value="Imprimir" onClick="window.print()">&nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:history.back();">Voltar</a>
+<br />
+<input type="button" value="Imprimir" onClick="window.print()">&nbsp;&nbsp;&nbsp;<a href="lista_cursos.php">Voltar</a>
 <br /><br />
 <?php include_once('includes/rodape.htm'); ?>      
 

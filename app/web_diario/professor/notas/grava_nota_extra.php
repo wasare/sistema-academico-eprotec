@@ -36,8 +36,6 @@ $notas = (array) $_POST['notas'];
 $matriculas = (array) $_POST['matricula'];
 $prova = $_POST['codprova'];
 
-$curso_tipo = get_curso_tipo($diario_id);
-
 
 foreach($qrynotas_parciais as $aluno)
 {
@@ -72,14 +70,9 @@ foreach($qrynotas_parciais as $aluno)
    // TODO: Selecionar método de cálculo da nota final com base em parâmetros do sistema
    // SE FOR NOTA DE RECUPERACAO / REAVALIACAO CALCULA CONFORME CRITERIOS DE CADA CURSO
    if($nota != -1) {
-      if( $curso_tipo == 2 || $curso_tipo == 4 || $curso_tipo == 5 || $curso_tipo == 6 || $curso_tipo == 10 ) {
 
-      	$NotaFinal = (($nota_parcial + $nota) / 2);
-      }
-      else
-      {
-      	$NotaFinal = $nota;
-      }
+      $NotaFinal = calcula_nota_reavaliacao($diario_id,$nota_parcial,$nota);
+
    }
    else {	   
 	    $NotaFinal = $nota_parcial;
