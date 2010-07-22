@@ -7,8 +7,8 @@
 * @since 15-05-2009
 **/
 
-//Arquivos de configuracao e biblioteca
-require_once(dirname(__FILE__) .'/../app/setup.php');
+// Arquivos de configuracao e biblioteca
+// depende do arquivo app/setup.php
 
 $conn = new connection_factory($param_conn);
 
@@ -49,7 +49,7 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios) {
 				) AND
 				o.id = $diario_id; ";
 
-			$diarios_reprovados += $conn->adodb->getOne($sqlDisciplina);//$RsDisciplina->fields[0];
+			$diarios_reprovados += $conn->get_one($sqlDisciplina);//$RsDisciplina->fields[0];
 		}
 	}
 
@@ -62,30 +62,22 @@ function verificaReprovacaoPorFaltas($aluno_id,$diarios) {
 function verificaAprovacao($aluno_id,$curso_id,$diario_id)
 {
     global $conn;
-      // -- Verifica se foi aprovado ou dispensado nesta disciplina ou em disciplina equivalente a qualquer tempo
+      // -- Verifica se foi aprovado neste diário / disciplina
+      // FIXME: obter média / nota para aprovação da tabela "periodos"
         $sqlDisciplina = "
         SELECT DISTINCT
             o.id AS diario
         FROM
-                matricula m, disciplinas d, pessoas p, disciplinas_ofer o, periodos s
+                matricula m, disciplinas_ofer o
         WHERE
-                m.ref_pessoa = p.id AND
-                p.id = '$aluno_id' AND
+                m.ref_pessoa = $aluno_id AND
+                m.ref_disciplina_ofer = $diario_id AND
+                m.ref_curso = $curso_id AND
                 m.ref_disciplina_ofer = o.id AND
-                d.id = o.ref_disciplina AND
                 o.is_cancelada = '0' AND
-                s.id = o.ref_periodo AND
-                ( d.id = get_disciplina_de_disciplina_of('$diario_id') OR 
-                            d.id IN ( 
-                                        select 
-                                                distinct ref_disciplina_equivalente 
-                                        from disciplinas_equivalentes 
-                                        where ref_disciplina = get_disciplina_de_disciplina_of('$diario_id') and ref_curso = '$curso_id'  
-                                    )
-                ) AND
-                ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
+                ( m.nota_final >= 60 AND ref_motivo_matricula = 0 ); ";
 
-        $diarios_matriculados = $conn->adodb->getAll($sqlDisciplina);
+        $diarios_matriculados = $conn->get_all($sqlDisciplina);
 
         if (count($diarios_matriculados) > 0 )
         {
@@ -98,7 +90,7 @@ function verificaAprovacao($aluno_id,$curso_id,$diario_id)
             return FALSE;
 
 
-   // ^ Verifica se o aluno ja foi aprovado ou dispensado nesta mesma disciplina a qualquer tempo ^ //
+   // ^ Verifica se o aluno ja aprovado neste diário / disciplina ^ //
 }
 
 function verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$diario_id)
@@ -130,7 +122,7 @@ function verificaAprovacaoContrato($aluno_id,$curso_id,$contrato_id,$diario_id)
                 ) AND 
                 ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
     
-        $diarios_matriculados = $conn->adodb->getAll($sqlDisciplina);
+        $diarios_matriculados = $conn->get_all($sqlDisciplina);
 
         if (count($diarios_matriculados) > 0 )
         {
@@ -170,7 +162,7 @@ function verificaAprovacaoContratoDisciplina($aluno_id,$curso_id,$contrato_id,$d
                 m.ref_disciplina_ofer = $diario_id AND
                 ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
 
-        $diarios_matriculados = $conn->adodb->getAll($sqlDisciplina);
+        $diarios_matriculados = $conn->get_all($sqlDisciplina);
 
         if (count($diarios_matriculados) > 0 )
         {
@@ -199,7 +191,7 @@ function verificaEquivalencia($curso_id,$diario_id)
                         WHERE 
                              ref_disciplina = get_disciplina_de_disciplina_of('$diario_id') AND ref_curso = '$curso_id';";
 
-    $equivalentes = $conn->adodb->getAll($sqlDisciplina);
+    $equivalentes = $conn->get_all($sqlDisciplina);
 
     if (count($equivalentes) > 0 )
         return TRUE;
@@ -230,7 +222,7 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
                              ref_disciplina_equivalente = get_disciplina_de_disciplina_of('$diario_id') AND 
                              ref_curso = '$curso_id';";
 
-		$disc_original = $conn->adodb->getOne($sqlEquivalente);
+		$disc_original = $conn->get_one($sqlEquivalente);
 //        print_r($equivalentes); if ($diario_id = '5354') die;
         if (!empty($disc_original) && is_numeric($disc_original))
             $disciplinas =  "'". $disc_original ."'";
@@ -244,7 +236,7 @@ function verificaRequisitos($aluno_id,$curso_id,$diario_id)
             WHERE
                 ref_disciplina IN ( $disciplinas ) AND ref_curso = $curso_id;";
 
-    $pre_requisitos = $conn->adodb->getAll($sqlPreRequisito);
+    $pre_requisitos = $conn->get_all($sqlPreRequisito);
 
     $total_requisitos = count($pre_requisitos);
     $requisitos_matriculados = array();
@@ -308,7 +300,7 @@ function verificaPeriodo($periodo_id)
                         WHERE 
                              id = '$periodo_id';";
 
-    $data_final_periodo = strtotime($conn->adodb->getOne($sqlPeriodo));
+    $data_final_periodo = strtotime($conn->get_one($sqlPeriodo));
     $data_atual = strtotime(date('Y-m-d'));
 
     if ( $data_atual > $data_final_periodo )

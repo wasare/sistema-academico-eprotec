@@ -171,7 +171,7 @@ foreach ($ficha_academica as $disc) {
     else
         $situacao = 'R'; 
    
-    if(!verificaPeriodo($ref_periodo))
+    if(!verificaPeriodo($ref_periodo) && $fl_finalizada == 'f')
         $situacao = 'M';
 
     if(verificaEquivalencia($curso_id,$oferecida))

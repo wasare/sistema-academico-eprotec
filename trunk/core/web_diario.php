@@ -9,7 +9,15 @@
 require_once(dirname(__FILE__) .'/../app/setup.php');
 
 // CONEXAO ABERTA PARA TRABALHAR COM TRANSACAO (NÃO PERSISTENTE)
-$conn = new connection_factory($param_conn,FALSE);
+$conn = new connection_factory($param_conn);
+
+function envia_erro($msg) {
+
+    // ENVIA EMAIL PARA O ADMINISTRADOR
+    $mail_header = 'FROM: '. $EMAIL_ADMIN;
+    @mail($EMAIL_ADMIN, '[ Erro ao atualizar diario ] ', $msg, $mail_header);
+
+}
 
 function papeleta_header($diario_id) {
     global $conn;
@@ -441,6 +449,8 @@ function reg_log($pagina,$status) {
 
 }
 
+
+
 // VERIFICA O DIREITO DE ACESSO AO DADOS DO ALUNO PELO PROFESSOR OU COORDENADOR
 function acessa_ficha_aluno($aluno_id,$sa_ref_pessoa,$curso_id,$conexao=FALSE) {
 
@@ -491,5 +501,449 @@ function acessa_ficha_aluno($aluno_id,$sa_ref_pessoa,$curso_id,$conexao=FALSE) {
         return FALSE;
 }
 
+
+
+
+
+function calcula_nota_reavaliacao($diario_id,$nota_parcial,$nota_extra) {
+
+	global $conn;
+
+    $curso_tipo = get_curso_tipo($diario_id);
+
+
+	/*
+	 1     Tecnico
+	 2     Graduacao Tecnologica
+	 4     Pos-Graduacao Latu-Sensu
+	 5     Qualificacao
+	 6     Bacharelado
+	 7     Tecnico Integrado
+	 8     Tecnico - EJA
+	 9     Tecnico Integrado - EJA
+	 10    Licenciatura
+	 */
+
+    // TODO: Selecionar método de cálculo da nota final com base em parâmetros do sistema
+    // SE FOR NOTA DE RECUPERACAO / REAVALIACAO CALCULA CONFORME CRITERIOS DE CADA CURSO
+	if( $curso_tipo == 2 || $curso_tipo == 4 || $curso_tipo == 5 || $curso_tipo == 6 || $curso_tipo == 10 ) {
+
+        return (($nota_parcial + $nota_extra) / 2);
+   	}
+    else
+    {
+     	return $nota_extra;
+    }
+}
+
+
+function atualiza_diario($aluno,$diario_id,$motivo_matricula=0){
+
+	global $conn;
+
+	// RECUPERA INFORMACOES DO DIARIO
+	$qryDisc = " SELECT DISTINCT
+				prof.ref_professor, o.ref_disciplina, o.ref_periodo 
+				FROM 
+				disciplinas_ofer o, disciplinas_ofer_prof prof
+            	WHERE
+                 o.id = " . $diario_id . " AND 
+				 o.is_cancelada = '0' AND
+				 o.id = prof.ref_disciplina_ofer ;";
+
+
+	$diario_info = $conn->get_all($qryDisc);
+
+	// A DISCIPLINA EXISTE
+
+	if(count($diario_info) > 0) {
+
+		foreach($diario_info as $linha)
+		{
+			$getdisciplina = @$linha['ref_disciplina'];
+			$getperiodo = @$linha['ref_periodo'];
+			$id = @$linha['ref_professor'];
+		}
+
+	} // ^ A DISCIPLINA EXISTE
+
+	$grupo = ($id . "-" . $getperiodo . "-" . $getdisciplina . "-" . $diario_id);
+
+	$grupo_novo = ("%-" . $getperiodo . "-%-" . $diario_id);
+
+
+	$flag_pendencia = 0;
+
+	$qryDiario = 'BEGIN;';
+
+	$getcurso = get_curso($diario_id);
+
+
+	// VERIFICA PENDENCIAS RELACIONADAS AO LANCAMENTO DE NOTAS
+	$sql1 = "SELECT
+	COUNT(grupo)
+	FROM diario_formulas
+	WHERE
+	grupo ILIKE '$grupo_novo';";
+
+
+	$num_formula = $conn->get_one($sql1);
+
+	if($num_formula == 6) {
+
+		$qryNotas = 'SELECT
+		    m.ref_pessoa, id_ref_pessoas 
+	        FROM 
+	    	matricula m 
+	        LEFT JOIN (
+		    	SELECT DISTINCT 
+				d.id_ref_pessoas 
+				FROM 
+				diario_notas d 
+				WHERE 
+				d.d_ref_disciplina_ofer = ' . $diario_id . ' AND
+                id_ref_pessoas = ' . $aluno . '
+		      ) tmp 
+			ON ( m.ref_pessoa = id_ref_pessoas ) 
+	    	WHERE 
+		        m.ref_disciplina_ofer = ' . $diario_id . ' AND 
+		        m.ref_pessoa = ' . $aluno . ' AND
+		        id_ref_pessoas IS NULL  AND
+			    (m.dt_cancelamento is null) AND
+			    (m.ref_motivo_matricula = '. $motivo_matricula .')
+	        ORDER BY id_ref_pessoas;';
+
+		$alunos_sem_registro_notas = $conn->get_all($qryNotas);
+
+		$num_registros = count($alunos_sem_registro_notas);
+
+		$num_notas = 6;
+
+		if ($num_registros > 0)
+		{
+			foreach($alunos_sem_registro_notas as $registro)
+			{
+				$ref_pessoa = $registro['ref_pessoa'];
+
+				for($i = 1 ; $i <= $num_notas; $i++)
+				{
+					$qryDiario .= ' INSERT INTO diario_notas(ra_cnec, ';
+					$qryDiario .= ' ref_diario_avaliacao,nota,peso,id_ref_pessoas,';
+					$qryDiario .= ' id_ref_periodos,id_ref_curso,d_ref_disciplina_ofer,';
+					$qryDiario .= ' rel_diario_formulas_grupo)';
+					$qryDiario .= " VALUES($ref_pessoa,$i,0,0,$ref_pessoa,'$getperiodo',$getcurso,";
+					$qryDiario .= " $diario_id, '$grupo');";
+				}
+
+				$qryDiario .= ' INSERT INTO diario_notas(ra_cnec, ';
+				$qryDiario .= ' ref_diario_avaliacao,nota,peso,id_ref_pessoas,';
+				$qryDiario .= ' id_ref_periodos,id_ref_curso,d_ref_disciplina_ofer,';
+				$qryDiario .= ' rel_diario_formulas_grupo)';
+				$qryDiario .= " VALUES($ref_pessoa,7,-1,0,$ref_pessoa,'$getperiodo',$getcurso,";
+				$qryDiario .= " $diario_id ,'$grupo');";
+			}
+
+			$flag_pendencia = 1;
+			// $msg .= $num_registros .' alunos com problemas no lancamento de notas\n';
+
+		}
+
+		// ^ VERIFICA PENDENCIAS RELACIONADAS AO LANCAMENTO DE NOTAS ^
+
+
+		// VERIFICA PENDENCIAS RELACIONADAS AO SOMATORIO DE FALTAS
+		$sqlDiarioFaltas = "
+		SELECT * FROM
+		(
+		SELECT DISTINCT
+		registro_id,
+		CASE
+		WHEN num_faltas IS NULL THEN '0'
+		ELSE num_faltas
+		END AS num_faltas,
+		CASE
+		WHEN faltas_diario IS NULL THEN '0'
+		ELSE faltas_diario
+		END AS faltas_diario
+		FROM
+		(
+		SELECT DISTINCT
+		CAST(a.ref_pessoa AS INTEGER) AS registro_id, a.num_faltas
+		FROM
+		matricula a
+		WHERE
+		a.ref_periodo = '$getperiodo' AND
+		a.ref_disciplina_ofer = $diario_id AND
+		a.ref_pessoa = $aluno
+		) AS T1
+		FULL OUTER JOIN
+		(
+		SELECT
+		CAST(a.ra_cnec AS INTEGER) AS registro_id, count(CAST(a.ra_cnec AS INTEGER)) AS faltas_diario
+		FROM
+		diario_chamadas a
+		WHERE
+		(a.ref_periodo = '$getperiodo') AND
+		(a.ref_disciplina_ofer = $diario_id) AND
+		a.ra_cnec = '$aluno'
+		GROUP BY ra_cnec
+		) AS T4
+
+		USING (registro_id)
+
+		) AS TB
+
+		WHERE
+		(num_faltas <> faltas_diario);";
+
+		$diario_faltas = $conn->get_all($sqlDiarioFaltas);
+
+		$numFalta = count($diario_faltas);
+
+
+		if ($numFalta != 0) {
+
+			foreach($diario_faltas as $registro)
+			{
+				$ref_pessoa = $registro['registro_id'];
+				$faltas = $registro['faltas_diario'];
+				$num_faltas = $registro['num_faltas'];
+
+				$qryDiario .= ' UPDATE matricula SET num_faltas = '. $faltas;
+				$qryDiario .= ' WHERE ref_pessoa = '. $ref_pessoa .' AND';
+				$qryDiario .= " ref_periodo = '$getperiodo' AND ";
+				$qryDiario .= ' ref_disciplina_ofer = '. $diario_id .';';
+			}
+
+			$flag_pendencia = 1;
+			$msg_atualiza .= 'Atualizado somat&oacute;rio de faltas\n';
+			// $msg .= $numFalta . ' alunos com problemas no somatorio de faltas\n';
+
+		}
+		// ^ VERIFICA PENDENCIAS RELACIONADAS AO SOMATORIO DE FALTAS ^
+
+
+		// VERIFICA PENDENCIAS RELACIONADAS AO SOMATORIO DE NOTAS *** CONSIDERA NOTA EXTRA ***
+		$sqlNotas = "
+		SELECT DISTINCT
+		registro_id, nota_diario, nota_extra, nota_final
+		FROM
+		(
+		SELECT
+		DISTINCT
+		CAST(b.id AS INTEGER) AS registro_id, CAST(SUM(c.nota) AS NUMERIC) AS nota_diario
+		FROM
+		matricula a, pessoas b, diario_notas c
+		WHERE
+		a.ref_periodo = '$getperiodo' AND
+		a.ref_disciplina_ofer = $diario_id AND
+		b.ra_cnec = c.ra_cnec AND
+		c.d_ref_disciplina_ofer = $diario_id AND
+		a.ref_pessoa = b.id AND
+		b.ra_cnec = '$aluno'  AND
+		ref_diario_avaliacao < 7
+		GROUP BY b.id
+		) AS T1
+
+		INNER JOIN (
+		SELECT DISTINCT
+		CAST(b.id AS INTEGER) AS registro_id, CAST(c.nota AS NUMERIC) AS nota_extra
+		FROM
+		matricula a, pessoas b, diario_notas c
+		WHERE
+		a.ref_periodo = '$getperiodo' AND
+		a.ref_disciplina_ofer = $diario_id AND
+		b.ra_cnec = c.ra_cnec AND
+		c.d_ref_disciplina_ofer = $diario_id AND
+		a.ref_pessoa = b.id AND
+		b.ra_cnec = '$aluno'  AND
+		ref_diario_avaliacao = 7
+		) AS T2
+
+		USING (registro_id)
+		INNER JOIN
+
+		(
+		SELECT DISTINCT
+		CAST(a.ref_pessoa AS INTEGER) AS registro_id, CAST(a.nota_final AS NUMERIC)
+		FROM
+		matricula a
+		WHERE
+		a.ref_periodo = '$getperiodo' AND
+		a.ref_disciplina_ofer = $diario_id AND
+		a.ref_pessoa = $aluno
+		) AS T3
+
+		USING (registro_id)
+
+		WHERE
+		nota_diario <> nota_final;";
+
+		$diario_notas = $conn->get_all($sqlNotas);
+
+		$numNotas = count($diario_notas);
+
+        //print_r($diario_notas);
+		if ($numNotas != 0) {
+
+			$numNotas = 0;
+
+			foreach($diario_notas as $registro)
+			{
+			
+				$ref_pessoa = $registro['registro_id'];
+				$nota_diario = $registro['nota_diario'];
+				$nota_final = $registro['nota_final'];
+				$nota_extra = $registro['nota_extra'];
+
+			    //print_r($registro);		
+				if($nota_extra == -1 && $nota_diario != $nota_final) {
+					// NOTA EXTRA NAO LANCADA E SOMATORIO ERRADO
+					$qryDiario .= ' UPDATE matricula SET nota_final = '. $nota_diario;
+					$qryDiario .= ' WHERE ref_pessoa = '. $ref_pessoa .' AND';
+					$qryDiario .= " ref_periodo = '$getperiodo' AND ";
+					$qryDiario .= ' ref_disciplina_ofer = '. $diario_id .';';
+
+					$numNotas++;
+				}
+				else {
+					// NOTA EXTRA LANCADA
+					if($nota_diario < 60 || $nota_final < 60) {
+
+						// CALCULA NOTA FINAL E VERIFICA NOTA EXTRA SOMENTE COM NOTA < 60
+						// NOTA < 60 RATIFICA O LANCAMENTO DA NOTA EXTRA
+
+						$nota_final_calculada = calcula_nota_reavaliacao($diario_id,$nota_diario,$nota_extra);
+
+						if($nota_final_calculada != $nota_final) {
+
+							// NOTA EXTRA LANCADA E SOMATORIO ERRADO
+							$qryDiario .= ' UPDATE matricula SET nota_final = '. $nota_final_calculada;
+							$qryDiario .= ' WHERE ref_pessoa = '. $ref_pessoa .' AND';
+							$qryDiario .= " ref_periodo = '$getperiodo' AND ";
+							$qryDiario .= ' ref_disciplina_ofer = '. $diario_id .';';
+
+							$numNotas++;
+						}
+					}
+				}
+			}
+
+			if($numNotas > 0) {
+
+				$flag_pendencia = 1;
+				$msg_atualiza .= 'Atualizado somat&oacute;rio de faltas\n';
+				// $msg .= $numNotas . ' alunos com problemas no somatorio de notas\n';
+			}
+
+		}
+
+		// VERIFICA PENDENCIAS RELACIONADAS AO SOMATORIO DE NOTAS *** CONSIDERA NOTA EXTRA ***
+
+		// APLICA A RESOLUCAO DE PENDENCIAS CASO EXISTA ALGUMA
+		if($flag_pendencia == 1) {
+
+			$qryDiario .= "COMMIT;";
+
+			// GRAVA AS ALTERACOES
+			$conn->Execute($qryDiario);
+/*
+			if($res === FALSE) {
+
+				// MENSAGEM DE ERRO AO GRAVAR AS ALTERACOES OU ENVIA EMAIL AVISANDO ALGUEM
+				$msg_erro = "";
+                envia_erro($res ."\n\n". $qryDiario);
+
+				//^ MENSAGEM DE ERRO AO GRAVAR AS ALTERACOES OU ENVIA EMAIL AVISANDO ALGUEM
+
+			}
+			else {
+				// MENSAGEM PENDENCIAS RESOLVIDAS COM SUCESSO
+				$msg_sucesso = "";
+				//^ MENSAGEM PENDENCIAS RESOLVIDAS COM SUCESSO
+			}
+*/
+		}
+		else {
+
+			// MENSAGEM NENHUMA PENDENCIA A RESOLVER
+			$msg_sem_pendencias = "";
+			//^  MENSAGEM NENHUMA PENDENCIA A RESOLVER
+		}
+		// ^ APLICA A RESOLUCAO DE PENDENCIAS CASO EXISTA ALGUMA
+
+	}
+
+}
+
+
+function atualiza_dispensa($aluno,$diario_id,$dispensa_tipo) {
+
+	global $conn;
+
+	// EXCLUI FALTAS E NOTAS ANTERIORES 
+    $sql_dispensa = 'BEGIN;';
+    $sql_faltas = "DELETE FROM diario_chamadas WHERE ra_cnec = '$aluno' AND ref_disciplina_ofer = $diario_id;";
+    $sql_notas = "DELETE FROM diario_notas WHERE ra_cnec = '$aluno' AND d_ref_disciplina_ofer = $diario_id;";
+    $sql_dispensa .= $sql_faltas . $sql_notas .'COMMIT;';
+    $rs_dispensa = $conn->Execute($sql_dispensa);
+    // ^ EXCLUI FALTAS E NOTAS ANTERIORES ^ //
+
+    // INICIALIZA O DIARIO CASO NECESSÁRIO
+    if(!is_inicializado($diario_id)) {    
+		if (ini_diario($diario_id)) {
+			atualiza_diario($aluno, $diario_id,$dispensa_tipo);
+		}
+        else 
+			echo '<script language=javascript> window.alert("Falha ao inicializar o diario!"); window.close();</script>';
+	}
+    else
+		atualiza_diario($aluno, $diario_id,$dispensa_tipo);
+}
+
+
+function lanca_nota($aluno,$nota_final,$diario_id,$codprova=1) {
+    
+	global $conn;
+
+    // FIXME: antes de gravar a nota verificar:
+    //     - se nota não é > 100
+    //     - lançamento de nota extra, não lançar nota caso exista a extra
+    $msg = '';
+
+    $nota = str_replace(",",".",$nota_final);
+
+    $sql_nota .= "UPDATE 
+                     diario_notas 
+                  SET 
+                     nota = $nota 
+                  WHERE 
+                     d_ref_disciplina_ofer = $diario_id AND
+                     ref_diario_avaliacao = $codprova AND 
+                     ra_cnec = '$aluno';";
+
+    $rs_nota = $conn->Execute($sql_nota);
+
+    if($rs_nota == FALSE) {
+        envia_erro($sql_nota);
+        $msg = 'p>>> <b><font color="#FF0000">Falha ao atualizar Nota '. $codprova .' do aluno '. $aluno .' Di&aacute;rio '. $diario_id .'</font></b></p>';
+    }
+
+    return $msg;
+}
+
+
+/*
+ // FIXME  -- para as faltas construir a chamada a partir de uma data inicial
+function lanca_chamada($aluno,$num_faltas,$getofer,$data_inicial) {
+
+}
+
+// FIXME  -- gravar o conteúdo de aula na primeira chamada e anexar uma observação
+function lanca_conteudo($getofer,$data_inicial,$conteudo) {
+
+
+}
+*/
 
 ?>

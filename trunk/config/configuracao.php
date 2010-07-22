@@ -50,7 +50,7 @@ $SESS_TABLE     = 'sessao';
 $PAPEIS_SA = array('secretaria' => 1, 'administrador' => 2);
 $PAPEIS_WEB_DIARIO = array('professor' => 3, 'coordenador' => 0);
 $PAPEIS_ADMINISTRADOR = array('administrador' => 2);
-
+$EMAIL_ADMIN = 'gti.bambui@ifmg.edu.br';
 
 /*
    ALGUNS PARAMETROS DO SISTEMA ACADEMICO

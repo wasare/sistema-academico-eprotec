@@ -11,11 +11,8 @@
 header("Cache-Control: no-cache");
 require_once('../../app/setup.php');
 
-//Criando a classe de conexao ADODB
-$Conexao = NewADOConnection("postgres");
 
-//Setando como conexao persistente
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+$conn = new connection_factory($param_conn);
 
 /**
  * @var string 
@@ -53,42 +50,38 @@ WHERE
   contratos.id = $id_contrato;";
 
 //Exibindo a descricao do curso caso setado
-$RsCurso = $Conexao->Execute($sqlCurso);
+$curso = $conn->get_row($sqlCurso);
 
 
 /**
  * @var integer
  */
-$curso_id   = $RsCurso->fields[0];
+$curso_id   = $curso['id'];
 /**
  * @var string   
  */
-$curso_nome = $RsCurso->fields[1];
+$curso_nome = $curso['descricao'];
 /**
  * @var integer   
  */
-$ref_campus = $RsCurso->fields[2];
+$ref_campus = $curso['ref_campus'];
 /**
  * @var string   
  */
-$turma = $RsCurso->fields[3];
+$turma = $curso['turma'];
 
 
 $sqlCampus = "SELECT get_campus($ref_campus)";
-$RsCampus = $Conexao->Execute($sqlCampus);
-$ref_campus = $RsCurso->fields[2];
 /**
  * @var string Descricao no campus
  */
-$campus_nome = $RsCampus->fields[0];
+$campus_nome = $conn->get_one($sqlCampus);
 
 $sqlAluno = "SELECT nome FROM pessoas WHERE id = $aluno_id;";
-$RsAluno = $Conexao->Execute($sqlAluno);
-$ref_campus = $RsCurso->fields[2];
 /**
  * @var string Nome do aluno
  */
-$aluno_nome = $RsAluno->fields[0];
+$aluno_nome = $conn->get_one($sqlAluno);
 
 $disciplinas_liberadas = 0;
 
@@ -109,7 +102,7 @@ SELECT DISTINCT
         WHERE
                 d.id = o.ref_disciplina AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 o.ref_campus = '$ref_campus' AND
                 o.id IN 
@@ -127,14 +120,14 @@ SELECT DISTINCT
                 matricula m, disciplinas d, pessoas p, disciplinas_ofer o
         WHERE
                 m.ref_pessoa = p.id AND
-                p.id = '$aluno_id' AND
+                p.id = $aluno_id AND
                 m.ref_disciplina_ofer = o.id AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 d.id IN (
                   select distinct ref_disciplina
                         from cursos_disciplinas
-                        where ref_curso = '$curso_id'
+                        where ref_curso = $curso_id
                 ) AND
                 ( m.nota_final < 60 OR
                 m.num_faltas > ( d.carga_horaria * 0.25) ) 
@@ -153,12 +146,12 @@ SELECT DISTINCT
                 c.ref_disciplina = d.id AND
                 d.id = o.ref_disciplina AND
                 d.id = o.ref_disciplina AND
-                o.is_cancelada = 0 AND
+                o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 d.id IN (
                   select distinct ref_disciplina
                         from cursos_disciplinas
-                        where ref_curso = '$curso_id'
+                        where ref_curso = $curso_id
                 ) AND
 				d.id NOT IN (
                     select distinct o.ref_disciplina from 
@@ -177,9 +170,9 @@ WHERE matriculada is null
 
 // -- o.fl_finalizada = 'f' AND -- somente em diario aberto/finalizado
 //
-//echo  $sqlDisciplinas;
+//echo  '<pre>'. $sqlDisciplinas .'</pre>';
 
-    $RsDisciplinas = $Conexao->Execute($sqlDisciplinas);
+    $RsDisciplinas = $conn->Execute($sqlDisciplinas);
 
     $DisciplinasNaoCursadas = '';
     while(!$RsDisciplinas->EOF){
@@ -193,9 +186,9 @@ WHERE matriculada is null
         $DisciplinasNaoCursadas .= "<input type=\"radio\" name=\"id_diario\" ".
                    "id=\"id_diarios\" value=\"$ref_disciplina_ofer\" onclick=\"Exibe('dispensar')\" />";
         $DisciplinasNaoCursadas .= '&nbsp;&nbsp;';
-        $DisciplinasNaoCursadas .= "<strong>$ref_disciplina_ofer - $descricao_disciplina</strong> - $ref_curso - $turma_ofer($ref_periodo) <br />";
+			$DisciplinasNaoCursadas .= "<strong>$ref_disciplina_ofer - $descricao_disciplina</strong> - $ref_curso - $turma_ofer($ref_periodo) <br />";
 
-        $RsDisciplinas->MoveNext();
+			$RsDisciplinas->MoveNext();
 	
         $code++;
 

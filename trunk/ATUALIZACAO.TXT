@@ -52,6 +52,16 @@ Para realizar uma atualização com sucesso siga os seguintes passos:
 
 
 
+Alterações específicas conforme a revisão
+===========================================
+
+- Se sua instalação atual a ser atualizada for <= 0.2.0_rev246 substituir e 
+  adaptar o novo arquivo config/configuracao.php, este introduziu uma nova variável 
+  para guardar o email do administrador do sistema.
+
+
+
+
 ------------------------------------------------------------
 Desenvolvedores
 ------------------------------------------------------------

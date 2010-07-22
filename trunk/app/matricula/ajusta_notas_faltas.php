@@ -4,10 +4,7 @@ header("Cache-Control: no-cache");
 
 //-- ARQUIVO E BIBLIOTECAS
 require_once("../../app/setup.php");
-
-//-- Conectando com o PostgreSQL
-$Conexao = NewADOConnection("postgres");
-$Conexao->PConnect("host=$host dbname=$database port=$port user=$user password=$password");
+require_once($BASE_DIR .'core/web_diario.php');
 
 $cabecalho = '';
 
@@ -25,21 +22,14 @@ if ($_POST['btnOK'] == 10)
 	*/
 
 	// SOMENTE EFETUA AJUSTE SE EXISTIR PELO MENOS UM DIARIO E UM ALUNO
-	if ( is_numeric(count($diarios)) AND count($diarios) > 0 AND is_numeric($aluno_id))
+	if (is_numeric(count($diarios)) AND count($diarios) > 0 AND is_numeric($aluno_id))
 	{
 		$diarios_ajustados = '';
-		// ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO 
-		//-- Conectando com o PostgreSQL
-		// FIXME: migrar para conexao ADODB
-		if(($conn = pg_Pconnect("host=$host user=$user password=$password dbname=$database")) == false)
-		{
-			$error_msg = "N�o foi poss�vel estabeler conex�o com o Banco: " . $database;
-		}
-		require_once('atualiza_diario_matricula.php');
-
 		foreach($diarios as $diario) {
-			atualiza_matricula("$aluno_id","$diario");
-			$diarios_ajustados .=  $diario .'  ';
+            if (is_diario($diario) && is_inicializado($diario) && !is_finalizado($diario)) {
+				atualiza_diario("$aluno_id","$diario");
+				$diarios_ajustados .=  $diario .'  ';
+			}
 		}
 
 		// ^ ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO ^ //

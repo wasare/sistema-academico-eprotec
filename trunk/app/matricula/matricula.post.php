@@ -4,6 +4,7 @@ header("Cache-Control: no-cache");
 
 //-- ARQUIVO E BIBLIOTECAS
 require_once(dirname(__FILE__) .'/../setup.php');
+require_once($BASE_DIR .'core/web_diario.php');
 
 $conn = new connection_factory($param_conn);
 
@@ -185,16 +186,8 @@ if ( is_numeric(count($diarios_matriculados)) AND count($diarios_matriculados) >
 	}
 
 	// ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO 
-	//-- Conectando com o PostgreSQL
-	// FIXME: migrar para conexao ADODB
-	if(($conn = pg_Pconnect("host=$host user=$user password=$password dbname=$database")) == false)
-	{
-   		$error_msg = "Não foi possível estabeler conexão com o Banco: " . $database;
-	}
-	require_once('atualiza_diario_matricula.php');
-
 	foreach($diarios_matriculados as $matriculado) {
-		atualiza_matricula("$aluno_id","$matriculado");
+		atualiza_diario("$aluno_id","$matriculado");
 	}
 
 	// ^ ATUALIZA NOTAS E FALTAS CASO O DIARIO TEM SIDO INICIALIZADO ^ //

@@ -41,6 +41,7 @@ $quantidade_notas_diario = $conn->get_one($sql_quantidade_notas);
         <th><font color="#ffffff">Faltas</font></th>
         <th><font color="#ffffff">% faltas</font></th>
         <th><font color="#ffffff">Aulas dadas</font></th>
+        <th><font color="#ffffff">Situa&ccedil;&atilde;o</font></th>
     </tr>
     <?php
     $count = 0;
@@ -76,11 +77,6 @@ $quantidade_notas_diario = $conn->get_one($sql_quantidade_notas);
 											  ref_motivo_matricula = 0;";
         $media_disciplina = $conn->get_one($sql_media_disciplina);
        
-
-        $sql_quantidade_notas = "SELECT quantidade_notas_diario FROM tipos_curso WHERE id = get_tipo_curso($curso);";
-        $quantidade_notas_diario = $conn->get_one($sql_quantidade_notas);
-
-        
 		$diario_info = $conn->get_all($sql_diario_info);
 
         $color =  ($color != '#ffffff') ? '#ffffff' : '#cce5ff';
@@ -93,22 +89,35 @@ $quantidade_notas_diario = $conn->get_one($sql_quantidade_notas);
 					echo '<td>'. $disciplina_aluno['descricao_disciplina'] . $nao_finalizada .'</td>';
 				}
                 $count++;
-                
+
                 if ($disciplina_aluno['nota'] == '-1')
                     echo '<td align="center"> - </td>';
                 else
-                    if ($disciplina_aluno['ref_diario_avaliacao'] <= $quantidade_notas_diario)
-						echo '<td align="center">'. number::numeric2decimal_br($disciplina_aluno['nota'],1) .'</td>';
+                    echo '<td align="center">'. number::numeric2decimal_br($disciplina_aluno['nota'],1) .'</td>';
+                   // if ($disciplina_aluno['ref_diario_avaliacao'] <= $quantidade_notas_diario)
+				   //		echo '<td align="center">'. number::numeric2decimal_br($disciplina_aluno['nota'],1) .'</td>';
                 
                 if ($disciplina_aluno['ref_diario_avaliacao'] != 7)
 					continue;
+
+				$situacao = '';
+
+                if(verificaAprovacao($aluno, $curso, $disciplina_ofer))
+                    $situacao = 'A';
+                else
+                    $situacao = '<span style="color: red; font-weight: bold;">R</span>';
+
+                if(!verificaPeriodo($periodo) && $disciplina_aluno['fl_finalizada'] == 'f')
+                    $situacao = 'M';
+
                  			
 				echo '<td align="center">'. number::numeric2decimal_br($disciplina_aluno['nota_final'],1) .'</td>';
 				echo '<td align="center">'. $disciplina_aluno['total_distribuido'] .'</td>';
                 echo '<td align="center">'. number::numeric2decimal_br($media_disciplina,1) .'</td>';
 				echo '<td align="center">'. $disciplina_aluno['num_faltas'] .'</td>';
-                echo '<td align="center">'. number::numeric2decimal_br(($disciplina_aluno['num_faltas'] * 100 / $ch_realizada),1) .'</td>';
+                echo '<td align="center">'. number::numeric2decimal_br(@($disciplina_aluno['num_faltas'] * 100 / $ch_realizada),1) .'</td>';
                 echo '<td align="center">'. $ch_realizada .'</td>';
+			    echo '<td align="center">'. $situacao .'</td>';
         }
         echo '</tr>';
     }
@@ -117,6 +126,13 @@ $quantidade_notas_diario = $conn->get_one($sql_quantidade_notas);
 <br />
 (<strong>*</strong>) Disciplina com lan&ccedil;amentos n&atilde;o finalizados, pass&iacute;vel de altera&ccedil;&otilde;es.
 <br /><br />
+<div align="left" style="font-size: 0.85em;">
+    <h4>Legenda</h4>
+    <strong>A</strong> - Aprovado<br />
+    <strong>R</strong> - Reprovado <br />
+    <strong>M</strong> - Matriculado <br /><br />
+</div>
+<br />
 <input type="button" value="Imprimir" onClick="window.print()">&nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:history.back();">Voltar</a>
 <br /><br />
 <?php include_once('includes/rodape.htm'); ?>      
