@@ -20,7 +20,7 @@ $sql = "select " .
 
 $query = $conn->CreateQuery($sql);
 
-SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+SaguAssert($query && $query->MoveNext(),"Registro n&atilde;o encontrado!");
 
 list ( $id,
        $nome,
@@ -34,6 +34,7 @@ $conn->Close();
 ?>
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
   function _init()
   {

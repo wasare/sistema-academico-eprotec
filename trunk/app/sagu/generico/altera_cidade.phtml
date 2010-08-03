@@ -10,6 +10,7 @@ $id = $_GET['id'];
 ?>
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
 var tipo_busca;
 function buscaPais()
@@ -59,7 +60,7 @@ $sql = "select " .
 
 $query = $conn->CreateQuery($sql);
 
-SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+SaguAssert($query && $query->MoveNext(),"Registro n&atilde;o encontrado!");
 
 list ( $nome,
        $cep,
@@ -79,7 +80,7 @@ $estado = GetEstado($ref_estado, true);
   <table border="0" width="90%" align="center" cellspacing="2" height="40" align="center">
     <tr bgcolor="#000099" align "center">
       <td height="35" colspan="2" align="center">
-        <font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Alteração de Cidades</font></b></font>
+        <font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Altera&ccedil;&atilde;o de Cidades</font></b></font>
       </td>
     </tr>
     <tr>
@@ -89,25 +90,25 @@ $estado = GetEstado($ref_estado, true);
        </font></td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome&nbsp;<span class="required">*</span>&nbsp;</font></td>
       <td> 
         <input name="nome" type=text size="50" value="<? echo($nome); ?>">
       </td>
     </tr>
 <!--    <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Praça (cod Sicredi)</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Pra&ccedil;a (cod Sicredi)</font></td>
       <td> 
         <input name="praca" type=text size="8" maxlength="8" value="<? echo($praca); ?>">
       </td>
     </tr>-->
     <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cep</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cep&nbsp;<span class="required">*</span>&nbsp;</font></td>
       <td> 
         <input name="cep" type=text size="8" maxlength="8" value="<? echo($cep); ?>">
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Pa&iacute;s</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Pa&iacute;s&nbsp;<span class="required">*</span>&nbsp;</font></td>
       <td> 
         <input name="ref_pais" type=text size="10" value="<? echo($ref_pais); ?>">
         <input type="text" name="pais" size="40" value="<? echo($pais); ?>">
@@ -115,7 +116,7 @@ $estado = GetEstado($ref_estado, true);
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Estado</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Estado&nbsp;<span class="required">*</span>&nbsp;</font></td>
       <td> 
         <input name="ref_estado" type=text size="10" value="<? echo($ref_estado); ?>">
         <input type="text" name="estado" size="40" value="<? echo($estado); ?>">
