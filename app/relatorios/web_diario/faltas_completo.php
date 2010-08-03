@@ -3,7 +3,7 @@
 require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'core/date.php');
-require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
+//require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
 
 
 $conn = new connection_factory($param_conn);
@@ -121,7 +121,7 @@ else {
 
 $sql_carga_horaria = "SELECT get_carga_horaria_realizada($diario_id), get_carga_horaria(get_disciplina_de_disciplina_of($diario_id));";
 
-$carga_horaria = $conn->adodb->getRow($sql_carga_horaria);
+$carga_horaria = $conn->get_row($sql_carga_horaria);
 
 $ch_prevista = $carga_horaria['get_carga_horaria'];
 $ch_realizada = $carga_horaria['get_carga_horaria_realizada'];
@@ -171,7 +171,7 @@ foreach($alunos_diario as $row3) {
 
 //   -- RECUPERA AS FALTAS PARCIAIS POR ALUNO
 
-	$aluno_faltas = $conn->adodb->getAll(sprintf($sql5,$ra));
+	$aluno_faltas = $conn->get_all(sprintf($sql5,$ra));
 
 	if($aluno_faltas === FALSE) {
 		

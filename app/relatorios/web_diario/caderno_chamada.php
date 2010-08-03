@@ -3,8 +3,6 @@
 require_once(dirname(__FILE__) .'/../../setup.php');
 require_once($BASE_DIR .'core/web_diario.php');
 require_once($BASE_DIR .'core/date.php');
-require_once($BASE_DIR .'app/matricula/atualiza_diario_matricula.php');
-
 require_once($BASE_DIR .'lib/pslib.php');
   
 $conn = new connection_factory($param_conn);
@@ -229,7 +227,7 @@ function cabecalho($myfile_ps, $data, $ref_disciplina, $disciplina, $ref_curso, 
       	   "       A.dia_semana = '$dia_semana' and " .
       	   "       A.turno = '$turno'";
 
-    $profs = $conn->adodb->getAll($sql);
+    $profs = $conn->get_all($sql);
     
     $totalLinhas = count($profs);
     
