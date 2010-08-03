@@ -17,6 +17,7 @@ $op_opcoes = SQLArray("select id || ' - ' || nome, id from pais order by id");
 ?>
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
 function _init(){
 	document.myform.nome.focus();
@@ -91,7 +92,7 @@ $sql = "select " .
 
 $query = $conn->CreateQuery($sql);
 
-SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+SaguAssert($query && $query->MoveNext(),"Registro n&atilde;o encontrado!");
 
 list ( $id,
 $nome,
@@ -295,7 +296,7 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
                     }
                 }
 
-                alert(code + ' não é um código válido!');
+                alert(code + ' n&atilde;o &eacute; um c&oacute;digo v&aacute;lido!');
 
                 field.focus();
 
@@ -311,7 +312,7 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 	<tr bgcolor="#000099">
 		<td height="35" colspan="3">
 		<div align="center"><font size="3"
-			face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Alteração
+			face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Altera&ccedil;&atilde;o
 		de Pessoa F&iacute;sica</font></b></font></div>
 		</td>
 	</tr>
@@ -323,7 +324,7 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 			echo("$id<br>");
 			if ($fl_dados_pessoais == 'f')
 			{
-				echo("<font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"red\"><b>(Divulga&ccedil;&atilde;o de dados pessoais não permitida!!!)</b></font>");
+				echo("<font face=\"Verdana, Arial, Helvetica, sans-serif\" size=\"2\" color=\"red\"><b>(Divulga&ccedil;&atilde;o de dados pessoais nï¿½o permitida!!!)</b></font>");
 			}
 			?> <input type="hidden" name="id" value="<? echo($id); ?>"> </font></td>
 		<th rowspan="6"><font size="-1" color="brown">clique na foto para
@@ -336,12 +337,12 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="nome" type=text value="<?echo($nome);?>" size="30"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Rua&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Rua&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
@@ -362,7 +363,7 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF" height="22"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cidade&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cidade&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
@@ -383,7 +384,7 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cep&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cep&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="cep" type=text value="<?echo($cep);?>" size="10"></td>
 	</tr>
 	<tr>
@@ -453,14 +454,14 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 	<tr>
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data
-		de Nascimento<br>
-		&nbsp;(dd-mm-aaaa)</font></td>
+		de Nascimento&nbsp;<span class="required">*</span>&nbsp;</font><br>
+		<font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;(dd-mm-aaaa)</font></td>
 		<td><input name="dt_nascimento" type=text
 			value="<?echo($dt_nascimento);?>" size="15"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sexo&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sexo&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><select name="sexo">
 			<option value="" selected="selected"> --- selecione ---</option>
 			<option value="M" <?php if($sexo == 'M') echo 'selected="selected"';?>>Masculino</option>
@@ -472,7 +473,7 @@ list ($nome_pai_, $nome_mae_) = GetFiliacao($ref_filiacao, false);
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Deficiente&nbsp;</font></td>
 		<td><select name="deficiencia">
 			<option value="0"
-			<? if ( $deficiencia == '0' ) { echo "selected"; } ?>>Não</option>
+			<? if ( $deficiencia == '0' ) { echo "selected"; } ?>>N&atilde;o</option>
 			<option value="1"
 			<? if ( $deficiencia == '1' ) { echo "selected"; } ?>>Sim</option>
 		</select> <input name="deficiencia_desc" type=text
@@ -656,21 +657,21 @@ ComboArray("op",$op_opcoes, $ref_nacionalidade ,"ChangeOp()");
 			<?if ($fl_cartao == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($fl_cartao == 't')
-			{ echo "<option value=\"f\">Não</option>";}
+			{ echo "<option value=\"f\">N&atilde;o</option>";}
 			?>
 		</select></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Permite
-		Divulgação<br>
+		Divulga&ccedil;&atilde;o<br>
 		&nbsp;dos Dados Pessoais&nbsp;</font></td>
 		<td><select name="fl_dados_pessoais">
 			<option selected><?echo($opcoes[$fl_dados_pessoais]); ?></option>
 			<?if ($fl_dados_pessoais == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($fl_dados_pessoais == 't')
-			{ echo "<option value=\"f\">Não</option>";}
+			{ echo "<option value=\"f\">N&atilde;o</option>";}
 			?>
 		</select></td>
 	</tr>
@@ -680,38 +681,38 @@ ComboArray("op",$op_opcoes, $ref_nacionalidade ,"ChangeOp()");
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cópia
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;pia
 		do RG&nbsp;</font></td>
 		<td><select name="rg_num">
 			<option selected><?echo($opcoes[$rg_num]); ?></option>
 			<?if ($rg_num == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($rg_num == 't')
-			{ echo "<option value=\"f\">Não</option>";};?>
+			{ echo "<option value=\"f\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cópia
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;pia
 		do CPF&nbsp;</font></td>
 		<td><select name="cpf">
 			<option selected><?echo($opcoes[$cpf]); ?></option>
 			<?if ($cpf == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($cpf == 't')
-			{ echo "<option value=\"f\">Não</option>";};?>
+			{ echo "<option value=\"f\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cópia
-		do Título de Eleitor&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;pia
+		do T&iacute;tulo de Eleitor&nbsp;</font></td>
 		<td><select name="titulo_eleitord">
 			<option selected><?echo($opcoes[$titulo_eleitord]); ?></option>
 			<?if ($titulo_eleitord == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($titulo_eleitord == 't')
-			{ echo "<option value=\"f\">Não</option>";};?>
+			{ echo "<option value=\"f\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr>
@@ -723,31 +724,31 @@ ComboArray("op",$op_opcoes, $ref_nacionalidade ,"ChangeOp()");
 			<?if ($quitacao_eleitoral == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($quitacao_eleitoral == 't')
-			{ echo "<option value=\"f\">Não</option>";};?>
+			{ echo "<option value=\"f\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Histórico
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Hist&oacute;rico
 		Original&nbsp;</font></td>
 		<td><select name="hist_original">
 			<option selected><?echo($opcoes[$hist_original]); ?></option>
 			<?if ($hist_original == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($hist_original == 't')
-			{ echo "<option value=\"f\">Não</option>";};?>
+			{ echo "<option value=\"f\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cópia
-		do Histórico&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;pia
+		do Hist&oacute;rico&nbsp;</font></td>
 		<td><select name="hist_escolar">
 			<option selected><?echo($opcoes[$hist_escolar]); ?></option>
 			<?if ($hist_escolar == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($hist_escolar == 't')
-			{ echo "<option value=\"f\">Não</option>";};?>
+			{ echo "<option value=\"f\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr>
@@ -759,7 +760,7 @@ ComboArray("op",$op_opcoes, $ref_nacionalidade ,"ChangeOp()");
 			<?if ($doc_militar == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($doc_militar == 't')
-			{ echo "<option value=\"f\">Não</option>";};?>
+			{ echo "<option value=\"f\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr>
@@ -770,19 +771,19 @@ ComboArray("op",$op_opcoes, $ref_nacionalidade ,"ChangeOp()");
 			<?if ($foto == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($foto == 't')
-			{ echo "<option value=\"f\">Não</option>";};?>
+			{ echo "<option value=\"f\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Atestado
-		Médico&nbsp;</font></td>
+		M&eacute;dico&nbsp;</font></td>
 		<td><select name="atestado_medico">
 			<option selected><?echo($opcoes[$atestado_medico]); ?></option>
 			<?if ($atestado_medico == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($atestado_medico == 't')
-			{ echo "<option value=\"f\">Não</option>";};?>
+			{ echo "<option value=\"f\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr>
@@ -794,7 +795,7 @@ ComboArray("op",$op_opcoes, $ref_nacionalidade ,"ChangeOp()");
 			<?if ($diploma_autenticado == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($diploma_autenticado == 't')
-			{ echo "<option value=\"f\">Não</option>";};?>
+			{ echo "<option value=\"f\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr>
@@ -806,13 +807,13 @@ ComboArray("op",$op_opcoes, $ref_nacionalidade ,"ChangeOp()");
 			<?if ($solteiro_emancipado == 'f')
 			{ echo "<option value=\"t\">Sim</option>";}
 			if ($solteiro_emancipado == 't')
-			{ echo "<option value=\"f\">Não</option>";};?>
+			{ echo "<option value=\"f\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr bgcolor="#ffeecc">
 		<td colspan="2"><font size="2"
-			face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#FF3333">Informações
-		do Ensino Médio</font></b></font></td>
+			face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#FF3333">Informa&ccedil;&atilde;es
+		do Ensino M&eacute;dio</font></b></font></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
