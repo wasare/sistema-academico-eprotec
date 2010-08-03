@@ -10,6 +10,7 @@ $id = $_GET['id'];
 
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
 function buscaPais()
 {
@@ -40,7 +41,7 @@ $sql = "select " .
 
 $query = $conn->CreateQuery($sql);
 
-SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+SaguAssert($query && $query->MoveNext(),"Registro n&atilde;o encontrado!");
 
 list ( $id,
        $nome,
@@ -68,13 +69,13 @@ $pais = GetPais($ref_pais, true);
         </font></td>
     </tr> 
     <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome&nbsp;<span class="required">*</span>&nbsp;</font></td>
       <td> 
         <input name="nome" type=text size="50" value="<? echo($nome); ?>">
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Pa&iacute;s</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Pa&iacute;s&nbsp;<span class="required">*</span>&nbsp;</font></td>
       <td> 
         <input name="ref_pais" type=text size="5" value="<? echo($ref_pais); ?>">
         <input type="text" name="pais" size="40" value="<?echo($pais);?>">
