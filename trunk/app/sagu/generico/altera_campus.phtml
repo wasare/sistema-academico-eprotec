@@ -52,7 +52,7 @@ $sql = " select " .
 
 $query = $conn->CreateQuery($sql);
 
-SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+SaguAssert($query && $query->MoveNext(),"Registro n&atilde;o encontrado!");
 
 list ( $id,
 $ref_empresa,
@@ -66,6 +66,7 @@ $conn->Close();
 ?>
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
 function ChangeOption(opt,fld)
 {
@@ -102,7 +103,7 @@ function ChangeCode(fld_name,op_name)
     }
   }
 
-  alert(code + ' não é um código válido!');
+  alert(code + ' nï¿½o ï¿½ um cï¿½digo vï¿½lido!');
 
   field.focus();
 
@@ -128,7 +129,7 @@ function ChangeCode(fld_name,op_name)
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Empresa&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Empresa&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="ref_empresa"
 			onChange="ChangeCode('ref_empresa','op')" type=text
 			value="<?=$ref_empresa?>" size="12"> <?=SQL_Combo("op","select substr(razao_social, 0, 120),id from configuracao_empresa order by razao_social","$ref_empresa","ChangeOp()"); ?>
@@ -137,20 +138,20 @@ function ChangeCode(fld_name,op_name)
 	<tr>
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome
-		do Campus</font></td>
+		do Campus&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="nome_campus" type=text size="50"
 			value="<? echo($nome_campus); ?>"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome
-		da Cidade</font></td>
+		da Cidade&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="cidade_campus" type=text size="50"
 			value="<? echo($cidade_campus); ?>"></td>
 	</tr>
         <tr>
         <td bgcolor="#CCCCFF"><font
-            face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus Sede</font></td>
+            face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus Sede&nbsp;<span class="required">*</span>&nbsp;</font></td>
         <td><input name="ref_campus_sede" type=text size="10" maxlength="10" value="<?=$ref_campus_sede?>" 
             onChange="ChangeCode('ref_campus_sede','opcampus')"> <font color="#000000">  
             <?=SQL_Combo("opcampus","select substr(nome_campus, 0, 120), id, cidade_campus from campus order by cidade_campus","$ref_campus_sede","ChangeOpCampus()");?></font></td>
