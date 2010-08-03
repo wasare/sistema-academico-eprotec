@@ -5,7 +5,7 @@ require("../common.php");
 ?>
 <html>
 <head>
-
+ <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
 function buscaCidade()
 {
@@ -28,10 +28,10 @@ function Confirma_Exclui(arg1)
 {
   url = 'post/configuracao_empresa_exclui.php3?id=' + arg1;
 
-  if (confirm("Você tem certeza que deseja EXCLUIR o Empresa: "+arg1+" ?"))
+  if (confirm("Vocï¿½ tem certeza que deseja EXCLUIR o Empresa: "+arg1+" ?"))
     location=(url)
   else
-    alert("Exclusão Cancelada.");
+    alert("Exclusï¿½o Cancelada.");
 }
 
 </script>
@@ -52,8 +52,8 @@ function MostraConfiguracao()
 
 	echo("<center><table width=\"90%%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
 	echo("<tr bgcolor=\"#000000\">\n");
-	echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Código</b></font></td>");
-	echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descrição</b></font></td>");
+	echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Cï¿½digo</b></font></td>");
+	echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descriï¿½ï¿½o</b></font></td>");
 	echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
 	echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
 	echo("  </tr>");
@@ -152,32 +152,32 @@ function SQL_Combo($nome,$sql,$default,$onchange)
 	<tr>
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Raz&atilde;o
-		Social&nbsp;</font></td>
+		Social&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="razao_social" type=text size="50" maxlength="199"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sigla</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Sigla&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="sigla" type=text size="10" maxlength="29"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Rua&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Rua&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="rua" type=text size="50" maxlength="50"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Complemento&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Complemento&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="complemento" type=text size="50" maxlength="50"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Bairro&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Bairro&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="bairro" type=text></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cidade&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cidade&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
@@ -199,7 +199,7 @@ function SQL_Combo($nome,$sql,$default,$onchange)
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cep&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cep&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="cep" type=text size="9" maxlength="9"></td>
 	</tr>
 	<tr>

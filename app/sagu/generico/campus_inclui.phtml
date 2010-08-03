@@ -16,8 +16,8 @@ function MostraCampus()
 
 	echo("<center><table width=\"90%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
 	echo("<tr bgcolor=\"#000000\">\n");
-	echo ("<td width=\"15%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Código</b></font></td>");
-	echo ("<td width=\"40%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descrição</b></font></td>");
+	echo ("<td width=\"15%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>C&oacute;digo</b></font></td>");
+	echo ("<td width=\"40%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descri&ccedil;&atilde;o</b></font></td>");
     echo ("<td width=\"35%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Sede</b></font></td>");
 	echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
 	echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
@@ -111,16 +111,17 @@ function SQL_Combo($nome,$sql,$default,$onchange)
 ?>
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
 
 function Confirma_Exclui(arg1)
 {
   url = 'post/campus_exclui.php3?id=' + arg1;
 
-  if (confirm("Você tem certeza que deseja EXCLUIR o Campus: "+arg1+" ?"))
+  if (confirm("Voc&ecirc; tem certeza que deseja EXCLUIR o Campus: "+arg1+" ?"))
     location=(url)
   else
-    alert("Exclusão Cancelada.");
+    alert("Exclus&atilde;o Cancelada.");
 }
 
 function ChangeOption(opt,fld)
@@ -158,7 +159,7 @@ function ChangeCode(fld_name,op_name)
     }
   }
 
-  alert(code + ' não é um código válido!');
+  alert(code + ' n&atildeo &eacute; um c&oacute;digo v&aacute;lido!');
 
   field.focus();
 
@@ -173,7 +174,7 @@ function ChangeCode(fld_name,op_name)
 <table width="90%" align="center">
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Empresa</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Empresa&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="ref_empresa" type=text size="10" maxlength="10"
 			onChange="ChangeCode('ref_empresa','op')"> <font color="#000000"> <script
 			language="PHP">
@@ -183,18 +184,18 @@ function ChangeCode(fld_name,op_name)
 	<tr>
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome
-		do Campus </font></td>
+		do Campus&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="nome_campus" type=text size="50"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nome
-		da Cidade</font></td>
+		da Cidade&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="cidade_campus" type=text size="50"></td>
 	</tr>
 	<tr>
         <td bgcolor="#CCCCFF"><font
-            face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus Sede</font></td>
+            face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus Sede&nbsp;<span class="required">*</span>&nbsp;</font></td>
         <td><input name="ref_campus_sede" type=text size="10" maxlength="10"
             onChange="ChangeCode('ref_campus_sede','opcampus')"> <font color="#000000">
             <?=SQL_Combo("opcampus","select substr(nome_campus, 0, 120), id, cidade_campus from campus order by cidade_campus","0","ChangeOpCampus()");?> </font></td>
