@@ -45,7 +45,7 @@ function ChangeCode(fld_name,op_name)
     }
   }
 
-  alert(code + ' não é um código válido!');
+  alert(code + ' n&atilde;o &eacute; um c&oacute;digo v&aacute;lido!');
 
   field.focus();
 
@@ -83,6 +83,7 @@ function SQL_Combo($nome,$sql,$default,$onchange)
 
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <?php 
 
 CheckFormParameters(array("id"));
@@ -132,7 +133,7 @@ $sql = "select " .
 
 $query = $conn->CreateQuery($sql);
 
-SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+SaguAssert($query && $query->MoveNext(),"Registro n&atilde;o encontrado!");
 
 list ( $ref_campus,
        $campus_desc,
@@ -206,28 +207,28 @@ $dt_conclusao = InvData($dt_conclusao);
 	</tr>
 	<tr>
 		<td colspan="2" height="35" align="center"><?
-		echo("<a href=\"lista_proficiencias.phtml?ref_pessoa=$ref_pessoa&ref_contrato=$id&ref_curso=$ref_curso&ref_campus=$ref_campus&ref_periodo=$ref_last_periodo\">Insere Proficiência</a>");
+		echo("<a href=\"lista_proficiencias.phtml?ref_pessoa=$ref_pessoa&ref_contrato=$id&ref_curso=$ref_curso&ref_campus=$ref_campus&ref_periodo=$ref_last_periodo\">Insere Profici&ecirc;ncia</a>");
 		?></td>
 	</tr>
 
 
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input type="hidden" name="id" value="<?echo($id);?>"> <input
 			name="ref_campus" type=text value="<?echo($ref_campus);?>" size="4">
 		<font face="Verdana, Arial, Helvetica, sans-serif" size="2"><?echo($campus_desc);?></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Aluno</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Aluno&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="ref_pessoa" type=text value="<?echo($ref_pessoa);?>"
 			size="8"> <font face="Verdana, Arial, Helvetica, sans-serif" size="2"><?echo($pessoa_nome);?>
 		</font></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td><input name="ref_curso" type=text value="<?echo($ref_curso);?>"
 			size="8"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?echo($curso_desc);?>&nbsp;</font></td>
 	</tr>
@@ -238,8 +239,8 @@ $dt_conclusao = InvData($dt_conclusao);
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Início
-		da turma&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;In&iacute;cio
+		da turma&nbsp;&nbsp;<span class="required">*</span>&nbsp;</font></td>
 		<td colspan="2"><font color="#000000"> <input name="ref_periodo_turma"
 			type="text" size="5" value="<?=$ref_periodo_turma?>"></td>
 	</tr>
@@ -259,27 +260,27 @@ $dt_conclusao = InvData($dt_conclusao);
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data&nbsp;Ativa&ccedil;&atilde;o</font><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Data&nbsp;Ativa&ccedil;&atilde;o&nbsp;<span class="required">*</span>&nbsp;</font><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#00009C">(dd-mm-aaaa)</font></td>
 		<td><input name="dt_ativacao" type=text
 			value="<?echo($dt_ativacao);?>" size="10" maxlength="10"></td>
 	</tr>
 	<tr>
 		<TD bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Motivo&nbsp;Inicial&nbsp;Entrada</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Motivo&nbsp;Inicial&nbsp;Entrada&nbsp;<span class="required">*</span> </font></td>
 		<td><input name="ref_motivo_inicial" type=text
 			value="<?echo($ref_motivo_inicial);?>" size="4"> <?echo($motivo_inicial);?>&nbsp;</td>
 	</tr>
 	<tr>
 		<TD bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Motivo&nbsp;Ativa&ccedil;&atilde;o&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Motivo&nbsp;Ativa&ccedil;&atilde;o&nbsp;<span class="required">*</span> </font></td>
 		<td><input name="ref_motivo_ativacao" type=text
 			value="<?echo($ref_motivo_ativacao);?>" size="4"> <?echo($motivo_at);?>&nbsp;</td>
 	</tr>
 	<TR>
 		<TD bgcolor="#CCCCFF"><FONT
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Status
-		Livro Matricula&nbsp;</FONT></TD>
+		Livro Matricula&nbsp;&nbsp;<span class="required">*</span> </font></TD>
 		<TD><INPUT name="status" type="text" value="<?echo($status);?>"
 			size="4"> <?echo($desc_status);?></TD>
 	</TR>
@@ -305,12 +306,12 @@ $dt_conclusao = InvData($dt_conclusao);
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Observação&nbsp;Desativa&ccedil;&atilde;o&nbsp;</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Observa&ccedil;&atilde;o&nbsp;Desativa&ccedil;&atilde;o&nbsp;</font></td>
 		<td><textarea name="obs_desativacao" rows="3" cols="30"><?echo $obs_desativacao;?></textarea></td>
 	</tr>
 	<!--
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Motivo&nbsp;Entrada<br> (Casos de Transferências / Portador de Diploma)&nbsp;</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Motivo&nbsp;Entrada<br> (Casos de Transfer&ecirc;ncias / Portador de Diploma)&nbsp;</font></td>
       <td> 
          <input name="ref_motivo_entrada" type=text value="<?echo($ref_motivo_entrada);?>" size="4">
 	     <?echo($motivo_entrada);?></td>
@@ -367,8 +368,8 @@ $dt_conclusao = InvData($dt_conclusao);
 
 	<tr>
 		<td bgcolor="#CCCCFF" width="24%"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;Último
-		Período</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000099">&nbsp;&Uacute;ltimo
+		Per&iacute;odo&nbsp;<span class="required">*</span> </font></td>
 		<td colspan="2"><font color="#000000"> <input type="text"
 			name="ref_last_periodo" size="10"
 			onChange="ChangeCode('ref_last_periodo','op')"
@@ -390,7 +391,7 @@ $dt_conclusao = InvData($dt_conclusao);
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;É
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;&Eacute;
 		Ouvinte?</font></td>
 		<td><font face="Verdana, Arial, Helvetica, sans-serif" size="2"> <?
 		if ($is_ouvinte=='1')
@@ -408,7 +409,7 @@ $dt_conclusao = InvData($dt_conclusao);
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;É
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;&Eacute;
 		Formando?</font></td>
 		<td><font face="Verdana, Arial, Helvetica, sans-serif" size="2"> <?
 		if ($is_formando=='1')
@@ -433,14 +434,14 @@ $dt_conclusao = InvData($dt_conclusao);
 -->
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Último
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;&Uacute;ltimo
 		semestre</font></td>
 		<td><input name="semestre" type=text value="<?echo($semestre);?>"
 			size="2"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Observações</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Observa&ccedil;&atilde;es</font></td>
 		<td><textarea name="obs" rows="3" cols="30"><?echo($obs);?></textarea>
 		</td>
 	</tr>
