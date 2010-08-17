@@ -106,16 +106,17 @@ function Coordenadores(){
 ?>
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
 
 function Confirma_Exclui(ref_campus,ref_curso,ref_professor)
 {
   url = 'post/coordenador_exclui.php3?ref_campus=' + ref_campus + '&ref_curso=' + ref_curso + '&ref_professor='+ ref_professor;
 
-  if (confirm("Você tem certeza que deseja excluir este coordenador do curso?"))
+  if (confirm("Voc&ecirc; tem certeza que deseja excluir este coordenador do curso?"))
     location=(url)
   else
-    alert("Exclusão Cancelada.");
+    alert("Exclus&atilde;o Cancelada.");
 }
 
 function setResult(arg1,arg2)
@@ -171,21 +172,21 @@ function ChangeOp2()
 <table width="90%" align="center">
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus&nbsp;<span class="required">*</span> </font></td>
 		<td><input name="ref_campus" type=text size="7"> <script
 			language="PHP">ComboArray("op",$op_campus,"0","ChangeOp()");</script>
 		</font></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cursos</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Cursos&nbsp;<span class="required">*</span> </font></td>
 		<td><input name="ref_cursos" type=text size="7"> <script
 			language="PHP">ComboArray("op2",$op_cursos,"0","ChangeOp2()");</script>
 		</font></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Professor</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Professor&nbsp;<span class="required">*</span> </font></td>
 		<td>
 		<table width="65%" border="0" cellspacing="0" cellpadding="0">
 			<tr>

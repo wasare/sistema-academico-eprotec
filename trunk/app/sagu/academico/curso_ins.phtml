@@ -7,7 +7,7 @@ $conn = new connection_factory($param_conn);
 
 $acl = new acl();
 if(!$acl->has_access(__FILE__, $conn)) {
-    exit ('Você não tem permissão para acessar este formulário!');
+    exit ('Voc&ecirc; n&atilde;o tem permiss&atilde;o para acessar este formul&aacute;rio!');
 }
 
 
@@ -20,6 +20,7 @@ $op_opcoes2 = SQLArray("select nome, id from turno order by nome");
 
 <html>
     <head>
+    <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
         <script language="JavaScript">
             function _init()
             {
@@ -91,19 +92,19 @@ $op_opcoes2 = SQLArray("select nome, id from turno order by nome");
                     </td>
                 </tr>
                 <tr>
-                    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo</font></td>
+                    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo&nbsp;<span class="required">*</span> </font></td>
                     <td>
                         <input name="id" type=text size="10" maxlength="10">
                     </td>
                 </tr>
                 <tr>
-                    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Descri&ccedil;&atilde;o</font></td>
+                    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Descri&ccedil;&atilde;o&nbsp;<span class="required">*</span> </font></td>
                     <td>
                         <input name="descricao" type=text size="40" maxlength="278">
                     </td>
                 </tr>
                 <tr>
-                    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Abreviatura</font></td>
+                    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Abreviatura&nbsp;<span class="required">*</span> </font></td>
                     <td>
                         <input name="abreviatura" type=text size="20" maxlength="40">
                     </td>
@@ -133,7 +134,7 @@ $op_opcoes2 = SQLArray("select nome, id from turno order by nome");
                     </td>
                 </tr>
                 <tr>
-                    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Tipo do Curso</font></td>
+                    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Tipo do Curso&nbsp;<span class="required">*</span> </font></td>
                     <td> <font color="#000000">
                             <input name="ref_tipo_curso" type="text" size="5" onChange="ChangeCode('ref_tipo_curso','op')">
                             <? ComboArray("op",$op_opcoes,"0","ChangeOp()"); ?> </font>
@@ -154,7 +155,7 @@ $op_opcoes2 = SQLArray("select nome, id from turno order by nome");
 
 
                 <tr>
-                    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Turno</font></td>
+                    <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="00009C">&nbsp;Turno&nbsp;<span class="required">*</span> </font></td>
                     <td> <font color="#000000">
                             <input name="turno" type="text" size="2" onChange="ChangeCode('turno','op2')">
                             <? ComboArray("op2",$op_opcoes2,"2","ChangeOp2()"); ?> </font>
