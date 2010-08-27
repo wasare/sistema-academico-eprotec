@@ -216,7 +216,7 @@ CREATE FUNCTION get_ccusto(integer, integer) RETURNS character varying
 --
 
 CREATE FUNCTION get_cidade(integer) RETURNS character varying
-    AS $_$select nome from aux_cidades where id = $1; $_$
+    AS $_$select nome from cidade where id = $1; $_$
     LANGUAGE sql;
 
 

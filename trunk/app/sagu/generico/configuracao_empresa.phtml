@@ -28,10 +28,10 @@ function Confirma_Exclui(arg1)
 {
   url = 'post/configuracao_empresa_exclui.php3?id=' + arg1;
 
-  if (confirm("Voc� tem certeza que deseja EXCLUIR o Empresa: "+arg1+" ?"))
+  if (confirm("Tem certeza que deseja EXCLUIR o Empresa: "+arg1+" ?"))
     location=(url)
   else
-    alert("Exclus�o Cancelada.");
+    alert("Procedimento cancelado.");
 }
 
 </script>
@@ -52,8 +52,8 @@ function MostraConfiguracao()
 
 	echo("<center><table width=\"90%%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">");
 	echo("<tr bgcolor=\"#000000\">\n");
-	echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>C�digo</b></font></td>");
-	echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descri��o</b></font></td>");
+	echo ("<td width=\"20%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>C&oacute;digo</b></font></td>");
+	echo ("<td width=\"70%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\"><b>Descri&ccedil;&atilde;o</b></font></td>");
 	echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
 	echo ("<td width=\"5%\"><Font face=\"Verdana\" size=\"2\" color=\"#ffffff\">&nbsp;</font></td>");
 	echo("  </tr>");
