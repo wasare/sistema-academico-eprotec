@@ -77,7 +77,7 @@ if (!$acl->has_role($sa_ref_pessoa, $PAPEIS_SA, $conn)) {
                                          width="50"
                                          height="34" />
                                          <?php
-                                         if ($_SERVER['HTTP_HOST'] == 'dev.cefetbambui.edu.br' || $host != 'dados.cefetbambui.edu.br')
+                                         if ($_SERVER['HTTP_HOST'] == 'dev.cefetbambui.edu.br' || $host != 'dados.bambui.ifmg.edu.br')
                                              echo '&nbsp;&nbsp;&nbsp;&nbsp;<strong>Servidor de BD: </strong>'. $host;
                                          ?>
                                 </td>

@@ -111,7 +111,7 @@ $class_diarios = ($is_professor) ? ' class="active"' : '';
        <img src="<?=$BASE_URL .'public/images/gti.jpg'?>" alt="Ger&ecirc;ncia TI" title="Ger&ecirc;ncia de TI" width="50" height="34" border="0" />
      </td>
         <?php
-              if ($host != 'dados.cefetbambui.edu.br') {
+              if ($host != 'dados.bambui.ifmg.edu.br') {
 				echo '<td>';
 				echo '&nbsp;&nbsp;&nbsp;&nbsp;<strong>Servidor de BD: </strong>'. $host;
 				echo '</td>';
