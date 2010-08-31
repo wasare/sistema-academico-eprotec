@@ -7,13 +7,14 @@ $conn = new connection_factory($param_conn);
 
 $acl = new acl();
 if(!$acl->has_access(__FILE__, $conn)) {
-    exit ('Você não tem permissão para acessar este formulário!');
+    exit ('Voc&ecirc; n&atilde;o tem permiss&atilde;o para acessar este formul&aacute;rio!');
 }
 
 ?>
 
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
 function buscaGrupos()
 {
@@ -60,13 +61,13 @@ if ($controle == '2')
       </td>
     </tr>
     <tr>
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo&nbsp;<span class="required">*</span> </font></td>
       <td>
         <input type="text" name="id" size="10" maxlength="10">
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Grupo</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Grupo&nbsp;<span class="required">*</span> </font></td>
       <td> 
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr> 
@@ -86,7 +87,7 @@ if ($controle == '2')
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Departamento</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Departamento&nbsp;<span class="required">*</span> </font></td>
       <td> 
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr> 
@@ -106,7 +107,7 @@ if ($controle == '2')
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Descri&ccedil;&atilde;o Breve</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Descri&ccedil;&atilde;o Breve&nbsp;<span class="required">*</span> </font></td>
       <td> 
         <input name="descricao_disciplina" type=text maxlength="100" size="40">
         <font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="grey">
