@@ -7,12 +7,13 @@ $conn = new connection_factory($param_conn);
 
 $acl = new acl();
 if(!$acl->has_access(__FILE__, $conn)) {
-    exit ('Você não tem permissão para acessar este formulário!');
+    exit ('Vocï¿½ nï¿½o tem permissï¿½o para acessar este formulï¿½rio!');
 }
 
 ?>
 <html>
     <head>
+    <link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
         <script language="JavaScript">
             function buscaOpcao(pf_opcao)
             {
@@ -85,10 +86,10 @@ if(!$acl->has_access(__FILE__, $conn)) {
             <table width="90%" align="center">
                 <tr>
                     <td bgcolor="#000099" colspan="2" height="28" align="center"> <font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="#CCCCFF"><b>&nbsp;Inclus&atilde;o
-                                de Pré-Requisitos</b></font></td>
+                                de Pr&eacute;-Requisitos</b></font></td>
                 </tr>
                 <tr>
-                    <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso</font></td>
+                    <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso&nbsp;<span class="required">*</span> </font></td>
                     <td colspan="3" width="70%">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
@@ -104,7 +105,7 @@ if(!$acl->has_access(__FILE__, $conn)) {
                     </td>
                 </tr>
                 <tr>
-                    <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Código da Disciplina&nbsp;</font></td>
+                    <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo da Disciplina&nbsp;<span class="required">*</span> </font></td>
                     <td colspan="3" width="70%">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
@@ -120,7 +121,7 @@ if(!$acl->has_access(__FILE__, $conn)) {
                     </td>
                 </tr>
                 <tr>
-                    <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Código da Disciplina Pré-Requisito <!--ou<br>&nbsp;Código da Disciplina Co-Requisito ou<br>&nbsp;Código da Disciplina Proficiência&nbsp;--></font></td>
+                    <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo da Disciplina Pr&eacute;-Requisito &nbsp;<span class="required">*</span><!--ou<br>&nbsp;Cï¿½digo da Disciplina Co-Requisito ou<br>&nbsp;Cï¿½digo da Disciplina Proficiï¿½ncia&nbsp;--></font></td>
                     <td colspan="2" width="70%">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
@@ -140,7 +141,7 @@ if(!$acl->has_access(__FILE__, $conn)) {
                    <td colspan="3" width="70%">
                      <select name="tipo" size="1">
                          <option value="" selected>--- Selecione ---</option>
-                         <option value="P">Pré-Requisito</option>
+                         <option value="P">Pr&eacute;-Requisito</option>
                          <option value="C">Co-Requisito</option>
                      </select>
 
@@ -153,7 +154,7 @@ if(!$acl->has_access(__FILE__, $conn)) {
                   </td>
                 </tr>
                 <tr>
-                  <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Código da &Aacute;rea Pré-Requisito&nbsp;</font></td>
+                  <td bgcolor="#CCCCFF" width="30%"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;C&oacute;digo da &Aacute;rea Pr&eacute;-Requisito&nbsp;</font></td>
                   <td colspan="3" width="70%">
                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
@@ -175,7 +176,7 @@ if(!$acl->has_access(__FILE__, $conn)) {
                 <input type="hidden" id="horas_area" name="horas_area" size="6" maxlength="6" />
 
 <!--    <tr> 
-   <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nº de Horas Pré-Requisito Área&nbsp;</font></td>
+   <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Nï¿½ de Horas Pr&eacute;-Requisito &Aacute;rea&nbsp;</font></td>
    <td width="100%"><INPUT name="horas_area" type="text" size="6" maxlength="6"></td>
  </tr>-->
 

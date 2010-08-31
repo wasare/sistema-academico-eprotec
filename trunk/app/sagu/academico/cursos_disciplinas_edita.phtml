@@ -42,7 +42,7 @@ $sql = " select ref_curso," .
  
 $query = $conn->CreateQuery($sql);
 
-SaguAssert($query && $query->MoveNext(),"Registro não encontrado!");
+SaguAssert($query && $query->MoveNext(),"Registro n&atilde;o encontrado!");
 
 list ( $ref_curso,
 $curso,
@@ -76,6 +76,7 @@ $cursa_outra_disciplina = trim($cursa_outra_disciplina);
 ?>
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
 function _init()
 {
@@ -117,7 +118,7 @@ function ChangeCode(fld_name,op_name)
     }
   }
 
-  alert(code + ' não é um código válido!');
+  alert(code + ' n&atilde;o &eacute; um c&oacute;digo v&aacute;lido!');
 
   field.focus();
 
@@ -191,8 +192,8 @@ function setResult(arg1,arg2)
 		</td>
 	</tr>
 	<tr>
-		<td bgcolor="#CCCCFF"><b><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso</font></b></td>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso&nbsp;<span class="required">*</span> </font></td>
 		<td>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
@@ -211,8 +212,8 @@ function setResult(arg1,arg2)
 		</td>
 	</tr>
 	<tr>
-		<td bgcolor="#CCCCFF"><b><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font></b></td>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus&nbsp;<span class="required">*</span> </font></td>
 		<td><input name="ref_campus" type="text"
 			value="<?echo($ref_campus);?>" size="5"> <input name="campus_id"
 			type="hidden" value="<?echo($ref_campus);?>"> <script language="PHP">
@@ -220,8 +221,8 @@ ComboArray("op2",$op2_opcoes,"0","ChangeOp2()");
 </script></td>
 	</tr>
 	<tr>
-		<td bgcolor="#CCCCFF"><b><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina</font></b></td>
+		<td bgcolor="#CCCCFF"><font
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina&nbsp;<span class="required">*</span> </font></td>
 		<td>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
@@ -245,20 +246,20 @@ ComboArray("op2",$op2_opcoes,"0","ChangeOp2()");
 	<tr>
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Semestre
-		no Curso</font></td>
+		no Curso&nbsp;<span class="required">*</span> </font></td>
 		<td><input name="semestre_curso" type=text
 			value="<?echo($semestre_curso);?>" size="5"></td>
 	</tr>
 	<tr>
 		<td bgcolor="#CCCCFF"><font
-			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Currículo
-		MCOPA</font></td>
+			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curr&iacute;culo
+		MCOPA&nbsp;<span class="required">*</span> </font></td>
 		<td><select name="curriculo_mco">
 			<option value="<?echo($curriculo_mco);?>" selected><?echo($curriculos[$curriculo_mco]); ?></option>
-			<option value="M">Mínimo</option>
+			<option value="M">M&iacute;nimo</option>
 			<option value="C">Complementar</option>
 			<option value="O">Optativa</option>
-			<option value="P">Proficiência</option>
+			<option value="P">Profici&ecirc;ncia</option>
 			<option value="A">Atividade Complementar</option>
 		</select></td>
 	</tr>
@@ -307,13 +308,13 @@ ComboArray("op2",$op2_opcoes,"0","ChangeOp2()");
 	<tr>
 		<td bgcolor="#CCCCFF"><font
 			face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Exibir
-		no Histórico</font></td>
+		no Hist&oacute;rico</font></td>
 		<td><select name="exibe_historico">
 			<option selected><?echo($historico[$exibe_historico]); ?></option>
 			<?if ($exibe_historico == 'N')
 			{ echo "<option value=\"S\">Sim</option>";}
 	  if ($exibe_historico == 'S')
-	  { echo "<option value=\"N\">Não</option>";};?>
+	  { echo "<option value=\"N\">N&atilde;o</option>";};?>
 		</select></td>
 	</tr>
 	<tr>

@@ -7,7 +7,7 @@ $conn = new connection_factory($param_conn);
 
 $acl = new acl();
 if(!$acl->has_access(__FILE__, $conn)) {
-    exit ('Você não tem permissão para acessar este formulário!');
+    exit ('Voc&ecirc; n&atilde;o tem permiss&atilde;o para acessar este formul&aacute;rio!');
 }
 
 require("../lib/SQLCombo.php3");
@@ -18,6 +18,7 @@ $op2_opcoes = SQLArray("select nome_campus, id from campus order by nome_campus"
 ?>
 <html>
 <head>
+<link rel="stylesheet" href="<?=$BASE_URL .'public/styles/required.css'?>" type="text/css">
 <script language="JavaScript">
 function ChangeOption(opt,fld)
 {
@@ -54,7 +55,7 @@ function ChangeCode(fld_name,op_name)
     }
   }
 
-  //alert(code + ' não é um código válido!');
+  //alert(code + ' n&atilde;o &aacute; um c&oacute;;digo v&aacute;lido!');
 
   field.focus();
 
@@ -118,12 +119,12 @@ function setResult(arg1,arg2)
   <table width="90%" align="center">
     <tr bgcolor="#000099"> 
       <td height="35" colspan="2"> 
-        <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Inclusão de Disciplinas nos Cursos</font></b></font><font size="4" face="Verdana, Arial, Helvetica, sans-serif"><b> 
+        <div align="center"><font size="3" face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#CCCCFF">Inclus&atilde;o de Disciplinas nos Cursos</font></b></font><font size="4" face="Verdana, Arial, Helvetica, sans-serif"><b> 
         </b></font></div>
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><b><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso</font></b></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curso&nbsp;<span class="required">*</span> </font></td>
       <td> 
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
@@ -143,14 +144,14 @@ function setResult(arg1,arg2)
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><b><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus</font></b></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Campus&nbsp;<span class="required">*</span> </font></td>
       <td> 
         <input name="ref_campus" type=text value="1" size="5">
         <?php ComboArray("op2",$op2_opcoes,"0","ChangeOp2()");?>
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><b><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina</font></b></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Disciplina&nbsp;<span class="required">*</span> </font></td>
       <td> 
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
@@ -171,20 +172,20 @@ function setResult(arg1,arg2)
     </tr>
     <tr> 
       <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Semestre 
-        no Curso</font></td>
+        no Curso&nbsp;<span class="required">*</span> </font></td>
       <td> 
         <input name="semestre_curso" type=text size="5">
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Currículo MCOPA </font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Curr&iacute;culo MCOPA&nbsp;<span class="required">*</span> </font></td>
       <td> 
         <select name="curriculo_mco">
           <option value="" selected>----- Selecione -----</option>
-          <option value="M">Mínimo</option>
+          <option value="M">M&iacute;nimo</option>
           <option value="C">Complementar</option>
           <option value="O">Optativa</option>
-          <option value="P">Proficiência</option>
+          <option value="P">Profici&ecirc;ncia</option>
           <option value="A">Atividade Complementar</option>
         </select>
       </td>
@@ -265,11 +266,11 @@ function setResult(arg1,arg2)
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Exibir no Histórico</font></td>
+      <td bgcolor="#CCCCFF"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#00009C">&nbsp;Exibir no Histï¿½rico</font></td>
       <td>
         <select name="exibe_historico">
           <option value="S" selected="selected"> Sim</option>
-          <option value="N"> Não</option>
+          <option value="N"> N&atilde;o</option>
         </select>
       </td>
     </tr>
