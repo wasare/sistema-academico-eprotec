@@ -168,8 +168,8 @@ function escreve(request){
                         <select id="dispensa_tipo" name="dispensa_tipo" onchange="info();Exibe('processa')">
 			<option value="-1"></option>
 			<option value="4">Educa&ccedil;&atilde;o F&iacute;sica (Decreto Lei 1.044 de 21/10/1969)</option>
-			<option value="2">Aproveitamento de Estudos (ATO/DGPG/N&ordm; 01/2009)</option>
-			<option value="3">Certifica&ccedil;&atilde;o de Experi&ecirc;ncia (ATO/DGPG/N&ordm; 02/2009)</option>
+			<option value="2">Aproveitamento de Estudos (Portaria 216/2009 - Campus Bambu&iacute;)</option>
+			<option value="3">Certifica&ccedil;&atilde;o de Experi&ecirc;ncia (Portaria 216/2009 - Campus Bambu&iacute;)</option>
 	</select>
 
     <br />
