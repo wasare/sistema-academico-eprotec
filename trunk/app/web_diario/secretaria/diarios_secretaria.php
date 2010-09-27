@@ -9,6 +9,7 @@ $Result1 = $conn->Execute("SELECT descricao, id FROM periodos ORDER BY 1 DESC;")
 
 $busca1  = new search('periodo','periodo_id','periodos_list', 'form1', '../../relatorios/periodo_lista.php');
 $busca2  = new search('curso','curso_id','cursos_list', 'form1', '../../relatorios/curso_lista.php');
+$busca3 = new search('professor','professor_id','professores_list', 'form1', '../../relatorios/professor_lista.php');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -37,6 +38,14 @@ $busca2  = new search('curso','curso_id','cursos_list', 'form1', '../../relatori
                    class="botao"
                    onclick="history.back(-1);return false;" />
             <div class="panel">
+                <h4> Preencha somente um dos grupos de crit&eacute;rios abaixo. </h4>
+                C&oacute;digo do di&aacute;rio:<br />
+                &nbsp;&nbsp;<span class="comentario">Se preenchido os demais crit&eacute;rios ser&atilde;o ignorados.</span><br />
+                <input name="diario_id" type="text" id="diario_id" size="10" />
+
+                <br /><br />
+                <h4><hr /></h4>
+                <br /> 
 		Per&iacute;odo:<br />
                 &nbsp;&nbsp;<span class="comentario">Comece digitando o ano para listar os per&iacute;odos ou informe o c&oacute;digo do per&iacute;odo no primeiro campo.</span><br />
                 <span id="sprytextfield0">
@@ -47,25 +56,34 @@ $busca2  = new search('curso','curso_id','cursos_list', 'form1', '../../relatori
                     echo $busca1->area_lista();
                     ?>
                 </span>
-                <br />
-		Curso:<br />
-                &nbsp;&nbsp;<span class="comentario">Comece digitando o nome do curso para list&aacute;-los ou informe o c&oacute;digo do curso no primeiro campo.</span><br />
+
+                <br /><br />
+                  &nbsp;&nbsp;<span class="comentario">Comece digitando o nome do curso ou do professor para list&aacute;-los ou informe respectivo c&oacute;digo no primeiro campo.</span><br />
+		Curso:&nbsp;               
                 <span id="sprytextfield1">
                     <?php
                     echo $busca2->input_text_retorno("5");
-                    echo $busca2->input_text_consulta("40");
+                    echo $busca2->input_text_consulta("25");
                     echo '<span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>';
                     echo $busca2->area_lista();
                     ?>
                 </span>
-                <br />
-                <h4>Ou</h4>
-                C&oacute;digo do di&aacute;rio:<br />
-                &nbsp;&nbsp;<span class="comentario">Se preenchido os campos anteriores ser&atilde;o ignorados.</span><br />
-                <input name="diario_id" type="text" id="diario_id" size="10" />
+                &nbsp;
+                <strong>e / ou</strong>
+                &nbsp;
+                Professor:&nbsp;               
+                <span id="sprytextfield2">
+                    <?php
+                    echo $busca3->input_text_retorno("5");
+                    echo $busca3->input_text_consulta("25");
+                    echo '<span class="textfieldRequiredMsg">Obrigat&oacute;rio.</span>';
+                    echo $busca3->area_lista();
+                    ?>
+                </span>    
                 <br /><br />
-                <input name="lista_diarios" type="submit" id="lista_diarios" value="Listar di&aacute;rios" /> <!--onclick="enviar_diario('diarios_secretaria',null,null,'<\?=$BASE_URL?>','<\?=$IEnome?>');"-->
             </div>
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<input name="lista_diarios" type="submit" id="lista_diarios" value="Listar di&aacute;rio(s)" />                     
         </form>
     </body>
 </html>

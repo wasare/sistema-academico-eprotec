@@ -9,20 +9,22 @@ if($_POST) {
     $periodo_id = (string) $_POST['periodo_id'];
     $curso_id   = (int) $_POST['curso_id'];
     $diario_id  = (int) $_POST['diario_id'];
+    $professor_id = (int) $_POST['professor_id'];
 }else {
     $periodo_id = (string) $_GET['periodo_id'];
     $curso_id   = (int) $_GET['curso_id'];
     $diario_id  = (int) $_GET['diario_id'];
+    $professor_id = (int) $_GET['professor_id'];
 }
 
 // @todo verificar direitos de acesso
-if (empty($periodo_id) OR $curso_id == 0) {
+if (empty($periodo_id) OR ($curso_id == 0 AND $professor_id == 0)) {
 
     $diario_id = ($diario_id == 0) ? (int) $_GET['diario_id'] : $diario_id;
 
     if ($diario_id == 0) {
         exit('<script language="javascript">
-                window.alert("ERRO! Primeiro informe um período e um curso ou um diário!");
+                window.alert("ERRO! Primeiro informe um diário ou um período + um curso e / ou + um professor!");
 		window.history.back(-1);
 		</script>');
     }
@@ -47,32 +49,54 @@ $curso = $conn->get_row($qryCurso);
 $periodo = $conn->get_row($qryPeriodo);
 
 
-$sql =  " SELECT id as idof, " . 
-        "        ref_campus, " .
-        "        get_campus(ref_campus), " .
-        "        ref_curso, " .
-        "        curso_desc(ref_curso), " .
-        "		fl_finalizada, fl_digitada, ".
-        "        descricao_disciplina(ref_disciplina) as descricao_extenso, " .
-        "        ref_disciplina, " .
-        "        get_num_matriculados(id) || '/' || num_alunos as qtde_alunos, " .
-        "        turma, " .
-        "        ref_periodo_turma, " .
-        "     CASE WHEN professor_disciplina_ofer_todos(id) = '' THEN '<font color=\"red\">sem professor</font>' " .
-        "			ELSE professor_disciplina_ofer_todos(id) " .
-        "		END AS \"professor\" " .
-        " FROM disciplinas_ofer " .
-        " WHERE is_cancelada = '0' ";
+if (is_numeric($professor_id) && $professor_id != 0) {
 
-
-if ($diario_id > 0)
-    $sql .= " AND id = ". $diario_id;
-else
-if (!empty($periodo_id) AND is_numeric($curso_id)) {
-    $sql .= " AND ref_periodo = '". $periodo_id ."'";
-    $sql .= " AND ref_curso = ". $curso_id;
+    $sql =  " SELECT DISTINCT A.id as idof, " . 
+            "        A.ref_campus, " .
+            "        get_campus(A.ref_campus), " .
+            "        A.ref_curso, " .
+            "        curso_desc(A.ref_curso), " .
+            "		A.fl_finalizada, A.fl_digitada, ".
+            "        descricao_disciplina(A.ref_disciplina) as descricao_extenso, " .
+            "        A.ref_disciplina, " .
+            "        get_num_matriculados(A.id) || '/' || A.num_alunos as qtde_alunos, " .
+            "        A.turma, " .
+            "        A.ref_periodo_turma, " .
+            "     CASE WHEN professor_disciplina_ofer_todos(A.id) = '' THEN '<font color=\"red\">sem professor</font>' " .
+            "			ELSE professor_disciplina_ofer_todos(A.id) " .
+            "		END AS \"professor\" " .
+            " FROM disciplinas_ofer A FULL OUTER JOIN disciplinas_ofer_prof B ON (A.id = B.ref_disciplina_ofer) " .
+            " WHERE A.is_cancelada = '0' ";
+} else {
+    
+    $sql =  " SELECT DISTINCT A.id as idof, " .
+            "        A.ref_campus, " .
+            "        get_campus(A.ref_campus), " .
+            "        A.ref_curso, " .
+            "        curso_desc(A.ref_curso), " .
+            "               A.fl_finalizada, A.fl_digitada, ".
+            "        descricao_disciplina(A.ref_disciplina) as descricao_extenso, " .
+            "        A.ref_disciplina, " .
+            "        get_num_matriculados(A.id) || '/' || A.num_alunos as qtde_alunos, " .
+            "        A.turma, " .
+            "        A.ref_periodo_turma, " .
+            "     CASE WHEN professor_disciplina_ofer_todos(A.id) = '' THEN '<font color=\"red\">sem professor</font>' " .
+            "                       ELSE professor_disciplina_ofer_todos(A.id) " .
+            "               END AS \"professor\" " .
+            " FROM disciplinas_ofer A " .
+            " WHERE A.is_cancelada = '0' ";
 }
 
+if ($diario_id > 0)
+    $sql .= " AND A.id = ". $diario_id;
+else
+    if (!empty($periodo_id)) {
+       $sql .= " AND A.ref_periodo = '". $periodo_id ."'";
+       $sql .= (is_numeric($curso_id) && $curso_id != 0) ? " AND A.ref_curso = ". $curso_id : " ";
+       $sql .= (is_numeric($professor_id) && $professor_id != 0) ? " AND B.ref_professor = ". $professor_id : " ";
+    }
+
+//die($sql);
 $sql = 'SELECT * from ('. $sql .') AS T1 ORDER BY lower(to_ascii(descricao_extenso));';
 
 
@@ -107,7 +131,7 @@ if (count($diarios) == 0) {
                        title="Voltar"
                        id="bt_voltar"
                        name="bt_voltar"
-                       class="botao" />&nbsp;Pesquisar outro per&iacute;odo / curso</a>
+                       class="botao" />&nbsp;Pesquisar outro per&iacute;odo / curso / professor(a)</a>
             <br />
             <br />
 
@@ -124,8 +148,9 @@ if (count($diarios) == 0) {
                     </th>
                 </tr>
             </table>
-
-            <h4><strong>Curso: </strong><font color="blue"><?=$curso['id'] .' - '. $curso['nome']?></font></h4>
+            <?php if (is_numeric($curso_id) && $curso_id != 0) : ?>
+                    <h4><strong>Curso: </strong><font color="blue"><?=$curso['id'] .' - '. $curso['nome']?></font></h4>
+            <?php endif; ?>
             <h5>Clique em "Acessar" para exibir as op&ccedil;&otilde;es do di&aacute;rio:</h5>
 
             <form id="change_acao" name="change_acao" method="get" action="">
