@@ -60,7 +60,7 @@ $desc_curso = $conn->get_row($sql_curso);
  * Conteudo da legenda
  */
 $sql_legenda = "
-SELECT
+SELECT DISTINCT
     o.id AS diario,
     d.id,
     d.descricao_disciplina,

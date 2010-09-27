@@ -183,10 +183,10 @@ function ini_diario($ofer) {
                 WHERE
                  o.id = " . $ofer . " AND 
                  o.is_cancelada = '0' AND
-                 o.id = prof.ref_disciplina_ofer ;";
+                 o.id = prof.ref_disciplina_ofer LIMIT 1;";
 
 
-    $diario_info = $conn->get_all($qryDisc);
+    $diario_info = $conn->get_row($qryDisc);
 
     if($diario_info === FALSE) {
 
@@ -199,11 +199,9 @@ function ini_diario($ofer) {
 
         if(count($diario_info) > 0) {
 
-            foreach($diario_info as $linha) {
-                $disc = @$linha['ref_disciplina'];
-                $periodo = @$linha['ref_periodo'];
-                $prof = @$linha['ref_professor'];
-            }
+            $disc = $diario_info['ref_disciplina'];
+            $periodo = $diario_info['ref_periodo'];
+            $prof = (int) $diario_info['ref_professor'];
 
         } // ^ A DISCIPLINA EXISTE
     }
