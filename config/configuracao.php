@@ -9,7 +9,7 @@ date_default_timezone_set('America/Sao_Paulo');
  * Banco de dados
  */
 $host     = '192.168.0.234';
-$database = 'sistema_academico';
+$database = 'sistema_academico_dev';
 $user     = 'usrsa';
 $password = 'TuiML9lnEjaAoNzKwt6Y';
 $port     = 5432;

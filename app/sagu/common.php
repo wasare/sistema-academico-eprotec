@@ -472,9 +472,9 @@ function CheckFormParameters($list,$href=""){
 		
 		if (!is_numeric($value) AND empty($value))
 		{
-			$msg = "Campo obrigat�rio [<b><i>$name</i></b>] n�o informado!";
+			$msg = "Campo obrigat&oacute;rio [<b><i>$name</i></b>] n&atilde;o informado!";
 
-			FatalExit("Erro de Digita��o!",$msg,$href);
+			FatalExit("Erro de Digita&ccedil;&atilde;o!",$msg,$href);
 		}
 	}
 }
