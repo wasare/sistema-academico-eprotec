@@ -113,7 +113,7 @@ function Confirma_Exclui(ref_campus,ref_curso,ref_professor)
 {
   url = 'post/coordenador_exclui.php3?ref_campus=' + ref_campus + '&ref_curso=' + ref_curso + '&ref_professor='+ ref_professor;
 
-  if (confirm("Voc&ecirc; tem certeza que deseja excluir este coordenador do curso?"))
+  if (confirm("Tem certeza que deseja excluir este coordenador do curso "+ ref_curso +" ?"))
     location=(url)
   else
     alert("Exclus&atilde;o Cancelada.");

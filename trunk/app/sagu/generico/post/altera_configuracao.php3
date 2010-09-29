@@ -12,7 +12,7 @@ $cep          = $_POST['cep'];
 $ref_cidade   = $_POST['ref_cidade'];
 
 
-CheckFormParameters(array("id","razao_social","sigla","rua","complemento","bairro","cep","ref_cidade"));
+CheckFormParameters(array("id","razao_social","sigla","rua","bairro","cep","ref_cidade"));
 
 $conn = new Connection;
 
@@ -35,11 +35,11 @@ $ok = $conn->Execute($sql);
 $conn->Finish();
 $conn->Close();
 
-SaguAssert($ok,"Nao foi possivel de atualizar o registro!");
+SaguAssert($ok,"N&atilde;o foi poss&iacute;vel de atualizar o registro!");
 
-SuccessPage("Alteração da Empresa",
+SuccessPage("Altera&ccedil;&atilde;o da Empresa",
 	        "location='../configuracao_empresa.phtml'",
-	        "As informações da empresa <b>$nome</b> foram atualizadas com sucesso.");
+	        "As informa&ccedil;&otilde;es da empresa <b>$nome</b> foram atualizadas com sucesso.");
 ?>
 <html>
 <head>
