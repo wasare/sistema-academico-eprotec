@@ -1,4 +1,162 @@
 ------------------------------------------------------------------------
+r270 | wandersonsreis | 2010-09-29 17:46:43 -0300 (Qua, 29 Set 2010) | 8 lines
+
+- corrigi inclusão oferta de disciplina em relação a atribuição do professor (issue #33)
+- melhora restrições de integridade no banco de dados
+- elimina obrigatoriedade do campo complemento no cadastro de empresas (issue #30)
+- pequenas correções de encondig em alguns arquivos
+
+
+
+
+------------------------------------------------------------------------
+r269 | wandersonsreis | 2010-09-27 17:07:03 -0300 (Seg, 27 Set 2010) | 5 lines
+
+- corrigi inicialização do diário por falta de professor atribuído ao respectivo diário
+- adiciona consulta aos diários por professor no módulo secretaria (Closes issue #10)
+- corrigi exclusão / alteração da atribuição de um professor ao diário (disciplina oferecida) (Closes issue #33)
+
+
+------------------------------------------------------------------------
+r268 | wandersonsreis | 2010-09-16 13:58:57 -0300 (Qui, 16 Set 2010) | 4 lines
+
+
+Atualiza informação sobre a base legal utilizada nas dispensas de disciplinas (Campus Bambuí)
+
+
+------------------------------------------------------------------------
+r267 | rogerioifmg | 2010-08-31 16:15:45 -0300 (Ter, 31 Ago 2010) | 1 line
+
+acrescentando asteristicos aos campos obrigatorios. issue #8
+------------------------------------------------------------------------
+r266 | wandersonsreis | 2010-08-27 11:20:42 -0300 (Sex, 27 Ago 2010) | 6 lines
+
+- corrigi edição no cadastro de empresas (Closes issue #28)
+- melhora performace da função professor_disciplina_ofer_todos registrada no banco de dados
+- pequenas correções de exibição de caracteres inválidos (encoding)
+
+
+
+------------------------------------------------------------------------
+r265 | rogerioifmg | 2010-08-17 16:18:38 -0300 (Ter, 17 Ago 2010) | 1 line
+
+acrescentando asteristicos aos campos obrigatorios. issue #8
+------------------------------------------------------------------------
+r264 | rogerioifmg | 2010-08-03 16:44:33 -0300 (Ter, 03 Ago 2010) | 1 line
+
+acrescentando asteristicos aos campos obrigatorios. issue #8
+------------------------------------------------------------------------
+r263 | wandersonsreis | 2010-08-03 15:21:45 -0300 (Ter, 03 Ago 2010) | 3 lines
+
+- corrigi erro de inclusão de arquivo, relacionado ao issue #27
+
+
+------------------------------------------------------------------------
+r262 | wandersonsreis | 2010-08-03 15:05:30 -0300 (Ter, 03 Ago 2010) | 3 lines
+
+- corrigi relatório de faltas completo e caderno de chamadas que não carrega corretamente (Closes issue #27)
+
+
+------------------------------------------------------------------------
+r261 | rogerioifmg | 2010-08-03 13:12:21 -0300 (Ter, 03 Ago 2010) | 1 line
+
+acrescentando asteristicos aos campos obrigatorios. issue #8
+------------------------------------------------------------------------
+r260 | rogerioifmg | 2010-08-03 12:50:49 -0300 (Ter, 03 Ago 2010) | 1 line
+
+acrescentando asteristicos aos campos obrigatorios. issue #8
+------------------------------------------------------------------------
+r259 | rogerioifmg | 2010-08-03 12:39:29 -0300 (Ter, 03 Ago 2010) | 1 line
+
+acrescentando asteristicos aos campos obrigatorios. issue #8
+------------------------------------------------------------------------
+r258 | rogerioifmg | 2010-08-03 09:44:53 -0300 (Ter, 03 Ago 2010) | 1 line
+
+acrescentando asteristicos aos campos obrigatorios. issue #8
+------------------------------------------------------------------------
+r257 | wandersonsreis | 2010-07-22 17:55:39 -0300 (Qui, 22 Jul 2010) | 7 lines
+
+- inclui variável $EMAIL_ADMIN no arquivo de configuração
+- melhorias no tratamento de dispensas e matrículas, e correção de erros de alunos dispensados com faltas no diário dispensado (Closes issue #19)
+- exibe situação do aluno em cada disciplina na área do aluno (aprovado/reprovado/matriculado) (Closes issue #21)
+- corrigi exibição da nota de revavaliação na área do aluno (Closes issue #24)
+- melhoria na exibição da situação da disciplina na ficha acadêmica e de informações acadêmicas
+
+
+------------------------------------------------------------------------
+r256 | wandersonsreis | 2010-07-19 10:54:14 -0300 (Seg, 19 Jul 2010) | 4 lines
+
+
+- corrigi restrição no banco de dados que permitia a inclusão de disciplinas inválidas em um matriz e afetava a exibição da integralização do curso (Closes issue #18)
+
+
+------------------------------------------------------------------------
+r255 | rogerioifmg | 2010-07-13 16:46:32 -0300 (Ter, 13 Jul 2010) | 1 line
+
+asteriscos acrescentados. issue #8 
+------------------------------------------------------------------------
+r254 | rogerioifmg | 2010-07-13 16:09:08 -0300 (Ter, 13 Jul 2010) | 1 line
+
+asteriscos acrescentados. issue #8
+------------------------------------------------------------------------
+r253 | rogerioifmg | 2010-07-13 15:41:31 -0300 (Ter, 13 Jul 2010) | 1 line
+
+acrescentando asteriscos. issue #8
+------------------------------------------------------------------------
+r252 | rogerioifmg | 2010-07-13 15:27:11 -0300 (Ter, 13 Jul 2010) | 1 line
+
+acrescentar asterico. issue #8
+------------------------------------------------------------------------
+r251 | wandersonsreis | 2010-07-13 10:23:57 -0300 (Ter, 13 Jul 2010) | 2 lines
+
+- Adiciona um estilo CSS para marcar os campos obrigatórios
+
+------------------------------------------------------------------------
+r246 | wandersonsreis | 2010-06-23 07:41:04 -0300 (Qua, 23 Jun 2010) | 2 lines
+
+- corrigi arquivo de atualização de banco de dados "atualiza_rev241.sql"
+
+------------------------------------------------------------------------
+r245 | wandersonsreis | 2010-06-22 18:48:45 -0300 (Ter, 22 Jun 2010) | 2 lines
+
+- atualiza arquivo ATUALIZACAO.TXT
+
+------------------------------------------------------------------------
+r242 | rogerioifmg@gmail.com | 2010-06-22 13:08:35 -0300 (Ter, 22 Jun 2010) | 1 line
+
+problema na porta. Resolvido
+------------------------------------------------------------------------
+r241 | wandersonsreis | 2010-06-22 11:35:46 -0300 (Ter, 22 Jun 2010) | 8 lines
+
+- adiciona filtros para campus e turma na exportação de alunos para o SISTEC (Closes issue #14)
+- reformula exibição das notas na área do aluno para melhorar a performace de exibição das informações (Closes issue #12)
+- altera nome dos campos fl_digitada e fl_concluida da tabela disciplinas_ofer (Closes issue #13)
+- limita quantidade de notas a lançar conforme o tipo de curso (Closes issue #15)
+- introduz a primeira atualização documentada do banco de dados usando o script config/sql/atualizacao/atualiza_rev241.sql
+- adiciona arquivo ATUALIZACAO.TXT que documenta os procedimentos para atualização do sistema
+
+
+------------------------------------------------------------------------
+r240 | wandersonsreis | 2010-06-17 13:59:27 -0300 (Qui, 17 Jun 2010) | 4 lines
+
+- corrigi visualização de notas e situação da disciplina na área do aluno (Fixes issue #11)
+- melhorias no arquivo LEIAME.TXT e no script de criação do banco de dados
+
+
+------------------------------------------------------------------------
+r239 | wandersonsreis | 2010-06-14 08:59:49 -0300 (Seg, 14 Jun 2010) | 3 lines
+
+- Ignora alterações no arquivo config/configuracao.php para envio ao repositório
+
+
+------------------------------------------------------------------------
+r238 | wanderson | 2010-05-20 16:37:47 -0300 (Qui, 20 Mai 2010) | 4 lines
+
+
+- prepara arquivos para publicação no google code
+
+
+------------------------------------------------------------------------
 r237 | wanderson | 2010-05-14 16:25:14 -0300 (Sex, 14 Mai 2010) | 8 lines
 
 - corrigi e melhora cabeçalho das papeletas

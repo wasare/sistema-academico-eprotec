@@ -87,6 +87,14 @@ $qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer
 $periodos = $conn->get_all($qry_periodos);
 // ^ RECUPERA INFORMACOES SOBRE OS PERIODOS DO PROFESSOR ^ //
 
+
+// RECUPERA INFORMACOES SOBRE DESEMPENHO DOCENTE
+$sql_levantamento_docente = "SELECT DISTINCT n.ref_periodo, l.descricao FROM desempenho_docente_nota n, desempenho_docente_levantamento l WHERE ref_professor = $sa_ref_pessoa AND n.ref_periodo = l.ref_periodo;";
+$levantamento_docente = $conn->get_all($sql_levantamento_docente);
+$num_levantamento = count($levantamento_docente);
+// ^  RECUPERA INFORMACOES SOBRE DESEMPENHO DOCENTE ^ //
+
+
 ?>
 
 <html>
@@ -237,20 +245,43 @@ foreach($diarios as $row3) :
 </table>
 
 <br /><br />
-<br /><br />
+<?php if ($num_levantamento > 0) : ?>
+<span><a href="#" title="acessar relat&oacute;rios" id="desempenho_professor">Desempenho docente</a></span>
+<br />
+<br />
+<!-- panel para acesso aos relatórios de desempenho docente // inicio //-->
+<div id="desempenho_professor_pane" style="display:none; border: 0.0015em solid; width:200px; text-align:center;">
+<br />
+
+<h4>Levantamentos:</h4>
+<br />
+<?php
+    foreach($levantamento_docente as $l) {
+      echo '<a href="'. $BASE_URL .'app/relatorios/desempenho_docente/lista_desempenho_docente.php?levantamento='. $l['ref_periodo'] .'" title="Levantamento '. $l['descricao'] .'" alt="Levantamento '. $l['descricao'] .'" target="_blank">'. $l['descricao'] .'</a><br />';
+    }
+?>
+<?php endif; ?>
+<br />
+</div>
+<!-- panel para acesso aos relatórios de desempenho docente \\ fim \\ -->
+
+<br />
 </form>
 
 <?php endif; ?>
 
 <script language="javascript" type="text/javascript">
 
-	$('periodos_professor').observe('click', function() { $('periodos_professor_pane').toggle(); });
+    $('periodos_professor').observe('click', function() { $('periodos_professor_pane').toggle(); });
 
-<?php
-    foreach($diarios as $row3) :
-      $diario_id = $row3['idof'];
-?>
-      $('<?=$diario_id . '_pane'?>').observe('click', function() { $('diario_<?=$diario_id?>_pane').toggle(); });
+    <?php if ($num_levantamento > 0) : ?>
+        $('desempenho_professor').observe('click', function() { $('desempenho_professor_pane').toggle(); });
+    <?php endif; ?>
+    <?php
+        foreach($diarios as $row3) :
+            $diario_id = $row3['idof'];
+    ?>
+    $('<?=$diario_id . '_pane'?>').observe('click', function() { $('diario_<?=$diario_id?>_pane').toggle(); });
 <?php
    endforeach;
 ?>
