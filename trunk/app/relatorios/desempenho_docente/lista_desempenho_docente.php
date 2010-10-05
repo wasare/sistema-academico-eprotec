@@ -148,7 +148,7 @@ $num_criterios = count($criterios);
     <br />
 
 
-<span style="color: teal; font-size: 0.8em;font-style: italic;"><strong>*</strong>&nbsp;&nbsp;D&uacute;vidas quanto a sua avalia&ccedil;&atilde;o procure a Dire&ccedil;&atilde;o de Ensino.</span>
+<span style="color: teal; font-size: 0.8em;font-style: italic;"><strong>*</strong>&nbsp;&nbsp;D&uacute;vidas quanto a sua avalia&ccedil;&atilde;o procure a Coordena&ccedil;&atilde;o de Assuntos Did&aacute;dicos e Pedag&oacute;gicos.</span>
 
 <br /><br />
 
