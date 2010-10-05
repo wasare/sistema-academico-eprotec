@@ -1,18 +1,18 @@
 <?php
-function PS_begin_page($file, $page)
+function SA_PS_begin_page($file, $page)
 {
   if ($file=='help') {
-    $e_msg .= ("<br><b>PSLib HELP:</b> Function PS_begin_page(param1, param2) <br>");
+    $e_msg .= ("<br><b>PSLib HELP:</b> Function SA_PS_begin_page(param1, param2) <br>");
     $e_msg .= ("param1 = ps file name <br>");
     $e_msg .= ("param2 = page number <br>");
     return("");
   }
 
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_begin_page - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_begin_page - Missing parameter: 1 (file name) <br>");
  
   if (empty($page))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_begin_page - Missing parameter: 2 (page number) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_begin_page - Missing parameter: 2 (page number) <br>");
 
   fwrite($file, '%%Page: ' . $page . ' ' . $page . "\n");
 
@@ -21,16 +21,16 @@ function PS_begin_page($file, $page)
 }
 
 
-function PS_close($file)
+function SA_PS_close($file)
 {
   if ($file=='help') {
-    $e_msg .= ("<br><b>PSLib HELP:</b> Function PS_close(param1) <br>");
+    $e_msg .= ("<br><b>PSLib HELP:</b> Function SA_PS_close(param1) <br>");
     $e_msg .= ("param1 = ps file name <br>");
     return("");
   }
 
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_close - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_close - Missing parameter: 1 (file name) <br>");
 
   fclose($file);
 
@@ -39,11 +39,11 @@ function PS_close($file)
 }
 
 
-function PS_end_page($file)
+function SA_PS_end_page($file)
 {
 
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_end_page: Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_end_page: Missing parameter: 1 (file name) <br>");
 
   fwrite($file, "showpage \n");
 
@@ -52,25 +52,25 @@ function PS_end_page($file)
 }
 
 
-function PS_line($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth)
+function SA_PS_line($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth)
 {
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_line - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_line - Missing parameter: 1 (file name) <br>");
 
   if (empty($xcoord_from))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_line - Missing parameter: 2 (xcoord_from) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_line - Missing parameter: 2 (xcoord_from) <br>");
 
   if (empty($ycoord_from))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_line - Missing parameter: 3 (ycoord_from) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_line - Missing parameter: 3 (ycoord_from) <br>");
 
   if (empty($xcoord_to))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_line - Missing parameter: 4 (xcoord_to) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_line - Missing parameter: 4 (xcoord_to) <br>");
 
   if (empty($ycoord_to))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_line - Missing parameter: 5 (ycoord_to) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_line - Missing parameter: 5 (ycoord_to) <br>");
 
   if (empty($linewidth))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_line - Missing parameter: 6 (linewidth, must be >= 1) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_line - Missing parameter: 6 (linewidth, must be >= 1) <br>");
 
   fwrite($file, $linewidth . " setlinewidth  \n");
   fwrite($file, $xcoord_from . ' ' . $ycoord_from  . " moveto \n");
@@ -82,16 +82,16 @@ function PS_line($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $lin
 }
 
 
-function PS_moveto($file, $xcoord, $ycoord)
+function SA_PS_moveto($file, $xcoord, $ycoord)
 {
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_moveto - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_moveto - Missing parameter: 1 (file name) <br>");
   
   if (empty($xcoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_moveto - Missing parameter: 2 (xcoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_moveto - Missing parameter: 2 (xcoord) <br>");
   
   if (empty($ycoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_moveto - Missing parameter: 3 (ycoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_moveto - Missing parameter: 3 (ycoord) <br>");
 
   fwrite($file, $xcoord . ' ' . $ycoord . " moveto \n");
 
@@ -100,26 +100,26 @@ function PS_moveto($file, $xcoord, $ycoord)
 }
 
 
-function PS_moveto_font($file, $xcoord, $ycoord, $font_name, $font_size)
+function SA_PS_moveto_font($file, $xcoord, $ycoord, $font_name, $font_size)
 {
 
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_moveto_font - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_moveto_font - Missing parameter: 1 (file name) <br>");
   
   if (empty($xcoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_moveto_font - Missing parameter: 2 (xcoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_moveto_font - Missing parameter: 2 (xcoord) <br>");
   
   if (empty($ycoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_moveto_font - Missing parameter: 3 (ycoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_moveto_font - Missing parameter: 3 (ycoord) <br>");
   
   if (empty($font_name))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_moveto_font - Missing parameter: 4 (font_name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_moveto_font - Missing parameter: 4 (font_name) <br>");
   
   if (empty($font_size))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_moveto_font - Missing parameter: 5 (font_size) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_moveto_font - Missing parameter: 5 (font_size) <br>");
   
   if (intval($font_size) == 0)
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_moveto_font: Incorrect value: parameter 5 (font_size) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_moveto_font: Incorrect value: parameter 5 (font_size) <br>");
 
   fwrite($file, $xcoord . ' ' . $ycoord . " moveto \n");
   fwrite($file, '/' . $font_name . ' findfont ' . $font_size . " scalefont setfont \n");
@@ -129,11 +129,11 @@ function PS_moveto_font($file, $xcoord, $ycoord, $font_name, $font_size)
 }
 
 
-function PS_open($file, $author, $title, $orientation)
+function SA_PS_open($file, $author, $title, $orientation)
 {
   if ($file=='help')
   {
-    $e_msg .= ("<br><b>PSLib HELP:</b> Function PS_open(param1, param2, param3, param4) <br>");
+    $e_msg .= ("<br><b>PSLib HELP:</b> Function SA_PS_open(param1, param2, param3, param4) <br>");
     $e_msg .= ("param1 = ps file name to create <br>");
     $e_msg .= ("param2 = creator/author name <br>");
     $e_msg .= ("param3 = file title <br>");
@@ -142,16 +142,16 @@ function PS_open($file, $author, $title, $orientation)
   }
   
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_open - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_open - Missing parameter: 1 (file name) <br>");
   
   if (empty($author))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_open - Missing parameter: 2 (author) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_open - Missing parameter: 2 (author) <br>");
   
   if (empty($title))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_open - Missing parameter: 3 (title) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_open - Missing parameter: 3 (title) <br>");
   
   if (empty($orientation)) {
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_open - Missing parameter: 4 (orientation. Assuming Portrait) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_open - Missing parameter: 4 (orientation. Assuming Portrait) <br>");
     $orientation = 'Portrait';
   }
 
@@ -164,7 +164,7 @@ function PS_open($file, $author, $title, $orientation)
   fwrite($file, "%%EndComments \n");
   fwrite($file, "%%BeginProlog \n");
   fwrite($file, "%%BeginResource: definicoes \n");
-  PS_set_acent($file);
+  SA_PS_set_acent($file);
   fwrite($file, "%%EndResource \n");
   fwrite($file, "%%EndProlog \n");
 
@@ -173,21 +173,21 @@ function PS_open($file, $author, $title, $orientation)
 }
 
 
-function PS_open_ps($file, $ps_file)
+function SA_PS_open_ps($file, $ps_file)
 {
   if ($file=='help')
   {
-    $e_msg .= ("<br><b>PSLib HELP:</b> Function PS_open_ps(param1, param2) <br>");
+    $e_msg .= ("<br><b>PSLib HELP:</b> Function SA_PS_open_ps(param1, param2) <br>");
     $e_msg .= ("param1 = ps file name to write to <br>");
     $e_msg .= ("param2 = source ps file (remember to exclude any file information like title, author,... in the top of the file)<br><br>");
     return("");
   }
   
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_open_ps - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_open_ps - Missing parameter: 1 (file name) <br>");
   
   if (empty($ps_file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_open_ps - Missing parameter: 2 (source ps file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_open_ps - Missing parameter: 2 (source ps file name) <br>");
 
   $temp_ = fopen($ps_file,'r');
   while(!feof($temp_))
@@ -203,25 +203,25 @@ function PS_open_ps($file, $ps_file)
 }
 
 
-function PS_rect($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth)
+function SA_PS_rect($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth)
 {
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect - Missing parameter: 1 (file name) <br>");
   
   if (empty($xcoord_from))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect - Missing parameter: 2 (xcoord_from) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect - Missing parameter: 2 (xcoord_from) <br>");
   
   if (empty($ycoord_from))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect - Missing parameter: 3 (ycoord_from) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect - Missing parameter: 3 (ycoord_from) <br>");
   
   if (empty($xcoord_to))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect - Missing parameter: 4 (xcoord_to) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect - Missing parameter: 4 (xcoord_to) <br>");
   
   if (empty($ycoord_to))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect - Missing parameter: 5 (ycoord_to) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect - Missing parameter: 5 (ycoord_to) <br>");
   
   if (empty($linewidth))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect - Missing parameter: 6 (linewidth, must be >= 1) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect - Missing parameter: 6 (linewidth, must be >= 1) <br>");
   
   fwrite($file, $linewidth . " setlinewidth  \n");
   fwrite($file, "newpath \n");
@@ -237,28 +237,28 @@ function PS_rect($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $lin
 }
 
 
-function PS_rect_fill($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth, $darkness)
+function SA_PS_rect_fill($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to, $linewidth, $darkness)
 {
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect_fill - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect_fill - Missing parameter: 1 (file name) <br>");
   
   if (empty($xcoord_from))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect_fill - Missing parameter: 2 (xcoord_from) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect_fill - Missing parameter: 2 (xcoord_from) <br>");
 
   if (empty($ycoord_from))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect_fill - Missing parameter: 3 (ycoord_from) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect_fill - Missing parameter: 3 (ycoord_from) <br>");
   
   if (empty($xcoord_to))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect_fill - Missing parameter: 4 (xcoord_to) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect_fill - Missing parameter: 4 (xcoord_to) <br>");
   
   if (empty($ycoord_to))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect_fill - Missing parameter: 5 (ycoord_to) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect_fill - Missing parameter: 5 (ycoord_to) <br>");
   
   if (empty($linewidth))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect_fill - Missing parameter: 6 (linewidth, must be >= 1) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect_fill - Missing parameter: 6 (linewidth, must be >= 1) <br>");
   
   if (empty($darkness))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rect_fill - Missing parameter:  (darkness) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rect_fill - Missing parameter:  (darkness) <br>");
   
   fwrite($file, "newpath \n");
   fwrite($file, $linewidth . " setlinewidth  \n");
@@ -278,11 +278,11 @@ function PS_rect_fill($file, $xcoord_from, $ycoord_from, $xcoord_to, $ycoord_to,
 }
 
 
-function PS_rotate($file, $degrees)
+function SA_PS_rotate($file, $degrees)
 {
   if ($file=='help')
   {
-    $e_msg .= ("<br><b>PSLib HELP:</b> Function PS_rotate(param1, param2) <br>");
+    $e_msg .= ("<br><b>PSLib HELP:</b> Function SA_PS_rotate(param1, param2) <br>");
     $e_msg .= ("param1 = ps file name to write to <br>");
     $e_msg .= ("param2 = degrees to rotate <br>");
     $e_msg .= ("=> if param2 = 0  or  param2 = 360 -> back to normal <br><br>");
@@ -290,10 +290,10 @@ function PS_rotate($file, $degrees)
   }
 
  if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rotate - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rotate - Missing parameter: 1 (file name) <br>");
   
   if (empty($degrees))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_rotate - Missing parameter: 2 (degrees) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_rotate - Missing parameter: 2 (degrees) <br>");
   
   if (($degrees == '0') or ($degrees == '360'))
   {
@@ -310,11 +310,11 @@ function PS_rotate($file, $degrees)
 }
 
 
-function PS_set_font($file, $font_name, $font_size)
+function SA_PS_set_font($file, $font_name, $font_size)
 {
   if ($file=='help')
   {
-    $e_msg .= ("<br><b>PSLib HELP:</b> Function PS_set_font(param1, param2, param3) <br>");
+    $e_msg .= ("<br><b>PSLib HELP:</b> Function SA_PS_set_font(param1, param2, param3) <br>");
     $e_msg .= ("param1 = ps file name to write to <br>");
     $e_msg .= ("param2 = font name <br>");
     $e_msg .= ("param3 = font size <br><br>");
@@ -322,16 +322,16 @@ function PS_set_font($file, $font_name, $font_size)
   }
   
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_set_font - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_set_font - Missing parameter: 1 (file name) <br>");
   
   if (empty($font_name))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_set_font - Missing parameter: 2 (font name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_set_font - Missing parameter: 2 (font name) <br>");
   
   if (empty($font_size))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_set_font - Missing parameter: 3 (font size) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_set_font - Missing parameter: 3 (font size) <br>");
   
   if (intval($font_size) == 0)
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_set_font - Incorrect value: parameter 3 (font_size) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_set_font - Incorrect value: parameter 3 (font_size) <br>");
 
   fwrite($file, '/' . $font_name . ' findfont ' . $font_size . " scalefont setfont \n");
 
@@ -340,20 +340,20 @@ function PS_set_font($file, $font_name, $font_size)
 }
 
 
-function PS_show($file, $text)
+function SA_PS_show($file, $text)
 {
   if ($file=='help')
   {
-    $e_msg .= ("<br><b>PSLib HELP:</b> Function PS_show(param1, param2) <br>");
+    $e_msg .= ("<br><b>PSLib HELP:</b> Function SA_PS_show(param1, param2) <br>");
     $e_msg .= ("param1 = ps file name to write to <br>");
     $e_msg .= ("param2 = text to show <br><br>");
     return("");
   }
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show - Missing parameter: 1 (file name) <br>");
   
   if (empty($text))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show - Missing parameter: 2 (text) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show - Missing parameter: 2 (text) <br>");
  
   fwrite($file, '(' . $text  . ") show \n");
 
@@ -362,13 +362,13 @@ function PS_show($file, $text)
 }
 
 
-function PS_show_eval($file, $text)
+function SA_PS_show_eval($file, $text)
 {
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_eval - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_eval - Missing parameter: 1 (file name) <br>");
   
   if (empty($text))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_eval - Missing parameter: 2 (text) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_eval - Missing parameter: 2 (text) <br>");
 
   eval ("\$text = \"$text\";");
   fwrite($file, "(" . $text  . ") show \n");
@@ -378,11 +378,11 @@ function PS_show_eval($file, $text)
 }
 
 
-function PS_show_xy($file, $text, $xcoord, $ycoord)
+function SA_PS_show_xy($file, $text, $xcoord, $ycoord)
 {
   if ($file=='help')
   {
-    $e_msg .= ("<br><b>PSLib HELP:</b> Function PS_show_xy(param1, param2, param3, param4) <br>");
+    $e_msg .= ("<br><b>PSLib HELP:</b> Function SA_PS_show_xy(param1, param2, param3, param4) <br>");
     $e_msg .= ("param1 = ps file name to write to <br>");
     $e_msg .= ("param2 = text to show <br>");
     $e_msg .= ("param3 = X coordenate <br>");
@@ -391,16 +391,16 @@ function PS_show_xy($file, $text, $xcoord, $ycoord)
   }
 
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy - Missing parameter: 1 (file name) <br>");
 
   if (!isset($text))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy - Missing parameter: 2 (text) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy - Missing parameter: 2 (text) <br>");
 
   if (empty($xcoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy - Missing parameter: 3 (xcoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy - Missing parameter: 3 (xcoord) <br>");
 
   if (empty($ycoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy - Missing parameter: 4 (ycoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy - Missing parameter: 4 (ycoord) <br>");
 
   fwrite($file, $xcoord . ' ' . $ycoord . " moveto \n");
   fwrite($file, '(' . $text  . ") show \n");
@@ -410,28 +410,28 @@ function PS_show_xy($file, $text, $xcoord, $ycoord)
 }
 
 
-function PS_show_xy_font($file, $text, $xcoord, $ycoord, $font_name, $font_size)
+function SA_PS_show_xy_font($file, $text, $xcoord, $ycoord, $font_name, $font_size)
 {
   if (empty($file))
-    $e_msg = ("<br><b>PSLib Warning:</b> Function PS_show_xy_font - Missing parameter: 1 (file name) <br>");
+    $e_msg = ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font - Missing parameter: 1 (file name) <br>");
 
   if (empty($text))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font - Missing parameter: 2 (text) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font - Missing parameter: 2 (text) <br>");
 
   if (empty($xcoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font - Missing parameter: 3 (xcoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font - Missing parameter: 3 (xcoord) <br>");
 
   if (empty($ycoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font - Missing parameter: 4 (ycoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font - Missing parameter: 4 (ycoord) <br>");
 
   if (empty($font_name))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font - Missing parameter: 5 (font_name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font - Missing parameter: 5 (font_name) <br>");
 
   if (empty($font_size))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font - Missing parameter: 6 (font_size) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font - Missing parameter: 6 (font_size) <br>");
 
   if (intval($font_size) == 0)
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font - Incorrect value: parameter 6 (font_size) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font - Incorrect value: parameter 6 (font_size) <br>");
 
   fwrite($file, $xcoord . ' ' . $ycoord . " moveto \n");
   fwrite($file, '/' . $font_name . ' findfont ' . $font_size . " scalefont setfont \n");
@@ -441,7 +441,7 @@ function PS_show_xy_font($file, $text, $xcoord, $ycoord, $font_name, $font_size)
         echo $e_msg;
 }
 
-function PS_set_acent($file)
+function SA_PS_set_acent($file)
 {
 
   $acentos_ps = dirname(__FILE__).'/acentos.ps';
@@ -459,28 +459,28 @@ function PS_set_acent($file)
   //else // do not insert the lines (no warning message)
 }
 
-function PS_circ($file, $xcoord, $ycoord, $raio, $angulo_ini, $angulo_fim, $linewidth)
+function SA_PS_circ($file, $xcoord, $ycoord, $raio, $angulo_ini, $angulo_fim, $linewidth)
 {
   if (empty($file))
-    $e_msg = ("<br><b>PSLib Warning:</b> Function PS_circ - Missing parameter: 1 (file name) <br>");
+    $e_msg = ("<br><b>PSLib Warning:</b> Function SA_PS_circ - Missing parameter: 1 (file name) <br>");
 
   if (empty($xcoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_circ - Missing parameter: 2 (xcoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_circ - Missing parameter: 2 (xcoord) <br>");
 
   if (empty($ycoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_circ - Missing parameter: 3 (ycoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_circ - Missing parameter: 3 (ycoord) <br>");
 
   if (empty($raio))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_circ - Missing parameter: 4 (raio) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_circ - Missing parameter: 4 (raio) <br>");
 
   if (empty($angulo_ini))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_circ - Missing parameter: 5 (angulo_ini) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_circ - Missing parameter: 5 (angulo_ini) <br>");
 
   if (empty($angulo_fim))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_circ - Missing parameter: 6 (angulo_fim) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_circ - Missing parameter: 6 (angulo_fim) <br>");
 
   if (empty($linewidth))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_circ - Missing parameter: 7 (linewidth) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_circ - Missing parameter: 7 (linewidth) <br>");
 
   fwrite($file, "newpath  \n");
   fwrite($file, $linewidth . " setlinewidth  \n");
@@ -493,34 +493,34 @@ function PS_circ($file, $xcoord, $ycoord, $raio, $angulo_ini, $angulo_fim, $line
 }
 
 //quebra nas linhas novas ou na especificaçao de final de linha
-function PS_show_xy_font_quebrado($file, $text, $xcoord, $ycoord, $font_name, $font_size, $n_char, $increment)
+function SA_PS_show_xy_font_quebrado($file, $text, $xcoord, $ycoord, $font_name, $font_size, $n_char, $increment)
 {
   if (empty($file))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font_quebrado - Missing parameter: 1 (file name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font_quebrado - Missing parameter: 1 (file name) <br>");
 
   if (empty($text))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font_quebrado - Missing parameter: 2 (text) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font_quebrado - Missing parameter: 2 (text) <br>");
 
   if (empty($xcoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font_quebrado - Missing parameter: 3 (xcoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font_quebrado - Missing parameter: 3 (xcoord) <br>");
 
   if (empty($ycoord))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font_quebrado - Missing parameter: 4 (ycoord) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font_quebrado - Missing parameter: 4 (ycoord) <br>");
 
   if (empty($font_name))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font_quebrado - Missing parameter: 5 (font_name) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font_quebrado - Missing parameter: 5 (font_name) <br>");
 
   if (empty($font_size))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font_quebrado - Missing parameter: 6 (font_size) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font_quebrado - Missing parameter: 6 (font_size) <br>");
 
   if (intval($font_size) == 0)
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font_quebrado - Incorrect value: parameter 6 (font_size) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font_quebrado - Incorrect value: parameter 6 (font_size) <br>");
 
   if (empty($n_char))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font_quebrado - Missing parameter: 7 (n_char) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font_quebrado - Missing parameter: 7 (n_char) <br>");
 
   if (empty($increment))
-    $e_msg .= ("<br><b>PSLib Warning:</b> Function PS_show_xy_font_quebrado - Missing parameter: 8 (increment) <br>");
+    $e_msg .= ("<br><b>PSLib Warning:</b> Function SA_PS_show_xy_font_quebrado - Missing parameter: 8 (increment) <br>");
 
   $count = strlen($text);
   $n = explode ("\n", $text);

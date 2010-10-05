@@ -57,21 +57,21 @@ $campus_id = 'undefined';
    $data = $data_em ;         //Data sugerida pelo usu?rio
    
    //======================== DECLARA NOME DO ARQUIVO PS DESTINO
-	$nome_arq_ps = 'caderno_chamada_' . $diario_id . '.ps';
+    $nome_arq_ps = 'caderno_chamada_' . $diario_id . '.ps';
     $caminho_arquivo = $BASE_DIR .'public/relat/ps/';
-	$url_arquivo = $BASE_URL .'public/relat/ps/'. $nome_arq_ps;
+    $url_arquivo = $BASE_URL .'public/relat/ps/'. $nome_arq_ps;
 
    
-   $myfile_ps = fopen($caminho_arquivo . $nome_arq_ps,"w");
+    $myfile_ps = fopen($caminho_arquivo . $nome_arq_ps,"w");
 
    //========================= ABRE ARQUIVO PS DESTINO
-   PS_open($myfile_ps, "SA", $caminho_arquivo . $nome_arq_ps, 'Landscape');
+   SA_PS_open($myfile_ps, "SA", $caminho_arquivo . $nome_arq_ps, 'Landscape');
 
    //========================= AJUSTA O USO DE ACENTOS
-   PS_set_acent($myfile_ps);
+   SA_PS_set_acent($myfile_ps);
 
    //========================= INICIA A PRIMEIRA PAGINA
-   PS_begin_page($myfile_ps, $nr_pag);
+   SA_PS_begin_page($myfile_ps, $nr_pag);
    
     $sql =  " SELECT distinct " .
     	    "	   A.ref_disciplina, " .
@@ -131,16 +131,16 @@ function cabecalho($myfile_ps, $data, $ref_disciplina, $disciplina, $ref_curso, 
 {
 	global $conn;
 
- PS_line($myfile_ps, 45, -15, 814, -15, 2);
- PS_show_xy_font($myfile_ps, 'Lista de Chamada', 45, -30, 'Arial-Bold', 12);
+ SA_PS_line($myfile_ps, 45, -15, 814, -15, 2);
+ SA_PS_show_xy_font($myfile_ps, 'Lista de Chamada', 45, -30, 'Arial-Bold', 12);
  
  if($fl_ouvinte)
  {
-    PS_show_xy_font($myfile_ps, "ALUNO OUVINTE", 370, -30, 'Arial-Bold', 10);
+    SA_PS_show_xy_font($myfile_ps, "ALUNO OUVINTE", 370, -30, 'Arial-Bold', 10);
  }
 
- PS_show_xy_font($myfile_ps, "Emissão: $data", 580, -30, 'Arial', 8);
- PS_show_xy_font($myfile_ps, "Disciplina:", 45, -42, 'Arial-Bold', 10);
+ SA_PS_show_xy_font($myfile_ps, "Emissão: $data", 580, -30, 'Arial', 8);
+ SA_PS_show_xy_font($myfile_ps, "Disciplina:", 45, -42, 'Arial-Bold', 10);
 
  $nome_disciplina = $ref_disciplina . ' - ' . $disciplina;
 
@@ -154,66 +154,66 @@ function cabecalho($myfile_ps, $data, $ref_disciplina, $disciplina, $ref_curso, 
     $nome_disciplina = $nome_disciplina . ' (' . $complemento_disc . ')';
  }
 
- PS_show_xy_font($myfile_ps, "$nome_disciplina", 98, -42, 'Arial', 10);
+ SA_PS_show_xy_font($myfile_ps, "$nome_disciplina", 98, -42, 'Arial', 10);
 
 // echo '$nome_disciplina:'.$nome_disciplina.'</br>';
 
  $lin = -54;
 
- PS_show_xy_font($myfile_ps, "Centro:", 45, "$lin", 'Arial-Bold', 10);
- PS_show_xy_font($myfile_ps, "$departamento", 85, "$lin", 'Arial', 10);
+ SA_PS_show_xy_font($myfile_ps, "Centro:", 45, "$lin", 'Arial-Bold', 10);
+ SA_PS_show_xy_font($myfile_ps, "$departamento", 85, "$lin", 'Arial', 10);
 
  // echo '$departamento:'.$departamento.'</br>';
 
  
- PS_show_xy_font($myfile_ps, "Unidade:", 330, "$lin", 'Arial-Bold', 10);
- PS_show_xy_font($myfile_ps, "$campus", 375, "$lin", 'Arial', 10);
+ SA_PS_show_xy_font($myfile_ps, "Unidade:", 330, "$lin", 'Arial-Bold', 10);
+ SA_PS_show_xy_font($myfile_ps, "$campus", 375, "$lin", 'Arial', 10);
 
  // echo '$campus:'.$campus.'</br>';
  
- PS_show_xy_font($myfile_ps, "Período:", 480, "$lin", 'Arial-Bold', 10);
- PS_show_xy_font($myfile_ps, "$periodo", 522, "$lin", 'Arial', 10);
+ SA_PS_show_xy_font($myfile_ps, "Período:", 480, "$lin", 'Arial-Bold', 10);
+ SA_PS_show_xy_font($myfile_ps, "$periodo", 522, "$lin", 'Arial', 10);
 
  // echo '$periodo:'.$periodo.'</br>'; 
  
- PS_show_xy_font($myfile_ps, "Sala:", 580, "$lin", 'Arial-Bold', 10);
- PS_show_xy_font($myfile_ps, "____", 606, "$lin", 'Arial', 10);
+ SA_PS_show_xy_font($myfile_ps, "Sala:", 580, "$lin", 'Arial-Bold', 10);
+ SA_PS_show_xy_font($myfile_ps, "____", 606, "$lin", 'Arial', 10);
 
  // OK  echo '$sala:'.$sala.'</br>';
 
  $lin = $lin - 12;
  
- PS_show_xy_font($myfile_ps, "Dia:", 45, "$lin", 'Arial-Bold', 10);
- PS_show_xy_font($myfile_ps, "$dia_semana_desc", 70, "$lin", 'Arial', 10);
+ SA_PS_show_xy_font($myfile_ps, "Dia:", 45, "$lin", 'Arial-Bold', 10);
+ SA_PS_show_xy_font($myfile_ps, "$dia_semana_desc", 70, "$lin", 'Arial', 10);
 
  // echo '$dia_semana_desc:'.$dia_semana_desc.'</br>';
  
- PS_show_xy_font($myfile_ps, "Turno:", 330, "$lin", 'Arial-Bold', 10);
- PS_show_xy_font($myfile_ps, "$turno_desc", 365, "$lin", 'Arial', 10);
+ SA_PS_show_xy_font($myfile_ps, "Turno:", 330, "$lin", 'Arial-Bold', 10);
+ SA_PS_show_xy_font($myfile_ps, "$turno_desc", 365, "$lin", 'Arial', 10);
 
 // echo '$turno_desc:'.$turno_desc.'</br>';
  
- PS_show_xy_font($myfile_ps, "H/A Total:", 480, "$lin", 'Arial-Bold', 10);
+ SA_PS_show_xy_font($myfile_ps, "H/A Total:", 480, "$lin", 'Arial-Bold', 10);
  $hora_aula = substr($hora_aula, 0, strpos($hora_aula, ".")+3);
  
- PS_show_xy_font($myfile_ps, "$hora_aula", 530, "$lin", 'Arial', 10);
+ SA_PS_show_xy_font($myfile_ps, "$hora_aula", 530, "$lin", 'Arial', 10);
 
  // echo '$hora_aula:'.$hora_aula.'</br>';
 
- PS_show_xy_font($myfile_ps, "H/A Previstas: ", 580, "$lin", 'Arial-Bold', 10);
+ SA_PS_show_xy_font($myfile_ps, "H/A Previstas: ", 580, "$lin", 'Arial-Bold', 10);
  $hora_aula_desconto = substr($hora_aula_desconto, 0, strpos($hora_aula_desconto, ".")+3);
- PS_show_xy_font($myfile_ps, "$hora_aula_desconto", 650, "$lin", 'Arial', 10);
+ SA_PS_show_xy_font($myfile_ps, "$hora_aula_desconto", 650, "$lin", 'Arial', 10);
 
  $lin = $lin - 12;
 
  $frequencia_minima = (($hora_aula * 75) / 100);
- PS_show_xy_font($myfile_ps, "* Frequência Mínima para aprovação: $frequencia_minima H/A", 370, "$lin", 'Arial', 8);
+ SA_PS_show_xy_font($myfile_ps, "* Frequência Mínima para aprovação: $frequencia_minima H/A", 370, "$lin", 'Arial', 8);
 
  $lin_aux = $lin - 12;
  
- PS_show_xy_font($myfile_ps, "$ref_disciplina_ofer", 780, "$lin_aux", 'Arial', 10);
+ SA_PS_show_xy_font($myfile_ps, "$ref_disciplina_ofer", 780, "$lin_aux", 'Arial', 10);
  
- PS_show_xy_font($myfile_ps, "Professor:", 45, "$lin", 'Arial-Bold', 10);
+ SA_PS_show_xy_font($myfile_ps, "Professor:", 45, "$lin", 'Arial-Bold', 10);
 
 
  if ($ref_professor == '')
@@ -237,7 +237,7 @@ function cabecalho($myfile_ps, $data, $ref_disciplina, $disciplina, $ref_curso, 
    {
 		list($ref_professor,$nome_professor) = $row;
 
-		PS_show_xy_font($myfile_ps, "$ref_professor - $nome_professor", 99, "$lin", 'Arial', 10);
+		SA_PS_show_xy_font($myfile_ps, "$ref_professor - $nome_professor", 99, "$lin", 'Arial', 10);
 		$lin = $lin - 12;
 		$quebra_pagina = $quebra_pagina - 1;
 	}
@@ -247,12 +247,12 @@ function cabecalho($myfile_ps, $data, $ref_disciplina, $disciplina, $ref_curso, 
  }
  else
  {
-    PS_show_xy_font($myfile_ps, "$ref_professor - $nome_professor", 99, "$lin", 'Arial', 10);
+    SA_PS_show_xy_font($myfile_ps, "$ref_professor - $nome_professor", 99, "$lin", 'Arial', 10);
     $lin = $lin - 17;
     $quebra_pagina = $quebra_pagina - 1;
  }
  
-PS_line($myfile_ps, 45, "$lin", 814, "$lin", 2);
+SA_PS_line($myfile_ps, 45, "$lin", 814, "$lin", 2);
 
 return $lin;
 
@@ -266,49 +266,49 @@ $lin_fin = $lin_ini - 38;
 $col_ini = 45;
 $col_fin = $col_ini + 15;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 35;
 $col_txt = $col_ini + 3;
 $lin_txt = $lin_fin + 10;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, 'Cód', $col_txt, $lin_txt, 'Arial-Bold', 10);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, 'Cód', $col_txt, $lin_txt, 'Arial-Bold', 10);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 225;
 $col_txt = $col_ini + 5;
 $lin_txt = $lin_fin + 10;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, 'Nome', $col_txt, $lin_txt, 'Arial-Bold', 10);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, 'Nome', $col_txt, $lin_txt, 'Arial-Bold', 10);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 20;
 $col_txt = $col_ini + 2;
 $lin_txt = $lin_fin + 10;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, 'Cur', $col_txt, $lin_txt, 'Arial-Bold', 10);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, 'Cur', $col_txt, $lin_txt, 'Arial-Bold', 10);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
 $col_txt = $col_ini + 1;
 $lin_txt = $lin_fin + 30;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, 'Aula', $col_txt, $lin_txt, 'Arial', 6);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, 'Aula', $col_txt, $lin_txt, 'Arial', 6);
 
 $col_txt = $col_ini + 1;
 $lin_txt = $lin_fin + 15;
 
-PS_show_xy($myfile_ps, 'Mês', $col_txt, $lin_txt);
+SA_PS_show_xy($myfile_ps, 'Mês', $col_txt, $lin_txt);
 
 $col_txt = $col_ini + 1;
 $lin_txt = $lin_fin + 4;
 
-PS_show_xy($myfile_ps, 'Dia', $col_txt, $lin_txt);
+SA_PS_show_xy($myfile_ps, 'Dia', $col_txt, $lin_txt);
 
 $lin_fin = $lin_ini - 10;
 $col_ini = $col_fin;
@@ -320,8 +320,8 @@ $ind = 1;
 
     for ($k=1;$k < 21;$k++)
     {
-    	PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-    	PS_show_xy_font($myfile_ps, $ind, $col_txt, $lin_txt, 'Arial', 7);
+    	SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+    	SA_PS_show_xy_font($myfile_ps, $ind, $col_txt, $lin_txt, 'Arial', 7);
 
     	$col_ini = $col_fin;
        	$col_fin = $col_ini + 15;
@@ -336,43 +336,43 @@ $col_ini = $col_fin - 15;
 $col_fin = $col_ini + 26;
 $col_txt = $col_ini + 7;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, 'Fr', $col_txt, $lin_txt, 'Arial-Bold', 10);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, 'Fr', $col_txt, $lin_txt, 'Arial-Bold', 10);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 26;
 $col_txt = $col_ini + 7;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, 'N1', $col_txt, $lin_txt, 'Arial-Bold', 10);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, 'N1', $col_txt, $lin_txt, 'Arial-Bold', 10);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 26;
 $col_txt = $col_ini + 7;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, 'N2', $col_txt, $lin_txt, 'Arial-Bold', 10);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, 'N2', $col_txt, $lin_txt, 'Arial-Bold', 10);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 26;
 $col_txt = $col_ini + 7;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, 'Md', $col_txt, $lin_txt, 'Arial-Bold', 10);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, 'Md', $col_txt, $lin_txt, 'Arial-Bold', 10);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 26;
 $col_txt = $col_ini + 4;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, 'Ex', $col_txt, $lin_txt, 'Arial-Bold', 10);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, 'Ex', $col_txt, $lin_txt, 'Arial-Bold', 10);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 26;
 $col_txt = $col_ini + 7;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, 'Nf', $col_txt, $lin_txt, 'Arial-Bold', 10);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, 'Nf', $col_txt, $lin_txt, 'Arial-Bold', 10);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 163;
@@ -385,7 +385,7 @@ $col_fin = $col_ini + 15;
 
     for ($k=1;$k < 21;$k++)
     {
-    PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+    SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
     $col_ini = $col_fin;
     $col_fin = $col_ini + 15;
     }
@@ -397,7 +397,7 @@ $col_fin = $col_ini + 15;
 
     for ($k=1;$k < 21;$k++)
     {
-    	PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+    	SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
     	$col_ini = $col_fin;
     	$col_fin = $col_ini + 15;
     }
@@ -411,46 +411,46 @@ function rodape ($myfile_ps, $lin_fin, $lin, $campus)
 
 $lin = $lin_fin - 7;
 
-PS_line($myfile_ps, 45, $lin, 814, $lin, 2);
+SA_PS_line($myfile_ps, 45, $lin, 814, $lin, 2);
 
 $lin = $lin - 15;
 
-PS_show_xy_font($myfile_ps, 'Registro de Presença:', 45, $lin, 'Arial-Bold', 8);
-PS_show_xy_font($myfile_ps, '-    Ex.: 2 H/A |-/|    4 H/A |=|', 132, $lin, 'Arial', 8);
-PS_show_xy_font($myfile_ps, 'Códigos:', 350, $lin, 'Arial', 8);
-PS_show_xy_font($myfile_ps, 'Fr', 390, $lin, 'Arial-Bold', 8);
-PS_show_xy_font($myfile_ps, '- Frequência', 400, $lin, 'Arial', 8);
-PS_show_xy($myfile_ps, 'OBS.:', 512, $lin);
+SA_PS_show_xy_font($myfile_ps, 'Registro de Presença:', 45, $lin, 'Arial-Bold', 8);
+SA_PS_show_xy_font($myfile_ps, '-    Ex.: 2 H/A |-/|    4 H/A |=|', 132, $lin, 'Arial', 8);
+SA_PS_show_xy_font($myfile_ps, 'Códigos:', 350, $lin, 'Arial', 8);
+SA_PS_show_xy_font($myfile_ps, 'Fr', 390, $lin, 'Arial-Bold', 8);
+SA_PS_show_xy_font($myfile_ps, '- Frequência', 400, $lin, 'Arial', 8);
+SA_PS_show_xy($myfile_ps, 'OBS.:', 512, $lin);
 
 $lin = $lin - 14;
 
-PS_show_xy_font($myfile_ps, 'Registro de Ausência:', 45, $lin, 'Arial-Bold', 8);
-PS_show_xy_font($myfile_ps, '/    Ex.: 4 H/A |X|', 132, $lin, 'Arial', 8);
-PS_show_xy_font($myfile_ps, 'N', 390, $lin, 'Arial-Bold', 8);
-PS_show_xy_font($myfile_ps, ' - Notas das avaliações (1 e 2)', 400, $lin, 'Arial', 8);
+SA_PS_show_xy_font($myfile_ps, 'Registro de Ausência:', 45, $lin, 'Arial-Bold', 8);
+SA_PS_show_xy_font($myfile_ps, '/    Ex.: 4 H/A |X|', 132, $lin, 'Arial', 8);
+SA_PS_show_xy_font($myfile_ps, 'N', 390, $lin, 'Arial-Bold', 8);
+SA_PS_show_xy_font($myfile_ps, ' - Notas das avaliações (1 e 2)', 400, $lin, 'Arial', 8);
 
 $lin = $lin - 14;
 
-PS_show_xy_font($myfile_ps, '* :', 45, $lin, 'Arial-Bold', 8);
-PS_show_xy_font($myfile_ps, 'Trancamento conforme processo encaminhado via Protocolo.', 55, $lin, 'Arial', 8);
-PS_show_xy_font($myfile_ps, 'Md', 390, $lin, 'Arial-Bold', 8);
-PS_show_xy_font($myfile_ps, ' - Média => (N1+N2)/2', 400, $lin, 'Arial', 8);
+SA_PS_show_xy_font($myfile_ps, '* :', 45, $lin, 'Arial-Bold', 8);
+SA_PS_show_xy_font($myfile_ps, 'Trancamento conforme processo encaminhado via Protocolo.', 55, $lin, 'Arial', 8);
+SA_PS_show_xy_font($myfile_ps, 'Md', 390, $lin, 'Arial-Bold', 8);
+SA_PS_show_xy_font($myfile_ps, ' - Média => (N1+N2)/2', 400, $lin, 'Arial', 8);
 $lin = $lin - 14;
 
-PS_show_xy_font($myfile_ps, 'Somente a Secretaria Geral está autorizada a incluir alunos na folha de chamada.', 45, $lin, 'Arial', 8);
-PS_show_xy_font($myfile_ps, 'Ex', 390, $lin, 'Arial-Bold', 8);
-PS_show_xy_font($myfile_ps, ' - Nota do Exame', 400, $lin, 'Arial', 8);
+SA_PS_show_xy_font($myfile_ps, 'Somente a Secretaria Geral está autorizada a incluir alunos na folha de chamada.', 45, $lin, 'Arial', 8);
+SA_PS_show_xy_font($myfile_ps, 'Ex', 390, $lin, 'Arial-Bold', 8);
+SA_PS_show_xy_font($myfile_ps, ' - Nota do Exame', 400, $lin, 'Arial', 8);
 
 $lin = $lin - 14;
 
-PS_show_xy($myfile_ps, 'Horas/Aula Dadas: ___________', 45, $lin);
-PS_show_xy($myfile_ps, 'Professor(a): _____________________________', 175, $lin);
-PS_show_xy_font($myfile_ps, 'Nf ', 390, $lin, 'Arial-Bold', 8);
-PS_show_xy_font($myfile_ps, ' - Nota Final => (Md+Ex)/2', 400, $lin, 'Arial', 8);
+SA_PS_show_xy($myfile_ps, 'Horas/Aula Dadas: ___________', 45, $lin);
+SA_PS_show_xy($myfile_ps, 'Professor(a): _____________________________', 175, $lin);
+SA_PS_show_xy_font($myfile_ps, 'Nf ', 390, $lin, 'Arial-Bold', 8);
+SA_PS_show_xy_font($myfile_ps, ' - Nota Final => (Md+Ex)/2', 400, $lin, 'Arial', 8);
 
 $lin = $lin - 7;
 
-PS_line($myfile_ps, 45, $lin, 814, $lin, 2);
+SA_PS_line($myfile_ps, 45, $lin, 814, $lin, 2);
 }
 
 // END Functions
@@ -575,7 +575,7 @@ if ($row==0)
    $aux_ref_disciplina = $ref_disciplina;
    
    //===== Rotate (Para usar a p?gina em LANDSCAPE)
-   PS_rotate($myfile_ps, 90);
+   SA_PS_rotate($myfile_ps, 90);
 
    //===== Inserir Cabe?alho
    $quebra_pagina = 25;
@@ -596,11 +596,11 @@ if( ($fl_ouvinte != $aux_ouvinte) || ($ref_disciplina_ofer != $aux_ofer) || ($au
 {
     
    rodape ($myfile_ps, $lin_fin, $lin, $campus);
-   PS_rotate($myfile_ps, 360);
-   PS_end_page($myfile_ps);
+   SA_PS_rotate($myfile_ps, 360);
+   SA_PS_end_page($myfile_ps);
    $nr_pag ++;
-   PS_begin_page($myfile_ps, $nr_pag);
-   PS_rotate($myfile_ps, 90);
+   SA_PS_begin_page($myfile_ps, $nr_pag);
+   SA_PS_rotate($myfile_ps, 90);
 
    if (($aux_turma != $turma)&&($aux_ref_professor_aux != '')&&($aux_ref_professor_aux != '0'))
    {
@@ -645,126 +645,126 @@ $col_fin = $col_ini + 15;
 $lin_txt = $lin_fin + 3;
 
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 
 if ($dt_cancelamento)
 {
-    PS_show_xy_font($myfile_ps, "*", 50, $lin_txt, 'Arial', 8);
+    SA_PS_show_xy_font($myfile_ps, "*", 50, $lin_txt, 'Arial', 8);
     $num = $num - 1;
 }
 else
 {
-    PS_show_xy_font($myfile_ps, "$num", 48, $lin_txt, 'Arial', 8);
+    SA_PS_show_xy_font($myfile_ps, "$num", 48, $lin_txt, 'Arial', 8);
 }
 $col_ini = $col_fin;
 $col_fin = $col_ini + 35;
 $col_txt = $col_ini + 3;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy($myfile_ps, $ref_pessoa, $col_txt, $lin_txt);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy($myfile_ps, $ref_pessoa, $col_txt, $lin_txt);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 225;
 $col_txt = $col_ini + 1;
 $lin_txt = $lin_fin + 3;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, $nome, $col_txt, $lin_txt, 'Arial', 8);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, $nome, $col_txt, $lin_txt, 'Arial', 8);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 35;
 $col_txt = $col_ini + 7;
 $lin_txt = $lin_fin + 3;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
-PS_show_xy_font($myfile_ps, $ref_curso, $col_txt, $lin_txt, 'Arial', 8);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_show_xy_font($myfile_ps, $ref_curso, $col_txt, $lin_txt, 'Arial', 8);
 
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
 
 if ($dt_cancelamento)
 {
     $dt_cancelamento = date::convert_date($dt_cancelamento);
-    PS_show_xy_font($myfile_ps, "Trancou em $dt_cancelamento", $col_ini+2, $lin_txt+2, 'Arial', 5);
+    SA_PS_show_xy_font($myfile_ps, "Trancou em $dt_cancelamento", $col_ini+2, $lin_txt+2, 'Arial', 5);
 }
 
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 15;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 26;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 26;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 26;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 26;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 26;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $col_fin = $col_ini + 26;
-PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
+SA_PS_rect($myfile_ps, $col_ini, $lin_ini, $col_fin, $lin_fin, 0.3);
 $col_ini = $col_fin;
 $lin_ini = $lin_fin ;
 $num ++;
@@ -774,11 +774,11 @@ $num ++;
      if ($totalLinhas > $row+1)
      {
         rodape ($myfile_ps, $lin_fin, $lin, $campus);
-        PS_rotate($myfile_ps, 360);
-        PS_end_page($myfile_ps);
+        SA_PS_rotate($myfile_ps, 360);
+        SA_PS_end_page($myfile_ps);
         $nr_pag ++;
-        PS_begin_page($myfile_ps, $nr_pag);
-        PS_rotate($myfile_ps, 90);
+        SA_PS_begin_page($myfile_ps, $nr_pag);
+        SA_PS_rotate($myfile_ps, 90);
         $aux_turma = 'A';
 
   	if (($aux_turma != $turma) && ($aux_ref_professor_aux != '') && ($aux_ref_professor_aux != '0'))
@@ -819,13 +819,13 @@ $count ++ ;
 rodape ($myfile_ps, $lin_fin, $lin, $campus);
 
 //========================= LOGOTIPO
-PS_rotate($myfile_ps, 360);
+SA_PS_rotate($myfile_ps, 360);
 
 //========================= FECHA A P?GINA
-PS_end_page($myfile_ps);
+SA_PS_end_page($myfile_ps);
 
 //========================= FECHA O ARQUIVO PS DESTINO
-PS_close($myfile_ps);
+SA_PS_close($myfile_ps);
 
 
 // EFETUA O DOWNLOAD
