@@ -30,24 +30,17 @@ foreach($_SESSION['web_diario_cursos_coordenacao'] as $c) {
 $sql_cursos = " SELECT DISTINCT
     a.ref_curso || ' - ' || c.descricao AS curso, a.ref_curso, ref_tipo_curso
       FROM
-          disciplinas_ofer a, disciplinas_ofer_prof b, cursos c
+          disciplinas_ofer a FULL OUTER JOIN cursos c ON (a.ref_curso = c.id)
             WHERE
                 a.ref_periodo = '". $_SESSION['web_diario_periodo_coordena_id'] ."' AND
-                a.ref_curso IN (". $cursos .") AND
-                    a.id = b.ref_disciplina_ofer AND
-                        c.id = a.ref_curso 
+                a.ref_curso IN (". $cursos .")
             ORDER BY ref_tipo_curso;";
-
 
 $cursos = $conn->get_all($sql_cursos);
 
-if(count($cursos) == 0)
-{
-    echo '<script language="javascript">
-                window.alert("Nenhum curso encontrado!");
-        </script>';
-        exit;
-}
+$has_curso = FALSE;
+
+if(count($cursos)  > 0) $has_curso = TRUE;
 
 // RECUPERA INFORMACOES SOBRE oS PERIODOS DA COORDENACAO
 $qry_periodos = 'SELECT DISTINCT o.ref_periodo,p.descricao FROM disciplinas_ofer o, periodos p WHERE  o.ref_periodo = p.id AND o.ref_curso IN (SELECT DISTINCT ref_curso FROM coordenador WHERE ref_professor = '. $sa_ref_pessoa .') ORDER BY ref_periodo DESC;';
@@ -97,6 +90,12 @@ $periodos = $conn->get_all($qry_periodos);
 </div>
 <!-- panel para alteracao dos periodos do coordenador \\ fim \\ -->
 <br />
+<?php 
+    if (!$has_curso) :
+        exit('<h3>Nenhum curso encontrado para o período selecionado</h3>');
+    else :
+?>
+
 <strong>
             <font size="4" face="Verdana, Arial, Helvetica, sans-serif">
                 Cursos desta coordenação 
@@ -122,6 +121,9 @@ Código do diário:
 <input type="text" name="diario_id" id="diario_id" size="10" />
 <input type="button" name="envia_diario" id="envia_diario" value="Consultar" onclick="enviar_diario('pesquisa_diario_coordenacao',null,null,'<?=$BASE_URL?>','<?=$IEnome?>');" />
 </form>
+
+<?php endif; ?>
+
 <br />
 </div>
 <script language="javascript" type="text/javascript">
