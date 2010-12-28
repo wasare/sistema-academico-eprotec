@@ -142,7 +142,7 @@ function verificaAprovacaoContratoDisciplina($aluno_id, $curso_id, $contrato_id,
                 o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 m.ref_disciplina_ofer = $diario_id AND
-                ( m.nota_final >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
+                ( ROUND(m.nota_final) >= 60 OR ref_motivo_matricula IN (2,3,4) ); ";
 
     $diarios_matriculados = $conn->get_all($sqlDisciplina);
 
