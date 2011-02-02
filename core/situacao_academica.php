@@ -64,7 +64,7 @@ function verificaAprovacao($aluno_id, $curso_id, $diario_id) {
                 m.ref_curso = $curso_id AND
                 m.ref_disciplina_ofer = o.id AND
                 o.is_cancelada = '0' AND
-                ( m.nota_final >= 60 AND ref_motivo_matricula = 0 ); ";
+                ( ROUND(m.nota_final) >= 60 AND ref_motivo_matricula = 0 ); ";
 
     $diarios_matriculados = $conn->get_all($sqlDisciplina);
 
