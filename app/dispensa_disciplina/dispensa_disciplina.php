@@ -146,6 +146,7 @@ SELECT DISTINCT
                 c.ref_disciplina = d.id AND
                 d.id = o.ref_disciplina AND
                 d.id = o.ref_disciplina AND
+                o.ref_curso = $curso_id AND
                 o.is_cancelada = '0' AND
                 s.id = o.ref_periodo AND
                 d.id IN (
